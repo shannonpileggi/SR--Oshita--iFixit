@@ -15,6 +15,6 @@ The objective of this summer research is to utilize survival analysis techniques
 6.  Identify potential parametric distributions suitable for the time to event data.  Compare pros and cons of parametric versus nonparametric models.
 7.  Create new variables necessary to model time until a question is answered.  For example, this may involve classifications of product type or parsing text strings to identify if a question mark is present.      
 8.  Create a model to predict time until question is answered.  
-    +Turn this model into a function that can be applied to any new data set
-    +Allow users to calculate or sort through predictions for specific questions
-    +Write a user manual on how to utlize the function and interpret the results
++ Turn this model into a function that can be applied to any new data set
++ Allow users to calculate or sort through predictions for specific questions
++ Write a user manual on how to utlize the function and interpret the results
