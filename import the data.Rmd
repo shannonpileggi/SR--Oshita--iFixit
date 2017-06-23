@@ -1,0 +1,17 @@
+---
+title: "Practice"
+author: "Shannon Pileggi"
+date: "June 23, 2017"
+output: html_document
+---
+
+#Import data
+
+
+```{r}
+dir <- file.path(getwd(),"data")
+
+out <- read.csv(file.path(dir, "answers_data.csv"))
+
+summary(out)
+```
