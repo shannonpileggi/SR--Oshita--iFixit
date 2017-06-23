@@ -20,4 +20,3 @@ The objective of this summer research is to utilize survival analysis techniques
 + Allow users to calculate or sort through predictions for specific questions
 + Write a user manual on how to utlize the function and interpret the results
 
-### More details
