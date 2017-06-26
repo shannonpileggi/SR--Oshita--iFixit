@@ -19,4 +19,9 @@ The objective of this summer research is to utilize survival analysis techniques
 + Turn this model into a function that can be applied to any new data set
 + Allow users to calculate or sort through predictions for specific questions
 + Write a user manual on how to utlize the function and interpret the results
+10.  Take some data camp courses to learn new R skills.
++  https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial
++  https://www.datacamp.com/courses/string-manipulation-in-r-with-stringr
++  https://www.datacamp.com/courses/data-visualization-with-ggplot2-1
++  https://www.datacamp.com/courses/intro-to-text-mining-bag-of-words
 
