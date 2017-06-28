@@ -1,0 +1,40 @@
+---
+title: "“Question Quality in Community Q&A” Notes"
+author: "Lisa Oshita"
+date: "June 28, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+###Question Content
+* length: word count and sentence count
+* text: ngram features from title and body
+
+###Global/local topic models
+* global:
+  + topic information considered as another predictor of question quality
+  + reflects what the entire question is about
+* local:
+  + captures internal structural aspects of questions 
+  + Sentence topic model: capture latent aspects at internal level 
+
+###Results
+* some correlation between view count and question quality 
+* content (length and text) gave signficant improvement in classification accuracy (over ViewCount)- indicates that words used capture quality 
+* good questions tended to be shorter 
+* prediction accuracy increased with global topics- latent topics can be predictive of quality
+* content + local topic models = better performance over content + global - internal structures of a question indicate quality 
+
+###Discussion
+* good questions: 
+* aren't repeats (user has done research)
+* receive more answers on average (5 compared to 2.5), also receive longer answers and more comments
+* "live longer"
+* "latent topical aspects shared between related questions are good predictors of question quality"
+
+##Ideas for research
+* consider question and title length (predict that concise questions will get answered quicker than lengthy ones)
+* extract topic information from title and body of the question? 
