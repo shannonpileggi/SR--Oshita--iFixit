@@ -1,0 +1,11 @@
+---
+title: "New Variables"
+author: "Lisa Oshita"
+date: "June 29, 2017"
+output: html_document
+---
+
+##Creating time to event variable
+```{r}
+out$time_until_answer <- out$first_answer_date - out$post_date
+```
