@@ -6,7 +6,7 @@ Question Characteristics:
   device -- device the question is about
   title -- question title
   text -- question text
-  post_date -- unix timetstamp indicating when the question was posted
+  post_date -- unix timetstamp indicating when the question was posted (seconds since 1/1/1970 0:00 UTC)
   language -- question language
   tags -- queston tags
   n_images -- number of images posted alongside the question
