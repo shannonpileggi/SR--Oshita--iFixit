@@ -2,10 +2,53 @@
 title: "New Variables"
 author: "Lisa Oshita"
 date: "June 29, 2017"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-##Creating time to event variable
+### Creating time to event variable
+observation 15 has a negative value?
 ```{r}
+
 out$time_until_answer <- out$first_answer_date - out$post_date
+
+empty <- which(is.na(out$time_until_answer))
+for (i in empty) {
+  out$time_until_answer[i] <- out$download_date[i] - out$post_date[i]
+}
+
 ```
+
+### Practicing with stringr 
+```{r}
+library(stringr)
+library(rebus)
+
+#variable indicating if title contains questionmark 
+out$contain_questionmark <- str_detect(out$title, pattern = QUESTION)
+```
+
+### Practicing with product categorization 
+```{r}
+# having problems with regex function, not giving same output that Data camp showed 
+x <- c("Cat", "CAT", "cAt")
+str_view(x, regex("cat", ignore_case = TRUE), match = TRUE)
+
+# not working
+phones <- regex("phone", ignore_case = TRUE)
+out$product_type[str_detect(out$device, pattern = phones)] <- "Phone"
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
