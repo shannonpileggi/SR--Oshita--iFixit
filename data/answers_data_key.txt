@@ -30,3 +30,6 @@ Traffic Characteristics
   total_views -- total views of the question page
   daily_views -- average views per day (accounts for date posted)
   n_participants -- number of users who have participated in the question (comment or answer)
+  
+Other
+  download_date -- unix timetstamp indicating when the data was downloaded (seconds since 1/1/1970 0:00 UTC)
