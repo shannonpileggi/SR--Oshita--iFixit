@@ -1,0 +1,86 @@
+---
+title: "Practicing with the data"
+author: "Lisa Oshita"
+date: "June 29, 2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+### Creating time to event variable
+observation 15 has a negative value?
+```{r}
+out$time_until_answer <- out$first_answer_date - out$post_date
+
+empty <- which(is.na(out$time_until_answer))
+for (i in empty) {
+  out$time_until_answer[i] <- out$download_date[i] - out$post_date[i]
+}
+
+```
+
+### Practicing with stringr 
+```{r}
+library(stringr)
+library(rebus)
+
+#variable indicating if title contains questionmark 
+out$contain_questionmark <- str_detect(out$title, pattern = QUESTION)
+```
+
+### Practicing with product categorization 
+```{r}
+# having problems with regex function, not giving same output that Data camp showed 
+x <- c("Cat", "CAT", "cAt")
+str_view(x, regex("cat", ignore_case = TRUE), match = TRUE)
+
+# not working
+phones <- regex("phone", ignore_case = TRUE)
+out$product_type[str_detect(out$device, pattern = phones)] <- "Phone"
+```
+
+### Practicing with dplyr
+```{r}
+library(dplyr)
+
+#using only observations in English
+out1 <- out %>% 
+          tbl_df() %>% 
+          filter(langid == "en")
+
+#view average time until answered grouped by each category 
+out1 %>%
+  group_by(category) %>%
+  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
+  arrange(avg_time)
+
+#view average time until answered grouped by whether or not question contains "?"
+#seems like for a lot of categories, questions with question marks get answered faster
+out1$contain_questionmark <- str_detect(out1$title, pattern = QUESTION)
+out1 %>%
+  group_by(category, contain_questionmark) %>%
+  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
+  arrange(category, avg_time)
+
+#looking at average time until answered for intervals of title length
+library(stringr)
+title_length <- str_length(out1$title)
+out1$title_length_intervals <- cut(length, breaks = 8)
+#don't really see anything interesting here 
+out1 %>%
+  group_by(title_length_intervals) %>%
+  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n())
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
