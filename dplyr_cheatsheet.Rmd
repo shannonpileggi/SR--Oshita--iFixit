@@ -1,0 +1,218 @@
+---
+title: "dplyr"
+author: "Lisa Oshita"
+date: "July 1, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## dplyr package
+### tbl 
+* tbl formats how R displays your data, makes it easier to view and work with
+* doesn't change underlying structure
+* glimpse function also good for displaying data
+```{r}
+library(dplyr)
+library(hflights)
+
+hflights <- tbl_df(hflights)
+hflights
+```
+### data cleaning
+recoding variables using look up tables
+```{r}
+#using a look up table to recode the uniquecarrier variable
+lut <- c("AA" = "American", "AS" = "Alaska", "B6" = "JetBlue", "CO" = "Continental", 
+         "DL" = "Delta", "OO" = "SkyWest", "UA" = "United", "US" = "US_Airways", 
+         "WN" = "Southwest", "EV" = "Atlantic_Southeast", "F9" = "Frontier", 
+         "FL" = "AirTran", "MQ" = "American_Eagle", "XE" = "ExpressJet", "YV" = "Mesa")
+#subsetting lookup table with a character string
+hflights$Carrier <- lut[hflights$UniqueCarrier]
+glimpse(hflights)
+```
+
+### 5 data manipulation tools in dplyr
+* select(), which returns a subset of the columns
+* filter(), that is able to return a subset of the rows
+* arrange(), that reorders the rows according to single or multiple variables
+* mutate(), used to add columns from existing data
+* summarise(), which reduces each group to a single row by calculating aggregate measures
+
+### select function
+* examples: select(dataframe, var1, var2), select(df, 1:4, -2) (exclude variable 2)
+* starts_with("X"): every name that starts with "X",
+* ends_with("X"): every name that ends with "X",
+* contains("X"): every name that contains "X",
+* matches("X"): every name that matches "X", where "X" can be a regular expression,
+* num_range("x", 1:5): the variables named x01, x02, x03, x04 and x05,
+* one_of(x): every name that appears in x, which should be a character vector.
+```{r}
+#prints only ArrDelay and DepDelay
+select(hflights, ends_with("Delay")) 
+```
+
+### mutate function
+* creates new columns which are added to the dataframe/tbl
+* mutate(df, z = x + y) z is the new column that will be added
+* can add more than one column, just separate by a comma
+```{r}
+g1 <- mutate(hflights, ActualGroundTime = ActualElapsedTime - AirTime)
+g1
+```
+
+### filter function
+* filters out rows
+* can use logical operators inside filter: <, >, ==, !=, >=, x %in% c(a,b,c) (TRUE if x is in the vector c(a,b,c))
+* can use boolean operators: & (and), | (or), and ! (not)
+* instead of using the & operator, you can also pass several logical tests to filter(), separated by commas (these are equivalent = filter(df, a > 0 & b > 0), filter(df, a > 0, b > 0))
+* filter(df, !is.na(x)): keeps observations in df that are not NA
+```{r}
+#all flights flown by these specific airlines
+filter(hflights, UniqueCarrier %in% c("JetBlue", "Southwest", "Delta"))
+
+#all flights where taxiing took longer than flying
+filter(hflights, TaxiIn + TaxiOut > AirTime)
+```
+
+### arrange function
+* can be used to rearrange rows according to any type of data
+* if character variable is passed to arrange, it will arrange rows in alphabetical order
+* if factor variable passed, it will arrange rows according to the levels of the factor
+* by default arranges the rows from smallest to largest, reverse this by using the desc() function
+```{r}
+#arrange according to carrier and decreasing departure delays
+arrange(hflights, UniqueCarrier, desc(DepDelay))
+#arrange according to total delay 
+arrange(hflights, DepDelay + ArrDelay)
+```
+
+### summarise function
+* same syntax as mutate, but outputs only a single row
+* does not output an altered copy of the dataset, returns a new dataset that contains only the summarizing statistics 
+```{r}
+#prints a summary with new variables min_dist and max_dist
+summarise(hflights, min_dist = min(Distance), max_dist = max(Distance))
+#print out a summary with variable max_div for all diverted flights
+summarise(filter(hflights, Diverted == 1), max_div = max(Distance))
+```
+
+### aggregate functions in base r 
+* can use any function, as long as the function takes a vector and returns a single value
+* min, max, mean, median, quantile, sd, var, IQR
+
+### aggregate function in dplyr package
+* first(x): first element in vector x
+* last(x): last element
+* nth(x, n): the nth element in vector x
+* n():  number of rows in the dataframe or group of observations that summarise() describes (takes no argument)
+* n_distinct(x): number of unique values in vector x
+```{r}
+#displays total number of observations, total number of carriers, total number of unique destinations
+summarise(hflights,
+          n_obs = n(),
+          n_carrier = n_distinct(UniqueCarrier),
+          n_dest = n_distinct(Dest))
+```
+
+### pipe operator
+comes from the magrittr package, but don't have to install it 
+```{r}
+#takes the hflight dataset and then adds diff that is the result of subtracting TaxiIn from TaxiOut, and then picks all of rows whose diff value does not equal NA, and then summarise the data set with a value named avg that is the mean diff value
+hflights %>%
+  mutate(diff = TaxiOut - TaxiIn) %>%
+  filter(!is.na(diff)) %>%
+  summarise(avg = mean(diff))
+```
+examining if sometimes it's more efficient to drive than fly 
+```{r}
+#these results suggest that it might sometimes be better to drive than fly 
+hflights %>% 
+  mutate(RealTime = ActualElapsedTime + 100, mph = Distance / RealTime * 60) %>%
+    filter(!is.na(mph) & mph < 70) %>%
+      summarise(n_less = n(), n_dest = n_distinct(Dest), min_dist = min(Distance), 
+                max_dist = max(Distance))
+#looks at flights with an mph of less than 105, or flights that were cancelled or diverted
+#indicates that almost 19% of flights appear to be less efficient than driving 
+hflights %>%
+  mutate(RealTime = ActualElapsedTime + 100, mph = Distance / RealTime * 60) %>%
+    filter(mph < 105 | Cancelled == 1 | Diverted == 1) %>%
+      summarise(n_non = n(), n_dest = n_distinct(Dest), min_dist = min(Distance),
+                max_dist = max(Distance))
+```
+
+### group_by function
+* when used with summarise function, summary statistics are calculated for each group
+```{r}
+#indicates that SkyWest had longest average Arrival Delay
+hflights %>%
+  mutate(RealTime = ActualElapsedTime + 100, mph = Distance / RealTime * 60) %>%
+    filter(mph < 105 | Cancelled == 1 | Diverted == 1) %>%
+      summarise(n_non = n(), n_dest = n_distinct(Dest), min_dist = min(Distance),
+                max_dist = max(Distance))
+
+```
+* combining group_by with mutate
+* useful when mutate uses rank function (takes a group of values and calculates rank of each)
+```{r}
+#filtered to keep only observations with nonmissing, positive ArrDelay, grouped by Carrier, average ArrDelay calculated for each Carrier group, new variable rank is added to the data, data that is output is arranged by rank 
+hflights %>% 
+  filter(!is.na(ArrDelay) & ArrDelay > 0) %>%
+    group_by(UniqueCarrier) %>%
+      summarise(avg = mean(ArrDelay)) %>%
+        mutate(rank = rank(avg)) %>%
+          arrange(rank)
+```
+
+### advanced group_by exercises
+```{r}
+#indicates how many airplanes flew to only one destination
+hflights %>%
+  group_by(TailNum) %>%
+  summarise(ndest = n_distinct(Dest)) %>%
+  filter(ndest == 1) %>%
+  summarise(nplanes = n())
+
+#finds the most visited destination for each carrier
+hflights %>% 
+  group_by(UniqueCarrier, Dest) %>%
+  summarise(n = n()) %>%
+  mutate(rank = rank(desc(n))) %>%
+  filter(rank == 1)
+```
+
+### dplyr and different types
+```{r}
+#can work with data tables
+library(data.table)
+hflights2 <- as.data.table(hflights)
+hflights2
+```
+
+### dplyr and SQL databases
+* nycflights is a reference to data that lives outside of R, but can use the dplyr commands
+* dplyr will convert the commands to the database's native language (in this case, SQL), and return the results
+* allows you to pull data that is too large to fit in R (only the fraction of data that you need will actually be downloaded into R, which will usually fit into R without memory issues)
+```{r}
+library(dbplyr)
+library(RMySQL)
+library(DBI)
+#sets up connection to mySQL database
+my_db <- src_mysql(dbname = "dplyr", 
+                   host = "courses.csrrinzqubik.us-east-1.rds.amazonaws.com", 
+                   port = 3306, 
+                   user = "student",
+                   password = "datacamp")
+
+#nycflights is a reference to a tbl in the remote database, but no difference in syntax
+nycflights <- tbl(my_db, "dplyr")
+glimpse(nycflights)
+
+#ordered and grouped summary of nycflights
+nycflights %>% 
+  group_by(carrier) %>% 
+  summarise(n_flights = n(), avg_delay = mean(arr_delay)) %>%
+  arrange(avg_delay)
+```
+
