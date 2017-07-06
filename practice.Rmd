@@ -9,6 +9,7 @@ output:
 
 ### Creating time to event variable
 observation 15 has a negative value?
+answered will be the censoring indicator variable
 ```{r}
 out$time_until_answer <- out$first_answer_date - out$post_date
 
@@ -44,35 +45,62 @@ out$product_type[str_detect(out$device, pattern = phones)] <- "Phone"
 library(dplyr)
 
 #using only observations in English
-out1 <- out %>% 
-          tbl_df() %>% 
-          filter(langid == "en")
+out_english <- out %>% 
+                tbl_df() %>% 
+                filter(langid == "en")
 
 #view average time until answered grouped by each category 
-out1 %>%
+out_english%>%
   group_by(category) %>%
   summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
   arrange(avg_time)
 
 #view average time until answered grouped by whether or not question contains "?"
 #seems like for a lot of categories, questions with question marks get answered faster
-out1$contain_questionmark <- str_detect(out1$title, pattern = QUESTION)
-out1 %>%
+out_english$contain_questionmark <- str_detect(out_english$title, pattern = QUESTION)
+out_english %>%
   group_by(category, contain_questionmark) %>%
   summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
   arrange(category, avg_time)
 
 #looking at average time until answered for intervals of title length
 library(stringr)
-title_length <- str_length(out1$title)
-out1$title_length_intervals <- cut(length, breaks = 8)
+title_length <- str_length(out_english$title)
+out_english$title_length_intervals <- cut(title_length, breaks = 8)
 #don't really see anything interesting here 
-out1 %>%
+out_english %>%
   group_by(title_length_intervals) %>%
   summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n())
 
 ```
 
+### practicing with ggplot
+```{r}
+library(ggplot2)
+library(stringr)
+
+#using only observations with a positive time_until_answer value (26 observations have negative time until answer values)
+out1_positive <- out_english %>% filter(time_until_answer > 0)
+
+#histogram of time_until_answer
+ggplot(out1_positive, aes(x = time_until_answer)) + 
+  geom_histogram(bins = 10)
+
+#plot of number of tags and time_until_answer
+ggplot(out1_positive, aes(x = factor(n_tags), y = time_until_answer)) + 
+  geom_point(position = "jitter")
+
+#plot with title length 
+out1_positive$title_length <- str_length(out1_positive$title)
+
+ggplot(out1_positive, aes(x = title_length, y = time_until_answer)) + 
+  geom_point()
+
+#looking at only data for phones category 
+phones_only <- out1_positive %>% filter(category == "Phone")
+ggplot(phones_only, aes(x = title_length, y = time_until_answer)) + 
+  geom_point(size = 3, alpha = 0.5)
+```
 
 
 
