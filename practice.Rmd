@@ -6,18 +6,23 @@ output:
   pdf_document: default
   html_document: default
 ---
+```{r}
+dir <- file.path(getwd(),"data")
+out <- read.csv(file.path(dir, "answers_data.csv"))
+```
 
 ### Creating time to event variable
-observation 15 has a negative value?
-answered will be the censoring indicator variable
+censoring indicator variable: answered
 ```{r}
 out$time_until_answer <- out$first_answer_date - out$post_date
-
+#filling in the NAs
 empty <- which(is.na(out$time_until_answer))
 for (i in empty) {
   out$time_until_answer[i] <- out$download_date[i] - out$post_date[i]
 }
 
+#26 observations in out dataframe have negative time to event variable
+length(which(out$time_until_answer < 0))
 ```
 
 ### Practicing with stringr 
@@ -27,21 +32,15 @@ library(rebus)
 
 #variable indicating if title contains questionmark 
 out$contain_questionmark <- str_detect(out$title, pattern = QUESTION)
-```
 
-### Practicing with product categorization 
-```{r}
-# having problems with regex function, not giving same output that Data camp showed 
-x <- c("Cat", "CAT", "cAt")
-str_view(x, regex("cat", ignore_case = TRUE), match = TRUE)
-
-# not working
+#practicing with product categorization
 phones <- regex("phone", ignore_case = TRUE)
 out$product_type[str_detect(out$device, pattern = phones)] <- "Phone"
 ```
 
 ### Practicing with dplyr
 ```{r}
+library(stringr)
 library(dplyr)
 
 #using only observations in English
@@ -55,7 +54,7 @@ out_english%>%
   summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
   arrange(avg_time)
 
-#view average time until answered grouped by whether or not question contains "?"
+#view average time until answered grouped by whether or not question contains "?", for each category
 #seems like for a lot of categories, questions with question marks get answered faster
 out_english$contain_questionmark <- str_detect(out_english$title, pattern = QUESTION)
 out_english %>%
@@ -64,7 +63,7 @@ out_english %>%
   arrange(category, avg_time)
 
 #looking at average time until answered for intervals of title length
-library(stringr)
+#creating title length intervals
 title_length <- str_length(out_english$title)
 out_english$title_length_intervals <- cut(title_length, breaks = 8)
 #don't really see anything interesting here 
