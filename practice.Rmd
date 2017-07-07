@@ -23,6 +23,10 @@ for (i in empty) {
 
 #26 observations in out dataframe have negative time to event variable
 length(which(out$time_until_answer < 0))
+library(dplyr)
+out %>% 
+  filter(time_until_answer < 0) %>%
+  select(post_date, first_answer_date, answered)
 ```
 
 ### Practicing with stringr 
@@ -101,6 +105,46 @@ ggplot(phones_only, aes(x = title_length, y = time_until_answer)) +
   geom_point(size = 3, alpha = 0.5)
 ```
 
+### practicing with text mining
+```{r}
+library(dplyr)
+#working only with the 2000 questions that were answered the fastest
+arranged <- out1_positive %>% arrange(time_until_answer)
+fastest <- arranged[1:2000,]
+
+library(qdap)
+library(tm)
+# INSTALLING RWEKA NOT WORKING
+# library(RWeka)
+# 
+# titles <- fastest$title
+# 
+# #clean titles 
+# qdap_clean <- function(x) {
+#   x <- replace_abbreviation(x)
+#   x <- replace_contraction(x)
+#   x <- replace_number(x)
+#   x <- replace_ordinal(x)
+#   x <- replace_symbol(x)
+#   x <- tolower(x)
+#   return(x)
+# }
+# tm_clean <- function(corpus) {
+#   tm_clean <- tm_map(corpus, removePunctuation)
+#   corpus <- tm_map(corpus, stripWhitespace)
+#   corpus <- tm_map(corpus, removeWords, stopwords("en"))
+#   return(corpus)
+# }
+# 
+# tokenizer <- function(x) {
+#   NGramTokenizer(x, Weka_control(min = 2, max = 3)) }
+# 
+# titles <- qdap_clean(titles)
+# titles_cor <- VCorpus(VectorSource(titles))
+# titles_corpus <- tm_clean(titles_cor)
+# 
+# titles_tdm <- TermDocumentMatrix(titles_corpus, )
+```
 
 
 
