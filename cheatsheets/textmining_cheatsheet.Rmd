@@ -20,7 +20,7 @@ text <- "DataCamp is the first online learning platform that focuses on building
 #finds 10 most frequent terms
 
 #finds the 10 most frequent terms (doesn't mattern what kind of word, all words treated equally)
-term_count <- freq_terms(new_text, 10)
+term_count <- freq_terms(text, 10)
 plot(term_count)
 ```
 
@@ -30,6 +30,7 @@ plot(term_count)
 * then pass source to VCorpus(), which is a list of lists: at each element of the corpus, there is a plain text document, which is essentially a list that contains the actual text data (since it's a list of lists, need to subset twice to get to the actual text data)
 * use DataframeSource() when making corpus from dataframe: treats entire row as a complete document (careful not to pick up non-text data)
 ```{r}
+library(tm)
 num  <- c(1,2,3)
 Author1 <- c("Text mining is a great time.", "Text analysis provides insights", "qdap and tm are used in text mining")
 Author2 <- c("R is a great language", "R has many uses", "DataCamp is cool!")
@@ -165,5 +166,21 @@ green_pal <- green_pal[-(1:2)]
 #then add green_pal to wordcloud function
 ```
 
+### Visualizing common words (process for visualizing dissimilar words is similar to this)
+* visualize common words across multiple documents: commonality_cloud()
+* use paste function and collapse = " " to create a vector containing all documents
+* use VectorSource() to convert vector to vector source
+* use VCorpus() on the vector source to create corpus 
+* then clean corpus, convert it to TDM, convert it to matrix, then use commonality.cloud() with max.words and colors arguments
+
+### other visualizations 
+* create word networks with word_associate() function
+* can create dendrograms 
+* word associations: findAssocs(tdm, "word", 0.25), returns a list, for any given word, calculates its correlation with every other word in a TDM or DTM
+
+### term frequency-inverse document frequency
+* if a term appears frequently it must be important, but if it appears in all documents- not likely to be important:
+* TfIdf score increases by term occurrence but is penalized by the frequency of appearance among all documents
+* use: control = list(weighting = weightTfIdf) in TermDocumentMatrix function
 
 
