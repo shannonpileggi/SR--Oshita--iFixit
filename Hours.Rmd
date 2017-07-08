@@ -21,6 +21,7 @@ Date   | Hours | Time        | Description
 7/5/2017 | 2.25 | 2:45-5:00PM | Started the text mining course + cheatsheet
 7/6/2017 | 1.5 | 7:30-9:00AM | Continued with text mining course
 7/6/2017 | 2.75 | 2:15-5:00PM | Finished text mining course + cheatsheet
-7/6/2017 | 2.5 | 6:30-9:00PM | Tried to apply text mining techniques to the dataset, ran into problems with Java, uploaded hours timesheet to Github
+7/6/2017 | 2.5 | 6:30-9:00PM | Tried to apply text mining techniques to the dataset, ran into RWeka package, uploaded hours timesheet to Github
+7/7/2017 | 4.75 | 11:15-5:00PM | Learned and practiced with functions in the survival package on the data set, came up with descriptive summaries, explored the response variable 
 
 >> __Total Hours: 48__
