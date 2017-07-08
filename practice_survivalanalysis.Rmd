@@ -30,8 +30,6 @@ out1 <- out %>%
           filter(langid == "en") %>%
           filter(time_until_answer > 0)
 
-hist(out1$time_until_answer)
-
 library(survival)
 
 #creating survival object
@@ -69,6 +67,7 @@ plot(h.hat$time, h.hat$est, main = "h(t) plot (zoomed in)", xlab = "Time", ylab 
 ### estimating the cumulative hazard function
 * H(t) = −log S(t), or can use the Nelson-Aalen estimator
 * no function in survival package to do this
+* working with instructions from OpenIntro Survival analysis in r pdf 
 ```{r}
 #Kaplan Meier estimator of cumulative hazard
 fit <- summary(survfit(surv_object ~ 1))
@@ -87,21 +86,37 @@ legend("topleft", legend=c("H.hat","H.tilde"), lty=1:2)
 #KM and Nelson Aalen estimators look the same- because large data set? 
 ```
 
-### mean, medians, percentiles
+### mean, medians, percentiles 
 ```{r}
-#at 30,158 seconds, 50% of the questions have been answered
-#mean survival time = 2,748,083
+#at 30,158 seconds (502.6 min), 50% of the questions have been answered
+#mean survival time = 2,748,083 (45801.38 min, 763.3563hrs, 31.8 days)
 #upper limit = largest observation in time to event var
 print(KM.obj, print.rmean=TRUE)
 
 #finding percentiles 
 library(survival)
-quantile(KM.obj, c(0.01, 0.10, 0.25, 0.50, 0.75, 0.95)) #Getting NA for 75 and 95 quantiles
-quantile(KM.obj, 0.75)
+quantile(KM.obj, c(0.01, 0.10, 0.25, 0.30, 0.50, 0.75))
+#getting NA for 0.75 because our lowest S(t) = 0.3410254
 ```
 
+* interpreting quantiles: 
+* at time = 138 seconds (2.3 min), 1% of the questions have been answered
+*           802 seconds (13.4 min), 10% of the questions have been answered
+*           2,883 seconds (48.1 min), 25% of the questions have been answered
 
+### exploring time_until_answered
+* largest time_until_answered = 89.97 days (obs = 7807), and is censored
+* shortest time_until_answered = 23 seconds (obs = 7485) 
+```{r}
+sum(out1$answered)/length(out1$answered)
+#64.4% of observations are complete
+#35.6% of observations are censored
 
+library(ggplot2)
+ggplot(out1, aes(x = time_until_answer)) + 
+  geom_histogram() + 
+  scale_x_continuous(limits = c(20, 30000))
+```
 
 
 
