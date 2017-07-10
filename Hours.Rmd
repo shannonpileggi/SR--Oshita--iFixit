@@ -1,0 +1,27 @@
+> Summer Research Hours Log
+
+Date   | Hours | Time        | Description
+------ | ----- | ----------- | -----------------------------------------
+6/26/2017 | 1.5 | 2:30-4:00PM | Integrated R and Github, familiarized myself with GitHub
+6/27/2017 | 1 | 11:00-12:00PM | Explored the Q&A forum, read and took notes on part of the study posted on GitHub
+6/28/2017 | 3.5 | 11:30-3:00PM | Finished reading and taking notes on the study, learned how to upload to Github through R studio, started the stringr data camp course
+6/28/2017 | 5 | 5:00-10:00PM | Continued with data camp courses
+6/29/2017 | 3 | 7:00-10:00AM | Continued with data camp courses, brainstormed variables to consider in the model
+6/29/2017 | 3.5 | 3:00-6:30PM | Responded to issues, redid stringr course and created a cheatsheet
+6/30/2017 | 3.25 | 8:15-11:30AM | Redid/completed stringr course, practiced with stringr functions on the data set
+6/30/2017 | 3 | 3:30-6:30PM | Ran into problems with stringr functions and the dataset- tried to get them to work, moved onto the next data camp course
+6/30/2017 | 2 | 6:30-9:30PM | Writing functions data camp course + cheatsheet
+7/1/2017 | 2 | 8:30-10:30AM | Completed writing functions course, started dplyr course 
+7/2/2017 | 1 | 9:00-10:00PM | Continued working on the dplyr course + cheatsheet
+7/3/2017 | 2.25 | 10:00-12:15PM | Finished dplyr course
+7/3/2017 | 1.5 | 4:00-5:30PM | Practiced applying dplyr functions to the dataset, started on ggplot2 course
+7/3/2017 | 2 | 6:30-8:30PM | Continued working on ggplot2 course + cheatsheet
+7/4/2017 | 1.5 | 2:00-3:30PM | Continued with ggplot2 course
+7/5/2017 | 3 | 9:30-12:30PM | Finished ggplot2 course, practiced using ggplot on the dataset, reviewed STAT 417 notes
+7/5/2017 | 2.25 | 2:45-5:00PM | Started the text mining course + cheatsheet
+7/6/2017 | 1.5 | 7:30-9:00AM | Continued with text mining course
+7/6/2017 | 2.75 | 2:15-5:00PM | Finished text mining course + cheatsheet
+7/6/2017 | 2.5 | 6:30-9:00PM | Tried to apply text mining techniques to the dataset, ran into RWeka package, uploaded hours timesheet to Github
+7/7/2017 | 4.75 | 11:15-5:00PM | Learned and practiced with functions in the survival package on the data set, came up with descriptive summaries, explored the response variable 
+
+>> __Total Hours: 48__
