@@ -24,4 +24,4 @@ Date   | Hours | Time        | Description
 7/6/2017 | 2.5 | 6:30-9:00PM | Tried to apply text mining techniques to the dataset, ran into RWeka package, uploaded hours timesheet to Github
 7/7/2017 | 4.75 | 11:15-5:00PM | Learned and practiced with functions in the survival package on the data set, came up with descriptive summaries, explored the response variable 
 
->> __Total Hours: 48__
+>> __Total Hours: 52.75__
