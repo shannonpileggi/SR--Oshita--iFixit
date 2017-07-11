@@ -23,5 +23,8 @@ Date   | Hours | Time        | Description
 7/6/2017 | 2.75 | 2:15-5:00PM | Finished text mining course + cheatsheet
 7/6/2017 | 2.5 | 6:30-9:00PM | Tried to apply text mining techniques to the dataset, ran into RWeka package, uploaded hours timesheet to Github
 7/7/2017 | 4.75 | 11:15-5:00PM | Learned and practiced with functions in the survival package on the data set, came up with descriptive summaries, explored the response variable 
+7/10/2017 | 1 | 9:00-10:00AM | Started learning how to fit parametric distributions in r
+7/10/2017 | 4 | 1:00- 5:00PM | Experimented with calculating MLEs from the data for different parametric distributions, tried to create probability plots to assess the fits for each distribution
+7/10/2017 | 3 | 6:30-9:30PM | Continued working with parametric distributions, experimented with fitdistrplus package to fit parametric distributions
 
->> __Total Hours: 52.75__
+>> __Total Hours: 60.75__
