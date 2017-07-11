@@ -33,7 +33,7 @@ out1 <- out %>%
 library(survival)
 
 #creating survival object
-surv_object <- Surv(out1$time_until_answer, out1$answered)
+surv_object <- Surv(out1$time_until_answer, out1$answered, type = "right")
 ```
 
 ### km estimator
@@ -50,9 +50,6 @@ summary(KM.obj)
 plot(KM.obj, main = "KM Curve", xlab = "Seconds", ylab = "Surival Probability")
 #lines(cb$time, cb$lower, lty=3, type="s") #for confidence bands
 #lines(cb$time, cb$upper, lty=3, type="s")
-
-#estimate means survival time E(T)
-#estimate percentiles of survival time
 ```
 
 ### instantaneous hazard using epiR package
@@ -60,8 +57,8 @@ plot(KM.obj, main = "KM Curve", xlab = "Seconds", ylab = "Surival Probability")
 library(epiR)
 h.hat <- epi.insthaz(KM.obj, conf.level = 0.95)
 plot(h.hat$time, h.hat$est, main = "h(t) plot", xlab = "Time", ylab = "Hazard Rate", type = "s")
-plot(h.hat$time, h.hat$est, main = "h(t) plot (zoomed in)", xlab = "Time", ylab = "Hazard Rate", xlim = c(20,1500000), type = "s")
-
+plot(h.hat$time, h.hat$est, main = "h(t) plot (zoomed in)", xlab = "Time", ylab = "Hazard Rate", xlim = c(20,1000000), type = "s")
+#there is a spike in instantaneous hazard before 200,000 seconds (55.5 hours or 2.31 days)
 ```
 
 ### estimating the cumulative hazard function
@@ -82,13 +79,14 @@ H.tilde <- c(H.tilde, tail(H.tilde, 1))
 #plotting both KM and Nelson Aalen on same graph
 plot(c(fit$time, 6500000), H.hat, xlab="Time", ylab="Cumulative Hazard", ylim = range(c(H.hat, H.tilde)), type = "s")
 points(c(fit$time, 6500000), H.tilde, lty=2, type="s")
-legend("topleft", legend=c("H.hat","H.tilde"), lty=1:2)
+legend("bottomright", legend=c("H.hat","H.tilde"), lty=1:2)
 #KM and Nelson Aalen estimators look the same- because large data set? 
+#Rate of increase in cumulative hazard spikes up drastically (immediately after question is posted)- indicating that hazard is increasing on that interval. Rate of increase in cumulative hazard after a certain point, levels out pretty quickly- indicating that hazard is decreasing
 ```
 
 ### mean, medians, percentiles 
 ```{r}
-#at 30,158 seconds (502.6 min), 50% of the questions have been answered
+#at 30,158 seconds (502.6 min, 8.38 hours), 50% of the questions have been answered
 #mean survival time = 2,748,083 (45801.38 min, 763.3563hrs, 31.8 days)
 #upper limit = largest observation in time to event var
 print(KM.obj, print.rmean=TRUE)
@@ -117,7 +115,4 @@ ggplot(out1, aes(x = time_until_answer)) +
   geom_histogram() + 
   scale_x_continuous(limits = c(20, 30000))
 ```
-
-
-
 
