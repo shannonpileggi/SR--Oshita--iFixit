@@ -1,0 +1,126 @@
+---
+title: "Practice with parametric distributions"
+author: "Lisa Oshita"
+date: "July 10, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### import the data
+```{r}
+dir <- file.path(getwd(),"data")
+out <- read.csv(file.path(dir, "answers_data.csv"))
+
+#creating time to event variable
+out$time_until_answer <- out$first_answer_date - out$post_date
+#filling in the NAs
+empty <- which(is.na(out$time_until_answer))
+for (i in empty) {
+  out$time_until_answer[i] <- out$download_date[i] - out$post_date[i]
+}
+
+#subsetting to include only observations in english with positive time to event values
+library(dplyr)
+out1 <- out %>% 
+          tbl_df() %>% 
+          filter(langid == "en") %>%
+          filter(time_until_answer > 0)
+```
+
+### finding parameter estimates with flexsurv package
+```{r}
+library(flexsurv)
+
+#weibull distribution
+weibull <- flexsurvreg(surv_object~1, data = out1, dist = "weibull")
+weibull
+plot(weibull)
+#shape = 0.228, scale = 1320000, AIC = 123791.7
+qqplot(rweibull(1e+5, shape = 0.228, scale = 1320000), out1$time_until_answer)
+
+#exponential distribution
+exp <- flexsurvreg(surv_object~1, data = out1, dist = "exp")
+exp
+plot(exp)
+#rate = 4.98e-07, AIC = 153610
+
+#lognormal distribution
+lnormal <- flexsurvreg(surv_object~1, data = out1, dist = "lnorm")
+lnormal
+plot(lnormal)
+#meanlog = 12.05, sdlog = 4.86, AIC = 122112.1
+
+#logistic distribution
+logistic <- flexsurvreg(surv_object~1, data = out1, dist = "llogis")
+logistic
+plot(logistic)
+#shape = 0.332, scale = 119000, AIC = 122482
+```
+
+### setting up probability plots to assess fit
+```{r}
+# library(car) #for the qqPlot function
+# par(mfrow = c(2,2))
+# qqPlot(out1$time_until_answer, distribution = "weibull", param.list = list(shape = 0.228, scale = 1320000), plot.type = "Q-Q")
+qqplot(rweibull(n = 8000, shape = 0.228, scale = 1320000), out1$time_until_answer)
+abline(0,1)
+qqplot(rlnorm(n = 8000, meanlog = 12.05, sdlog = 4.86), out1$time_until_answer)
+abline(0,1)
+#are the plots actually following the line?- maybe scale too large to see it correctly 
+```
+
+
+### learning about flexsurvreg 
+```{r}
+time <- c(5,8,12,24,32,17,16,17,19,30)
+censor <- c(1,1,1,1,1,1,0,0,0,0)
+example <- data.frame(time, censor)
+
+s <- Surv(example$time, example$censor, type = "right")
+exponential <- flexsurvreg(s~1, data = example, dist = "exp")
+exponential
+survreg(s~1, data = example, dist = "exp")
+
+data(ovarian)
+fitg <- flexsurvreg(formula = Surv(futime, fustat) ~ 1, data = ovarian, dist="gengamma")
+fitg
+fitw <- flexsurvreg(formula = Surv(futime, fustat) ~ 1, data = ovarian, dist="weibull")
+fitw
+plot(fitg)
+lines(fitw, col="blue", lwd.ci=1, lty.ci=1)
+```
+
+### parametric distributions using fitdistrplus package NOT WORKINGG
+```{r}
+library(fitdistrplus)
+
+#creating the data frame to use in the function
+left <- right <- out1$time_until_answer
+right[out1$answered == 0] <- NA_integer_
+censdata <- data.frame(left, right)
+
+#fitweibull <- fitdistcens(censdata, distr = "weibull")
+
+```
+
+### practicing with fitdistcens function 
+```{r}
+data("salinity")
+str(salinity)
+data("smokedfish")
+
+fsal.ln <- fitdistcens(salinity, "lnorm")
+fsal.ln
+
+log10EC50 <-log10(fluazinam)
+fln <- fitdistcens(log10EC50,"norm")
+fln
+summary(fln)
+plot(fln)
+```
+
+
+
