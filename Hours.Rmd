@@ -26,5 +26,7 @@ Date   | Hours | Time        | Description
 7/10/2017 | 1 | 9:00-10:00AM | Started learning how to fit parametric distributions in r
 7/10/2017 | 4 | 1:00- 5:00PM | Experimented with calculating MLEs from the data for different parametric distributions, tried to create probability plots to assess the fits for each distribution
 7/10/2017 | 3 | 6:30-9:30PM | Continued working with parametric distributions, experimented with fitdistrplus package to fit parametric distributions
+7/11/2017 | 4.25 | 10:45-3:00PM | Tried to get the probability plots to work, used techniques learned in data camp courses and survival analysis to explore the data set and get an idea of what variables may be important 
+7/11/2017 | 3.75 | 6:00-9:45PM | Continued to explore the data set 
 
->> __Total Hours: 60.75__
+>> __Total Hours: 68.75__
