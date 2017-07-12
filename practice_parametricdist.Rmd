@@ -32,48 +32,55 @@ out1 <- out %>%
 
 ### finding parameter estimates with flexsurv package
 ```{r}
+surv_object <- Surv(out1$time_until_answer, out1$answered, type = "right")
+
 library(flexsurv)
 
-#weibull distribution
 weibull <- flexsurvreg(surv_object~1, data = out1, dist = "weibull")
 weibull
 plot(weibull)
-#shape = 0.228, scale = 1320000, AIC = 123791.7
-qqplot(rweibull(1e+5, shape = 0.228, scale = 1320000), out1$time_until_answer)
 
-#exponential distribution
 exp <- flexsurvreg(surv_object~1, data = out1, dist = "exp")
 exp
 plot(exp)
-#rate = 4.98e-07, AIC = 153610
 
-#lognormal distribution
 lnormal <- flexsurvreg(surv_object~1, data = out1, dist = "lnorm")
 lnormal
 plot(lnormal)
-#meanlog = 12.05, sdlog = 4.86, AIC = 122112.1
+#has lowest AIC of the 4 distributions
 
-#logistic distribution
 logistic <- flexsurvreg(surv_object~1, data = out1, dist = "llogis")
 logistic
 plot(logistic)
-#shape = 0.332, scale = 119000, AIC = 122482
+
 ```
 
 ### setting up probability plots to assess fit
 ```{r}
-# library(car) #for the qqPlot function
-# par(mfrow = c(2,2))
-# qqPlot(out1$time_until_answer, distribution = "weibull", param.list = list(shape = 0.228, scale = 1320000), plot.type = "Q-Q")
-qqplot(rweibull(n = 8000, shape = 0.228, scale = 1320000), out1$time_until_answer)
-abline(0,1)
-qqplot(rlnorm(n = 8000, meanlog = 12.05, sdlog = 4.86), out1$time_until_answer)
-abline(0,1)
 #are the plots actually following the line?- maybe scale too large to see it correctly 
+qqplot(rweibull(15000, shape = 2.26e-01, scale = 1.32e+06), out1$time_until_answer, xlab = "rweibull values", ylab = "seconds")
+abline(0,1)
+
+#narrowed scope of x-axis to get a closer look at the plot-data does not fit a weibull distribution (not sure if did this correctly)
+qqplot(rweibull(15000, shape = 2.26e-01, scale = 1.32e+06), out1$time_until_answer, xlim = c(0,1e+8), xlab = "rweibull values", ylab = "seconds")
+abline(0,1)
+#data doesn't fit weibull distribution
+
+qqplot(rexp(15000, rate = 4.86e-07), out1$time_until_answer, xlab = "rexp values", ylab = "seconds")
+abline(0,1)
+#data doesn't fit an exponential distribution either
+
+qqplot(rlnorm(15000, meanlog = 12.1129, sdlog = 4.8951), out1$time_until_answer, xlab = "rlnorm values", ylab = "seconds", xlim = c(0, 5e+7))
+abline(0,1)
+#data doesn't fit lognormal distribution 
+
+qqplot(rlogis(15000, location = 3.30e-01, scale = 1.28e+05), out1$time_until_answer)
+abline(0,1)
+#data does not fit logistic distribution 
 ```
 
 
-### learning about flexsurvreg 
+### learning about flexsurvreg (using different data)
 ```{r}
 time <- c(5,8,12,24,32,17,16,17,19,30)
 censor <- c(1,1,1,1,1,1,0,0,0,0)
@@ -93,7 +100,7 @@ plot(fitg)
 lines(fitw, col="blue", lwd.ci=1, lty.ci=1)
 ```
 
-### parametric distributions using fitdistrplus package NOT WORKINGG
+### trying to apply fitdistrplus functions to data (NOT WORKING)
 ```{r}
 library(fitdistrplus)
 
@@ -106,7 +113,7 @@ censdata <- data.frame(left, right)
 
 ```
 
-### practicing with fitdistcens function 
+### practicing with fitdistcens function on different dataset 
 ```{r}
 data("salinity")
 str(salinity)
