@@ -21,36 +21,43 @@ for (i in empty) {
   out$time_until_answer[i] <- out$download_date[i] - out$post_date[i]
 }
 
-#26 observations in out dataframe have negative time to event variable
-length(which(out$time_until_answer < 0))
+#subsetting to include only questions in english
 library(dplyr)
-out %>% 
-  filter(time_until_answer < 0) %>%
-  select(post_date, first_answer_date, answered)
-```
-
-### Practicing with stringr 
-```{r}
-library(stringr)
-library(rebus)
-
-#variable indicating if title contains questionmark 
-out$contain_questionmark <- str_detect(out$title, pattern = QUESTION)
-
-#practicing with product categorization
-phones <- regex("phone", ignore_case = TRUE)
-out$product_type[str_detect(out$device, pattern = phones)] <- "Phone"
-```
-
-### Practicing with dplyr
-```{r}
-library(stringr)
-library(dplyr)
-
-#using only observations in English
 out_english <- out %>% 
                 tbl_df() %>% 
                 filter(langid == "en")
+```
+
+### exploring time to event variable
+```{r}
+summary(out_english$time_until_answer)
+
+library(ggplot2)
+
+#defining tick marks for x-axis
+min <- min(out_english$time_until_answer)
+max <- max(out_english$time_until_answer)
+
+require(scales)
+ggplot(out_english, aes(x = time_until_answer)) + 
+  geom_histogram(bins = 10) + 
+  scale_x_continuous(labels = comma, breaks = seq(min, max, by = (max-min)/10)) + 
+  theme(axis.text.x = element_text(angle=90, hjust=1))
+
+#zoomed in histogram of responses
+ggplot(out1, aes(x = time_until_answer)) + 
+  geom_histogram() + 
+  scale_x_continuous(limits = c(20, 30000))
+
+boxplot(out_english$time_until_answer)
+bstats <- boxplot.stats(out_english$time_until_answer)
+bstats
+#797 questions lie outside of the whiskers
+```
+
+### exploring the categories 
+```{r}
+table(out_english$category)
 
 #view average time until answered grouped by each category 
 out_english%>%
@@ -58,52 +65,145 @@ out_english%>%
   summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
   arrange(avg_time)
 
-#view average time until answered grouped by whether or not question contains "?", for each category
-#seems like for a lot of categories, questions with question marks get answered faster
+#looking at median time_until_answer since data is skewed right
+out_english%>%
+  group_by(category) %>%
+  summarise(median_time = median(time_until_answer, na.rm = TRUE), num = n()) %>%
+  arrange(median_time)
+
+#looking at time_until_answer distributions according to Mac, PC, Phone, showing whether or not the question contains a question mark
+ggplot(subset(out_english, category %in% c("Mac", "PC", "Phone")), aes(x = time_until_answer, fill = as.factor(contain_questionmark))) +
+  geom_histogram(bins = 10) + 
+  facet_grid(.~category)
+
+#looking at only data for phones category (nothing interesting here)
+phones_only <- out_english %>% filter(category == "Phone")
+ggplot(phones_only, aes(x = title_length, y = time_until_answer)) + 
+  geom_point(size = 3, alpha = 0.5)
+```
+
+### investigating whether a question mark is present or not
+```{r}
+library(stringr)
+library(rebus)
+
+#variable indicating if title contains questionmark 
 out_english$contain_questionmark <- str_detect(out_english$title, pattern = QUESTION)
+sum(out_english$contain_questionmark)
+
+#view average time_until_answered grouped by whether or not question contains "?", for each category
+#seems like for a majority of the categories, questions with question marks get answered faster
 out_english %>%
   group_by(category, contain_questionmark) %>%
-  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
+  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), median =
+              median(time_until_answer, na.rm = TRUE), num = n()) %>%
   arrange(category, avg_time)
 
-#looking at average time until answered for intervals of title length
+#calculating proportion of questions that contain a question mark that were answered
+q <- out_english %>%
+        filter(contain_questionmark == T)
+sum(q$answered)/nrow(q)
+
+#proportion of questions that contain ? for each category
+prop.table(table(out_english$category, out_english$contain_questionmark), 1)
+```
+
+### exploring title length
+```{r}
+#creating title_length variable
+out_english$title_length <- str_length(out_english$title)
+hist(out_english$title_length)
+summary(out_english$title_length)
+
+#viewing average/median title length for each category and comparing it to average time until answer
+out_english %>%
+  group_by(category) %>%
+  summarise(avg_length = mean(title_length), median_length = median(title_length), avg_time = mean(time_until_answer), n = n()) %>%
+  arrange(avg_length)
+
 #creating title length intervals
-title_length <- str_length(out_english$title)
-out_english$title_length_intervals <- cut(title_length, breaks = 8)
+out_english$title_length_intervals <- cut(out_english$title_length, breaks = 8)
 #don't really see anything interesting here 
 out_english %>%
   group_by(title_length_intervals) %>%
   summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n())
 
-```
-
-### practicing with ggplot
-```{r}
-library(ggplot2)
-library(stringr)
-
-#using only observations with a positive time_until_answer value (26 observations have negative time until answer values)
-out1_positive <- out_english %>% filter(time_until_answer > 0)
-
-#histogram of time_until_answer
-ggplot(out1_positive, aes(x = time_until_answer)) + 
-  geom_histogram(bins = 10)
-
-#plot of number of tags and time_until_answer
-ggplot(out1_positive, aes(x = factor(n_tags), y = time_until_answer)) + 
-  geom_point(position = "jitter")
-
 #plot with title length 
-out1_positive$title_length <- str_length(out1_positive$title)
-
-ggplot(out1_positive, aes(x = title_length, y = time_until_answer)) + 
+#randomly subset half of the data set to make easier to read
+#don't see any association 
+ggplot(sample_frac(out_english, size = 0.50, replace = FALSE), aes(x = title_length, y = time_until_answer)) + 
   geom_point()
-
-#looking at only data for phones category 
-phones_only <- out1_positive %>% filter(category == "Phone")
-ggplot(phones_only, aes(x = title_length, y = time_until_answer)) + 
-  geom_point(size = 3, alpha = 0.5)
 ```
+
+### exploring text length
+```{r}
+out_english$text_length <- str_length(out_english$text)
+hist(out_english$text_length, xlim = c(0,3000))
+summary(out_english$text_length)
+
+#examining avg/median text length and comparing it to avg time_until_answer for each category
+out_english %>%
+  group_by(category) %>%
+  summarise(avg = mean(text_length), median = median(text_length), avg_time = mean(time_until_answer), n = n()) %>%
+  arrange(avg_time)
+```
+
+### exploring device length (find another way to classify how detailed device is)
+*observation 7548 has a 136 character string for it's device
+```{r}
+out_english$device_length <- str_length(out_english$device)
+hist(out_english$device_length)
+summary(out_english$device_length)
+
+#don't see anything interesting here
+out_english %>% 
+  group_by(category) %>%
+  summarise(avg = mean(device_length), median = median(device_length), avg_time = mean(time_until_answer), n = n()) %>%
+  arrange(avg_time)
+
+```
+
+### examining the number of tags for a question
+```{r}
+summary(out_english$n_tags)
+
+#proportion of questions that don't have any tags
+sum(out_english$n_tags == 0)/nrow(out_english)
+table(out_english$n_tags)
+
+#viewing average time_until_answer grouped by number of tags and category
+out_english %>%
+  group_by(category, as.factor(n_tags)) %>%
+  summarise(avg_time = mean(time_until_answer), n = n()) %>%
+  arrange(category)
+  
+#plot of number of tags and time_until_answer (nothing interesting here)
+ggplot(out_english, aes(x = factor(n_tags), y = time_until_answer)) + 
+  geom_point(position = "jitter")
+```
+
+### number of pictures included 
+```{r}
+summary(out_english$n_images)
+hist(out_english$n_images)
+table(out_english$n_images)
+
+#proportion of questions that include any images
+sum(out_english$n_images != 0)/nrow(out_english)
+
+#looking at mean time_until_answer grouped by n_images
+out_english %>% 
+  group_by(as.factor(n_images)) %>%
+  summarise(avg_time = mean(time_until_answer), n = n()) %>%
+  arrange(avg_time)
+
+#looking at mean time_until_answer grouped by categories and n_images
+out_english %>%
+  group_by(category, as.factor(n_images)) %>%
+  summarise(avg_time = mean(time_until_answer), median = median(time_until_answer), n = n()) %>%
+  arrange(category, avg_time)
+```
+
 
 ### practicing with text mining
 ```{r}
