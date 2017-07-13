@@ -25,7 +25,7 @@ for (i in empty) {
 
 #subsetting to include only observations in english with positive time to event values
 library(dplyr)
-out1 <- out %>% 
+out_english <- out %>% 
           tbl_df() %>% 
           filter(langid == "en") %>%
           filter(time_until_answer > 0)
@@ -33,7 +33,7 @@ out1 <- out %>%
 library(survival)
 
 #creating survival object
-surv_object <- Surv(out1$time_until_answer, out1$answered, type = "right")
+surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
 ```
 
 ### km estimator
@@ -41,8 +41,8 @@ surv_object <- Surv(out1$time_until_answer, out1$answered, type = "right")
 * confidence intervals: CI for S(t) are pointwise intervals
 * can use log-log approach (specify conf.type = "log-log") to prevent upper limits from exceeding 1
 ```{r}
-#KM estimator
-KM.obj <- survfit(surv_object ~ 1, conf.type = "plain")
+#KM estimator based on log-log approach
+KM.obj <- survfit(surv_object ~ 1, conf.type = "log-log")
 str(KM.obj)
 summary(KM.obj)
 
@@ -52,22 +52,41 @@ max <- max(out_english$time_until_answer)
 
 #cb <- confBands(surv_object, confLevel=0.95, type="hall") #for confidence bands
 plot(KM.obj, main = "KM Curve", xlab = "Seconds", ylab = "Surival Probability", xaxt = "n")
-axis(side = 1, at = seq(min, max, by = (max-min)/10), tick = TRUE) #adding more detailed x axis
+axis(side = 1, at = seq(min, max, by = (max-min)/15), tick = TRUE, las = 2) #adding more detailed x axis
 #lines(cb$time, cb$lower, lty=3, type="s") #for confidence bands
 #lines(cb$time, cb$upper, lty=3, type="s")
+
+#zoomed in to see behavior 
+plot(KM.obj, main = "KM Curve", xlab = "Seconds", ylab = "Surival Probability", xlim = c(0, 100000), xaxt = "n")
+axis(side = 1, at = seq(min, max, by = (max-min)/1000), tick = TRUE, las = 2)
+
+plot(KM.obj, main = "KM Curve", xlab = "Seconds", ylab = "Surival Probability", xlim = c(100000, 1000000), xaxt = "n")
+axis(side = 1, at = seq(min, max, by = (max-min)/100), tick = TRUE, las = 2)
 ```
 
 ### instantaneous hazard using epiR package
+* epi.isthaz function computes instantenous hazard based off of KM survival function
 ```{r}
 library(epiR)
 h.hat <- epi.insthaz(KM.obj, conf.level = 0.95)
+head(h.hat)
+#hazard = 4.3e-6 at time = 30 seconds
+#interpretation: Questions who have not been answered by 30 seconds, are expected to be answered 4.3e-6 times in the next 2 seconds 
+
+#par(mfrow = c(1,3))
+#h(t) plots
 plot(h.hat$time, h.hat$est, main = "h(t) plot", xlab = "Time", ylab = "Hazard Rate", type = "s", xaxt = "n")
-axis(side = 1, at = seq(min, max, by = (max-min)/10), tick = TRUE)
+axis(side = 1, at = seq(min, max, by = (max-min)/10), tick = TRUE, las = 2)
 
+#zooming in to get a closer look
 plot(h.hat$time, h.hat$est, main = "h(t) plot (zoomed in)", xlab = "Time", ylab = "Hazard Rate", xlim = c(20,1000000), type = "s", xaxt = "n")
-axis(side = 1, at = seq(min, max, by = (max-min)/10), tick = TRUE)
+axis(side = 1, at = seq(min, max, by = (max-min)/60), tick = TRUE, las = 2)
 
-#there is a spike in instantaneous hazard before 200,000 seconds (55.5 hours or 2.31 days)
+#there is a spike in instantaneous hazard before 130,000 seconds
+
+plot(h.hat$time, h.hat$est, main = "h(t) plot (zoomed in)", xlab = "Time", ylab = "Hazard Rate", xlim = c(20,130000), type = "s", xaxt = "n")
+axis(side = 1, at = seq(min, max, by = (max-min)/200), tick = TRUE, las = 2)
+
 ```
 
 ### estimating the cumulative hazard function
@@ -86,10 +105,13 @@ H.tilde <- cumsum(h)
 H.tilde <- c(H.tilde, tail(H.tilde, 1))
 
 #plotting both KM and Nelson Aalen on same graph
+min <- min(out_english$time_until_answer)
+max <- max(out_english$time_until_answer)
+
 plot(c(fit$time, 6500000), H.hat, xlab="Time", ylab="Cumulative Hazard", ylim = range(c(H.hat, H.tilde)), type = "s", xaxt = "n")
 points(c(fit$time, 6500000), H.tilde, lty=2, type="s", xaxt = "n")
 legend("bottomright", legend=c("H.hat","H.tilde"), lty=1:2)
-axis(side = 1, at = seq(min, max, by = (max-min)/10), tick = TRUE)
+axis(side = 1, at = seq(from = min, to = max, by = (max-min)/20), tick = TRUE, las = 2)
 #KM and Nelson Aalen estimators look the same- because large data set? 
 #Rate of increase in cumulative hazard spikes up drastically (immediately after question is posted)- indicating that hazard is increasing on that interval. Rate of increase in cumulative hazard after a certain point, levels out pretty quickly- indicating that hazard is decreasing
 ```
@@ -100,10 +122,101 @@ axis(side = 1, at = seq(min, max, by = (max-min)/10), tick = TRUE)
 print(KM.obj, print.rmean=TRUE)
 
 #finding percentiles 
-library(survival)
 quantile(KM.obj, c(0.01, 0.10, 0.25, 0.30, 0.50, 0.75))
 #getting NA for 0.75 because our lowest S(t) = 0.3410254
 ```
+
+### comparing survival experiences between groups
+```{r}
+library(stringr)
+library(rebus)
+
+#comparing survival experiences for questions with/without "?"
+#variable indicating if title contains questionmark 
+out_english$contain_questionmark <- str_detect(out_english$title, pattern = QUESTION)
+options(scipen=5)
+KM_obj_question <- survfit(surv_object~contain_questionmark, data = out_english)
+plot(KM_obj_question, lty = 1:2, xlab = "Time", ylab = "Survival Probability", main = "KM Curves for questions with and without a question mark")
+legend("topright", c("False", "True"), lty = 1:2)
+#for the log-rank test 
+survdiff(surv_object~contain_questionmark, data = out_english)
+
+
+#comparing survival experiences across product categories
+colors <- c("antiquewhite", "aquamarine", "azure4", "black", "blue", "blue4","burlywood4", "chartreuse", "coral", "cornflowerblue", "darkgoldenrod1", "darkgreen", "darkolivegreen1", "darkorchid", "deeppink")
+KM_obj_category <- survfit(surv_object~category, data = out_english)
+plot(KM_obj_category, col = colors, xlab = "Time", ylab = "Survival Prob", main = "KM Curves by product category")
+legend("topright", levels(out_english$category), col = colors, pch = 21, cex = 0.60)
+survdiff(surv_object~category, data = out_english)
+
+#comparing survival experiences across devices that were categorized correctly and those that were not
+out_english$categorized <- 0
+out_english$categorized[!is.na(out_english$category)] <- 1
+KM_obj_correct <- survfit(surv_object ~ as.factor(categorized), data = out_english)
+plot(KM_obj_correct, lty = 1:2, xlab = "Time", ylab = "Survival Prob", main = "KM Curves for categorized variable")
+legend("topright", c("0", "1"), lty = 1:2)
+survdiff(surv_object~categorized, data = out_english)
+
+#comparing survival experiences for number of tags included
+KM_obj_tags <- survfit(surv_object~as.factor(n_tags), data = out_english)
+plot(KM_obj_tags, col = 1:5, xlab = "Time", ylab = "Survival Prob", main = "KM Curves by number of tags included")
+legend("topright", c("0", "1", "2", "3", "4"), col = 1:5, pch = 21)
+survdiff(surv_object~as.factor(n_tags), data = out_english)
+
+
+#comparing by title length intervals (no significant difference here)
+#creating title length intervals
+# out_english$title_length_intervals <- cut(as.numeric(out_english$title_length), breaks = 5)
+# KM_obj_title <- survfit(surv_object~as.factor(out_english$title_length_intervals), data = out_english)
+# plot(KM_obj_title, col = 1:5, xlab = "Time", ylab = "Survival Prob", main = "KM Curves by intervals of title length")
+# legend("topright", levels(out_english$title_length_intervals), col = 1:5, pch = 21)
+# survdiff(surv_object~as.factor(title_length_intervals), data = out_english)
+
+#comparing survival between new/continuing users
+KM_obj_users <- survfit(surv_object ~ as.factor(new_user), data = out_english)
+plot(KM_obj_users, lty = 1:2, xlab = "Time", ylab = "Survival Prob", main = "KM Curves for new/continuing users")
+legend("topright", c("Continuing User", "New User"), lty = 1:2)
+survdiff(surv_object~as.factor(new_user), data = out_english)
+
+#comparing survival between number of pictures included
+KM_obj_pic <- survfit(surv_object ~ as.factor(n_images), data = out_english)
+plot(KM_obj_pic, xlab = "Time", ylab = "Survival Prob", main = "KM Curves for n_images", col = colors)
+legend("topright", levels(as.factor(out_english$n_images)), col = colors, pch = 21)
+survdiff(surv_object ~ as.factor(n_images), data = out_english)
+
+#looking at whether or not including at least 1 picture makes a difference
+#creating the variable
+out_english$pic_included <- 0
+out_english$pic_included[out_english$n_images != 0] <- 1
+
+KM_obj_pic1 <- survfit(surv_object ~ as.factor(pic_included), data = out_english)
+plot(KM_obj_pic1, xlab = "Time", ylab = "Survival Prob", main = "KM Curves for n_images", lty = 1:2)
+legend("topright", c("0", "1"), lty = 1:2)
+survdiff(surv_object ~ as.factor(pic_included), data = out_english)
+
+#looking survival experiences between questions with "tried" and without
+out_english$tried <- str_detect(as.character(out_english$text), or("tried", "searched"))
+KM_obj_tried <- survfit(surv_object ~ as.factor(tried), data = out_english)
+plot(KM_obj_tried, xlab = "Time", ylab = "Survival Prob", main = "KM Curves for questions with/without 'tried'", lty = 1:2)
+legend("topright", c("0", "1"), lty = 1:2)
+survdiff(surv_object ~ as.factor(tried), data = out_english)
+```
+
+### practicing with cox regression 
+```{r}
+coxph(formula = surv_object ~ category + contain_questionmark + n_tags + as.factor(new_user) + as.factor(pic_included), data = out_english)
+```
+
+
+
+
+
+
+
+
+
+
+
 
   
 
