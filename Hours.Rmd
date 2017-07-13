@@ -28,5 +28,9 @@ Date   | Hours | Time        | Description
 7/10/2017 | 3 | 6:30-9:30PM | Continued working with parametric distributions, experimented with fitdistrplus package to fit parametric distributions
 7/11/2017 | 4.25 | 10:45-3:00PM | Tried to get the probability plots to work, used techniques learned in data camp courses and survival analysis to explore the data set and get an idea of what variables may be important 
 7/11/2017 | 3.75 | 6:00-9:45PM | Continued to explore the data set 
+7/12/2017 | 2.33 | 9:40-12:00PM | Survival analysis interpretations
+7/12/2017 | 4.5 | 2:30-7:00PM | Summary statistics + survival curves for variables I haven't looked at yet
+7/12/2017 | 1 | 8:30-9:30PM | More on survival curves, ran into a problem with my code
+7/13/2017 | 3 | 7:40-10:40AM | More data set exploration, reviewed cox regression notes, prepared for meeting 
 
->> __Total Hours: 68.75__
+>> __Total Hours: 79.58__
