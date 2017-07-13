@@ -3,8 +3,8 @@ title: "Practicing with the data"
 author: "Lisa Oshita"
 date: "June 29, 2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 ```{r}
 dir <- file.path(getwd(),"data")
@@ -45,41 +45,18 @@ ggplot(out_english, aes(x = time_until_answer)) +
   theme(axis.text.x = element_text(angle=90, hjust=1))
 
 #zoomed in histogram of responses
-ggplot(out1, aes(x = time_until_answer)) + 
+ggplot(out_english, aes(x = time_until_answer)) + 
   geom_histogram() + 
   scale_x_continuous(limits = c(20, 30000))
 
-boxplot(out_english$time_until_answer)
-bstats <- boxplot.stats(out_english$time_until_answer)
-bstats
+#changing y axis on the boxplot
+min <- min(out_english$time_until_answer)
+max <- max(out_english$time_until_answer)
+
+boxplot(out_english$time_until_answer, ylab = "Time until answer", yaxt = "n")
+axis(side = 2, at = seq(min, max, by = (max-min)/10), las = 2, cex.axis = 0.5)
+boxplot.stats(out_english$time_until_answer)
 #797 questions lie outside of the whiskers
-```
-
-### exploring the categories 
-```{r}
-table(out_english$category)
-
-#view average time until answered grouped by each category 
-out_english%>%
-  group_by(category) %>%
-  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
-  arrange(avg_time)
-
-#looking at median time_until_answer since data is skewed right
-out_english%>%
-  group_by(category) %>%
-  summarise(median_time = median(time_until_answer, na.rm = TRUE), num = n()) %>%
-  arrange(median_time)
-
-#looking at time_until_answer distributions according to Mac, PC, Phone, showing whether or not the question contains a question mark
-ggplot(subset(out_english, category %in% c("Mac", "PC", "Phone")), aes(x = time_until_answer, fill = as.factor(contain_questionmark))) +
-  geom_histogram(bins = 10) + 
-  facet_grid(.~category)
-
-#looking at only data for phones category (nothing interesting here)
-phones_only <- out_english %>% filter(category == "Phone")
-ggplot(phones_only, aes(x = title_length, y = time_until_answer)) + 
-  geom_point(size = 3, alpha = 0.5)
 ```
 
 ### investigating whether a question mark is present or not
@@ -108,6 +85,46 @@ sum(q$answered)/nrow(q)
 prop.table(table(out_english$category, out_english$contain_questionmark), 1)
 ```
 
+### searching for "tried" and "searched" in text variable
+```{r}
+out_english$tried <- str_detect(as.character(out_english$text), pattern = or("tried", "searched"))
+sum(out_english$tried)/nrow(out_english)
+
+out_english %>%
+  group_by(tried) %>%
+  summarise(avg_time = mean(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
+  arrange(avg_time)
+
+```
+
+
+### exploring the categories 
+```{r}
+table(out_english$category)
+
+#view average time until answered grouped by each category 
+out_english%>%
+  group_by(category) %>%
+  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
+  arrange(avg_time)
+
+#looking at median time_until_answer since data is skewed right
+out_english%>%
+  group_by(category) %>%
+  summarise(median_time = median(time_until_answer, na.rm = TRUE), num = n()) %>%
+  arrange(median_time)
+
+#looking at time_until_answer distributions according to Mac, PC, Phone, showing whether or not the question contains a question mark
+ggplot(subset(out_english, category %in% c("Mac", "PC", "Phone")), aes(x = time_until_answer, fill = as.factor(contain_questionmark))) +
+  geom_histogram(bins = 10) + 
+  facet_grid(.~category)
+
+#looking at only data for phones category (nothing interesting here)
+phones_only <- out_english %>% filter(category == "Phone")
+ggplot(phones_only, aes(x = str_length(title), y = time_until_answer)) + 
+  geom_point(size = 3, alpha = 0.5)
+```
+
 ### exploring title length
 ```{r}
 #creating title_length variable
@@ -119,14 +136,14 @@ summary(out_english$title_length)
 out_english %>%
   group_by(category) %>%
   summarise(avg_length = mean(title_length), median_length = median(title_length), avg_time = mean(time_until_answer), n = n()) %>%
-  arrange(avg_length)
+  arrange(avg_time)
 
 #creating title length intervals
-out_english$title_length_intervals <- cut(out_english$title_length, breaks = 8)
-#don't really see anything interesting here 
-out_english %>%
-  group_by(title_length_intervals) %>%
-  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n())
+# out_english$title_length_intervals <- cut(out_english$title_length, breaks = 5)
+# #don't really see anything interesting here 
+# out_english %>%
+#   group_by(title_length_intervals) %>%
+#   summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n())
 
 #plot with title length 
 #randomly subset half of the data set to make easier to read
@@ -148,7 +165,7 @@ out_english %>%
   arrange(avg_time)
 ```
 
-### exploring device length (find another way to classify how detailed device is)
+### exploring device length 
 *observation 7548 has a 136 character string for it's device
 ```{r}
 out_english$device_length <- str_length(out_english$device)
@@ -173,9 +190,9 @@ table(out_english$n_tags)
 
 #viewing average time_until_answer grouped by number of tags and category
 out_english %>%
-  group_by(category, as.factor(n_tags)) %>%
+  group_by(as.factor(n_tags)) %>%
   summarise(avg_time = mean(time_until_answer), n = n()) %>%
-  arrange(category)
+  arrange(avg_time)
   
 #plot of number of tags and time_until_answer (nothing interesting here)
 ggplot(out_english, aes(x = factor(n_tags), y = time_until_answer)) + 
@@ -194,7 +211,7 @@ sum(out_english$n_images != 0)/nrow(out_english)
 #looking at mean time_until_answer grouped by n_images
 out_english %>% 
   group_by(as.factor(n_images)) %>%
-  summarise(avg_time = mean(time_until_answer), n = n()) %>%
+  summarise(avg_time = mean(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
   arrange(avg_time)
 
 #looking at mean time_until_answer grouped by categories and n_images
@@ -202,20 +219,97 @@ out_english %>%
   group_by(category, as.factor(n_images)) %>%
   summarise(avg_time = mean(time_until_answer), median = median(time_until_answer), n = n()) %>%
   arrange(category, avg_time)
+
+#looking at whether or not a question included at least one pic
+#creating the variable
+sum(out_english$pic_included)/length(out_english$pic_included)
+
+out_english$pic_included <- 0
+out_english$pic_included[out_english$n_images != 0] <- 1
+
+out_english %>%
+  group_by(as.factor(pic_included)) %>%
+  summarise(avg_time = mean(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
+  arrange(avg_time)
+
+```
+
+### examining if being a new user makes a difference in time_until_answer
+```{r}
+prop.table(table(as.factor(out_english$new_user)))
+
+#looking at average/median time until answer for new/continuing users
+out_english %>% 
+  group_by(as.factor(new_user)) %>%
+  summarise(avg_time = mean(time_until_answer), median = median(time_until_answer), n = n()) %>%
+  arrange(avg_time)
+
+#viewing histogram for new/continuing users
+ggplot(out_english, aes(x = time_until_answer)) +
+  geom_histogram(bins = 10) + 
+  facet_grid(.~as.factor(new_user))
+```
+
+### examining total views for a question
+```{r}
+summary(out_english$views)
+hist(out_english$views) #very skewed right
+summary(out_english$daily_views)
+
+#looking at avg time_until_answer, avg total view count, and median views grouped by number of tags
+out_english %>% 
+  tbl_df %>%
+  group_by(as.factor(n_tags)) %>%
+  summarise(avg_views = mean(views), median_views = median(views), avg_time = mean(time_until_answer)) %>%
+  arrange(avg_views)
+
+#which product categories get the most views
+out_english %>%
+  tbl_df() %>%
+  group_by(category) %>%
+  summarise(avg_views = mean(views), median_views = median(views), n = n()) %>%
+  arrange(desc(avg_views))
+```
+
+### examining daily_views
+```{r}
+hist(out_english$daily_views)
+summary(out_english$daily_views)
+#determining whcih categories have the most avg daily views 
+out_english %>%
+  tbl_df() %>%
+  group_by(category) %>%
+  summarise(avg_dailyviews = mean(daily_views), median = median(daily_views), n = n()) %>%
+  arrange(desc(avg_dailyviews))
+
+out_english %>% 
+  tbl_df %>%
+  group_by(as.factor(n_tags)) %>%
+  summarise(avg_dailyviews = mean(daily_views), median = median(daily_views), avg_time = mean(time_until_answer), n = n()) %>%
+  arrange(desc(avg_dailyviews))
+
+#indicator variable for whether or not the question was categorized correctly
+out_english$categorized <- 0
+out_english$categorized[!is.na(out_english$category)] <- 1
+out_english %>%
+  tbl_df %>%
+  group_by(as.factor(categorized)) %>%
+  summarise(avg_dailyviews = mean(daily_views), median = median(daily_views), avg_time = mean(time_until_answer), n = n()) %>%
+  arrange(desc(avg_dailyviews))
 ```
 
 
 ### practicing with text mining
 ```{r}
-library(dplyr)
-#working only with the 2000 questions that were answered the fastest
-arranged <- out1_positive %>% arrange(time_until_answer)
-fastest <- arranged[1:2000,]
-
-library(qdap)
-library(tm)
-# INSTALLING RWEKA NOT WORKING
-# library(RWeka)
+# library(dplyr)
+# #working only with the 2000 questions that were answered the fastest
+# arranged <- out_english %>% arrange(time_until_answer)
+# fastest <- arranged[1:2000,]
+# 
+# library(qdap)
+# library(tm)
+# RWEKA NOT INSTALLING!!
+#library(RWeka)
 # 
 # titles <- fastest$title
 # 
