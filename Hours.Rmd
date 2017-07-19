@@ -32,5 +32,10 @@ Date   | Hours | Time        | Description
 7/12/2017 | 4.5 | 2:30-7:00PM | Summary statistics + survival curves for variables I haven't looked at yet
 7/12/2017 | 1 | 8:30-9:30PM | More on survival curves, ran into a problem with my code
 7/13/2017 | 3 | 7:40-10:40AM | More data set exploration, reviewed cox regression notes, prepared for meeting 
+7/13/2017 | 1 | 3:00-4:00PM | Appointment with librarian
+7/17/2017 | 1.5 | 2:00-3:30PM | Experimented with text mining techniques to figure out the 100 most frequently used words, ran into problems with RWeka package
+7/18/2017 | 2 | 8:30-10:30AM | Continued working with text mining techniques
+7/18/2017 | 3 | 1:00-4:00PM | Worked with Anthony on identifying most frequently used terms in answered/unanswered questions
+7/19/2017 | 2 | 9:40-11:40AM | Continued working on frequently used terms
 
 >> __Total Hours: 79.58__
