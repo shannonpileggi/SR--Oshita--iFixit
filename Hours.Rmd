@@ -38,4 +38,4 @@ Date   | Hours | Time        | Description
 7/18/2017 | 3 | 1:00-4:00PM | Worked with Anthony on identifying most frequently used terms in answered/unanswered questions
 7/19/2017 | 2 | 9:40-11:40AM | Continued working on frequently used terms
 
->> __Total Hours: 79.58__
+>> __Total Hours: 89.08__
