@@ -6,57 +6,49 @@ output:
   html_document: default
   pdf_document: default
 ---
+#### Importing the data/Setting up time to event variable
 ```{r}
+
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
-```
 
-### Creating time to event variable
-censoring indicator variable: answered
-```{r}
-out$time_until_answer <- out$first_answer_date - out$post_date
-#filling in the NAs
-empty <- which(is.na(out$time_until_answer))
-for (i in empty) {
-  out$time_until_answer[i] <- out$download_date[i] - out$post_date[i]
-}
-
-#subsetting to include only questions in english
 library(dplyr)
 out_english <- out %>% 
-                tbl_df() %>% 
+                tbl_df() %>%
                 filter(langid == "en")
+
+out_english$time_until_answer <- (out_english$first_answer_date - out_english$post_date)/3600
+empty <- which(is.na(out_english$time_until_answer))
+for (i in empty) {
+  out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
+}
+
+proportion_answered <- sum(out_english$answered)/nrow(out_english)
 ```
 
-### exploring time to event variable
+#### About the data set
+* `r nrow(out_english)` observations
+* `r proportion_answered * 100` % of questions were answered 
+
+#### time until answer 
+* minimum: `r summary[1]` hrs
+* maximum: `r summary[6]` hrs
+* mean: `r summary[4]` hrs
+* median: `r summary[3]` hrs
+* first quartile: `r summary[2]`hrs
+    + 25% of the questions were answered by `r summary[2]` hrs
+* third quartile: `r summary[5]` hrs
+    + 75% of the questions were answered by `r summary[5]` hrs
+* IQR range: `r summary[5] - summary[2]` hrs
+
 ```{r}
-summary(out_english$time_until_answer)
+summary <- summary(out_english$time_until_answer)
 
 library(ggplot2)
 
-#defining tick marks for x-axis
-min <- min(out_english$time_until_answer)
-max <- max(out_english$time_until_answer)
-
-require(scales)
 ggplot(out_english, aes(x = time_until_answer)) + 
   geom_histogram(bins = 10) + 
-  scale_x_continuous(labels = comma, breaks = seq(min, max, by = (max-min)/10)) + 
-  theme(axis.text.x = element_text(angle=90, hjust=1))
-
-#zoomed in histogram of responses
-ggplot(out_english, aes(x = time_until_answer)) + 
-  geom_histogram() + 
-  scale_x_continuous(limits = c(20, 30000))
-
-#changing y axis on the boxplot
-min <- min(out_english$time_until_answer)
-max <- max(out_english$time_until_answer)
-
-boxplot(out_english$time_until_answer, ylab = "Time until answer", yaxt = "n")
-axis(side = 2, at = seq(min, max, by = (max-min)/10), las = 2, cex.axis = 0.5)
-boxplot.stats(out_english$time_until_answer)
-#797 questions lie outside of the whiskers
+  scale_x_continuous("Time (hours)", labels = comma) 
 ```
 
 ### investigating whether a question mark is present or not
@@ -105,14 +97,8 @@ table(out_english$category)
 #view average time until answered grouped by each category 
 out_english%>%
   group_by(category) %>%
-  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), num = n()) %>%
+  summarise(avg_time = mean(time_until_answer, na.rm = TRUE), median_time = median(time_until_answer, na.rm = TRUE), num = n()) %>%
   arrange(avg_time)
-
-#looking at median time_until_answer since data is skewed right
-out_english%>%
-  group_by(category) %>%
-  summarise(median_time = median(time_until_answer, na.rm = TRUE), num = n()) %>%
-  arrange(median_time)
 
 #looking at time_until_answer distributions according to Mac, PC, Phone, showing whether or not the question contains a question mark
 ggplot(subset(out_english, category %in% c("Mac", "PC", "Phone")), aes(x = time_until_answer, fill = as.factor(contain_questionmark))) +
@@ -161,8 +147,8 @@ summary(out_english$text_length)
 #examining avg/median text length and comparing it to avg time_until_answer for each category
 out_english %>%
   group_by(category) %>%
-  summarise(avg = mean(text_length), median = median(text_length), avg_time = mean(time_until_answer), n = n()) %>%
-  arrange(avg_time)
+  summarise(avg = mean(text_length), median = median(text_length), median_time = median(time_until_answer), n = n()) %>%
+  arrange(median_time)
 ```
 
 ### exploring device length 
@@ -201,36 +187,36 @@ ggplot(out_english, aes(x = factor(n_tags), y = time_until_answer)) +
 
 ### number of pictures included 
 ```{r}
-summary(out_english$n_images)
-hist(out_english$n_images)
-table(out_english$n_images)
-
-#proportion of questions that include any images
-sum(out_english$n_images != 0)/nrow(out_english)
-
-#looking at mean time_until_answer grouped by n_images
-out_english %>% 
-  group_by(as.factor(n_images)) %>%
-  summarise(avg_time = mean(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
-  arrange(avg_time)
-
-#looking at mean time_until_answer grouped by categories and n_images
-out_english %>%
-  group_by(category, as.factor(n_images)) %>%
-  summarise(avg_time = mean(time_until_answer), median = median(time_until_answer), n = n()) %>%
-  arrange(category, avg_time)
-
-#looking at whether or not a question included at least one pic
-#creating the variable
-sum(out_english$pic_included)/length(out_english$pic_included)
-
-out_english$pic_included <- 0
-out_english$pic_included[out_english$n_images != 0] <- 1
-
-out_english %>%
-  group_by(as.factor(pic_included)) %>%
-  summarise(avg_time = mean(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
-  arrange(avg_time)
+# summary(out_english$n_images)
+# hist(out_english$n_images)
+# table(out_english$n_images)
+# 
+# #proportion of questions that include any images
+# sum(out_english$n_images != 0)/nrow(out_english)
+# 
+# #looking at mean time_until_answer grouped by n_images
+# out_english %>% 
+#   group_by(as.factor(n_images)) %>%
+#   summarise(avg_time = mean(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
+#   arrange(avg_time)
+# 
+# #looking at mean time_until_answer grouped by categories and n_images
+# out_english %>%
+#   group_by(category, as.factor(n_images)) %>%
+#   summarise(avg_time = mean(time_until_answer), median = median(time_until_answer), n = n()) %>%
+#   arrange(category, avg_time)
+# 
+# #looking at whether or not a question included at least one pic
+# #creating the variable
+# sum(out_english$pic_included)/length(out_english$pic_included)
+# 
+# out_english$pic_included <- 0
+# out_english$pic_included[out_english$n_images != 0] <- 1
+# 
+# out_english %>%
+#   group_by(as.factor(pic_included)) %>%
+#   summarise(avg_time = mean(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
+#   arrange(avg_time)
 
 ```
 
@@ -289,13 +275,13 @@ out_english %>%
   arrange(desc(avg_dailyviews))
 
 #indicator variable for whether or not the question was categorized correctly
-out_english$categorized <- 0
-out_english$categorized[!is.na(out_english$category)] <- 1
-out_english %>%
-  tbl_df %>%
-  group_by(as.factor(categorized)) %>%
-  summarise(avg_dailyviews = mean(daily_views), median = median(daily_views), avg_time = mean(time_until_answer), n = n()) %>%
-  arrange(desc(avg_dailyviews))
+# out_english$categorized <- 0
+# out_english$categorized[!is.na(out_english$category)] <- 1
+# out_english %>%
+#   tbl_df %>%
+#   group_by(as.factor(categorized)) %>%
+#   summarise(avg_dailyviews = mean(daily_views), median = median(daily_views), avg_time = mean(time_until_answer), n = n()) %>%
+#   arrange(desc(avg_dailyviews))
 ```
 
 
