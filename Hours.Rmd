@@ -41,4 +41,4 @@ Date   | Hours | Time        | Description
 7/20/2017 | 3 | 8:00-12:00PM | Worked on plotting survival curves in ggplot + meeting with Dr. Pileggi
 7/20/2017 | 5.5 | 2:00-7:30PM | Frequently used terms, started on literature review, started trying to reorganize summary statistics report
 
->> __Total Hours: 89.08__
+>> __Total Hours: 101.08__
