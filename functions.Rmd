@@ -1,0 +1,60 @@
+---
+title: "Functions Created"
+author: "Lisa Oshita"
+date: "July 21, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setup <- function() {
+  dir <- file.path(getwd(),"data")
+  out <- read.csv(file.path(dir, "answers_data.csv"))
+
+  library(dplyr)
+  out_english <- out %>% 
+                  tbl_df() %>%
+                  filter(langid == "en")
+
+  out_english$time_until_answer <- (out_english$first_answer_date - out_english$post_date)/3600
+  empty <- which(is.na(out_english$time_until_answer))
+  for (i in empty) {
+    out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
+}
+}
+
+
+```
+
+```{r}
+
+plot_surv <- function(survfit, data) {
+  
+  library(ggfortify)
+  library(directlabels)
+  
+  df <- fortify(survfit, data = data)
+  
+  if (!("strata" %in% names(df))) {
+    ggplot(df, aes(x = time, y = surv)) + 
+    geom_line() + 
+    scale_y_continuous("Survival Probability") +
+    scale_x_continuous("Time")
+    ggtitle("Survival Curve")
+  }
+
+  if ("strata" %in% names(df)) {
+    ggplot(df, aes(x = time, y = surv, color = strata)) + 
+      geom_line() + 
+      scale_y_continuous("Survival Probabilities") +
+      scale_x_continuous("Time") + 
+      ggtitle("Survival Curves") + 
+      geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+  }
+}
+```
+
+

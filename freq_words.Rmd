@@ -1,7 +1,5 @@
 ---
-title: "New variables"
-author: "Lisa Oshita"
-date: "July 14, 2017"
+title: "Frequent Words"
 output: html_document
 ---
 
@@ -9,8 +7,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Importing the data/Setting up time to event variable
-```{r}
+* **Idea: there are words that show up frequently among answered questions and unanswered questions, which might be able to be used as predictors in the model**
+
+```{r, include = FALSE}
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 
@@ -25,25 +24,30 @@ for (i in empty) {
   out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
 }
 
+library(stringr)
+library(rebus)
+library(survival) 
+library(survminer)
+library(tidyverse)
 ```
 
-
-### Finding most frequently used terms
-```{r}
-
+```{r, include = FALSE}
 library(qdap)
 library(tm)
 
 #function to clean corpus
 clean_corpus <- function(corpus){
+  library(tm)
   corpus <- tm_map(corpus, stripWhitespace)
   corpus <- tm_map(corpus, content_transformer(tolower))
   corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need"))
   return(corpus)
 }
 
-#function that returns vector of terms sorted from most to least frequent
-freq_terms <- function(vec) {
+#function that takes in character vector and returns a data frame of words and frequencies sorted by most to least frequent, n is an optional argument 
+freq_terms <- function(vec, n = NULL) {
+  library(qdap)
+  library(tm)
   source <- VectorSource(vec)
   corpus <- VCorpus(source)
   cleaned_corpus <- clean_corpus(corpus) 
@@ -51,92 +55,108 @@ freq_terms <- function(vec) {
   m <- as.matrix(dtm) 
   freq <- colSums(m)
   freq <- sort(freq, decreasing = TRUE)
-  return(freq)
+  freq_df <- data.frame(word = names(freq), frequency = unname(freq))
+  
+  if (is.null(n)) {
+    return(freq_df)
+  }
+  else if (!is.null(n)) {
+    return(freq_df[1:n,])
+  }
 }
 
+
+#function to plot survival curves with ggplot
+plot_surv <- function(survfit, data, ...) {
+  library(ggfortify)
+  library(directlabels)
+  
+  df <- fortify(survfit, data = data)
+  
+  if (!("strata" %in% names(df))) {
+    ggplot(df, aes(x = time, y = surv)) + 
+    geom_line() + 
+    scale_y_continuous("Survival Probability") +
+    scale_x_continuous("Time")
+    ggtitle("Survival Curve")
+  }
+
+  if ("strata" %in% names(df)) {
+    ggplot(df, aes(x = time, y = surv, color = strata)) + 
+      geom_line() + 
+      scale_y_continuous("Survival Probabilities") +
+      scale_x_continuous("Time") + 
+      ggtitle("Survival Curves") + 
+      geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+  }
+}
+```
+
+### finding top10 and top50 most frequently used terms in titles
+
+```{r, echo = FALSE}
 titles_freq <- freq_terms(out_english$title)
-head(titles_freq)
-hist(titles_freq)
-hist(log(titles_freq))
 
-top50 <- titles_freq[1:50]
-top10 <- titles_freq[1:10]
-plot(top50)
-
+ggplot(titles_freq, aes(x = frequency)) + 
+  geom_histogram() + 
+  ggtitle("Distribution of word frequencies")
 ```
 
 
-### Variable indicating if title contains at least one word in top50 most frequent
-* no significant difference between questions containing these words and questions that don't
-```{r}
+```{r, echo = FALSE}
+top50 <- titles_freq[1:50,]
+top50$word <- factor(top50$word, levels = top50$word)
 
-library(stringr)
-library(rebus)
+ggplot(top50, aes(x = word, y = frequency/nrow(out_english))) + 
+  geom_point() +
+  scale_y_continuous("Percentage of times the word appears", labels = scales::percent) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  ggtitle("How often the 50 most frequently used words appear")
+```
 
+##### top10 most frequently used words
+
+```{r, echo = FALSE}
+top10 <- titles_freq[1:10,]
 out_english$contain_top10 <- str_detect(as.character(out_english$title), pattern = or1(names(top10)))
+prop_contain <- sum(out_english$contain_top10)/nrow(out_english)
+```
 
-sum(out_english$contain_top10)/nrow(out_english)
+* `r round(prop_contain * 100, 2)`% of questions contain at least 1 of the top 10 most frequent words in the title
 
+```{r, echo = FALSE}
+top10
+```
+
+##### median time and average daily views grouped by whether or not question contains top10
+
+```{r, echo = FALSE}
 out_english %>%
   group_by(contain_top10) %>%
   summarise(median_time = median(time_until_answer), 
             avg_daily = mean(daily_views), n = n()) %>%
   arrange(median_time)
-
 ```
 
-### Survival curves for questions with/without top10 terms
-```{r}
+* table indicates that questions with titles that don't contain the top10 words may get answered faster
 
-library(survival) 
-library(survminer)
+##### log-rank test
 
+```{r, echo = FALSE}
+surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
+survdiff(surv_object~contain_top10, data = out_english)
+```
+
+```{r, echo = FALSE}
 surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
 KM_top10 <- survfit(surv_object ~ contain_top10, data = out_english)
-
-ggsurvplot(KM_top10, data = out_english, risk.table = TRUE, pval = TRUE)
-
-survdiff(surv_object~contain_top10, data = out_english)
-
+plot_surv(KM_top10, data = out_english)
 ```
 
 
-### Trying out TfIdf (no difference)
-```{r}
+### Most frequent words within answered and unanswered questions
 
-freq_terms_weighted <- function(vec) {
-  source <- VectorSource(vec)
-  corpus <- VCorpus(source)
-  cleaned_corpus <- clean_corpus(corpus) 
-  dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = function(x)
-    weightTfIdf(x, normalize = TRUE)))
-  m <- as.matrix(dtm) 
-  freq <- colSums(m)
-  freq <- sort(freq, decreasing = TRUE)
-  return(freq)
-}
-
-titles_weighted <- freq_terms_weighted(out_english$title)
-titles_freq_weighted[1:10]
-
-hist(titles_freq_weighted)
-
-```
-
-### Visualizing word frequency 
-* Distribution of how often words appear (plot of top 100 most frequently used words vs. percent of posts appeared in) 
-```{r}
-
-plot(x = c(1:50), unname(top50)/nrow(out_english), xlab = "Top 10 terms", ylab = "Percentage of posts appeared in", xaxt = "n")
-axis(1, at=1:50, labels=names(top50), las = 2)
-
-```
-
-### Most frequent words within answered/unanswered questions
-```{r}
-
-library(tidyverse)
-
+```{r, echo = FALSE}
 answered <- out_english %>%
               tbl_df() %>% 
               filter(answered == 1)
@@ -145,192 +165,180 @@ unanswered <- out_english %>%
               filter(answered == 0)
   
 terms_a <- freq_terms(answered$title)
+terms_a$prop_in_answered <- terms_a$frequency/nrow(terms_a)
+colnames(terms_a)[2] <- "frequency_a"
+
 terms_u <- freq_terms(unanswered$title)
+terms_u$prop_in_unanswered <- terms_u$frequency/nrow(terms_u)
+colnames(terms_u)[2] <- "frequency_u"
 
-ans <- data.frame(term = names(terms_a), a_freq = unname(terms_a), a_prop = unname(terms_a) / length(terms_a))
-unans <- data.frame(term = names(terms_u), u_freq = unname(terms_u), u_prop = unname(terms_u) / length(terms_u))
-
-combined <- full_join(ans, unans, by = "term")
-combined$ratio <- combined$a_prop / combined$u_prop
+combined <- full_join(terms_a, terms_u, by = "word")
+combined$ratio <- combined$prop_in_answered / combined$prop_in_unanswered
 head(combined)
+```
 
-#interpretation: ssd is 28.8 times more likely to show up in answered questions than it is in unanswered questions (but it only shows up .7% of the time in answered questions, and .02% of the time in unanswered questions- probably not helpful)
-combined %>% 
-  arrange(desc(ratio))
+* data frame with frequency and proportion of times each word appears in both answered and unanswered questions, along with the ratio of proportion of times a word appears in answered questions to the proportion of times it appears in unanswered questions (ratio = prop_in_answered/prop_in_unanswered)
 
-combined %>%
-  arrange(desc(u_prop)) 
+##### viewing proportions/frequencies arranged by ratio in decreasing order
 
-ggplot(combined, aes(x = a_prop)) +
+* interpretation: "ssd" is 28.8 times more likely to show up in answered questions than it is in unanswered questions. But since it only shows up 0.7% of the time in answered questions, and 0.02% of the time in unanswered questions, this term might not be helpful in telling us whether or not a question is likely to be answered. 
+
+```{r, echo = FALSE}
+head(combined %>% 
+  arrange(desc(ratio)))
+```
+
+##### viewing proportions/frequencies arranged by proportion in unanswered questions, decreasing order 
+```{r, echo = FALSE}
+head(combined %>%
+  arrange(desc(prop_in_unanswered)))
+```
+
+```{r, echo = FALSE}
+ggplot(combined, aes(x = prop_in_answered)) +
   geom_histogram(bins = 50) + 
   scale_x_continuous("Proportion in answered questions",limits = c(0, 0.05), labels = scales::percent) + 
-  scale_y_continuous(limits = c(0,200)) 
-
-ggplot(combined, aes(x = u_prop)) +
-  geom_histogram(bins = 50) + 
-  scale_x_continuous("Proportion in unanswered questions", limits = c(0, 0.05), labels = scales::percent) + 
-  scale_y_continuous(limits = c(0,200)) 
-
+  scale_y_continuous(limits = c(0,200)) + 
+  ggtitle("Distribution of proportions in answered questions")
 ```
 
 
-### Finding proportion and ratio thresholds 
+```{r, echo = FALSE}
+ggplot(combined, aes(x = prop_in_unanswered)) +
+  geom_histogram(bins = 50) + 
+  scale_x_continuous("Proportion in unanswered questions", limits = c(0, 0.05), labels = scales::percent) + 
+  scale_y_continuous(limits = c(0,200)) + 
+  ggtitle("Distribution of proportions in unanswered questions")
+```
+
+
+##### finding proportion and ratio thresholds 
+
 * find a set of words that show up frequently enough to be used as a set of predictors
-* want the ratio to be large enough to allow us to decide whether or not that word is more likely to show up in an answered/unanswered question
-```{r}
+* want the ratio to be large (or small) enough to allow us to decide whether or not that word is more likely to show up in an answered/unanswered question
 
-#unanswered questions
-
+###### words that appear more than 1% of the time in unanswered questions and are more likely (ratio < 1) to be used in unanswered questions
+```{r, echo = FALSE}
 p_threshold <- 0.01
 ratio_threshold <- 1
 
 freq_terms_u <- combined %>%
-                  filter(u_prop > p_threshold) %>%
+                  filter(prop_in_unanswered > p_threshold) %>%
                   filter(ratio < ratio_threshold)
 freq_terms_u
+```
 
+###### words that appear more than 1% of the time in answered questions and are more likely (ratio > 1) to be used in answered questions
 
-#answered questions
-
+```{r, echo = FALSE}
 freq_terms_a <- combined %>%
-                  filter(a_prop > p_threshold) %>%
+                  filter(prop_in_answered > p_threshold) %>%
                   filter(ratio > ratio_threshold)
 freq_terms_a
-
 ```
 
 
-### Means/medians/survival curves for freq_terms_u
-```{r}
+### Summary statistics/survival analysis for whether or not questions contain frequent unanswered terms
 
-out_english$contain_u <- str_detect(as.character(out_english$title), pattern = or1(freq_terms_u$term))
+```{r, echo = FALSE}
+out_english$contain_u <- str_detect(as.character(out_english$title), pattern = or1(freq_terms_u$word))
 
-sum(out_english$contain_u)/nrow(out_english) #only 13% of questions contain these terms
+prop_contain_u <- sum(out_english$contain_u)/nrow(out_english)
+```
 
+* `r round(prop_contain_u * 100, 2)`% of questions contain at least one of the most frequent unanswered terms
+
+##### median answer time and average daily views grouped by whether or not question contains at least 1 uanswered term 
+
+```{r, echo = FALSE}
 out_english %>%
   group_by(contain_u) %>%
-  summarise(median_time = median(time_until_answer), avg_time = mean(time_until_answer), n = n(), avg_views = 
-              mean(daily_views)) %>%
+  summarise(median_time = median(time_until_answer), n = n(), avg_views = mean(daily_views)) %>%
   arrange(median_time)
+```
 
+##### log-rank test
 
-KM_u <- survfit(surv_object ~ contain_u, data = out_english) 
+```{r, echo = FALSE}
 survdiff(surv_object ~ contain_u, data = out_english)
+```
 
-ggsurvplot(KM_u, data = out_english, risk.table = TRUE, pval = TRUE)
-
+```{r, echo = FALSE}
+KM_u <- survfit(surv_object ~ contain_u, data = out_english) 
+plot_surv(KM_u, data = out_english)
 ```
 
 
-### Means/medians/survival curves for freq_terms_a
-```{r}
-out_english$contain_a <- str_detect(as.character(out_english$title), pattern = or1(freq_terms_a$term))
+### Summary statistics/survival analysis for whether or not questions contain frequent answered terms
 
-sum(out_english$contain_a)/nrow(out_english) #63% of the questions contain these terms
+```{r, echo = FALSE}
+out_english$contain_a <- str_detect(as.character(out_english$title), pattern = or1(freq_terms_a$word))
 
+prop_contain_a <- sum(out_english$contain_a)/nrow(out_english)
+```
+
+* `r round(prop_contain_a * 100, 2)`% of questions contain at least one of the most frequent answered terms
+
+##### median answer time and average daily views grouped by whether or not question contains at least 1 answered term 
+
+```{r, echo = FALSE}
 out_english %>%
   group_by(contain_a) %>%
-  summarise(median_time = median(time_until_answer), avg_time = mean(time_until_answer), n = n(), avg_views = 
-              mean(daily_views)) %>%
+  summarise(median_time = median(time_until_answer), n = n(), avg_views = mean(daily_views)) %>%
   arrange(median_time)
+```
 
+##### log-rank test
 
-KM_a <- survfit(surv_object ~ contain_freq_answered, data = out_english)
-survdiff(surv_object~contain_freq_answered, data = out_english)
+```{r, echo = FALSE}
+survdiff(surv_object~contain_a, data = out_english)
+```
 
-ggsurvplot(KM_a, data = out_english, risk.table = TRUE, pval = TRUE)
-
+```{r, echo = FALSE}
+KM_a <- survfit(surv_object ~ contain_a, data = out_english)
+plot_surv(KM_a, data = out_english)
 ```
 
 
-### Looking at only device terms within freq_terms_u
-```{r}
-
+#### looking at only device terms within freq_terms_u (discarding irrelevant words)
+```{r, echo = FALSE}
 unanswered_devices <- freq_terms_u %>%
-                        filter(term %in% c("camera", "sound", "tablet", "light", "wifi", "speaker", "sound"))
+                        filter(word %in% c("camera", "sound", "tablet", "light", "wifi", "speaker", "sound"))
 
-out_english$contain_u_dev <- str_detect(as.character(out_english$title), pattern = or1(unanswered_devices$term))
+out_english$contain_u_dev <- str_detect(as.character(out_english$title), pattern = or1(unanswered_devices$word))
 
-sum(out_english$contain_u_dev)/nrow(out_english) #only 5.6% of titles contain these terms
+prop_contain_u_dev <- sum(out_english$contain_u_dev)/nrow(out_english)
+```
 
-KM_u_dev <- survfit(surv_object ~ contain_u_dev, data = out_english)
+* `r round(prop_contain_u_dev*100, 2)`% of titles contain at least 1 unanswered device terms 
 
+##### log-rank test
+
+```{r, echo = FALSE}
 survdiff(surv_object ~ contain_u_dev, data = out_english)
 
-ggsurvplot(KM_u_dev, data = out_english, risk.table = TRUE, pval = TRUE)
-
+KM_u_dev <- survfit(surv_object ~ contain_u_dev, data = out_english)
+plot_surv(KM_u_dev, data = out_english)
 ```
 
-### Looking at only device terms within freq_terms_a
-```{r}
 
-freq_terms_a
+#### Looking at only device terms within freq_terms_a
 
-answered_devices <- freq_terms_answered %>%
-                      filter(term %in% c("screen", "iphone", "phone", "battery", "button", "display", "macbook", "lcd",
-                                         "board", "keyboard", "laptop", "home", "pro", "drive"))
+```{r, echo = FALSE}
+answered_devices <- freq_terms_a %>%
+                      filter(word %in% c("screen", "iphone", "phone", "battery", "button", "display", "macbook", "lcd", "board", "keyboard", "laptop", "home", "pro", "drive"))
 
-out_english$contain_dev_a <- str_detect(as.character(out_english$title), pattern = or1(answered_devices$term))
-sum(out_english$contain_dev_a)/nrow(out_english) #33% of all questions contain these words
+out_english$contain_dev_a <- str_detect(as.character(out_english$title), pattern = or1(answered_devices$word))
+prop_contain_a_dev <- sum(out_english$contain_dev_a)/nrow(out_english)
+```
 
-KM_dev_a <- survfit(surv_object ~ contain_dev_a, data = out_english)
+* `r round(prop_contain_a_dev*100, 2)`% of titles contain at least 1 answered device term
 
+##### log-rank test
+
+```{r, echo = FALSE}
 survdiff(surv_object ~ contain_dev_a, data = out_english)
 
-ggsurvplot(KM_dev_a, data = out_english, risk.table = TRUE, pval = TRUE)
-
+KM_dev_a <- survfit(surv_object ~ contain_dev_a, data = out_english)
+plot_surv(KM_dev_a, data = out_english)
 ```
-
-### Function to return top n most frequently used words from a character vector
-```{r}
-
-n_freq_terms <- function(vector, n) {
-  source <- VectorSource(vector)
-  corp <- VCorpus(source)
-  cleaned <- clean_corpus(corp) 
-  dtm <- DocumentTermMatrix(cleaned)
-  m <- as.matrix(dtm) 
-  frequency <- colSums(m)
-  frequency <- sort(frequency, decreasing = TRUE)
-  terms <- frequency[1:n]
-}
-
-#testing
-answered <- out_english %>%
-              tbl_df() %>% 
-              filter(answered == 1)
-n_freq_terms(answered$title, 10)
-
-```
-
-### Plotting KM objects with ggplot
-*convert survfit object to data frame with fortify function, plot with ggplot()
-```{r}
-
-library(ggfortify)
-
-plot_surv <- function(survfit, data) {
-  
-  df <- fortify(survfit, data = data)
-  
-  if (!("strata" %in% names(df))) {
-    ggplot(df, aes(x = time, y = surv)) + 
-    geom_line() + 
-    ggtitle("Survival Curve")
-  }
-
-  if ("strata" %in% names(df)) {
-    ggplot(df, aes(x = time, y = surv, color = strata)) + 
-      geom_line() + 
-      ggtitle("Survival Curves")
-  }
-}
-
-plot_surv(KM_top10, data = out_english)
-
-```
-
-
-
-
-

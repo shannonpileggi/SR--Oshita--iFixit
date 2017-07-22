@@ -40,5 +40,7 @@ Date   | Hours | Time        | Description
 7/19/2017 | 3.5 | 1:00-4:30PM | Frequently used terms
 7/20/2017 | 3 | 8:00-12:00PM | Worked on plotting survival curves in ggplot + meeting with Dr. Pileggi
 7/20/2017 | 5.5 | 2:00-7:30PM | Frequently used terms, started on literature review, started trying to reorganize summary statistics report
-
->> __Total Hours: 101.08__
+7/21/2017 | 4.5 | 7:00-11:30AM | Re-organized summary statistics
+7/21/2017 | 6 | 3:30-9:30PM | Continued to re-organize, wrote functions/rewrote parts of code
+7/22/2017 | 2 | 10:00-12:00PM | Re-organzied freq words file
+>> __Total Hours: 113.58__
