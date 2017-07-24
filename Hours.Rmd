@@ -43,4 +43,6 @@ Date   | Hours | Time        | Description
 7/21/2017 | 4.5 | 7:00-11:30AM | Re-organized summary statistics
 7/21/2017 | 6 | 3:30-9:30PM | Continued to re-organize, wrote functions/rewrote parts of code
 7/22/2017 | 2 | 10:00-12:00PM | Re-organzied freq words file
->> __Total Hours: 113.58__
+7/22/2017 | 4 | 3:00-7:00PM | Literature reviews
+7/24/2017 | 1.5 | 8:30-10:00AM | Finished literature reviews
+>> __Total Hours: 119.08__

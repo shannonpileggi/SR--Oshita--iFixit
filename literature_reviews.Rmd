@@ -9,6 +9,16 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+### "“Question Quality in Community Q&A” Notes"
+* some correlation between view count and question quality 
+* content (length and text) gave signficant improvement in classification accuracy (over ViewCount)- indicates that words used capture quality 
+* good questions tended to be shorter 
+* good questions: 
+    + aren't repeats (user has done research)
+    + receive more answers on average (5 compared to 2.5), also receive longer answers and more comments
+    + "live longer"
+    + "latent topical aspects shared between related questions are good predictors of question quality"
+
 ### "Understanding and Classifying the Quality of Technical Forum Questions"
 * published in: 2014 14th International Conference on Quality Software
 * tries to model/predict the quality of questions on Stack Overflow
@@ -16,11 +26,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ##### Metrics 
 * Stack Overflow Metrics 
     + Body length
-    + Emails count (number of email addresses found in the question)
+    + Emails count
     + Lowercase percentage (percentage of lowercase letters throughout the question)
     + Spaces count (total number of spaces throughout question)
-    + Number of tags
-    + Text Speak Count (number of text speak within the question, ex: doesnt', wat, rotfl)
+    + Text Speak Count (number of text speak within the question, ex: doesnt', wat, rotfl): text speak indicates bad quality (low number of sentences in the question) (maybe do ratio of number of sentences to length of question)????
     + Textual similarity between question and title
     + Capital title 
     + Uppercase percentage
@@ -28,19 +37,11 @@ knitr::opts_chunk$set(echo = TRUE)
     + Metric entropy = shannon entropy/length of the text: represents the randomness of the info in the question
     + Average terms entropy = average of the entropy for each term in questions text
     + Computed standardized readibility indexes- represent comprehension difficulty Stanford NLP Parser7 to extract sentences/words, TeX hyphenation [16] for syllables
-* User popularity metrics
+* User popularity metrics 
     + badges received concerning question and answers
-    + coverage of author’s badges with respect to the tags assigned by the author to the new question
-    + maybe consider including a variable about the reputation of an asker? 
-
-##### Data Analysis
-* used decision trees to classify good/bad questions
-    + found that the popularity of the author is more important than textual features to determine quality
-* Learned quality function findings
-    + found that users who received a lot of down votes were more likely to post good questions to up their reputation
-    + having produced good answers in the past was indicative of good quality
-    + up votes recieved in the past didn't influence quality
-    + text speak indicates bad quality (low number of sentences in the question) (maybe do ratio of number of sentences to length of question)????
+    + users who recieved downvotes before more likely to post good questions to up their reputation 
+    + up votes recieved in the past didn't indicate quality
+    + found that popularity metrics were more important that others in predicting quality 
 
 ##### References to check
 * M. Allamanis and C. Sutton. Why, when, and what: Analyzing stack overflow questions by topic, type, and code. In Proceedings of MSR2013 (10th Working Conference on Mining Software Repositories), pages 53–56. IEEE Press, 2013.
@@ -52,12 +53,103 @@ knitr::opts_chunk$set(echo = TRUE)
 * C. Treude, O. Barzilay, and M.-A. Storey. How do programmers ask and answer questions on the web? (nier track). In Proceedings of ICSE 2011 (33rd International Conference on Software Engineering), pages 804–807. ACM, 2011.
 * A. Barua, S. W. Thomas, and A. E. Hassan. What are developers talking about? an analysis of topics and trends in stack overflow. Empirical Software Engineering, 19(3):619-654, June 2014.
 
-##### References from "Quality Questions Need Quality Code: Classifying Code Fragments on Stack Overflow" to look into
-* V. Bhat, A. Gokhale, R. Jadhav, J. Pudipeddi, and L. Akoglu, “Min(e)d your tags: Analysis of question response time in stackoverflow,” in Proc. of ASONAM 2014, 2014, pp. 328–335.
+### References from "Quality Questions Need Quality Code: Classifying Code Fragments on Stack Overflow" to look into
+* **V. Bhat, A. Gokhale, R. Jadhav, J. Pudipeddi, and L. Akoglu, “Min(e)d your tags: Analysis of question response time in stackoverflow,” in Proc. of ASONAM 2014, 2014, pp. 328–335.**
 *  J. Yang, C. Hauff, A. Bozzon, and G.-J. Houben, “Asking the right question in collaborative Q&A systems,” Proc. of Hypertext 2014, pp. 179–189.
 
-### "Automatically Assessing the Post Quality in Online Discussions on Software" References
-* Jihie Kim, Grace Chern, Donghui Feng, Erin Shaw, and Eduard Hovya. 2006a. Mining and assessing discussions on the web
-through speech act analysis. In Proceedings of the Workshop on Web Content Mining with Human Language Technologies at the 5th International Semantic Web Conference.
-* Mitchell P. Marcus, Beatrice Santorini, and Mary Ann Marcinkiewicz. 1994. Building a Large Annotated Corpus
-of English: The Penn Treebank. Computational Linguistics, 19(2):313–330.
+### "Automatically Assessing the Post Quality in Online Discussions on Software"
+* Published in: ACL '07 Proceedings of the 45th Annual Meeting of the ACL on Interactive Poster and Demonstration Sessions Pages 125-128 
+* features used in the model 
+    + surface features: number of tokens in a post, percentage of sentences ending with "?", percentage of sentences ending with "!", percentage of words in CAPITAL
+    + lexical features: spelling error frequency, swear word frequency
+    + syntactic features
+    + similarity features: relatedness of post to the topic of a forum 
+
+##### References 
+* Jihie Kim, Grace Chern, Donghui Feng, Erin Shaw, and Eduard Hovya. 2006a. Mining and assessing discussions on the web through speech act analysis. In Proceedings of the Workshop on Web Content Mining with Human Language Technologies at the 5th International Semantic Web Conference.
+* Mitchell P. Marcus, Beatrice Santorini, and Mary Ann Marcinkiewicz. 1994. Building a Large Annotated Corpus of English: The Penn Treebank. Computational Linguistics, 19(2):313–330.
+
+### "Exploring Generic Features For Online Large-Scale Discussion Forum Comments" notes (dissertation)
+* used sentiment analysis- took the value of the comment sentiment (positivity, negativity, neutral)
+  + tags comments with lexicons
+* post-level syntactic features: Post length, time stamp, type of post, edit count, votes, constructiveness score (number of constructive word counts (constructive learning activities per post)), number of unique users commenting on a post, number of controversial comments
+* used regression models, one with votes as response and another with constructiveness
+* regression model for votes
+    + most unique users commenting, more votes
+    + presence of code/number of edits has positive relationship with votes
+    + mean comment entropy is positively related to votes (diversity is a good indicator of quality)
+* regression model for constructiveness
+    + number of unique users who comment, reputation, timing all relate to constructiveness
+
+## "Min(e)d your tags: Analysis of Question response time in StackOverflow" Notes
+* tag based features
+    + **average frequency of tags**
+    + **number of popular tags**
+    + average co-occurence rate of tags
+    + % active subscribers, number of responsive subscribers, % responsive subscribers
+* non-tag based features
+    + number of code segments/total code length
+    + number of images
+    + body length, title length
+    + whether title ends with question mark
+    + **whether title starts with "Wh" word**
+    + **whether question is posted on weekend** 
+    + **number of verbs that indicate action**
+    + **number of self references of asker**
+* tag popularity: popularity = frequency (num questions that contain t as one of its tags), compute the average popularity of all its tags
+* group tags into popular and unpopular based on frequency threshold, count number of popular tags a question contains 
+* number of action verbs: verbs that indicate action/research was taken by the person asking before posting the question: "tried", "did", "made", "used", "run"...
+* self references: presence of "I", "we", "me", "my", "myself" - indicate prior work/research done before posting question, maybe indicates question quality (normalize these values by question length) 
+* specificity of tags positively correlated with response time (maybe consider the length of the hashtags)- if tag is too specific, not as easy for user to find the question
+* succinct questions seem to have faster response times
+* 
+
+##### References
+* J. Mahmud, J. Chen, and J. Nichols, "When will you answer this? estimating response time in twitter." in ICWSM. The AAAI Press, 2013.
+* M. Asaduzzaman, A. Mashiyat, C. Roy, and K. Schneider, "Answering questions about unanswered questions of stack overflow, " in 10th Working Conference on Mining Software Repositories. Mining Challenge, 2013
+* A. Rechavi and S. Rafaeli, "Not all is gold that glitters: Response time & satisfaction rates in Yahoo! answers." in SocialCom/PASSAT. IEEE, 2011, pp. 904-909.
+* A. Anderson, D. P. Huttenlocher, J. M. Kleinberg, and J. Leskovec, "Discovering value from community activity on focused question answering sites: a case study of stack overflow." in KDD, 2012, pp. 850-858.
+* F. M. Harper, D. R. Raban, S. Rafaeli, and J. A. Konstan, "Predictors of answer quality in online Q&A sites." in CHI. ACM, 2008, pp. 865-874.
+
+
+## "Answering questions about unanswered questions of stack overflow" notes
+* reasons questions go unanswered:  
+    + question is too short/unclear/hard to follow
+    + too specific/time consuming
+    + duplicate question
+    + fails to attract expert member (incorrect tagging) 
+* consider tag similarity: number of previous posts that contain tags similar to it 
+
+## "Not all is gold that glitters: Response time & satisfaction rates in Yahoo! answers." notes
+* shortest response time found between askers and answerers who did not follow each other
+* longest response time found between askers and answerers who did (they were mutual friends)
+
+## "Discovering value from community activity on focused question answering sites: a case study of stack overflow." notes
+* since askers generally accept the first answer, there is an incentive to answer quickly- so the answerer will get their reputation raised: so maybe reputation plays a roll in response time
+
+## "Predictors of answer quality in online Q&A sites." notes
+* prior effort: may include statements like "I did a Google search..." or "I've asked our IT...", found that this had no statisitcally signficant effect on the quality of answers an asker received
+* On average prior effort actually decreased judged answer quality and judged answerer effort 
+
+# Ideas:
+* consider more textual features:
+    + percentage of lowercase/uppercase, if first letter in title is capitalized
+    + "text speak" - indicates bad sentence quality or a low number of sentences in a question, maybe do ratio of sentences to length of question? 
+    + spelling error frequency??
+    + textual similarity between title and text
+    + shannon entropy (randomness of a question) 
+    + number of action verbs: verbs that indicate asker did something/researched before posting question: "tried", "did", "made", "used", "run"
+    + self references: use of "I", "me", "we"... another indicator of prior research/action
+    + whether title starts with "Wh" 
+* characteristics of the asker
+    + reputation
+* tags
+    + average frequency of tags, popularity of the tags
+    + average character length of tags (concise tags might get faster response times), might be able to show when askers use tagging incorrectly 
+* time of day when the question was posted, day of the week? 
+
+
+
+
+
+
