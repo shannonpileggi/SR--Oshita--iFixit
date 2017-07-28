@@ -34,32 +34,69 @@ library(rebus)
 ```
 
 
-```{r, function to plot KM curves with ggplot, include = FALSE}
+```{r, functions, include = FALSE}
 #function to plot KM_curves with ggplot (use when it's hard to read ggsurvplot output)
+#takes survfit object, data set to work with, and optional x-axis limits as input, outputs ggplot KM curves
 
-plot_surv <- function(survfit, data, ...) {
+plot_surv <- function(survfit, data, xlim = NULL) {
   library(ggfortify)
   library(directlabels)
   
   df <- fortify(survfit, data = data)
   
-  if (!("strata" %in% names(df))) {
-    ggplot(df, aes(x = time, y = surv)) + 
-    geom_line() + 
-    scale_y_continuous("Survival Probability") +
-    scale_x_continuous("Time")
-    ggtitle("Survival Curve")
-  }
+  if (missing(xlim)) {
+      
+    if (!("strata" %in% names(df))) {
+        ggplot(df, aes(x = time, y = surv)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probability") +
+          scale_x_continuous("Time")
+          ggtitle("Survival Curve")
+        }
+    if ("strata" %in% names(df)) {
+      ggplot(df, aes(x = time, y = surv, color = strata)) + 
+        geom_line() + 
+        scale_y_continuous("Survival Probabilities") +
+        scale_x_continuous("Time") + 
+        ggtitle("Survival Curves") + 
+        geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+    }
+  } else {
+      
+      if (!("strata" %in% names(df))) {
+        ggplot(df, aes(x = time, y = surv)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probability") +
+          scale_x_continuous("Time", limits = xlim)
+          ggtitle("Survival Curve")
+      }
 
-  if ("strata" %in% names(df)) {
-    ggplot(df, aes(x = time, y = surv, color = strata)) + 
-      geom_line() + 
-      scale_y_continuous("Survival Probabilities") +
-      scale_x_continuous("Time") + 
-      ggtitle("Survival Curves") + 
-      geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+      if ("strata" %in% names(df)) {
+        ggplot(df, aes(x = time, y = surv, color = strata)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probabilities") +
+          scale_x_continuous("Time", limits = xlim) + 
+          ggtitle("Survival Curves") + 
+          geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+      }
   }
 }
+
+#function to output logrank test and survival curves
+#takes in Surv object, data set, and categorical variable 
+# surv_analysis <- function(surv_object, group, data, xlim) {
+#   
+#   survdiff(surv_object ~ group, data)
+#   
+#   if (missing(xlim)) {
+#     KM <- survfit(surv_object ~ group, data)
+#     plot_surv(KM, data)
+#   } else {
+#     KM <- survfit(surv_object ~ group, data)
+#     plot_surv(KM, data, xlim)
+#   }
+# }
+# surv_analysis(surv_object, group = "category", data = out_english)
 
 ```
 

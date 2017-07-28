@@ -67,27 +67,47 @@ freq_terms <- function(vec, n = NULL) {
 
 
 #function to plot survival curves with ggplot
-plot_surv <- function(survfit, data, ...) {
+plot_surv <- function(survfit, data, xlim = NULL) {
   library(ggfortify)
   library(directlabels)
   
   df <- fortify(survfit, data = data)
   
-  if (!("strata" %in% names(df))) {
-    ggplot(df, aes(x = time, y = surv)) + 
-    geom_line() + 
-    scale_y_continuous("Survival Probability") +
-    scale_x_continuous("Time")
-    ggtitle("Survival Curve")
-  }
+  if (missing(xlim)) {
+      
+    if (!("strata" %in% names(df))) {
+        ggplot(df, aes(x = time, y = surv)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probability") +
+          scale_x_continuous("Time")
+          ggtitle("Survival Curve")
+        }
+    if ("strata" %in% names(df)) {
+      ggplot(df, aes(x = time, y = surv, color = strata)) + 
+        geom_line() + 
+        scale_y_continuous("Survival Probabilities") +
+        scale_x_continuous("Time") + 
+        ggtitle("Survival Curves") + 
+        geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+    }
+  } else {
+      
+      if (!("strata" %in% names(df))) {
+        ggplot(df, aes(x = time, y = surv)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probability") +
+          scale_x_continuous("Time", limits = xlim)
+          ggtitle("Survival Curve")
+      }
 
-  if ("strata" %in% names(df)) {
-    ggplot(df, aes(x = time, y = surv, color = strata)) + 
-      geom_line() + 
-      scale_y_continuous("Survival Probabilities") +
-      scale_x_continuous("Time") + 
-      ggtitle("Survival Curves") + 
-      geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+      if ("strata" %in% names(df)) {
+        ggplot(df, aes(x = time, y = surv, color = strata)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probabilities") +
+          scale_x_continuous("Time", limits = xlim) + 
+          ggtitle("Survival Curves") + 
+          geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+      }
   }
 }
 ```

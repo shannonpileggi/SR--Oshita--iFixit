@@ -10,11 +10,20 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(dplyr)
+library(ggfortify)
+library(directlabels)
+library(tm)
+library(qdap)
+```
+
+
+```{r}
+#imports data set, includes only questions in English, creates time_until_answer (in hrs)
 setup <- function() {
   dir <- file.path(getwd(),"data")
   out <- read.csv(file.path(dir, "answers_data.csv"))
-
-  library(dplyr)
+  
   out_english <- out %>% 
                   tbl_df() %>%
                   filter(langid == "en")
@@ -25,36 +34,85 @@ setup <- function() {
     out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
 }
 }
-
-
 ```
 
 ```{r}
-
-plot_surv <- function(survfit, data) {
-  
-  library(ggfortify)
-  library(directlabels)
+#function to plot survfit objects
+#input: survfit object, data, optional x-axis limits
+plot_surv <- function(survfit, data, xlim) {
   
   df <- fortify(survfit, data = data)
   
-  if (!("strata" %in% names(df))) {
-    ggplot(df, aes(x = time, y = surv)) + 
-    geom_line() + 
-    scale_y_continuous("Survival Probability") +
-    scale_x_continuous("Time")
-    ggtitle("Survival Curve")
-  }
+  if (missing(xlim)) {
+      
+    if (!("strata" %in% names(df))) {
+        ggplot(df, aes(x = time, y = surv)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probability") +
+          scale_x_continuous("Time")
+          ggtitle("Survival Curve")
+        }
+    if ("strata" %in% names(df)) {
+      ggplot(df, aes(x = time, y = surv, color = strata)) + 
+        geom_line() + 
+        scale_y_continuous("Survival Probabilities") +
+        scale_x_continuous("Time") + 
+        ggtitle("Survival Curves") + 
+        geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+    }
+  } else {
+      
+      if (!("strata" %in% names(df))) {
+        ggplot(df, aes(x = time, y = surv)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probability") +
+          scale_x_continuous("Time", limits = xlim)
+          ggtitle("Survival Curve")
+      }
 
-  if ("strata" %in% names(df)) {
-    ggplot(df, aes(x = time, y = surv, color = strata)) + 
-      geom_line() + 
-      scale_y_continuous("Survival Probabilities") +
-      scale_x_continuous("Time") + 
-      ggtitle("Survival Curves") + 
-      geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+      if ("strata" %in% names(df)) {
+        ggplot(df, aes(x = time, y = surv, color = strata)) + 
+          geom_line() + 
+          scale_y_continuous("Survival Probabilities") +
+          scale_x_continuous("Time", limits = xlim) + 
+          ggtitle("Survival Curves") + 
+          geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
+      }
   }
 }
 ```
+
+```{r}
+#function to clean corpus
+clean_corpus <- function(corpus){
+
+  corpus <- tm_map(corpus, stripWhitespace)
+  corpus <- tm_map(corpus, content_transformer(tolower))
+  corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need"))
+  return(corpus)
+}
+
+#returns a data frame of words and frequencies sorted by most to least frequent
+#input: character vector of words, n is optional (to output top n most frequent words)
+freq_terms <- function(vec, n) {
+  
+  source <- VectorSource(vec)
+  corpus <- VCorpus(source)
+  cleaned_corpus <- clean_corpus(corpus) 
+  dtm <- DocumentTermMatrix(cleaned_corpus)
+  m <- as.matrix(dtm) 
+  freq <- colSums(m)
+  freq <- sort(freq, decreasing = TRUE)
+  freq_df <- data.frame(word = names(freq), frequency = unname(freq))
+  
+  if (missing(n)) {
+    return(freq_df)
+  }
+  else {
+    return(freq_df[1:n,])
+  }
+}
+```
+
 
 
