@@ -131,6 +131,20 @@ knitr::opts_chunk$set(echo = TRUE)
 * prior effort: may include statements like "I did a Google search..." or "I've asked our IT...", found that this had no statisitcally signficant effect on the quality of answers an asker received
 * On average prior effort actually decreased judged answer quality and judged answerer effort 
 
+## "Design Lessons from the Fastest Q&A Site in the West" notes
+* found that the stack overflow's reputation system, and strict guidelines for factual/informational answeres (as opposed to discussion) contributed to it's fast answer times  
+    + reputation system = competitive energy, led to short bursts of energy for some, and long-term participation for others
+    + prioritized information over conversation 
+* different approach to design: and external meta site allowed for discussion users had about the site, allowed for developers to push out new versions of the site daily 
+* most answer activity takes place in the first hours 
+* how did SO get it's fast answer time?- motivating users to return and participate is more improtant than total number of users 
+* classes of questions that go unanswered/answered slowly
+    + questions about obscure technologies (cuz there are few knowledgable users)
+    + questions that are tedious to answer
+    + problems that can't be easily reproduced with small code fragment
+    + questions that don't have a clear best answer and invite discussion 
+* fast questions tend to cover widely used technologies 
+
 # Ideas:
 * consider more textual features:
     + percentage of lowercase/uppercase, if first letter in title is capitalized
