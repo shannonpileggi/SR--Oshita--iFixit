@@ -5,61 +5,62 @@ output:
   pdf_document: default
 ---
 
-```{r, Importing and setting up the data , include = FALSE}
+```{r, include = FALSE}
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 
 library(dplyr)
-out_english <- out %>% 
-                tbl_df() %>%
-                filter(langid == "en")
+x <- out %>% 
+  tbl_df() %>%
+  filter(langid == "en")
 
-out_english$time_until_answer <- (out_english$first_answer_date - out_english$post_date)/3600
-empty <- which(is.na(out_english$time_until_answer))
+x$time_until_answer <- (x$first_answer_date - x$post_date)/3600
+empty <- which(is.na(x$time_until_answer))
 for (i in empty) {
-  out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
+  x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
 }
 
 library(ggplot2)
 library(survival)
-library(survminer)
 library(epiR)
+library(survminer)
 
-proportion_answered <- sum(out_english$answered)/nrow(out_english)
+proportion_answered <- sum(x$answered)/nrow(x)
 ```
 
 #### About the data set:
 
-* `r nrow(out_english)` observations
+* `r nrow(x)` observations
 * `r round(proportion_answered * 100, digits = 2)` % of questions were answered 
 
 #### Exploring the response: time_until_answer
 
-```{r, time_until_answer, echo = FALSE}
-summary <- summary(out_english$time_until_answer)
+```{r, echo = FALSE}
+summary <- summary(x$time_until_answer)
 ```
 
-* **minimum:** `r round(min(out_english$time_until_answer), 2)` hrs
-* **maximum:** `r round(max(out_english$time_until_answer), 2)` hrs
-* **mean:** `r round(mean(out_english$time_until_answer), 2)` hrs
-* **median:** `r round(median(out_english$time_until_answer), 2)` hrs
+* **minimum:** `r round(min(x$time_until_answer), 2)` hrs
+* **maximum:** `r round(max(x$time_until_answer), 2)` hrs, `r round(max(x$time_until_answer)/24, 2)` days
+* **mean:** `r round(mean(x$time_until_answer), 2)` hrs, `r round(mean(x$time_until_answer)/24, 2)` days
+* **median:** `r round(median(x$time_until_answer), 2)` hrs
 * **first quartile:** `r round(summary[2], 2)`hrs
-* **third quartile:** `r round(summary[5], 2)` hrs
-* **IQR range:** `r round(summary[5] - summary[2], 2)` hrs
+* **third quartile:** `r round(summary[5], 2)` hrs, `r round(summary[5]/24, 2)` days
+* **IQR range:** `r round(summary[5] - summary[2], 2)` hrs, `r round((summary[5] - summary[2])/24, 2)` days
+* Within an hour, `r round((sum(x$time_until_answer <= 1)/nrow(x))*100,2)`% of the questions had been answered
+* Within 5 hours, `r round((sum(x$time_until_answer <= 5)/nrow(x))*100,2)`% of the questions had been answered
 
-```{r, distribution of response, echo = FALSE}
-ggplot(out_english, aes(x = time_until_answer)) + 
+```{r, echo = FALSE}
+ggplot(x, aes(x = time_until_answer)) + 
   geom_histogram(bins = 10) + 
   scale_x_continuous("Time (hours)") +
   ggtitle("Distribution of time_until_answer values")
 ```
 
-
 ### Survival Analysis Statistics
 
 ##### Survival Time Statistics based off of KM Estimator 
-```{r, survival analysis statistics, echo = FALSE}
-surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
+```{r, echo = FALSE}
+surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
 
 KM <- survfit(surv_object ~ 1, conf.type = "log-log")
 
@@ -69,7 +70,7 @@ round(s$table, 2)
 
 * **Min survival probability:** `r round(min(s$surv), 2)`
 * **Max survival probability:** `r round(max(s$surv), 2)`
-* **rmean survival time:** `r round(s$table[5], 2)` hrs
+* **rmean survival time:** `r round(s$table[5], 2)` hrs, `r round(s$table[5]/24, 2)` days
 * **SE of rmean:** `r round(s$table[6], 2)` hrs
 * **Median survival time:** `r round(s$table[7], 2)` hrs
 * **95% confidence interval for the median:** (`r round(s$table[8], 2)`,`r round(s$table[9], 2)`)
@@ -78,7 +79,7 @@ round(s$table, 2)
 ##### Percentiles
 
 ```{r, percentiles, echo = FALSE}
-quant <- quantile(KM, c(0.01, 0.10, 0.25, 0.30, 0.50, 0.75))
+quant <- quantile(KM, c(0.01, 0.10, 0.25, 0.30, 0.50, 0.64, 0.75))
 round(quant[[1]], 3)
 ```
 * **Interpretations:**
@@ -88,6 +89,7 @@ round(quant[[1]], 3)
     + By `r round(quant$quantile[4], 2)` hrs 30% of the questions have been answered
     + By `r round(quant$quantile[5], 2)` hrs 50% of the questions have been answered
     + 75th percentile doesn't exist (lowest survival probability: `r round(min(summary(KM)$surv),2)`)
+    + highest quantile that exists: `r round(quant$quantile[6], 2)` hrs 64% of the questions have been answered 
 
 
 ##### Survival Curves
@@ -95,8 +97,21 @@ round(quant[[1]], 3)
 * Survival curve shows that survival probability drops immediately after question is posted. Within a few hours after posting, survival probability levels out, hovers around 0.35 (never hits 0).
 
 ```{r, survival curves, echo = FALSE}
-ggsurvplot(KM, data = out_english, risk.table = TRUE, xlab = "Time (hours)", main = "KM Curve")
-ggsurvplot(KM, data = out_english, risk.table = FALSE, xlab = "Time (hours)", main = "KM Curve (zoomed in)", xlim = c(0,50), break.x.by = 10)
+ggsurvplot(KM, data = x, risk.table = TRUE, xlab = "Time (hours)", main = "KM Curve")
+ggsurvplot(KM, data = x, risk.table = FALSE, xlab = "Time (hours)", main = "KM Curve (zoomed in)", xlim = c(0,50), break.x.by = 10)
+```
+
+##### Reversing the survival curves
+
+* at 100 hrs, the probability that a question is answered starts to level out at around ~0.63
+
+```{r, echo = FALSE}
+reversed <- data.frame(time = s$time, prob_ans = 1-s$surv)
+ggplot(reversed, aes(x = time, y = prob_ans)) + 
+  geom_line() + 
+  scale_x_continuous("Time (hours)", limits = c(0,100)) + 
+  scale_y_continuous("Probability a question is answered") + 
+  ggtitle("Probability a question is answered vs. time (hours)")
 ```
 
 
@@ -132,7 +147,7 @@ ggplot(h.hat, aes(x = time, y = est)) +
 
 * Nelson-Aalen plot: rate of increase of H(t) starts to decrease/levels out around ~50 hours (indicates that instantaneous hazard is decreasing)
 
-```{r, cumulative hazard, echo = FALSE}
+```{r, echo = FALSE}
 #KM estimator of cumulative hazard 
 fit <- data.frame(surv = s$surv, time = s$time, n.event = s$n.event, n.risk = s$n.risk)
 fit$H.hat <- -log(fit$surv)

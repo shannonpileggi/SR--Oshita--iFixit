@@ -49,5 +49,8 @@ Date   | Hours | Time        | Description
 7/24/2017 | 3 | 6:00-9:00PM | Tried to create tag frequency variable, ran into problems, looked into creating own r package
 7/25/2017 | 2 | 9:00-11:00AM | Continued to work analyze tag variable
 7/25/2017 | 3 | 1:00-4:00PM | Wrote the code for tag variables, tried to fix Java problem
-7/27/2017 | 7 | 12:00-7:00 | Met with the Data Specialist to discuss data visualization ideas, finished working with tags, started with textual features of the data
->> __Total Hours: 133.08__
+7/27/2017 | 7 | 12:00-7:00PM | Met with the Data Specialist to discuss data visualization ideas, finished working with tags, started with textual features of the data
+7/28/2017 | 10.5 | 10:30-9:00PM | Continued with textual features
+7/29/2017 | 4 | 5:00-9:00PM | Finished working with text, started on the datetime variable 
+7/30/2017 | 7 | 2:30-9:30| Finished datetime, finished all exploratory analyses, read articles from meeting with Data Specialist 
+>> __Total Hours: 1...__

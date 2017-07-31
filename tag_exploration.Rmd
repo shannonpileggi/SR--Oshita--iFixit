@@ -7,19 +7,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, include = FALSE}
+```{r, setting up the data, include = FALSE}
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 
 library(dplyr)
-out_english <- out %>% 
-                tbl_df() %>%
-                filter(langid == "en")
+x <- out %>% 
+  tbl_df() %>%
+  filter(langid == "en")
 
-out_english$time_until_answer <- (out_english$first_answer_date - out_english$post_date)/3600
-empty <- which(is.na(out_english$time_until_answer))
+x$time_until_answer <- (x$first_answer_date - x$post_date)/3600
+empty <- which(is.na(x$time_until_answer))
 for (i in empty) {
-  out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
+  x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
 }
 
 library(stringr)
@@ -27,7 +27,6 @@ library(stringi)
 library(ggplot2)
 library(dplyr)
 library(rebus)
-#library(qdap)
 library(forcats)
 library(purrr)
 library(survival)
@@ -36,7 +35,7 @@ library(directlabels)
 library(htmltools); library(htmlwidgets)
 ```
 
-```{r, include = FALSE}
+```{r, functions, include = FALSE}
 plot_surv <- function(survfit, data, xlim) {
   
   df <- fortify(survfit, data = data)
@@ -47,14 +46,14 @@ plot_surv <- function(survfit, data, xlim) {
         ggplot(df, aes(x = time, y = surv)) + 
           geom_line() + 
           scale_y_continuous("Survival Probability") +
-          scale_x_continuous("Time")
+          scale_x_continuous("Time (hours)")
           ggtitle("Survival Curve")
         }
     if ("strata" %in% names(df)) {
       ggplot(df, aes(x = time, y = surv, color = strata)) + 
         geom_line() + 
         scale_y_continuous("Survival Probabilities") +
-        scale_x_continuous("Time") + 
+        scale_x_continuous("Time (hours)") + 
         ggtitle("Survival Curves") + 
         geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
     }
@@ -64,7 +63,7 @@ plot_surv <- function(survfit, data, xlim) {
         ggplot(df, aes(x = time, y = surv)) + 
           geom_line() + 
           scale_y_continuous("Survival Probability") +
-          scale_x_continuous("Time", limits = xlim)
+          scale_x_continuous("Time (hours)", limits = xlim)
           ggtitle("Survival Curve")
       }
 
@@ -72,7 +71,7 @@ plot_surv <- function(survfit, data, xlim) {
         ggplot(df, aes(x = time, y = surv, color = strata)) + 
           geom_line() + 
           scale_y_continuous("Survival Probabilities") +
-          scale_x_continuous("Time", limits = xlim) + 
+          scale_x_continuous("Time (hours)", limits = xlim) + 
           ggtitle("Survival Curves") + 
           geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
       }
@@ -83,7 +82,7 @@ plot_surv <- function(survfit, data, xlim) {
 
 ```{r, echo = FALSE}
 #matrix of tags (splitting up tags variable wherever there's a comma)
-split_tags <- str_split(out_english$tags, ", ", simplify = TRUE)
+split_tags <- str_split(x$tags, ", ", simplify = TRUE)
 
 #character vector of all tags (empty strings removed)
 tag_vector <- as.vector(split_tags)
@@ -92,7 +91,7 @@ tag_vector <- tag_vector[which(tag_vector != "")]
 unique_tags <- unique(tag_vector)
 num_unique <- length(unique_tags)/length(tag_vector)
 
-prop_notags <- sum(out_english$n_tags == 0)/nrow(out_english)
+prop_notags <- sum(x$n_tags == 0)/nrow(x)
 ```
 
 * create variable for incorrect tagging 
@@ -107,23 +106,23 @@ prop_notags <- sum(out_english$n_tags == 0)/nrow(out_english)
 
 ```{r, echo = FALSE}
 #average tag length: 
-out_english$avg_tag_length <- NA
-not_na <- which(out_english$tags != "")
+x$avg_tag_length <- NA
+not_na <- which(x$tags != "")
 for (i in not_na) {
   total_char <- sum(str_length(as.vector(split_tags[i,])))
   total_tags <- sum(as.vector(split_tags[i,]) != "")
-  out_english$avg_tag_length[i] <- total_char / total_tags
+  x$avg_tag_length[i] <- total_char / total_tags
 }
 
-ggplot(out_english, aes(x = avg_tag_length)) + 
+ggplot(x, aes(x = avg_tag_length)) + 
   geom_histogram() + 
   scale_x_continuous("Average tag length for each question (characters)") + 
   ggtitle("Distribution of average tag lengths")
 
-max_avg <- max(out_english$avg_tag_length, na.rm = TRUE)
-min_avg <- min(out_english$avg_tag_length, na.rm = TRUE)
-mean_length <- mean(out_english$avg_tag_length, na.rm = TRUE)
-median_length <- median(out_english$avg_tag_length, na.rm = TRUE)
+max_avg <- max(x$avg_tag_length, na.rm = TRUE)
+min_avg <- min(x$avg_tag_length, na.rm = TRUE)
+mean_length <- mean(x$avg_tag_length, na.rm = TRUE)
+median_length <- median(x$avg_tag_length, na.rm = TRUE)
 ```
 
 * longest average tag length: `r max_avg`
@@ -133,7 +132,7 @@ median_length <- median(out_english$avg_tag_length, na.rm = TRUE)
 
 ##### average tag length grouped by product category 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(category) %>%
   summarise(avg_length = mean(avg_tag_length, na.rm = TRUE), median_length = median(avg_tag_length, na.rm = TRUE), n = n(), avg_views = mean(daily_views), median_time = median(time_until_answer)) %>%
   arrange(avg_length)
@@ -141,14 +140,15 @@ out_english %>%
 
 ##### average tag length grouped by answered/unanswered questions
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(as.factor(answered)) %>%
   summarise(avg_length = mean(avg_tag_length, na.rm = TRUE))
 ```
 
-### frequency of tags (popularity)
-```{r, echo = FALSE}
 
+### frequency of tags (popularity)
+
+```{r, echo = FALSE}
 tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, ~mean(rowSums(split_tags == .) > 0)))
 
 tag_freq <- tag_freq %>%
@@ -168,10 +168,10 @@ ggplot(top50, aes(x = fct_reorder(tag, -percent), y = percent)) +
 
 ```{r, echo = FALSE}
 #creating average frequency/popular score variable
-out_english$tag1 <- split_tags[,1]
-out_english$tag2 <- split_tags[,2]
-out_english$tag3 <- split_tags[,3]
-out_english$tag4 <- split_tags[,4]
+x$tag1 <- split_tags[,1]
+x$tag2 <- split_tags[,2]
+x$tag3 <- split_tags[,3]
+x$tag4 <- split_tags[,4]
 
 assign_score <- function(data, variable) {
   score <- rep(0, nrow(data))
@@ -182,15 +182,15 @@ assign_score <- function(data, variable) {
   return(score)
 }
 
-out_english$score1 <- assign_score(out_english, "tag1")
-out_english$score2 <- assign_score(out_english, "tag2")
-out_english$score3 <- assign_score(out_english, "tag3")
-out_english$score4 <- assign_score(out_english, "tag4")
+x$score1 <- assign_score(x, "tag1")
+x$score2 <- assign_score(x, "tag2")
+x$score3 <- assign_score(x, "tag3")
+x$score4 <- assign_score(x, "tag4")
 
-out_english$avg_score <- (out_english$score1 + out_english$score2 + out_english$score3 + out_english$score4)/out_english$n_tags
-out_english$avg_score[is.nan(out_english$avg_score)] <- 0
+x$avg_score <- (x$score1 + x$score2 + x$score3 + x$score4)/x$n_tags
+x$avg_score[is.nan(x$avg_score)] <- 0
 
-ggplot(out_english, aes(x = avg_score)) + 
+ggplot(x, aes(x = avg_score)) + 
   geom_histogram() + 
   ggtitle("Distribution of average tag popularity/frequency scores")
 ```
@@ -198,14 +198,14 @@ ggplot(out_english, aes(x = avg_score)) +
 #### Determining threshold for popular/unpopular tags 
 
 ```{r, echo = FALSE}
-median_score <- median(out_english$avg_score)
-q_score <- quantile(out_english$avg_score, probs = seq(0, 1, by = 0.25))
-percentile80 <- quantile(out_english$avg_score, probs = 0.80)
+median_score <- median(x$avg_score)
+q_score <- quantile(x$avg_score, probs = seq(0, 1, by = 0.25))
+percentile80 <- quantile(x$avg_score, probs = 0.80)
 
-out_english$popular_tag <- FALSE
-out_english$popular_tag[out_english$avg_score >= percentile80] <- TRUE
+x$popular_tag <- FALSE
+x$popular_tag[x$avg_score >= percentile80] <- TRUE
 
-prop_popular <- sum(out_english$popular_tag)/sum(out_english$n_tags != 0)
+prop_popular <- sum(x$popular_tag)/sum(x$n_tags != 0)
 ```
 
 * median average popularity/frequency score: `r median_score` 
@@ -216,11 +216,11 @@ prop_popular <- sum(out_english$popular_tag)/sum(out_english$n_tags != 0)
 ##### Log-rank test
 
 ```{r, echo = FALSE}
-surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
-survdiff(surv_object ~ popular_tag, data = out_english)
+surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
+survdiff(surv_object ~ popular_tag, data = x)
 
-KM_popular <- survfit(surv_object ~ popular_tag, data = out_english)
-plot_surv(KM_popular, data = out_english)
+KM_popular <- survfit(surv_object ~ popular_tag, data = x)
+plot_surv(KM_popular, data = x)
 ```
 
 
@@ -236,9 +236,10 @@ plot_surv(KM_popular, data = out_english)
 * regex
 * look at probability a quesiton includes certain tag- chances it's answered (grab most frequent)
 * maybe ignore tags that are also in device names
+
 ```{r, echo = FALSE}
-out_english$correct_tag <- NA_character_
-out_english$correct_tag[out_english$n_tags != 0] <- TRUE
+x$correct_tag <- NA_character_
+x$correct_tag[x$n_tags != 0] <- TRUE
 
 #function to identify incorrect tagging, single tag taken as input
 incorrect_tagging <- function(tag) {
@@ -255,28 +256,28 @@ incorrect_tagging <- function(tag) {
 
 #function to assign t/f for incorrect tags
 assign_incorrect <- function(tag_column) {
-  new <- rep(NA, nrow(out_english))
-  for (i in which(out_english[[tag_column]] != "")) {
-    new[i] <- incorrect_tagging(out_english[[tag_column]][i])
+  new <- rep(NA, nrow(x))
+  for (i in which(x[[tag_column]] != "")) {
+    new[i] <- incorrect_tagging(x[[tag_column]][i])
   }
   return(new)
 }
 
-out_english$incorrect1 <- assign_incorrect("tag1")
-out_english$incorrect2 <- assign_incorrect("tag2")
-out_english$incorrect3 <- assign_incorrect("tag3")
-out_english$incorrect4 <- assign_incorrect("tag4")
+x$incorrect1 <- assign_incorrect("tag1")
+x$incorrect2 <- assign_incorrect("tag2")
+x$incorrect3 <- assign_incorrect("tag3")
+x$incorrect4 <- assign_incorrect("tag4")
 
-out_english$correctly_tag <- NA
-out_english$correctly_tag[out_english$n_tags != 0] <- TRUE
-notempty <- which(out_english$n_tags != 0)
+x$correctly_tag <- NA
+x$correctly_tag[x$n_tags != 0] <- TRUE
+notempty <- which(x$n_tags != 0)
 for (k in notempty) {
-  if (TRUE %in% c(out_english$incorrect1[k], out_english$incorrect2[k], out_english$incorrect3[k], out_english$incorrect4[k])) {
-    out_english$correctly_tag[k] <- FALSE
+  if (TRUE %in% c(x$incorrect1[k], x$incorrect2[k], x$incorrect3[k], x$incorrect4[k])) {
+    x$correctly_tag[k] <- FALSE
   }
 }
 
-prop_correct <- sum(out_english$correctly_tag, na.rm = TRUE)/sum(out_english$n_tags != 0)
+prop_correct <- sum(x$correctly_tag, na.rm = TRUE)/sum(x$n_tags != 0)
 ```
 
 * out of all of the questions that contain tags, `r round(prop_correct * 100, 2)`% of them were tagged correctly
@@ -284,12 +285,103 @@ prop_correct <- sum(out_english$correctly_tag, na.rm = TRUE)/sum(out_english$n_t
 ##### Log-rank test
 
 ```{r, echo = FALSE}
-surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
-survdiff(surv_object ~ correctly_tag, data = out_english)
+surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
+survdiff(surv_object ~ correctly_tag, data = x)
 
-KM_correct <- survfit(surv_object ~ correctly_tag, data = out_english)
-plot_surv(KM_correct, data = out_english)
+KM_correct <- survfit(surv_object ~ correctly_tag, data = x)
+plot_surv(KM_correct, data = x)
 ```
+
+### If a question contains top50 tags
+
+```{r, echo = FALSE}
+top50tag <- as.character(top50$tag)
+
+#function to check if tag in top50
+contain_tag <- function(tag, data) {
+  contain <- rep(NA, nrow(data))
+  for(i in which(data[[tag]] != "")) {
+    if (data[[tag]][i] %in% top50tag) {
+      contain[i] <- TRUE
+      } else {
+        contain[i] <- FALSE
+      }
+    }
+  return(contain)
+}
+
+containdf <- data.frame(c1 = contain_tag("tag1", data = x),
+                        c2 = contain_tag("tag2", data = x),
+                        c3 = contain_tag("tag3", data = x),
+                        c4 = contain_tag("tag4", data = x))
+
+x$contain_toptag <- rep(FALSE, nrow(x))
+for (j in which(!is.na(containdf$c1))) {
+  if (TRUE %in% containdf[j,]) {
+    x$contain_toptag[j] <- TRUE
+  } else {
+    x$contain_toptag[j] <- FALSE
+  }
+}
+
+prop_toptag <- sum(x$contain_toptag, na.rm = TRUE)/sum(!is.na(x$tags))
+```
+
+* `r round(prop_toptag*100, 2)`% of questions that contain tag, contain a tag that's in the top 50 tag list
+
+##### median time, prop answered and average daily views grouped by whether or not it contains a top50 tag
+```{r, echo = FALSE}
+x %>% 
+  group_by(contain_toptag) %>%
+  summarise(median_time = median(time_until_answer), avg_views = mean(daily_views), n = n(), prop_answered = sum(answered)/n)
+```
+
+##### log-rank test 
+```{r, echo = FALSE}
+survdiff(surv_object ~ contain_toptag, data = x)
+KM_toptag <- survfit(surv_object ~ contain_toptag, data = x)
+plot_surv(KM_toptag, data = x)
+```
+
+
+
+
+
+### maximum number of words in a tag 
+
+##### frequency table for number of words
+
+```{r, echo = FALSE}
+x$max_tagwords <- rep(NA, nrow(x))
+for (i in which(x$n_tags != 0)) {
+  tags <- as.vector(split_tags[i,])
+  x$max_tagwords[i] <- max(str_count(tags, pattern = "\\w+"))
+}
+
+#to find the mode
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+table(x$max_tagwords)
+```
+
+* max number of words in a tag: `r max(x$max_tagwords, na.rm = TRUE)`
+* median number of words: `r median(x$max_tagwords, na.rm = TRUE)`
+* mode number of words: `r Mode(subset(x$max_tagwords, !is.na(x$max_tagwords)))`
+
+##### Average number of max words in a tag grouped by answered/unanswered 
+
+```{r, echo = FALSE}
+x %>%
+  group_by(answered) %>%
+  summarise(median_words = median(max_tagwords, na.rm = TRUE))
+```
+
+
+
+
 
 
 

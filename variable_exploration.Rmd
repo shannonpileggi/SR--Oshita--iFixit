@@ -10,24 +10,23 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, Importing and setting up the data , include = FALSE}
+```{r, include = FALSE}
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 
 library(dplyr)
-out_english <- out %>% 
-                tbl_df() %>%
-                filter(langid == "en")
+x <- out %>% 
+  tbl_df() %>%
+  filter(langid == "en")
 
-out_english$time_until_answer <- (out_english$first_answer_date - out_english$post_date)/3600
-empty <- which(is.na(out_english$time_until_answer))
+x$time_until_answer <- (x$first_answer_date - x$post_date)/3600
+empty <- which(is.na(x$time_until_answer))
 for (i in empty) {
-  out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
+  x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
 }
 
 library(ggplot2)
 library(survival)
-library(survminer)
 library(epiR)
 library(stringr)
 library(rebus)
@@ -50,14 +49,14 @@ plot_surv <- function(survfit, data, xlim = NULL) {
         ggplot(df, aes(x = time, y = surv)) + 
           geom_line() + 
           scale_y_continuous("Survival Probability") +
-          scale_x_continuous("Time")
+          scale_x_continuous("Time (hours)")
           ggtitle("Survival Curve")
         }
     if ("strata" %in% names(df)) {
       ggplot(df, aes(x = time, y = surv, color = strata)) + 
         geom_line() + 
         scale_y_continuous("Survival Probabilities") +
-        scale_x_continuous("Time") + 
+        scale_x_continuous("Time (hours)") + 
         ggtitle("Survival Curves") + 
         geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
     }
@@ -67,7 +66,7 @@ plot_surv <- function(survfit, data, xlim = NULL) {
         ggplot(df, aes(x = time, y = surv)) + 
           geom_line() + 
           scale_y_continuous("Survival Probability") +
-          scale_x_continuous("Time", limits = xlim)
+          scale_x_continuous("Time (hours)", limits = xlim)
           ggtitle("Survival Curve")
       }
 
@@ -75,51 +74,33 @@ plot_surv <- function(survfit, data, xlim = NULL) {
         ggplot(df, aes(x = time, y = surv, color = strata)) + 
           geom_line() + 
           scale_y_continuous("Survival Probabilities") +
-          scale_x_continuous("Time", limits = xlim) + 
+          scale_x_continuous("Time (hours)", limits = xlim) + 
           ggtitle("Survival Curves") + 
           geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
       }
   }
 }
 
-#function to output logrank test and survival curves
-#takes in Surv object, data set, and categorical variable 
-# surv_analysis <- function(surv_object, group, data, xlim) {
-#   
-#   survdiff(surv_object ~ group, data)
-#   
-#   if (missing(xlim)) {
-#     KM <- survfit(surv_object ~ group, data)
-#     plot_surv(KM, data)
-#   } else {
-#     KM <- survfit(surv_object ~ group, data)
-#     plot_surv(KM, data, xlim)
-#   }
-# }
-# surv_analysis(surv_object, group = "category", data = out_english)
-
 ```
-
 
 ### Category
 
 ##### number of questions within each category
 
-```{r, category1, echo = FALSE}
-categories <- out_english %>%
-                group_by(category) %>%
-                summarise(n = n()) %>%
-                arrange(desc(n))
-categories
+```{r, echo = FALSE}
+x %>%
+  group_by(category) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
 ```
 
 ##### median/average time by category
 
-```{r, category2, echo = FALSE}
-sorted <- out_english %>% 
-            group_by(category) %>%
-            summarise(n = n(), avg_time = mean(time_until_answer), median_time = median(time_until_answer)) %>%
-            arrange(median_time)
+```{r, echo = FALSE}
+sorted <- x %>% 
+  group_by(category) %>%
+  summarise(n = n(), avg_time = mean(time_until_answer), median_time = median(time_until_answer), median_views = median(daily_views)) %>%
+  arrange(median_time)
 sorted
 ```
 
@@ -128,27 +109,34 @@ sorted
 
 ##### log-rank test
 
-```{r, category3, echo = FALSE}
+```{r, echo = FALSE}
+surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
 
-surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
-
-survdiff(surv_object~category, data = out_english)
+survdiff(surv_object~category, data = x)
+KM_category <- survfit(surv_object~category, data = x)
+plot_surv(KM_category, data = x)
+```
+##### zoomed in 
+```{r, echo = FALSE}
+plot_surv(KM_category, data = x, xlim = c(0,100))
 ```
 
-##### survival curves  
+
+
+##### Is there a difference between iphone and android users? 
 
 ```{r, echo = FALSE}
-KM_category <- survfit(surv_object~category, data = out_english)
-
-plot_surv(KM_category, data = out_english)
+x %>% 
+  filter(subcategory == c("iPhone", "Android Phone")) %>%
+  group_by(subcategory) %>%
+  summarise(median_time = median(time_until_answer), n = n(), avg_views = mean(daily_views))
 ```
-
 
 
 ### Whether or not the question was categorized correctly
 
-```{r, categorized correctly?, echo = FALSE}
-prop_incorrect <- sum(is.na(out_english$category))/nrow(out_english)
+```{r, echo = FALSE}
+prop_incorrect <- sum(is.na(x$category))/nrow(x)
 ```
 
 * `r round(prop_incorrect*100, 2)`% of questions were categorized incorrectly
@@ -156,100 +144,17 @@ prop_incorrect <- sum(is.na(out_english$category))/nrow(out_english)
 ##### log-rank test
 
 ```{r, echo = FALSE}
-out_english$categorized <- 0
-out_english$categorized[!is.na(out_english$category)] <- 1
+x$categorized <- 0
+x$categorized[!is.na(x$category)] <- 1
 
-survdiff(surv_object~categorized, data = out_english)
+survdiff(surv_object~categorized, data = x)
 ```
 
 ##### survival curves 
 
 ```{r, echo = FALSE}
-KM_correct <- survfit(surv_object ~ as.factor(categorized), data = out_english)
-plot_surv(KM_correct, data = out_english, xlim = c(0,100))
-```
-
-
-
-### Does the title contain a question mark
-
-```{r, question mark, echo = FALSE}
-out_english$contain_question <- str_detect(out_english$title, pattern = QUESTION)
-
-prop_contain <- sum(out_english$contain_question)/nrow(out_english)
-
-true <- out_english %>% 
-  filter(contain_question == T)
-prop_answered <- sum(true$answered)/nrow(true)
-```
-* `r round(prop_contain * 100, 2)`% of questions contain a question mark
-* `r round(prop_answered * 100, 2)`% of questions with a question mark were answered
-
-##### median time grouped by whether or not question contains: '?'
-
-```{r, echo = FALSE}
-out_english %>%
-  group_by(contain_question) %>%
-  summarise(median_time = median(time_until_answer), n = n()) %>%
-  arrange(median_time)
-```
-
-* indicates that questions with a '?' tend to have shorter answer times than questions without 
-
-##### proportion of questions with '?' and median time grouped by category
-
-```{r, echo = FALSE}
-c <- out_english %>% 
-    group_by(category) %>%
-    summarise(n = n(), proportion_with_question = sum(contain_question)/n, median_time = median(time_until_answer)) %>%
-    arrange(desc(proportion_with_question))
-c
-```
-
-* **categories with highest proportion of questions containing question marks:** `r as.character(c$category[1:5])`
-
-##### log-rank test
-
-```{r, echo = FALSE}
-survdiff(surv_object ~ contain_question, data = out_english)
-```
-
-##### survival curves
-
-```{r, echo = FALSE}
-KM_question <- survfit(surv_object ~ contain_question, data = out_english)
-plot_surv(KM_question, data = out_english)
-```
-
-
-### Searching for "tried" and "searched" in the text variable
-```{r, tried, echo = FALSE}
-out_english$tried <- str_detect(as.character(out_english$text), pattern = or("tried", "searched"))
-prop_tried <- sum(out_english$tried)/nrow(out_english)
-```
-
-* `r round(prop_tried * 100, 2)`% of questions contain either "tried" or "searched"
-
-##### median time/average daily views grouped by whether or not question contains "tried"/"searched"
-```{r, echo = FALSE}
-out_english %>%
-  group_by(tried) %>%
-  summarise(median_time = median(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
-  arrange(median_time)
-```
-
-##### log-rank test
-
-```{r, echo = FALSE}
-survdiff(surv_object ~ as.factor(tried), data = out_english)
-```
-
-##### survival curves
-
-```{r, echo = FALSE}
-KM_tried <- survfit(surv_object ~ as.factor(tried), data = out_english)
-
-plot_surv(KM_tried, data = out_english)
+KM_correct <- survfit(surv_object ~ as.factor(categorized), data = x)
+plot_surv(KM_correct, data = x, xlim = c(0,100))
 ```
 
 
@@ -258,16 +163,14 @@ plot_surv(KM_tried, data = out_english)
 ##### distribution of title lengths
 
 ```{r, title length, echo = FALSE}
-out_english$title_length <- str_length(out_english$title)
+x$title_length <- str_length(x$title)
 
-ggplot(out_english, aes(x = title_length)) + 
+ggplot(x, aes(x = title_length)) + 
   geom_histogram() + 
   scale_x_continuous("Length of Question Title") + 
   ggtitle("Distribution of Title Lengths")
-```
 
-```{r, echo = FALSE}
-sum_length <- summary(out_english$title_length)
+sum_length <- summary(x$title_length)
 ```
 
 * **min title length:** `r sum_length[1]` characters
@@ -278,15 +181,15 @@ sum_length <- summary(out_english$title_length)
 ##### average title length grouped by answered/unanswered questions
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(as.factor(answered)) %>%
-  summarise(avg_length = mean(title_length), n = n())
+  summarise(avg_titlelength = mean(title_length), median_titlelength = median(title_length), n = n())
 ```
 
 ##### average title length and median time grouped by category 
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(category) %>%
   summarise(n = n(), avg_length = mean(title_length), median_time = median(time_until_answer)) %>%
   arrange(desc(avg_length))
@@ -294,15 +197,15 @@ out_english %>%
 
 ### Text Length
 
-```{r, text length, echo = FALSE}
-out_english$text_length <- str_length(out_english$text)
+```{r, echo = FALSE}
+x$text_length <- str_length(x$text)
 
-ggplot(out_english, aes(x = text_length)) + 
+ggplot(x, aes(x = text_length)) + 
   geom_histogram() + 
   scale_x_continuous("Length of Text") + 
   ggtitle("Distribution of Text Lengths")
 
-sum_text <- summary(out_english$text_length)
+sum_text <- summary(x$text_length)
 ```
 
 * **min text length:** `r sum_text[1]` characters
@@ -315,7 +218,7 @@ sum_text <- summary(out_english$text_length)
 * may be evidence that questions with longer text length tend to get answered
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(as.factor(answered)) %>%
   summarise(avg_length = mean(text_length), median_length = median(text_length), median_time = median(time_until_answer), n = n())
 ```
@@ -323,23 +226,23 @@ out_english %>%
 ##### determining which categories have the longest text lengths
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(category) %>%
   summarise(avg_length = mean(text_length), median_length = median(text_length), n = n()) %>%
   arrange(desc(avg_length))
 ```
 
-### Device length
+### Device name length
 
 ```{r, device length, echo = FALSE}
-out_english$device_length <- str_length(out_english$device)
+x$device_length <- str_length(x$device)
 
-ggplot(out_english, aes(x = device_length)) + 
+ggplot(x, aes(x = device_length)) + 
   geom_histogram() + 
   scale_x_continuous("Length of Device Name") + 
   ggtitle("Distribution of Device Name Lengths")
 
-sum_device <- summary(out_english$device_length)
+sum_device <- summary(x$device_length)
 ```
 
 * **min length:** `r sum_device[1]`
@@ -350,7 +253,7 @@ sum_device <- summary(out_english$device_length)
 ##### average and median device length grouped by answered/unanswered questions
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(as.factor(answered)) %>%
   summarise(avg_length = mean(device_length), median_length = median(device_length), n = n())
 ```
@@ -358,25 +261,25 @@ out_english %>%
 ##### which categories have the longest device name lengths
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(category) %>%
-  summarise(avg_length = mean(device_length), median_length = median(device_length), n = n()) %>%
+  summarise(avg_length = mean(device_length), median_length = median(device_length), n = n(), median_time = median(time_until_answer)) %>%
   arrange(desc(avg_length))
 ```
 
 
 ### n_tags
 
-* n_tags included in questions: `r unique(out_english$n_tags)`
-```{r, number tags, echo = FALSE}
-prop_notags <- sum(out_english$n_tags == 0)/nrow(out_english)
+* n_tags included in questions: `r unique(x$n_tags)`
+```{r, echo = FALSE}
+prop_notags <- sum(x$n_tags == 0)/nrow(x)
 ```
 * `r round(prop_notags * 100,2)`% of questions don't have any tags
 
 ##### proportion table for n_tags
 
 ```{r, echo = FALSE}
-round(prop.table(table(out_english$n_tags)), 3)
+round(prop.table(table(x$n_tags)), 3)
 ```
 
 ##### median time and proportion of questions answered grouped by n_tags
@@ -384,38 +287,33 @@ round(prop.table(table(out_english$n_tags)), 3)
 * questions with more tags tend to have faster answer times and are more likely to get answers
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(as.factor(n_tags)) %>%
-  summarise(n = n(), median_time = median(time_until_answer), proportion_answered = sum(answered)/n) %>%
+  summarise(n = n(), median_time = median(time_until_answer), proportion_answered = sum(answered)/n, median_views = median(daily_views)) %>%
   arrange(median_time)
 ```
 
 ##### log-rank test
 
 ```{r, echo = FALSE}
-survdiff(surv_object ~ as.factor(n_tags), data = out_english)
-```
-
-##### survival curves
-
-```{r, echo = FALSE}
-KM_tags <- survfit(surv_object~as.factor(n_tags), data = out_english)
-plot_surv(KM_tags, data = out_english)
+survdiff(surv_object ~ as.factor(n_tags), data = x)
+KM_tags <- survfit(surv_object~as.factor(n_tags), data = x)
+plot_surv(KM_tags, data = x)
 ```
 
 
 ### n_images
 
 ```{r, echo = FALSE}
-prop_hasimage <- sum(out_english$n_images != 0)/nrow(out_english)
+prop_hasimage <- sum(x$n_images != 0)/nrow(x)
 ```
 
 * `r round(prop_hasimage * 100, 2)`% of questions contain at least one image
 
 ##### frequency table for n_images
 
-```{r, number images, echo = FALSE}
-table(out_english$n_images)
+```{r, echo = FALSE}
+table(x$n_images)
 ```
 
 ##### median time and proportion answered grouped by whether or not question contains an image
@@ -423,33 +321,28 @@ table(out_english$n_images)
 * questions that include at least one image tend to have faster answer times
 
 ```{r, echo = FALSE}
-out_english$pic_included <- 0
-out_english$pic_included[out_english$n_images != 0] <- 1
+x$pic_included <- 0
+x$pic_included[x$n_images != 0] <- 1
 
-out_english %>%
+x %>%
   group_by(as.factor(pic_included)) %>%
-  summarise(median_time = median(time_until_answer), n = n(), proportion_answered = sum(answered)/n) %>%
+  summarise(median_time = median(time_until_answer), n = n(), proportion_answered = sum(answered)/n, median_views = median(daily_views)) %>%
   arrange(desc(proportion_answered))
 ```
 
 ##### log-rank test 
 
 ```{r, echo = FALSE}
-survdiff(surv_object ~ as.factor(pic_included), data = out_english)
-```
-
-##### survival curves
-
-```{r, echo = FALSE}
-KM_pic <- survfit(surv_object~as.factor(pic_included), data = out_english)
-plot_surv(KM_pic, data = out_english)
+survdiff(surv_object ~ as.factor(pic_included), data = x)
+KM_pic <- survfit(surv_object~as.factor(pic_included), data = x)
+plot_surv(KM_pic, data = x)
 ```
 
 
 ### new_user
 
 ```{r, echo = FALSE}
-prop_new <- sum(out_english$new_user)/nrow(out_english)
+prop_new <- sum(x$new_user)/nrow(x)
 ```
 
 * `r round(prop_new * 100, 2)`% of users asking a question were new
@@ -457,7 +350,7 @@ prop_new <- sum(out_english$new_user)/nrow(out_english)
 ##### median time and proportion answered grouped by whether or not new user
 
 ```{r, echo = FALSE}
-out_english %>% 
+x %>% 
   group_by(as.factor(new_user)) %>%
   summarise(median_time = median(time_until_answer), n = n(), proportion_answered = sum(answered)/n) %>%
   arrange(desc(proportion_answered))
@@ -466,54 +359,124 @@ out_english %>%
 ##### log-rank test
 
 ```{r, echo = FALSE}
-survdiff(surv_object ~ as.factor(new_user), data = out_english)
+survdiff(surv_object ~ as.factor(new_user), data = x)
+KM_new <- survfit(surv_object~as.factor(new_user), data = x)
+plot_surv(KM_new, data = x)
 ```
-
-##### survival curves
-
-```{r, echo = FALSE}
-KM_new <- survfit(surv_object~as.factor(new_user), data = out_english)
-plot_surv(KM_new, data = out_english)
-```
-
 
 ### daily_views
 
-```{r, echo = FALSE}
-ggplot(out_english, aes(x = daily_views)) + 
-  geom_histogram() + 
-  scale_x_continuous("Average daily views for a question") + 
-  ggtitle("Distribution of Daily Views")
+* **max average daily views for a question:** `r max(x$daily_views)`
+* **min average daily views for a question:** `r min(x$daily_views)`
+* **mean:** `r round(mean(x$daily_views), 2)`
+* **median:** `r round(median(x$daily_views), 2)`
+
+
+### Looking at when the question was posted
+
+* unix time stamp: seconds since Jan 01 1970. (UTC)
+
+```{r}
+x$post_datetime <- as.POSIXct(x$post_date,origin="1970-01-01")
+x$post_d <- format(x$post_datetime, "%m/%d/%y")
+x$post_time <- format(x$post_datetime, " %H:%M:%S")
+x$post_weekday <- factor(weekdays(x$post_datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+x$post_hour <- as.numeric(format(x$post_datetime,"%H"))
+
+x$post_ampm <- "Night"
+x$post_ampm[x$post_hour >= 5 & x$post_hour < 12] <- "Morning"
+x$post_ampm[x$post_hour >= 12 & x$post_hour < 17] <- "Afternoon" #noon - 5pm 
+x$postampm[x$post_hour >= 17 & x$post_hour < 20] <- "Evening" #5pm - 8pm 
+
+posn_d <- position_dodge(width = 0.2)
+ggplot(x, aes(x = post_weekday, fill = as.factor(answered))) + 
+  geom_bar(position = posn_d, alpha = 0.6) + 
+  scale_y_continuous("Number of Questions") +
+  ggtitle("Distribution of questions posted over a week")
+
+library(gridExtra)
+
+ggplot(x, aes(x = post_hour)) + 
+  geom_bar() + 
+  scale_y_continuous("Number of Questions") + 
+  ggtitle("Distribution of all questions posted over a day") + 
+  scale_x_continuous("Hour of the Day", breaks = seq(0, 23, by = 1))
+
+ggplot(x, aes(x = post_hour, fill = as.factor(answered))) + 
+  geom_bar(position = posn_d, alpha = 0.6) + 
+  scale_y_continuous("Number of Questions") + 
+  ggtitle("Distribution of questions posted over a day, grouped by answered/unanswered") +
+  scale_x_continuous("Hour of the Day", breaks = seq(0, 23, by = 1))
 ```
 
-* **max average daily views for a question:** `r max(out_english$daily_views)`
-* **min average daily views for a question:** `r min(out_english$daily_views)`
-* **mean:** `r round(mean(out_english$daily_views), 2)`
-* **median:** `r round(median(out_english$daily_views), 2)`
-
-##### median daily view and median time grouped by category 
+##### Median time grouped by day of the week
 
 ```{r, echo = FALSE}
-out_english %>%
-  group_by(category) %>%
-  summarise(median_views = median(daily_views), n = n(), median_time = median(time_until_answer)) %>%
-  arrange(desc(median_views))
+x %>%
+  group_by(post_weekday) %>%
+  summarise(median_time = median(time_until_answer), avg_views = mean(daily_views), n = n(), prop_answered = sum(answered)/n) %>%
+  arrange(median_time)
 ```
 
-##### median daily views and time grouped by n_tags
+##### Median time/avg views/prop answered grouped by hour
 
 ```{r, echo = FALSE}
-out_english %>%
-  group_by(as.factor(n_tags)) %>%
-  summarise(median_views = median(daily_views), median_time = median(time_until_answer), n = n()) %>%
-  arrange(desc(median_views))
+x %>%
+  group_by(as.factor(post_hour)) %>%
+  summarise(n = n(), median_time = median(time_until_answer), avg_views = mean(daily_views), prop_answered = sum(answered)/n) %>%
+  arrange(median_time)
+  
 ```
 
-##### median daily views and time grouped by whether or not image included
+
+##### Median time grouped by morning/afternoon
 
 ```{r, echo = FALSE}
-out_english %>%
-  group_by(as.factor(pic_included)) %>%
-  summarise(median_views = median(daily_views), median_time = median(time_until_answer), n = n())
+x %>%
+  group_by(post_ampm) %>%
+  summarise(median_time = median(time_until_answer), avg_views = mean(daily_views), n = n(), prop_answered = sum(answered)/n)
 ```
+
+##### log-rank test + survival curves for weekday 
+
+```{r, echo = FALSE}
+survdiff(surv_object ~ post_weekday, data = x)
+KM_weekday <- survfit(surv_object ~ post_weekday, data = x)
+plot_surv(KM_weekday, data = x)
+```
+
+##### log-rank test and survival curves for ampm 
+
+```{r, echo = FALSE}
+survdiff(surv_object ~ post_ampm, data = x)
+KM_ampm <- survfit(surv_object ~ post_ampm, data = x)
+plot_surv(KM_ampm, data = x)
+```
+
+### Looking at when answers are posted 
+
+```{r, echo = FALSE}
+x$ans_datetime <- as.POSIXct(x$first_answer_date, origin="1970-01-01")
+x$ans_d <- format(x$ans_datetime, "%m/%d/%y")
+x$ans_time <- format(x$ans_datetime, " %H:%M:%S")
+x$ans_weekday <- factor(weekdays(x$ans_datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+x$ans_hour <- as.numeric(format(x$ans_datetime,"%H"))
+
+ggplot(subset(x, !is.na(ans_weekday)), aes(x = ans_weekday)) + 
+  geom_bar() + 
+  ggtitle("Distribution of answers posted over a week")
+
+plot1 <- ggplot(x, aes(x = post_hour)) + 
+  geom_bar() + 
+  ggtitle("Distribution of questions posted over a day") +
+  scale_x_continuous("Hour of the Day", breaks = seq(0, 23, by = 1))
+
+plot2 <- ggplot(subset(x, !is.na(ans_weekday)), aes(x = ans_hour)) + 
+  geom_bar() + 
+  ggtitle("Distribution of answers posted over a day") + 
+  scale_x_continuous("Hour of the Day", breaks = seq(0, 23, by = 1))
+
+grid.arrange(plot1, plot2, nrow=2, ncol=1)
+```
+
 

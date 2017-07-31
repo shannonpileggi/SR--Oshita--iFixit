@@ -14,21 +14,19 @@ dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 
 library(dplyr)
-out_english <- out %>% 
-                tbl_df() %>%
-                filter(langid == "en")
+x <- out %>% 
+  tbl_df() %>%
+  filter(langid == "en")
 
-out_english$time_until_answer <- (out_english$first_answer_date - out_english$post_date)/3600
-empty <- which(is.na(out_english$time_until_answer))
+x$time_until_answer <- (x$first_answer_date - x$post_date)/3600
+empty <- which(is.na(x$time_until_answer))
 for (i in empty) {
-  out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
+  x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
 }
 
 library(stringr)
 library(rebus)
 library(survival) 
-library(survminer)
-library(tidyverse)
 ```
 
 ```{r, include = FALSE}
@@ -79,14 +77,14 @@ plot_surv <- function(survfit, data, xlim = NULL) {
         ggplot(df, aes(x = time, y = surv)) + 
           geom_line() + 
           scale_y_continuous("Survival Probability") +
-          scale_x_continuous("Time")
+          scale_x_continuous("Time (hours)")
           ggtitle("Survival Curve")
         }
     if ("strata" %in% names(df)) {
       ggplot(df, aes(x = time, y = surv, color = strata)) + 
         geom_line() + 
         scale_y_continuous("Survival Probabilities") +
-        scale_x_continuous("Time") + 
+        scale_x_continuous("Time (hours)") + 
         ggtitle("Survival Curves") + 
         geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
     }
@@ -96,7 +94,7 @@ plot_surv <- function(survfit, data, xlim = NULL) {
         ggplot(df, aes(x = time, y = surv)) + 
           geom_line() + 
           scale_y_continuous("Survival Probability") +
-          scale_x_continuous("Time", limits = xlim)
+          scale_x_continuous("Time (hours)", limits = xlim)
           ggtitle("Survival Curve")
       }
 
@@ -104,7 +102,7 @@ plot_surv <- function(survfit, data, xlim = NULL) {
         ggplot(df, aes(x = time, y = surv, color = strata)) + 
           geom_line() + 
           scale_y_continuous("Survival Probabilities") +
-          scale_x_continuous("Time", limits = xlim) + 
+          scale_x_continuous("Time (hours)", limits = xlim) + 
           ggtitle("Survival Curves") + 
           geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
       }
@@ -115,7 +113,7 @@ plot_surv <- function(survfit, data, xlim = NULL) {
 ### finding top10 and top50 most frequently used terms in titles
 
 ```{r, echo = FALSE}
-titles_freq <- freq_terms(out_english$title)
+titles_freq <- freq_terms(x$title)
 
 ggplot(titles_freq, aes(x = frequency)) + 
   geom_histogram() + 
@@ -127,7 +125,7 @@ ggplot(titles_freq, aes(x = frequency)) +
 top50 <- titles_freq[1:50,]
 top50$word <- factor(top50$word, levels = top50$word)
 
-ggplot(top50, aes(x = word, y = frequency/nrow(out_english))) + 
+ggplot(top50, aes(x = word, y = frequency/nrow(x))) + 
   geom_point() +
   scale_y_continuous("Percentage of times the word appears", labels = scales::percent) + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
@@ -138,8 +136,8 @@ ggplot(top50, aes(x = word, y = frequency/nrow(out_english))) +
 
 ```{r, echo = FALSE}
 top10 <- titles_freq[1:10,]
-out_english$contain_top10 <- str_detect(as.character(out_english$title), pattern = or1(names(top10)))
-prop_contain <- sum(out_english$contain_top10)/nrow(out_english)
+x$contain_top10 <- str_detect(as.character(x$title), pattern = or1(names(top10)))
+prop_contain <- sum(x$contain_top10)/nrow(x)
 ```
 
 * `r round(prop_contain * 100, 2)`% of questions contain at least 1 of the top 10 most frequent words in the title
@@ -151,7 +149,7 @@ top10
 ##### median time and average daily views grouped by whether or not question contains top10
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(contain_top10) %>%
   summarise(median_time = median(time_until_answer), 
             avg_daily = mean(daily_views), n = n()) %>%
@@ -163,26 +161,27 @@ out_english %>%
 ##### log-rank test
 
 ```{r, echo = FALSE}
-surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
-survdiff(surv_object~contain_top10, data = out_english)
+surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
+survdiff(surv_object~contain_top10, data = x)
 ```
 
 ```{r, echo = FALSE}
-surv_object <- Surv(out_english$time_until_answer, out_english$answered, type = "right")
-KM_top10 <- survfit(surv_object ~ contain_top10, data = out_english)
-plot_surv(KM_top10, data = out_english)
+surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
+KM_top10 <- survfit(surv_object ~ contain_top10, data = x)
+plot_surv(KM_top10, data = x)
 ```
 
 
 ### Most frequent words within answered and unanswered questions
 
 ```{r, echo = FALSE}
-answered <- out_english %>%
-              tbl_df() %>% 
-              filter(answered == 1)
-unanswered <- out_english %>%
-              tbl_df() %>% 
-              filter(answered == 0)
+answered <- x %>%
+  tbl_df() %>% 
+  filter(answered == 1)
+
+unanswered <- x %>%
+  tbl_df() %>% 
+  filter(answered == 0)
   
 terms_a <- freq_terms(answered$title)
 terms_a$prop_in_answered <- terms_a$frequency/nrow(terms_a)
@@ -261,9 +260,9 @@ freq_terms_a
 ### Summary statistics/survival analysis for whether or not questions contain frequent unanswered terms
 
 ```{r, echo = FALSE}
-out_english$contain_u <- str_detect(as.character(out_english$title), pattern = or1(freq_terms_u$word))
+x$contain_u <- str_detect(as.character(x$title), pattern = or1(freq_terms_u$word))
 
-prop_contain_u <- sum(out_english$contain_u)/nrow(out_english)
+prop_contain_u <- sum(x$contain_u)/nrow(x)
 ```
 
 * `r round(prop_contain_u * 100, 2)`% of questions contain at least one of the most frequent unanswered terms
@@ -271,7 +270,7 @@ prop_contain_u <- sum(out_english$contain_u)/nrow(out_english)
 ##### median answer time and average daily views grouped by whether or not question contains at least 1 uanswered term 
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(contain_u) %>%
   summarise(median_time = median(time_until_answer), n = n(), avg_views = mean(daily_views)) %>%
   arrange(median_time)
@@ -280,21 +279,21 @@ out_english %>%
 ##### log-rank test
 
 ```{r, echo = FALSE}
-survdiff(surv_object ~ contain_u, data = out_english)
+survdiff(surv_object ~ contain_u, data = x)
 ```
 
 ```{r, echo = FALSE}
-KM_u <- survfit(surv_object ~ contain_u, data = out_english) 
-plot_surv(KM_u, data = out_english)
+KM_u <- survfit(surv_object ~ contain_u, data = x) 
+plot_surv(KM_u, data = x)
 ```
 
 
 ### Summary statistics/survival analysis for whether or not questions contain frequent answered terms
 
 ```{r, echo = FALSE}
-out_english$contain_a <- str_detect(as.character(out_english$title), pattern = or1(freq_terms_a$word))
+x$contain_a <- str_detect(as.character(x$title), pattern = or1(freq_terms_a$word))
 
-prop_contain_a <- sum(out_english$contain_a)/nrow(out_english)
+prop_contain_a <- sum(x$contain_a)/nrow(x)
 ```
 
 * `r round(prop_contain_a * 100, 2)`% of questions contain at least one of the most frequent answered terms
@@ -302,7 +301,7 @@ prop_contain_a <- sum(out_english$contain_a)/nrow(out_english)
 ##### median answer time and average daily views grouped by whether or not question contains at least 1 answered term 
 
 ```{r, echo = FALSE}
-out_english %>%
+x %>%
   group_by(contain_a) %>%
   summarise(median_time = median(time_until_answer), n = n(), avg_views = mean(daily_views)) %>%
   arrange(median_time)
@@ -311,12 +310,12 @@ out_english %>%
 ##### log-rank test
 
 ```{r, echo = FALSE}
-survdiff(surv_object~contain_a, data = out_english)
+survdiff(surv_object~contain_a, data = x)
 ```
 
 ```{r, echo = FALSE}
-KM_a <- survfit(surv_object ~ contain_a, data = out_english)
-plot_surv(KM_a, data = out_english)
+KM_a <- survfit(surv_object ~ contain_a, data = x)
+plot_surv(KM_a, data = x)
 ```
 
 
@@ -325,9 +324,9 @@ plot_surv(KM_a, data = out_english)
 unanswered_devices <- freq_terms_u %>%
                         filter(word %in% c("camera", "sound", "tablet", "light", "wifi", "speaker", "sound"))
 
-out_english$contain_u_dev <- str_detect(as.character(out_english$title), pattern = or1(unanswered_devices$word))
+x$contain_u_dev <- str_detect(as.character(x$title), pattern = or1(unanswered_devices$word))
 
-prop_contain_u_dev <- sum(out_english$contain_u_dev)/nrow(out_english)
+prop_contain_u_dev <- sum(x$contain_u_dev)/nrow(x)
 ```
 
 * `r round(prop_contain_u_dev*100, 2)`% of titles contain at least 1 unanswered device terms 
@@ -335,10 +334,10 @@ prop_contain_u_dev <- sum(out_english$contain_u_dev)/nrow(out_english)
 ##### log-rank test
 
 ```{r, echo = FALSE}
-survdiff(surv_object ~ contain_u_dev, data = out_english)
+survdiff(surv_object ~ contain_u_dev, data = x)
 
-KM_u_dev <- survfit(surv_object ~ contain_u_dev, data = out_english)
-plot_surv(KM_u_dev, data = out_english)
+KM_u_dev <- survfit(surv_object ~ contain_u_dev, data = x)
+plot_surv(KM_u_dev, data = x)
 ```
 
 
@@ -348,8 +347,8 @@ plot_surv(KM_u_dev, data = out_english)
 answered_devices <- freq_terms_a %>%
                       filter(word %in% c("screen", "iphone", "phone", "battery", "button", "display", "macbook", "lcd", "board", "keyboard", "laptop", "home", "pro", "drive"))
 
-out_english$contain_dev_a <- str_detect(as.character(out_english$title), pattern = or1(answered_devices$word))
-prop_contain_a_dev <- sum(out_english$contain_dev_a)/nrow(out_english)
+x$contain_dev_a <- str_detect(as.character(x$title), pattern = or1(answered_devices$word))
+prop_contain_a_dev <- sum(x$contain_dev_a)/nrow(x)
 ```
 
 * `r round(prop_contain_a_dev*100, 2)`% of titles contain at least 1 answered device term
@@ -357,8 +356,8 @@ prop_contain_a_dev <- sum(out_english$contain_dev_a)/nrow(out_english)
 ##### log-rank test
 
 ```{r, echo = FALSE}
-survdiff(surv_object ~ contain_dev_a, data = out_english)
+survdiff(surv_object ~ contain_dev_a, data = x)
 
-KM_dev_a <- survfit(surv_object ~ contain_dev_a, data = out_english)
-plot_surv(KM_dev_a, data = out_english)
+KM_dev_a <- survfit(surv_object ~ contain_dev_a, data = x)
+plot_surv(KM_dev_a, data = x)
 ```
