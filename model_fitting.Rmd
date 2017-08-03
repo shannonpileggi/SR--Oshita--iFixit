@@ -1,0 +1,340 @@
+---
+title: "Model Fitting"
+author: "Lisa Oshita"
+date: "8/1/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+dir <- file.path(getwd(),"data")
+out <- read.csv(file.path(dir, "answers_data.csv"))
+
+library(dplyr)
+x <- out %>% 
+  tbl_df() %>%
+  filter(langid == "en")
+
+x$time_until_answer <- (x$first_answer_date - x$post_date)/3600
+empty <- which(is.na(x$time_until_answer))
+for (i in empty) {
+  x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
+}
+
+library(stringr)
+library(rebus)
+library(survival) 
+```
+
+```{r, include = FALSE}
+#function to get AIC statistics
+get_aic <- function(cr_obj, num_parameters, data) {
+  aic <- (-2*cr_obj$loglik[2]) + (2*num_parameters)
+  return(aic)
+}
+
+#function to calculate r-square adjusted
+get_r2adj <- function(cr_obj)
+```
+
+
+```{r, include = FALSE}
+#changing NA's in category to other
+x$category <- as.character(x$category)
+x$category[is.na(x$category)] <- "Other"
+x$category <- as.factor(x$category)
+
+#pic included
+x$pic_included <- 0
+x$pic_included[x$n_images != 0] <- 1
+
+#text_length
+x$text_length <- str_length(x$text)
+
+#title length
+x$title_length <- str_length(x$title)
+
+#device name length
+x$device_length <- str_length(x$device)
+
+#posting times
+x$post_datetime <- as.POSIXct(x$post_date,origin="1970-01-01")
+x$post_d <- format(x$post_datetime, "%m/%d/%y")
+x$post_time <- format(x$post_datetime, " %H:%M:%S")
+x$post_weekday <- factor(weekdays(x$post_datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+x$post_hour <- as.numeric(format(x$post_datetime,"%H"))
+
+x$post_ampm <- "Night"
+x$post_ampm[x$post_hour >= 5 & x$post_hour < 12] <- "Morning"
+x$post_ampm[x$post_hour >= 12 & x$post_hour < 17] <- "Afternoon" #noon - 5pm 
+x$postampm[x$post_hour >= 17 & x$post_hour < 20] <- "Evening" #5pm - 8pm 
+
+#whether or not it was cateogorized correctly
+x$categorized <- 0
+x$categorized[!is.na(x$category)] <- 1
+
+#length of sentence till first punctuation mark 
+x$first_punct <- str_locate(x$text, pattern = "[.|?|!]")[,1]
+
+#if text contains punct
+x$contain_punct <- FALSE
+x$contain_punct[!is.na(x$first_punct)] <- TRUE
+
+#if the text ends in a punctuation
+x$end_punct <- str_detect(x$text, pattern = "[.|?|!]$")
+
+#if the title ends in a question mark
+x$contain_question <- str_detect(x$title, pattern = QUESTION %R% END)
+
+#leaving out if title begins with "wh" (should i check if text is significant tho)
+#if first letter of title is capitalized
+x$capital_title <- str_detect(x$title, pattern = "^[[:upper:]]")
+
+#if first letter of text is capitalized
+x$capital_text <- str_detect(x$text, pattern = "^[[:upper:]]")
+
+#if text is in all lower case
+x$removed <- str_replace_all(x$text, " ", "")
+x$removed <- str_replace_all(x$removed, "[[:punct:]]|[[:digit:]]", "")
+
+x$all_lower <- str_detect(x$removed, pattern = "^[[:lower:]]+$")
+x <- x[,-which(names(x) == "removed")]
+
+#prior effort
+x$prior_effort <- str_detect(str_to_lower(x$text), pattern = or("tried", "searched", "researched", "tested", "replaced", "used", "checked", "investigated", "considered", "measured", "attempted", "inspected", "fitted"))
+
+#gratitude 
+x$gratitude <- str_detect(str_to_lower(x$text), pattern = or("please", "thank you", "thanks", "thankful", "appreciate", "appreciated", "grateful"))
+
+#greeting
+x$greeting <- str_detect(str_to_lower(x$text), pattern = START %R% or("hey", "hello", "greetings", "hi"))
+
+#update?
+x$update <- str_detect(x$text, pattern = "===")
+
+#tags
+#indicator variable for tags/no tags included
+x$tag_included <- 0
+x$tag_included[x$n_tags != 0] <- 1
+
+#matrix of tags (splitting up tags variable wherever there's a comma)
+split_tags <- str_split(x$tags, ", ", simplify = TRUE)
+
+#character vector of all tags (empty strings removed)
+tag_vector <- as.vector(split_tags)
+tag_vector <- tag_vector[which(tag_vector != "")]
+
+unique_tags <- unique(tag_vector)
+
+#average tag length
+x$avg_tag_length <- NA
+not_na <- which(x$tags != "")
+for (i in not_na) {
+  total_char <- sum(str_length(as.vector(split_tags[i,])))
+  total_tags <- sum(as.vector(split_tags[i,]) != "")
+  x$avg_tag_length[i] <- total_char / total_tags
+}
+
+x$max_tagwords <- rep(0, nrow(x))
+for (i in which(x$n_tags != 0)) {
+  tags <- as.vector(split_tags[i,])
+  x$max_tagwords[i] <- max(str_count(tags, pattern = "\\w+"))
+}
+
+#frequency of tags
+tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, ~mean(rowSums(split_tags == .) > 0)))
+
+tag_freq <- tag_freq %>%
+              arrange(desc(percent))
+
+x$tag1 <- split_tags[,1]
+x$tag2 <- split_tags[,2]
+x$tag3 <- split_tags[,3]
+x$tag4 <- split_tags[,4]
+
+assign_score <- function(data, variable) {
+  score <- rep(0, nrow(data))
+  notempty <- which(data[[variable]] != "")
+  for (i in notempty) {
+    score[i] <- tag_freq$percent[which(tag_freq$tag == data[[variable]][i])]
+  }
+  return(score)
+}
+
+x$score1 <- assign_score(x, "tag1")
+x$score2 <- assign_score(x, "tag2")
+x$score3 <- assign_score(x, "tag3")
+x$score4 <- assign_score(x, "tag4")
+
+x$avg_score <- (x$score1 + x$score2 + x$score3 + x$score4)/x$n_tags
+x$avg_score[is.nan(x$avg_score)] <- 0
+
+percentile80 <- quantile(x$avg_score, probs = 0.80)
+
+x$frequent_tag <- FALSE
+x$frequent_tag[x$avg_score >= percentile80] <- TRUE
+
+top50tag <- as.character(top50$tag)
+
+#function to check if tag in top50
+contain_tag <- function(tag, data) {
+  contain <- rep(NA, nrow(data))
+  for(i in which(data[[tag]] != "")) {
+    if (data[[tag]][i] %in% top50tag) {
+      contain[i] <- TRUE
+      } else {
+        contain[i] <- FALSE
+      }
+    }
+  return(contain)
+}
+
+containdf <- data.frame(c1 = contain_tag("tag1", data = x),
+                        c2 = contain_tag("tag2", data = x),
+                        c3 = contain_tag("tag3", data = x),
+                        c4 = contain_tag("tag4", data = x))
+
+x$contain_toptag <- rep(FALSE, nrow(x))
+for (j in which(!is.na(containdf$c1))) {
+  if (TRUE %in% containdf[j,]) {
+    x$contain_toptag[j] <- TRUE
+  } else {
+    x$contain_toptag[j] <- FALSE
+  }
+}
+
+#frequent terms in unanswered/answered questions
+answered <- x %>%
+  tbl_df() %>% 
+  filter(answered == 1)
+
+unanswered <- x %>%
+  tbl_df() %>% 
+  filter(answered == 0)
+  
+terms_a <- freq_terms(answered$title)
+terms_a$prop_in_answered <- terms_a$frequency/nrow(terms_a)
+colnames(terms_a)[2] <- "frequency_a"
+
+terms_u <- freq_terms(unanswered$title)
+terms_u$prop_in_unanswered <- terms_u$frequency/nrow(terms_u)
+colnames(terms_u)[2] <- "frequency_u"
+
+combined <- full_join(terms_a, terms_u, by = "word")
+combined$ratio <- combined$prop_in_answered / combined$prop_in_unanswered
+
+p_threshold <- 0.01
+ratio_threshold <- 1
+
+freq_terms_u <- combined %>%
+                  filter(prop_in_unanswered > p_threshold) %>%
+                  filter(ratio < ratio_threshold)
+freq_terms_a <- combined %>%
+                  filter(prop_in_answered > p_threshold) %>%
+                  filter(ratio > ratio_threshold)
+
+x$contain_u <- str_detect(as.character(x$title), pattern = or1(freq_terms_u$word))
+x$contain_a <- str_detect(as.character(x$title), pattern = or1(freq_terms_a$word))
+
+
+```
+
+```{r, echo = FALSE}
+cr1 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + as.factor(pic_included) + 
+               text_length + title_length + device_length + as.factor(new_user) + post_weekday + 
+               as.factor(post_hour) + category + as.factor(categorized) + first_punct + 
+               contain_punct + end_punct + contain_question + capital_text + all_lower + prior_effort + 
+               gratitude + greeting + update + avg_tag_length + max_tagwords + avg_score + frequent_tag + 
+               contain_toptag + contain_u + contain_a, data = x)
+summary(cr1)
+get_aic(cr1 , num_parameters = 70, data = x) #31604.12
+```
+
+
+
+```{r, echo = FALSE}
+#removed categorized, contain_punct, end_punct, capital_text, max_tagwords
+cr2 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + as.factor(pic_included) + 
+               text_length + title_length + device_length + as.factor(new_user) + post_weekday + 
+               as.factor(post_hour) + category + first_punct + 
+               contain_question + all_lower + prior_effort + 
+               gratitude + greeting + update + avg_tag_length + avg_score + frequent_tag + 
+               contain_toptag + contain_u + contain_a, data = x)
+summary(cr2)
+get_aic(cr2, 66, data = x) #31594.76
+ 70794.28
+```
+
+```{r, echo = FALSE}
+#removed n_tags (-4) and added tag_included (+1), took out average_tag length (-1)
+cr3 <- coxph(Surv(time_until_answer, answered)~as.factor(tag_included) + as.factor(pic_included) + 
+               text_length + title_length + device_length + as.factor(new_user) + post_weekday + 
+               as.factor(post_hour) + category + first_punct + 
+               contain_question + all_lower + prior_effort + 
+               gratitude + greeting + update + avg_score + frequent_tag + 
+               contain_toptag + contain_u + contain_a, data = x)
+summary(cr3)
+get_aic(cr3, 61, data = x) #70794.28
+
+#took out post_weekday (-6), added back in average tag length (+1), take out post_hour (-23)
+cr4 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + as.factor(pic_included) + 
+               text_length + title_length + device_length + as.factor(new_user) + 
+               category + first_punct + 
+               contain_question + all_lower + prior_effort + 
+               gratitude + greeting + update + avg_tag_length + avg_score + frequent_tag + 
+               contain_toptag + contain_u + contain_a, data = x)
+summary(cr4)
+get_aic(cr4, 37, data = x) #31594.91 cr2 = 31594.76
+
+#remove title and text length (-2) 
+cr5 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + as.factor(pic_included) + 
+               device_length + as.factor(new_user) + 
+               category + first_punct + 
+               contain_question + all_lower + prior_effort + 
+               gratitude + greeting + update + avg_tag_length + avg_score + frequent_tag + 
+               contain_toptag + contain_u + contain_a, data = x)
+summary(cr5)
+get_aic(cr5, 35, data = x) #31591.15
+
+#remove if pic included and gratitude 
+cr6 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + 
+               device_length + as.factor(new_user) + 
+               category + first_punct + 
+               contain_question + all_lower + prior_effort + 
+               greeting + update + avg_tag_length + avg_score + frequent_tag + 
+               contain_toptag + contain_u + contain_a, data = x)
+summary(cr6)
+get_aic(cr6, 33, data = x) #31589.07
+
+
+cr7 <- coxph(Surv(time_until_answer, answered)~ device_length + as.factor(new_user) + 
+               category + first_punct + 
+               contain_question + all_lower + prior_effort + 
+               greeting + update + avg_tag_length + avg_score + 
+               contain_u + contain_a, data = x)
+summary(cr7)
+get_aic(cr7, 27, data = x) #31580.82
+
+#remove prior effort
+cr8 <- coxph(Surv(time_until_answer, answered)~ device_length + as.factor(new_user) + 
+               category + first_punct + 
+               contain_question + all_lower + 
+               greeting + update + avg_tag_length + avg_score + 
+               contain_u + contain_a, data = x)
+summary(cr8)
+get_aic(cr8, 26, data = x) #31581.15 
+
+#add prior effort back 
+cr7 <- coxph(Surv(time_until_answer, answered)~ device_length + as.factor(new_user) + 
+               category + first_punct + 
+               contain_question + all_lower + prior_effort + 
+               greeting + update + avg_score + 
+               contain_u + contain_a, data = x)
+summary(cr7)
+get_aic(cr7, 27, data = x) #31,580.82 70,819.65
+
+```
+

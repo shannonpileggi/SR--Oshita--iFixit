@@ -76,6 +76,16 @@ plot_surv <- function(survfit, data, xlim) {
       }
   }
 }
+
+#function that prints out summary stats grouped by that variable 
+sum_stats <- function(variable, data) {
+  tbl <- x %>%
+    group_by(data[[variable]]) %>%
+    summarise(n = n(), median_time = median(time_until_answer), median_views = median(daily_views), prop_answered = sum(answered)/n) %>%
+    arrange(median_time)
+  names(tbl)[1] <- variable
+  return(tbl)
+}
 ```
 
 
@@ -85,8 +95,10 @@ plot_surv <- function(survfit, data, xlim) {
     
 ### Length of sentence until first punctuation in text 
 
+* search for : ; , ? or limit the search to just end punctuation? 
+
 ```{r, echo = FALSE}
-x$first_punct <- str_locate(x$text, pattern = "[.|,|?|!|;|:]")[,1]
+x$first_punct <- str_locate(x$text, pattern = "[.|?|!]")[,1]
 
 max_pos <- max(x$first_punct, na.rm = TRUE)
 min_pos <- min(x$first_punct, na.rm = TRUE)
@@ -108,48 +120,39 @@ ggplot(x, aes(x = first_punct)) +
   scale_x_continuous("Position")
 ```
 
-##### Average and median first_punc grouped by answered
+##### Median first_punc grouped by answered
 
 ```{r, echo = FALSE}
 x %>%
   group_by(answered) %>%
-  summarise(avg_pos = mean(first_punct, na.rm = TRUE), median_pos = median(first_punct, na.rm = TRUE), n = n())
+  summarise(median_pos = median(first_punct, na.rm = TRUE), n = n())
 ```
 
-##### Average and median first_punct grouped by category
+##### Median first_punct and time grouped by category
 
 * notice that categories that have the shortest distance until first punctuation mark are also the categories who have the fastest time_until_answer values 
 
 ```{r, echo = FALSE}
 x %>%
   group_by(category) %>%
-  summarise(avg_pos = mean(first_punct, na.rm = TRUE), median_pos = median(first_punct, na.rm = TRUE), n = n()) %>%
-  arrange(median_pos)
+  summarise(median_pos = median(first_punct, na.rm = TRUE), n = n(), median_time = median(time_until_answer)) %>%
+  arrange(desc(median_pos))
 ```
 
 
 ### Whether or not the text contains punctuation 
 
-##### Median time_until_answer grouped by whether or not text contains punct
+##### summary stats grouped by contain_punct
 
 ```{r, echo = FALSE}
 x$contain_punct <- FALSE
 x$contain_punct[!is.na(x$first_punct)] <- TRUE
 
-x %>%
-  group_by(contain_punct) %>%
-  summarise(median_time = median(time_until_answer), n = n())
+sum_stats("contain_punct", data = x)
 ```
 
-##### Proportion of answered/unanswered questions that contain punct
 
-```{r, echo = FALSE}
-x %>%
-  group_by(answered) %>%
-  summarise(n = n(), prop_contain = sum(contain_punct)/n)
-```
-
-##### Proportion that contain punct grouped by categories
+##### Proportion that contain any punctuation grouped by categories
 
 ```{r}
 x %>% 
@@ -178,20 +181,10 @@ prop_end <- sum(x$end_punct)/nrow(x)
 
 * `r round(prop_end*100, 2)`% of question texts end with: . ! ?
 
-##### Median time_until_answer grouped by whether or not text ends with punct
+##### summary stats for end_punct
 
 ```{r, echo = FALSE}
-x %>% 
-  group_by(end_punct) %>%
-  summarise(median_time = median(time_until_answer), n = n())
-```
-
-##### Proportion of answered/unanswered questions that end with punct
-
-```{r, echo = FALSE}
-x %>% 
-  group_by(answered) %>%
-  summarise(n = n(), prop_end = sum(end_punct)/n)
+sum_stats("end_punct", data = x)
 ```
 
 ##### Proportion with end punct grouped by category
@@ -216,7 +209,7 @@ plot_surv(KM_end, data = x)
 ### Does the title contain a question mark
 
 ```{r, question mark, echo = FALSE}
-x$contain_question <- str_detect(x$title, pattern = QUESTION)
+x$contain_question <- str_detect(x$title, pattern = QUESTION %R% END)
 
 prop_contain <- sum(x$contain_question)/nrow(x)
 
@@ -227,13 +220,10 @@ prop_answered <- sum(true$answered)/nrow(true)
 * `r round(prop_contain * 100, 2)`% of questions contain a question mark
 * `r round(prop_answered * 100, 2)`% of questions with a question mark were answered
 
-##### median time grouped by whether or not title contains: '?'
+##### summary stats for contain_question
 
 ```{r, echo = FALSE}
-x %>%
-  group_by(contain_question) %>%
-  summarise(median_time = median(time_until_answer), n = n()) %>%
-  arrange(median_time)
+sum_stats("contain_question", data = x)
 ```
 
 * indicates that questions with a '?' tend to have shorter answer times than questions without 
@@ -265,14 +255,14 @@ prop_beginwh <- sum(x$begin_wh)/nrow(x)
 
 * `r round(prop_beginwh*100, 2)`% of titles begin with "wh"
 
-##### median time and proportion answered grouped by begin_wh
+##### summary stats for begin_wh
+
 ```{r, echo = FALSE}
-x %>%
-  group_by(begin_wh) %>%
-  summarise(median_time = median(time_until_answer), n = n(), prop_answered = sum(answered)/n)
+sum_stats("begin_wh", data = x)
 ```
 
 ##### log-rank test
+
 ```{r, echo = FALSE}
 survdiff(surv_object ~ begin_wh, data = x)
 KM_wh <- survfit(surv_object ~ begin_wh, data = x)
@@ -299,6 +289,7 @@ plot_surv(KM_titlecaps, data = x)
 ```
 
 ### If first letter of text is capitalized
+
 ```{r, echo = FALSE}
 x$capital_text <- str_detect(x$text, pattern = "^[[:upper:]]")
 
@@ -309,9 +300,7 @@ prop_captext <- sum(x$capital_text)/nrow(x)
 
 ##### Proportion in answered/unanswered questions with capital letter in text
 ```{r, echo = FALSE}
-x %>%
-  group_by(answered) %>%
-  summarise(n = n(), prop_capital = sum(capital_text)/n)
+sum_stats("capital_text", data = x)
 ```
 
 ##### Log-rank test
@@ -340,12 +329,10 @@ prop_allLower <- sum(x$all_lower)/nrow(x)
 * `r round(prop_allLower*100, 2)`% of questions contain text thats all lower case
 * this is such a small proportion of questions can we still consider it significant? 
 
-##### Proportion all lower case grouped by answered/unanswered 
+##### summary stats for all_lower
 
 ```{r, echo = FALSE}
-x %>%
-  group_by(answered) %>%
-  summarise(n = n(), prop_allLower = sum(all_lower)/n)
+sum_stats("all_lower", data = x)
 ```
 
 ##### log-rank test
@@ -356,8 +343,6 @@ KM_lower <- survfit(surv_object ~ all_lower, data = x)
 plot_surv(KM_lower, data = x)
 ```
 
-
-
 ### Searching for words that indicate prior effort in the text variable
 
 ```{r, tried, echo = FALSE}
@@ -367,20 +352,10 @@ prop_effort <- sum(x$prior_effort)/nrow(x)
 
 * `r round(prop_effort * 100, 2)`% of questions contain terms indicating prior effort
 
-##### median time/average daily views grouped by whether or not question contains "tried"/"searched"
-```{r, echo = FALSE}
-x %>%
-  group_by(prior_effort) %>%
-  summarise(median_time = median(time_until_answer), avg_daily = mean(daily_views), n = n()) %>%
-  arrange(median_time)
-```
-
-##### proportion within answered/unanswered questions that indicate prior effort
+##### summary stats for prior_effort
 
 ```{r, echo = FALSE}
-x %>%
-  group_by(answered) %>%
-  summarise(n = n(), prop_indicateeffort = sum(prior_effort)/n) 
+sum_stats("prior_effort", data = x)
 ```
 
 ##### log-rank test
@@ -402,21 +377,20 @@ prop_thanks <- sum(x$gratitude)/nrow(x)
 
 * `r round(prop_thanks*100,2)`% of questions contain words that express gratitude/manners
 
-##### Median time grouped by whether or not gratitude is expressed
+##### summary stats for gratitude
 
 ```{r, echo = FALSE}
-x %>%
-  group_by(gratitude) %>%
-  summarise(median_time = median(time_until_answer))
+sum_stats("gratitude", data = x)
 ```
 
-##### proportion in answered/unanswered questions that express gratitude
+##### New and continuing users and expressing gratitude
 
 ```{r, echo = FALSE}
 x %>% 
-  group_by(answered) %>%
+  group_by(new_user) %>%
   summarise(n = n(), prop_gratitude = sum(gratitude)/n)
 ```
+
 
 ##### log-rank test
 
@@ -427,7 +401,7 @@ plot_surv(KM_gratitude, data = x)
 ```
 
 
-### Does greeting people matter? (presence of "hi")
+### Does greeting people matter? (presence of ex: "hi")
 
 ```{r, echo = FALSE}
 x$greeting <- str_detect(str_to_lower(x$text), pattern = START %R% or("hey", "hello", "greetings", "hi"))
@@ -437,12 +411,62 @@ prop_greet <- sum(x$greeting)/nrow(x)
 
 * `r round(prop_greet*100, 2)`% of questions include greetings
 
+##### summary stats grouped by greeting
+
+```{r, echo = FALSE}
+sum_stats("greeting", data = x)
+```
+
+
+##### New and continuing users and greetings 
+```{r, echo = FALSE}
+x %>%
+  group_by(greeting) %>%
+  summarise(n = n(), prop_new = sum(new_user)/n)
+```
+
+
+
 ##### log-rank test
 
 ```{r, echo = FALSE}
 survdiff(surv_object ~ greeting, data = x)
 KM_greet <- survfit(surv_object ~ greeting, data = x)
 plot_surv(KM_greet, data = x)
+```
+
+### If the asker updated the question
+
+```{r, echo = FALSE}
+x$update <- str_detect(x$text, pattern = "===")
+
+prop_update <- sum(x$update)/nrow(x)
+```
+
+* `r round(prop_update*100,2)`% of users updated their question after posting it 
+
+##### summary statitics grouped by update
+
+```{r, echo = FALSE}
+sum_stats("update", data = x)
+```
+
+##### proportion of new/continuing users that updated their question
+
+```{r, echo = FALSE}
+x %>%
+  group_by(new_user) %>%
+  summarise(n = n(), prop_update = sum(update)/n)
+```
+
+
+
+##### log-rank test
+
+```{r, echo = FALSE}
+survdiff(surv_object ~ update, data = x)
+KM_update <- survfit(surv_object ~ update, data = x)
+plot_surv(KM_update, data = x)
 ```
 
 
@@ -485,5 +509,3 @@ prop_one <- sum(x$count == 1)/nrow(x)
 * mean count: `r mean_count`
 * median count: `r median_count`
 * `r round(prop_one*100, 2)`% of texts have only 1 sentence
-
-

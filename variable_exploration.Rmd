@@ -30,13 +30,14 @@ library(survival)
 library(epiR)
 library(stringr)
 library(rebus)
+library(qdap)
+library(tm)
 ```
 
 
 ```{r, functions, include = FALSE}
 #function to plot KM_curves with ggplot (use when it's hard to read ggsurvplot output)
 #takes survfit object, data set to work with, and optional x-axis limits as input, outputs ggplot KM curves
-
 plot_surv <- function(survfit, data, xlim = NULL) {
   library(ggfortify)
   library(directlabels)
@@ -81,31 +82,73 @@ plot_surv <- function(survfit, data, xlim = NULL) {
   }
 }
 
+#function that prints out summary stats grouped by that variable 
+sum_stats <- function(variable, data) {
+  tbl <- x %>%
+    group_by(data[[variable]]) %>%
+    summarise(n = n(), median_time = median(time_until_answer), median_views = median(daily_views), prop_answered = sum(answered)/n) %>%
+    arrange(median_time)
+  names(tbl)[1] <- variable
+  return(tbl)
+}
+
+#took out phone iphone and android 
+
+#function to clean corpus (stopwrds is an optional argument)
+clean_corpus <- function(corpus, stopwrds = NULL){
+  if (is.null(stopwrds)) {
+    corpus <- tm_map(corpus, stripWhitespace)
+    corpus <- tm_map(corpus, content_transformer(tolower))
+    corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
+    return(corpus)    
+  } else {
+    corpus <- tm_map(corpus, stripWhitespace)
+    corpus <- tm_map(corpus, content_transformer(tolower))
+    corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need", "fix", stopwrds))
+    return(corpus)
+  }
+}
+
+#function that takes in character vector and returns a data frame of words and frequencies sorted by most to least frequent, n and stopwrds are an optional arguments
+freq_terms <- function(vec, n = NULL, stopwrds = NULL) {
+  source <- VectorSource(vec)
+  corpus <- VCorpus(source)
+  
+  if (is.null(stopwrds)) {
+    cleaned_corpus <- clean_corpus(corpus) 
+    dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = weightTfIdf))
+    m <- as.matrix(dtm) 
+    freq <- colSums(m)
+    freq <- sort(freq, decreasing = TRUE)
+    freq_df <- data.frame(word = names(freq), frequency = unname(freq))    
+  } else {
+    cleaned_corpus <- clean_corpus(corpus, stopwrds) 
+    dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = weightTfIdf))
+    m <- as.matrix(dtm) 
+    freq <- colSums(m)
+    freq <- sort(freq, decreasing = TRUE)
+    freq_df <- data.frame(word = names(freq), frequency = unname(freq))
+  }
+  
+  if (missing(n)) {
+    return(freq_df)
+  }
+  else {
+    return(freq_df[1:n,])
+  }
+}
 ```
+
 
 ### Category
 
-##### number of questions within each category
+##### summary stats grouped by category, arranged by median time
+
+* NA's represent questions for devices that don't already exist on the website, treat as other?
 
 ```{r, echo = FALSE}
-x %>%
-  group_by(category) %>%
-  summarise(n = n()) %>%
-  arrange(desc(n))
+sum_stats("category", x)
 ```
-
-##### median/average time by category
-
-```{r, echo = FALSE}
-sorted <- x %>% 
-  group_by(category) %>%
-  summarise(n = n(), avg_time = mean(time_until_answer), median_time = median(time_until_answer), median_views = median(daily_views)) %>%
-  arrange(median_time)
-sorted
-```
-
-* **Categories with lowest median time_until_answer values:** `r as.character(sorted$category[1:5])`
-* **Category with longest median time_until_answer:** `r last(as.character(sorted$category))`
 
 ##### log-rank test
 
@@ -121,15 +164,48 @@ plot_surv(KM_category, data = x)
 plot_surv(KM_category, data = x, xlim = c(0,100))
 ```
 
+### Subcategories
 
+```{r, echo = FALSE}
+x %>%
+  group_by(subcategory) %>%
+  summarise(n = n(), proportion = n/nrow(x), prop_ans = sum(answered)/n, median_time = median(time_until_answer)) %>%
+  arrange(desc(n))
+```
 
-##### Is there a difference between iphone and android users? 
+##### Is there a difference between iPhone and Android users? 
 
 ```{r, echo = FALSE}
 x %>% 
   filter(subcategory == c("iPhone", "Android Phone")) %>%
   group_by(subcategory) %>%
-  summarise(median_time = median(time_until_answer), n = n(), avg_views = mean(daily_views))
+  summarise(n = n(), median_time = median(time_until_answer), median_views = median(daily_views), prop_ans = sum(answered)/n)
+```
+
+##### textmining on iPhone and Android Phone text
+
+##### Word cloud for most frequent terms among questions about iPhones
+
+```{r, echo = FALSE}
+android_data <- x %>%
+  filter(subcategory == "Android Phone")
+android_terms <- freq_terms(android_data$text, stopwrds = c("android", "phone"))
+
+iphone_data <- x %>%
+  filter(subcategory == "iPhone")
+iphone_terms <- freq_terms(iphone_data$text, stopwrds = c("iphone", "phone"))
+
+
+library(wordcloud)
+library(RColorBrewer)
+
+wordcloud(iphone_terms$word, iphone_terms$frequency, scale = c(3, 0.1), max.words = 100, colors = c("grey80", "darkgoldenrod1", "tomato"))
+```
+
+##### Word cloud for most frequent terms among questions involving Android Phones
+
+```{r, echo = FALSE}
+wordcloud(android_terms$word, android_terms$frequency, scale = c(3, 0.1), max.words = 100, colors = c("grey80", "darkgoldenrod1", "tomato"))
 ```
 
 
@@ -148,11 +224,6 @@ x$categorized <- 0
 x$categorized[!is.na(x$category)] <- 1
 
 survdiff(surv_object~categorized, data = x)
-```
-
-##### survival curves 
-
-```{r, echo = FALSE}
 KM_correct <- survfit(surv_object ~ as.factor(categorized), data = x)
 plot_surv(KM_correct, data = x, xlim = c(0,100))
 ```
@@ -167,23 +238,24 @@ x$title_length <- str_length(x$title)
 
 ggplot(x, aes(x = title_length)) + 
   geom_histogram() + 
-  scale_x_continuous("Length of Question Title") + 
+  scale_x_continuous("Length of Question Title", breaks = seq(0,100,10)) + 
   ggtitle("Distribution of Title Lengths")
-
-sum_length <- summary(x$title_length)
 ```
 
-* **min title length:** `r sum_length[1]` characters
-* **max title length:** `r sum_length[6]` characters
-* **mean title length:** `r sum_length[4]`
-* **median:** `r sum_length[3]`
+* **min title length:** `r min(x$title_length)` characters
+* **max title length:** `r max(x$title_length)` characters
+* **mean title length:** `r round(mean(x$title_length),2)`
+* **median:** `r median(x$title_length)`
 
 ##### average title length grouped by answered/unanswered questions
 
 ```{r, echo = FALSE}
 x %>%
   group_by(as.factor(answered)) %>%
-  summarise(avg_titlelength = mean(title_length), median_titlelength = median(title_length), n = n())
+  summarise(avg_length = mean(title_length), n = n())
+
+f <- x %>%
+  filter(is.na(category))
 ```
 
 ##### average title length and median time grouped by category 
@@ -204,14 +276,12 @@ ggplot(x, aes(x = text_length)) +
   geom_histogram() + 
   scale_x_continuous("Length of Text") + 
   ggtitle("Distribution of Text Lengths")
-
-sum_text <- summary(x$text_length)
 ```
 
-* **min text length:** `r sum_text[1]` characters
-* **max text length:** `r sum_text[6]` characters
-* **mean text length:** `r sum_text[4]`
-* **median:** `r sum_text[3]`
+* **min text length:** `r min(x$text_length)` characters
+* **max text length:** `r max(x$text_length)` characters
+* **mean text length:** `r round(mean(x$text_length),2)` characters
+* **median:** `r median(x$text_length)` characters
 
 ##### average/median text length and median time grouped by answered/unanswered questions
 
@@ -220,7 +290,7 @@ sum_text <- summary(x$text_length)
 ```{r, echo = FALSE}
 x %>%
   group_by(as.factor(answered)) %>%
-  summarise(avg_length = mean(text_length), median_length = median(text_length), median_time = median(time_until_answer), n = n())
+  summarise(median_length = median(text_length), n = n())
 ```
 
 ##### determining which categories have the longest text lengths
@@ -228,8 +298,8 @@ x %>%
 ```{r, echo = FALSE}
 x %>%
   group_by(category) %>%
-  summarise(avg_length = mean(text_length), median_length = median(text_length), n = n()) %>%
-  arrange(desc(avg_length))
+  summarise(median_length = median(text_length), n = n(), median_time = median(time_until_answer)) %>%
+  arrange(desc(median_length))
 ```
 
 ### Device name length
@@ -241,21 +311,19 @@ ggplot(x, aes(x = device_length)) +
   geom_histogram() + 
   scale_x_continuous("Length of Device Name") + 
   ggtitle("Distribution of Device Name Lengths")
-
-sum_device <- summary(x$device_length)
 ```
 
-* **min length:** `r sum_device[1]`
-* **max length:** `r sum_device[6]`
-* **mean length:** `r sum_device[4]`
-* **median length:** `r sum_device[3]`
+* **min length:** `r min(x$device_length)` characters
+* **max length:** `r max(x$device_length)` characters
+* **mean length:** `r round(mean(x$device_length),2)` characters
+* **median length:** `r median(x$device_length)` characters
 
 ##### average and median device length grouped by answered/unanswered questions
 
 ```{r, echo = FALSE}
 x %>%
   group_by(as.factor(answered)) %>%
-  summarise(avg_length = mean(device_length), median_length = median(device_length), n = n())
+  summarise(avg_length = mean(device_length), n = n())
 ```
 
 ##### which categories have the longest device name lengths
@@ -263,8 +331,8 @@ x %>%
 ```{r, echo = FALSE}
 x %>%
   group_by(category) %>%
-  summarise(avg_length = mean(device_length), median_length = median(device_length), n = n(), median_time = median(time_until_answer)) %>%
-  arrange(desc(avg_length))
+  summarise(avg_length = mean(device_length), n = n(), median_time = median(time_until_answer)) %>%
+  arrange(median_time)
 ```
 
 
@@ -274,7 +342,7 @@ x %>%
 ```{r, echo = FALSE}
 prop_notags <- sum(x$n_tags == 0)/nrow(x)
 ```
-* `r round(prop_notags * 100,2)`% of questions don't have any tags
+* `r round(prop_notags*100,2)`% of questions don't have any tags
 
 ##### proportion table for n_tags
 
@@ -287,10 +355,7 @@ round(prop.table(table(x$n_tags)), 3)
 * questions with more tags tend to have faster answer times and are more likely to get answers
 
 ```{r, echo = FALSE}
-x %>%
-  group_by(as.factor(n_tags)) %>%
-  summarise(n = n(), median_time = median(time_until_answer), proportion_answered = sum(answered)/n, median_views = median(daily_views)) %>%
-  arrange(median_time)
+sum_stats("n_tags", x)
 ```
 
 ##### log-rank test
@@ -324,10 +389,7 @@ table(x$n_images)
 x$pic_included <- 0
 x$pic_included[x$n_images != 0] <- 1
 
-x %>%
-  group_by(as.factor(pic_included)) %>%
-  summarise(median_time = median(time_until_answer), n = n(), proportion_answered = sum(answered)/n, median_views = median(daily_views)) %>%
-  arrange(desc(proportion_answered))
+sum_stats("pic_included", x)
 ```
 
 ##### log-rank test 
@@ -336,6 +398,7 @@ x %>%
 survdiff(surv_object ~ as.factor(pic_included), data = x)
 KM_pic <- survfit(surv_object~as.factor(pic_included), data = x)
 plot_surv(KM_pic, data = x)
+plot_surv(KM_pic, data = x, xlim = c(0,250))
 ```
 
 
@@ -350,11 +413,38 @@ prop_new <- sum(x$new_user)/nrow(x)
 ##### median time and proportion answered grouped by whether or not new user
 
 ```{r, echo = FALSE}
-x %>% 
-  group_by(as.factor(new_user)) %>%
-  summarise(median_time = median(time_until_answer), n = n(), proportion_answered = sum(answered)/n) %>%
-  arrange(desc(proportion_answered))
+sum_stats("new_user", x)
 ```
+
+##### More summary statistics grouped by new_user
+
+```{r, echo = FALSE}
+x %>%
+  group_by(new_user) %>%
+  summarise(n = n(), include_tag = sum(n_tags != 0)/n, include_pic = sum(n_images != 0)/n, mean_title = mean(title_length), mean_text = mean(text_length), mean_device = mean(device_length))
+```
+
+##### wordclouds for new users
+
+* to see if there's a difference in the topics of the questions that new/continuing users ask 
+
+```{r, echo = FALSE}
+new <- x %>%
+  filter(new_user == 1)
+
+new_freq <- freq_terms1(new$text)
+wordcloud(new_freq$word, new_freq$frequency, scale = c(3, 0.1), max.words = 100, colors = c("grey80", "darkgoldenrod1", "tomato"))
+```
+
+##### wordclouds for continuing users 
+
+```{r, echo = FALSE}
+continuing <- x %>%
+  filter(new_user == 0)
+cont_freq <- freq_terms1(continuing$text)
+wordcloud(cont_freq$word, cont_freq$frequency, scale = c(3, 0.1), max.words = 100, colors = c("grey80", "darkgoldenrod1", "tomato"))
+```
+
 
 ##### log-rank test
 
@@ -376,7 +466,7 @@ plot_surv(KM_new, data = x)
 
 * unix time stamp: seconds since Jan 01 1970. (UTC)
 
-```{r}
+```{r, echo = FALSE}
 x$post_datetime <- as.POSIXct(x$post_date,origin="1970-01-01")
 x$post_d <- format(x$post_datetime, "%m/%d/%y")
 x$post_time <- format(x$post_datetime, " %H:%M:%S")
@@ -394,8 +484,6 @@ ggplot(x, aes(x = post_weekday, fill = as.factor(answered))) +
   scale_y_continuous("Number of Questions") +
   ggtitle("Distribution of questions posted over a week")
 
-library(gridExtra)
-
 ggplot(x, aes(x = post_hour)) + 
   geom_bar() + 
   scale_y_continuous("Number of Questions") + 
@@ -412,29 +500,13 @@ ggplot(x, aes(x = post_hour, fill = as.factor(answered))) +
 ##### Median time grouped by day of the week
 
 ```{r, echo = FALSE}
-x %>%
-  group_by(post_weekday) %>%
-  summarise(median_time = median(time_until_answer), avg_views = mean(daily_views), n = n(), prop_answered = sum(answered)/n) %>%
-  arrange(median_time)
+sum_stats("post_weekday", x)
 ```
 
 ##### Median time/avg views/prop answered grouped by hour
 
 ```{r, echo = FALSE}
-x %>%
-  group_by(as.factor(post_hour)) %>%
-  summarise(n = n(), median_time = median(time_until_answer), avg_views = mean(daily_views), prop_answered = sum(answered)/n) %>%
-  arrange(median_time)
-  
-```
-
-
-##### Median time grouped by morning/afternoon
-
-```{r, echo = FALSE}
-x %>%
-  group_by(post_ampm) %>%
-  summarise(median_time = median(time_until_answer), avg_views = mean(daily_views), n = n(), prop_answered = sum(answered)/n)
+sum_stats("post_hour", x)
 ```
 
 ##### log-rank test + survival curves for weekday 
@@ -445,7 +517,16 @@ KM_weekday <- survfit(surv_object ~ post_weekday, data = x)
 plot_surv(KM_weekday, data = x)
 ```
 
-##### log-rank test and survival curves for ampm 
+##### log-rank test and survival curves for hour of the day
+
+```{r, echo = FALSE}
+survdiff(surv_object ~ as.factor(post_hour), data = x)
+KM_hour <- survfit(surv_object ~ as.factor(post_hour), data = x)
+plot_surv(KM_hour, data = x)
+```
+
+
+##### log-rank test and survival curves for ampm
 
 ```{r, echo = FALSE}
 survdiff(surv_object ~ post_ampm, data = x)
@@ -465,6 +546,8 @@ x$ans_hour <- as.numeric(format(x$ans_datetime,"%H"))
 ggplot(subset(x, !is.na(ans_weekday)), aes(x = ans_weekday)) + 
   geom_bar() + 
   ggtitle("Distribution of answers posted over a week")
+
+library(gridExtra)
 
 plot1 <- ggplot(x, aes(x = post_hour)) + 
   geom_bar() + 

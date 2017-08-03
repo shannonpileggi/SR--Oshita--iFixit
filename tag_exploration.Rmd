@@ -77,10 +77,19 @@ plot_surv <- function(survfit, data, xlim) {
       }
   }
 }
+
+sum_stats <- function(variable, data) {
+  tbl <- x %>%
+    group_by(data[[variable]]) %>%
+    summarise(n = n(), median_time = median(time_until_answer), median_views = median(daily_views), prop_answered = sum(answered)/n) %>%
+    arrange(median_time)
+  names(tbl)[1] <- variable
+  return(tbl)
+}
 ```
 
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 #matrix of tags (splitting up tags variable wherever there's a comma)
 split_tags <- str_split(x$tags, ", ", simplify = TRUE)
 
@@ -99,13 +108,9 @@ prop_notags <- sum(x$n_tags == 0)/nrow(x)
 * `r round(prop_notags*100, 2)`% of questions don't contain any tags
 * `r round(num_unique*100, 2)`% of tags are unique 
 
-### avg_tag_length
+### Average Tag Length
 
-* average length of tag for a question: total number of characters for all of a question's tags / number of tags the question has
-* think that tags that are more concise (fewer characters) will have faster answer times 
-
-```{r, echo = FALSE}
-#average tag length: 
+```{r, include = FALSE}
 x$avg_tag_length <- NA
 not_na <- which(x$tags != "")
 for (i in not_na) {
@@ -114,31 +119,37 @@ for (i in not_na) {
   x$avg_tag_length[i] <- total_char / total_tags
 }
 
-ggplot(x, aes(x = avg_tag_length)) + 
-  geom_histogram() + 
-  scale_x_continuous("Average tag length for each question (characters)") + 
-  ggtitle("Distribution of average tag lengths")
-
 max_avg <- max(x$avg_tag_length, na.rm = TRUE)
 min_avg <- min(x$avg_tag_length, na.rm = TRUE)
 mean_length <- mean(x$avg_tag_length, na.rm = TRUE)
 median_length <- median(x$avg_tag_length, na.rm = TRUE)
 ```
 
-* longest average tag length: `r max_avg`
-* shortest average tag length: `r min_avg`
-* mean average tag length: `r mean_length`
-* median average tag length: `r median_length`
+* average length of tag for a question: total number of characters for all of a question's tags / number of tags the question has
+* hypothesis: questions with longer average tag lengths will have slower answer times (tags that are concise and include only a word will have faster answer times)
+* **longest average tag length:** `r max_avg`
+* **shortest average tag length:** `r min_avg`
+* **mean average tag length:** `r mean_length`
+* **median average tag length:** `r median_length`
 
-##### average tag length grouped by product category 
+```{r, echo = FALSE}
+ggplot(x, aes(x = avg_tag_length)) + 
+  geom_histogram() + 
+  scale_x_continuous("Average tag length for each question (characters)") + 
+  ggtitle("Distribution of average tag lengths")
+```
+
+##### Average tag length grouped by category 
+
 ```{r, echo = FALSE}
 x %>%
   group_by(category) %>%
-  summarise(avg_length = mean(avg_tag_length, na.rm = TRUE), median_length = median(avg_tag_length, na.rm = TRUE), n = n(), avg_views = mean(daily_views), median_time = median(time_until_answer)) %>%
+  summarise(n = n(), median_views = median(daily_views), median_time = median(time_until_answer), avg_length = mean(avg_tag_length, na.rm = TRUE)) %>%
   arrange(avg_length)
 ```
 
-##### average tag length grouped by answered/unanswered questions
+##### Average tag length grouped by answered
+
 ```{r, echo = FALSE}
 x %>%
   group_by(as.factor(answered)) %>%
@@ -146,7 +157,56 @@ x %>%
 ```
 
 
-### frequency of tags (popularity)
+### Maximum number of words in a tag 
+
+* Another way to capture if the length of a tag is too long? 
+* Will show if a question contains a really long tag- indicates incorrect tagging 
+
+##### frequency table for number of words
+
+```{r, echo = FALSE}
+x$max_tagwords <- rep(0, nrow(x))
+for (i in which(x$n_tags != 0)) {
+  tags <- as.vector(split_tags[i,])
+  x$max_tagwords[i] <- max(str_count(tags, pattern = "\\w+"))
+}
+
+#to find the mode
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+table(x$max_tagwords)
+```
+
+* max number of words in a tag: `r max(x$max_tagwords, na.rm = TRUE)`
+* median number of words: `r median(x$max_tagwords, na.rm = TRUE)`
+* mode number of words: `r Mode(subset(x$max_tagwords, !is.na(x$max_tagwords)))`
+
+##### Average number of max words in a tag grouped by answered/unanswered 
+
+```{r, echo = FALSE}
+x %>%
+  group_by(answered) %>%
+  summarise(median_words = median(max_tagwords, na.rm = TRUE))
+```
+
+##### log-rank test (for each level of maximum words) 
+
+```{r, echo = FALSE}
+survdiff(surv_object ~ as.factor(max_tagwords), data = x)
+KM_maxwords <- survfit(surv_object ~ as.factor(max_tagwords), data = x)
+plot_surv(KM_maxwords, data = x)
+```
+
+
+### Frequency of tags (popularity?)
+
+* Took the unique tags, counted the number of times each tag occured in the data, and calculated the proportion of times it appeared = frequency of the tag 
+* Average frequency score for a question: average frequency score for each tag in a question
+
+##### First 6 of the tags that appear the most
 
 ```{r, echo = FALSE}
 tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, ~mean(rowSums(split_tags == .) > 0)))
@@ -154,20 +214,21 @@ tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, 
 tag_freq <- tag_freq %>%
               arrange(desc(percent))
 
-ggplot(tag_freq, aes(x = percent)) + 
-  geom_histogram() + 
-  ggtitle("Distribution of tag frequency")
+head(tag_freq)
+
+library(forcats)
 
 top50 <- tag_freq[1:50,]
 ggplot(top50, aes(x = fct_reorder(tag, -percent), y = percent)) + 
   geom_col() + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
-  ggtitle("Distribution of top 50 tags and percentage of times they occur")
+  scale_y_continuous(labels = scales::percent) + 
+  ggtitle("Distribution of the top 50 tags and percentage of times they occur in the data")
 ```
 
 
 ```{r, echo = FALSE}
-#creating average frequency/popular score variable
+#creating average frequency score variable
 x$tag1 <- split_tags[,1]
 x$tag2 <- split_tags[,2]
 x$tag3 <- split_tags[,3]
@@ -192,28 +253,28 @@ x$avg_score[is.nan(x$avg_score)] <- 0
 
 ggplot(x, aes(x = avg_score)) + 
   geom_histogram() + 
-  ggtitle("Distribution of average tag popularity/frequency scores")
+  ggtitle("Distribution of average tag frequency scores for each question")
 ```
 
-#### Determining threshold for popular/unpopular tags 
+##### Determining the threshold for what's considered frequent/unfrequent tags 
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 median_score <- median(x$avg_score)
 q_score <- quantile(x$avg_score, probs = seq(0, 1, by = 0.25))
 percentile80 <- quantile(x$avg_score, probs = 0.80)
 
-x$popular_tag <- FALSE
-x$popular_tag[x$avg_score >= percentile80] <- TRUE
+x$frequent_tag <- FALSE
+x$frequent_tag[x$avg_score >= percentile80] <- TRUE
 
-prop_popular <- sum(x$popular_tag)/sum(x$n_tags != 0)
+prop_frequent <- sum(x$frequent_tag)/sum(x$n_tags != 0)
 ```
 
 * median average popularity/frequency score: `r median_score` 
 * 75th percentile for scores: `r q_score[4]`
-* popularity threshold based off of 80th percentile: `r percentile80`
-* proportion of questions that contain a tag that are "popular": `r prop_popular`
+* **popularity threshold based off of 80th percentile:** `r percentile80`
+* proportion of questions that contain a tag that are "popular": `r prop_frequent`
 
-##### Log-rank test
+##### Log-rank test (for frequent/unfrequent tags)
 
 ```{r, echo = FALSE}
 surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
@@ -224,7 +285,7 @@ plot_surv(KM_popular, data = x)
 ```
 
 
-### incorrect use of tags
+### Incorrect use of tags
 * correct tags
     + don't begin with "#"
     + have no more than 3 words (?)
@@ -233,11 +294,10 @@ plot_surv(KM_popular, data = x)
     + should not end with a "."
     + doesn't contain links
     + if it contains numbers must also contain letters 
-* regex
-* look at probability a quesiton includes certain tag- chances it's answered (grab most frequent)
+* look at probability a question is answered if it contain's a certain tag
 * maybe ignore tags that are also in device names
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 x$correct_tag <- NA_character_
 x$correct_tag[x$n_tags != 0] <- TRUE
 
@@ -282,7 +342,7 @@ prop_correct <- sum(x$correctly_tag, na.rm = TRUE)/sum(x$n_tags != 0)
 
 * out of all of the questions that contain tags, `r round(prop_correct * 100, 2)`% of them were tagged correctly
 
-##### Log-rank test
+##### Log-rank test (for incorrect vs correctly tagged questions)
 
 ```{r, echo = FALSE}
 surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
@@ -292,9 +352,9 @@ KM_correct <- survfit(surv_object ~ correctly_tag, data = x)
 plot_surv(KM_correct, data = x)
 ```
 
-### If a question contains top50 tags
+### If a question contains at least one of the top 50 most frequent tags
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 top50tag <- as.character(top50$tag)
 
 #function to check if tag in top50
@@ -329,59 +389,16 @@ prop_toptag <- sum(x$contain_toptag, na.rm = TRUE)/sum(!is.na(x$tags))
 
 * `r round(prop_toptag*100, 2)`% of questions that contain tag, contain a tag that's in the top 50 tag list
 
-##### median time, prop answered and average daily views grouped by whether or not it contains a top50 tag
+##### Summary stats grouped by contain_toptag
 ```{r, echo = FALSE}
-x %>% 
-  group_by(contain_toptag) %>%
-  summarise(median_time = median(time_until_answer), avg_views = mean(daily_views), n = n(), prop_answered = sum(answered)/n)
+sum_stats("contain_toptag", data = x)
 ```
 
-##### log-rank test 
+##### log-rank test (for questions that contain vs don't contain)
 ```{r, echo = FALSE}
 survdiff(surv_object ~ contain_toptag, data = x)
 KM_toptag <- survfit(surv_object ~ contain_toptag, data = x)
 plot_surv(KM_toptag, data = x)
 ```
-
-
-
-
-
-### maximum number of words in a tag 
-
-##### frequency table for number of words
-
-```{r, echo = FALSE}
-x$max_tagwords <- rep(NA, nrow(x))
-for (i in which(x$n_tags != 0)) {
-  tags <- as.vector(split_tags[i,])
-  x$max_tagwords[i] <- max(str_count(tags, pattern = "\\w+"))
-}
-
-#to find the mode
-Mode <- function(x) {
-  ux <- unique(x)
-  ux[which.max(tabulate(match(x, ux)))]
-}
-
-table(x$max_tagwords)
-```
-
-* max number of words in a tag: `r max(x$max_tagwords, na.rm = TRUE)`
-* median number of words: `r median(x$max_tagwords, na.rm = TRUE)`
-* mode number of words: `r Mode(subset(x$max_tagwords, !is.na(x$max_tagwords)))`
-
-##### Average number of max words in a tag grouped by answered/unanswered 
-
-```{r, echo = FALSE}
-x %>%
-  group_by(answered) %>%
-  summarise(median_words = median(max_tagwords, na.rm = TRUE))
-```
-
-
-
-
-
 
 

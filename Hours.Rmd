@@ -53,4 +53,9 @@ Date   | Hours | Time        | Description
 7/28/2017 | 10.5 | 10:30-9:00PM | Continued with textual features
 7/29/2017 | 4 | 5:00-9:00PM | Finished working with text, started on the datetime variable 
 7/30/2017 | 7 | 2:30-9:30| Finished datetime, finished all exploratory analyses, read articles from meeting with Data Specialist 
+7/31/2017 | 2 | 10:00-12:00PM | Organized stuff, started thinking about the model 
+7/31/2017 | 2 | 3:00-5:00PM | Text mining and wordclouds on iPhone and Android Phone subcategories 
+8/1/2017 | 3.5 | 12:00-3:30PM | Started the process of fitting the model 
+8/1/2017 | 3 | 5:30-8:30PM | Organized/added to files
+8/2/2017 | 5 | 1:15-6:15PM | Fitted CR models, changes summary_stats files..
 >> __Total Hours: 1...__
