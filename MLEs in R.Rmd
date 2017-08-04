@@ -1,0 +1,161 @@
+---
+title: "MLEs and evaluating fit for survival data"
+author: "Shannon Pileggi"
+date: "July 7, 2017"
+output: html_document
+---
+
+### Objective
+The objective of this vignette is to re-create the Minitab results from Lab 3 in STAT 417.  This includes computing maximum likelihood estimates of parametric distributions for survival data subject to censoring, and evaluating the fit of different parametric distributions to observed data.
+
+
+### Packages required: 
++ the fitdistrplus package allows you to obtain maximum likelihood estimates for censored data with the fitdistcens function
++ the flexsurv package has some parametric distributions that are used in survival analysis that aren't availabe in base R (loglogistic, gompertz, etc.)
++ the survival library allows you to compute the empirical distribution function (EDF) estimate by using the Kaplan-Meier’s product-limit estimator
++ use the mosaic package for favstats
++ use the ggplot package to make overlayed qqplot
++ the flexsurv and fitdistrplus packages were built under R version 3.3.3, may require an R update
+
+```{r,message=F,warning=F}
+library(fitdistrplus)
+library(flexsurv)
+library(survival)
+library(mosaic)
+library(ggplot2)
+```
+
+### Example data
++ Use the rearrest data from STAT 417.
++ the months variable indicates time until rearrest
++ the censor variable indicates 1 for observed value, 0 for censored value
+```{r}
+dir <- file.path(getwd(),"data")
+rearrest <- read.table(file.path(dir, "Rearrest.txt"),header=T)
+head(rearrest)
+tail(rearrest)
+```
+
+### Format of the data:
++ assume that we are only working with right censored data
++ the data needs two columns, named "left" and "right"
++ the left value is the time value
++ the right value is (1) the time value if not censored, (2) NA if censored
+```{r}
+#re-format rearrest data for fitdistrplus package
+df<-data.frame(left=rearrest$months,right=rearrest$months)
+df[rearrest$censor==0,2]<-NA
+head(df)
+tail(df)
+```
+
+### Identifying estimates
+Now we can use the fitdistcens function to compute maximum likelihood estimates of the data for various distributions.  The first argument of the function is the data set name, and the second argument of the function is the name of the distribution.  You can use any of these distributions by removing the d https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html.  If you want to use a distribution that is not in this list, you can write a function for it (see help file for fitdistcens for an example).
+
+```{r}
+fit_exp<-fitdistcens(df, "exp") #exponential fit
+summary(fit_exp)
+#value of 1/lambda that matches Minitab results for the exponential distribution.
+1/fit_exp$estimate
+```
+Note that the expontial distribution is parameterized as lambda in R, but 1/lambda in Minitab.  To obtain the value that corresponds to the Minitab output, we just need to calculate 1 over the parameter estimate.
+
+The MLE's for the log-logistic distribution also does not match those from Minitab.  The shape parameter is inversed, which also affects the scale parameter.
+```{r}
+fit_llogis<-fitdistcens(df, "llogis") #log-logistic fit
+summary(fit_llogis)
+names(fit_llogis)
+1/fit_llogis$estimate
+```
+
+
+
+The remaining three distributions have the same parameterization as Minitab.
+
+```{r}
+fit_logis<-fitdistcens(df, "logis") #logistic fit
+summary(fit_logis)
+fit_lnorm<-fitdistcens(df, "lnorm") #lognormal fit
+summary(fit_lnorm)
+fit_weibull<-fitdistcens(df, "weibull") #weibull fit
+summary(fit_weibull)
+```
+
+
+
+
+
+### Evaluating fit of the distribution through cdf plots
+According to the qqplots from Minitab, the Weibull or loglogistic appears to fit the data best and the logistic distribution fits the data the worst.  The Anderson-Darling statistic is the smallest for the loglogistic distribution, so that is deemed best fit.  One way demonstrated in the fitdistrplus package (but not in Minitab) to evaluate fit is with a CDF plot (empirical vs theoretical).  Though from this CDF plot it is not immediately clear that the log-logistic or weibull distributions fit best (though it does appear that logistic fits worse.)
+
+```{r}
+cdfcompcens(list(fit_exp,fit_llogis,fit_logis,fit_lnorm,fit_weibull),
+            legendtext=c("exponential","log-logistic","logistic","lognormal","weibull"))
+```
+
+
+### Evaluating fit of the distribution through qq plots
+When dealing with censored data, the empirical quantiles are estimated from Kaplan-Meier curves.  We first demonstrate this with the Weibull distribution, which had a good fit.
+
+```{r}
+KM <- survfit(Surv(months,censor)~1,data=rearrest,conf.type="plain")
+#summary(KM)
+plot(KM)
+eq<-quantile(KM,probs=seq(0.01,0.99,by=0.01))
+favstats(eq$quantile)
+```
+Note that the empirical quantiles only have 67 valid estimates - 32 are missing.  This is because the KM survival curve levels out at about 30%.  The max empirical quantile is 28.9.
+
+We can obtain theoretical quantiles using the fitted models.  This does not result in any missing estimates.  The max theoretical quantile is 169.7.
+
+```{r}
+tq<-quantile(fit_weibull,probs=seq(0.01,0.99,by=0.01))
+theo.quant<-as.numeric(as.vector(tq$quantiles[1,]))
+favstats(theo.quant)
+plot(theo.quant[1:67],eq$quantile[1:67],xlab="Theoretical Quantile",ylab="KM Quantile",main="Weibull")
+abline(a=0,b=1)
+```
+
+Let's try this also for the logistic fit, which had the worst fit.
+```{r}
+tq<-quantile(fit_logis,probs=seq(0.01,0.99,by=0.01))
+theo.quant<-as.numeric(as.vector(tq$quantiles[1,]))
+favstats(theo.quant)
+plot(theo.quant[1:67],eq$quantile[1:67],xlab="Theoretical Quantile",ylab="KM Quantile",main="Logistic")
+abline(a=0,b=1)
+```
+
+Create one plot of all fits.
+```{r}
+tq_weibull<-quantile(fit_weibull,probs=seq(0.01,0.99,by=0.01))
+tq_logis<-quantile(fit_logis,probs=seq(0.01,0.99,by=0.01))
+tq_exp<-quantile(fit_exp,probs=seq(0.01,0.99,by=0.01))
+tq_llogis<-quantile(fit_llogis,probs=seq(0.01,0.99,by=0.01))
+tq_lnorm<-quantile(fit_lnorm,probs=seq(0.01,0.99,by=0.01))
+stacked<-data.frame(distribution=c(rep("Weibull",99),
+                                   rep("Logistic",99),
+                                   rep("Exponential",99),
+                                   rep("Log-Logistic",99),
+                                   rep("Log-Normal",99)),
+                    theo.quantile=c(as.numeric(as.vector(tq_weibull$quantiles[1,])),
+                               as.numeric(as.vector(tq_logis$quantiles[1,])),
+                               as.numeric(as.vector(tq_exp$quantiles[1,])),
+                               as.numeric(as.vector(tq_llogis$quantiles[1,])),
+                               as.numeric(as.vector(tq_lnorm$quantiles[1,]))),
+                    emp.quantile=rep(eq$quantile,5))
+ 
+ggplot(stacked,aes(x=theo.quantile,y=emp.quantile,group=distribution)) + geom_line(aes(color=distribution)) +
+geom_abline(slope=1,intercept=0) +
+xlim(-30,30)
+                                                                                   
+```
+
+
+### Remaining to do
+```{r}
+#gofstat(list(fit_exp,fit_llogis,fit_logis,fit_lnorm,fit_weibull),
+#            fitnames=c("exponential","log-logistic","logistic","lognormal","weibull"))
+```
+
+- compute Anderson Darling statistic
+
