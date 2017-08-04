@@ -509,3 +509,32 @@ prop_one <- sum(x$count == 1)/nrow(x)
 * mean count: `r mean_count`
 * median count: `r median_count`
 * `r round(prop_one*100, 2)`% of texts have only 1 sentence
+
+### Ratio of newlines to text length
+
+```{r, echo = FALSE}
+x$newline_ratio <- str_count(x$text, pattern = "\n")/str_length(x$text)
+prop_newline <- sum(x$newline_ratio != 0)/nrow(x)
+```
+
+* `r round(prop_newline*100,2)`% of questions contain any newlines 
+* largest ratio: `r max(x$newline_ratio)`
+* smallest ratio: `r min(x$newline_ratio)`
+* median ratio: `r median(x$newline_ratio)`
+* mean ratio: `r mean(x$newline_ratio)`
+
+```{r, echo = FALSE}
+ggplot(x, aes(x = newline_ratio)) + 
+  geom_histogram(bins = 30) + 
+  ggtitle("Distribution of newline_ratios")
+```
+
+##### median newline_ratio grouped by answered/unanswered
+
+```{r, echo = FALSE}
+x %>%
+  group_by(answered) %>%
+  summarise(mean_ratio = mean(newline_ratio), median_ratio = median(newline_ratio))
+```
+
+

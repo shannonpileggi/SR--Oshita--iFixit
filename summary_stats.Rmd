@@ -24,28 +24,30 @@ library(ggplot2)
 library(survival)
 library(epiR)
 library(survminer)
-
-proportion_answered <- sum(x$answered)/nrow(x)
+library(dplyr)
 ```
+
 
 ### About the data set:
 
 * `r nrow(x)` observations
-* `r round(proportion_answered * 100, digits = 2)` % of questions were answered 
+* `r ncol(x)` variables 
 
 ### Exploring the response: time_until_answer
 
 ```{r, echo = FALSE}
 summary <- summary(x$time_until_answer)
+proportion_answered <- sum(x$answered)/nrow(x)
 ```
 
-* **minimum:** `r round(min(x$time_until_answer), 2)` hrs
-* **maximum:** `r round(max(x$time_until_answer), 2)` hrs (`r round(max(x$time_until_answer)/24, 2)` days)
+* **Shortest answer time:** `r round(min(x$time_until_answer), 2)` hrs
+* **Longest answer time (not answered):** `r round(max(x$time_until_answer), 2)` hrs (`r round(max(x$time_until_answer)/24, 2)` days)
 * **mean:** `r round(mean(x$time_until_answer), 2)` hrs (`r round(mean(x$time_until_answer)/24, 2)` days)
 * **median:** `r round(median(x$time_until_answer), 2)` hrs
-* **first quartile:** `r round(summary[2], 2)`hrs
+* **first quartile:** `r round(summary[2], 2)` hrs
 * **third quartile:** `r round(summary[5], 2)` hrs (`r round(summary[5]/24, 2)` days)
 * **IQR range:** `r round(summary[5] - summary[2], 2)` hrs (`r round((summary[5] - summary[2])/24, 2)` days)
+* `r round(proportion_answered*100, digits = 2)`% of questions were answered (complete)
 * Within an hour, `r round((sum(x$time_until_answer <= 1)/nrow(x))*100,2)`% of the questions have been answered
 * Within 5 hours, `r round((sum(x$time_until_answer <= 5)/nrow(x))*100,2)`% of the questions have been answered
 
@@ -59,7 +61,7 @@ ggplot(x, aes(x = time_until_answer)) +
 ### Survival Analysis Statistics
 
 ##### Based off of the Kaplan-Meier Estimator 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
 
 KM <- survfit(surv_object ~ 1, conf.type = "log-log")
@@ -78,6 +80,8 @@ s <- summary(KM)
 
 ##### Percentiles
 
+* Table of percentiles: 
+
 ```{r, percentiles, echo = FALSE}
 quant <- quantile(KM, c(0.01, 0.10, 0.25, 0.30, 0.50, 0.64, 0.75))
 round(quant[[1]], 3)
@@ -89,75 +93,133 @@ round(quant[[1]], 3)
     + By `r round(quant$quantile[4], 2)` hrs 30% of the questions have been answered
     + By `r round(quant$quantile[5], 2)` hrs 50% of the questions have been answered
     + 75th percentile doesn't exist (lowest survival probability: `r round(min(summary(KM)$surv),2)`)
-    + highest quantile that exists: By `r round(quant$quantile[6], 2)` hrs (`r round(quant$quantile[6]/24, 2)` days) 64% of the questions have been answered 
+    + Highest quantile that exists: By `r round(quant$quantile[6], 2)` hrs (`r round(quant$quantile[6]/24, 2)` days) 64% of the questions have been answered 
 
 
-##### Survival Curves
-
-* Survival curve shows that survival probability drops immediately after question is posted. 
-* Within a few hours after posting, the survival probability levels out (though it still decreases at a slow rate), and hovers around 0.35 (never hits 0).
-
-```{r, survival curves, echo = FALSE}
-ggsurvplot(KM, data = x, risk.table = TRUE, xlab = "Time (hours)", title = "KM Curve")
-```
-
+##### Kaplan-Meier Survival Curve
 
 ```{r, echo = FALSE}
-ggsurvplot(KM, data = x, risk.table = FALSE, xlab = "Time (hours)", title = "KM Curve (zoomed in)", xlim = c(0,50), break.x.by = 10)
+ggsurvplot(KM, data = x, 
+           risk.table = "abs_pct", risk.table.title = "Total number at risk (percentage at risk)",
+           cumevents = TRUE, 
+           censor = FALSE, 
+           conf.int = TRUE, conf.int.style = "step", 
+           surv.median.line = "hv", 
+           xlab = "Time (hours)", 
+           surv.plot.height = 1, ggtheme = theme_bw(),
+           tables.height = 0.15, tables.theme = theme_cleantable(), fontsize = 3)
 ```
 
+##### Kaplan-Meier Survival Curve showing up to 100 hours
 
-##### Reversing the survival curves
+```{r, echo = FALSE}
+ggsurvplot(KM, data = x, 
+           risk.table = "abs_pct", risk.table.title = "Total number at risk (percentage at risk)", 
+           cumevents = TRUE, 
+           conf.int = TRUE, conf.int.style = "step", 
+           censor = FALSE,
+           surv.median.line = "hv", 
+           xlab = "Time (hours)", 
+           xlim = c(0, 100), break.x.by = 10,
+           ylim = c(0, 0.7), break.y.by = 0.1,
+           surv.plot.height = 1, ggtheme = theme_bw(), 
+           tables.height = 0.15, tables.theme = theme_cleantable(), fontsize = 2, na.rm = TRUE)
+```
+
+* KM survival curve shows that the probability a question survives (remains unanswered) past a certain time drops immediately after question is posted.
+* Within ~ 100 hours after posting, the survival probability levels out (though it still decreases at a slow rate), and hovers around 0.35 (never hits 0).
+* Dashed marks around the lines represent the point-wise 95% confidence intervals
+* Vertical dashed line on the plots indicates the median survival time
+
+##### Reversing the survival curve
 
 * At around 100 hours, the probability a question is answered before time t starts to level out at around ~0.63
 
 ```{r, echo = FALSE}
 reversed <- data.frame(time = s$time, prob_ans = 1-s$surv)
 ggplot(reversed, aes(x = time, y = prob_ans)) + 
-  geom_line() + 
+  geom_line(na.rm = TRUE) + 
   scale_x_continuous("Time (hours)", limits = c(0,100)) + 
   scale_y_continuous("Probability a question is answered before time t") + 
   ggtitle("Probability a question is answered before a certain time vs. time (hours)")
 ```
 
-
-##### Instantaneous Hazard Rates (based off of KM estimates)
+##### Kaplan-Meier Type Instantaneous Hazard
 
 ```{r, instant hazard, echo = FALSE}
 h.hat <- epi.insthaz(KM, conf.level = 0.95) #instantaneous hazard on basis of KM 
-round(head(h.hat), 3)
+round(h.hat[1:10,], 4)
 ```
 
-* Max instant hazard rate: `r round(max(h.hat$est), 2)` at `r round(h.hat$time[which(h.hat$est == max(h.hat$est))], 2)` hrs 
-* Min instant hazard rate: `r round(min(h.hat$est), 2)`
+* Max KM instant hazard rate: `r round(max(h.hat$est), 2)` at `r round(h.hat$time[which(h.hat$est == max(h.hat$est))], 2)` hrs 
+* Min KM instant hazard rate: `r round(min(h.hat$est), 2)`
 * Interpretations: 
-    + 
-
+    + h(t = 0.0083) = 0.0155: Questions that have not been answered 0.0083 (0.498 min) hours after posting, are estimated to be answered 0.015 times within the next 0.0006 hours (0.036 min). 
+    + h(t = 0.0164) = 0.9289: Questions that have not been answered 0.0164 (0.984 min) hours after posting, are estimated to be answered 0.9289 times within the next 0.0008 hours (0.048 min). 
+    
 ```{r, instant hazard plots, echo = FALSE}
 ggplot(h.hat, aes(x = time, y = est)) + 
   geom_line() + 
   scale_x_continuous("Time (hours)") + 
-  scale_y_continuous("Instantaneous Hazard Rate") + 
-  ggtitle("Instantaneous Hazard Rate Plot")
+  scale_y_continuous("Instantaneous Hazard") + 
+  ggtitle("KM Type Instantaneous Hazard Plot")
 
 ggplot(h.hat, aes(x = time, y = est)) + 
-  geom_line() + 
-  scale_x_continuous("Time (hours)", limits = c(0,50)) + 
-  scale_y_continuous("Instantaneous Hazard Rate") + 
-  ggtitle("Instantaneous Hazard Rate Plot (zoomed in)")
+  geom_line(na.rm = TRUE) + 
+  scale_x_continuous("Time (hours)", limits = c(0,500), breaks = seq(0, 500, by = 50)) + 
+  scale_y_continuous("Instantaneous Hazard") + 
+  ggtitle("KM Type Instantaneous Hazard Plot showing up to 500 hours")
 ```
 
-* Instant hazard rate of a question getting answered drops to 0 and stays there pretty consistently after about 45 hours
+* After about 150 hours, the KM instant hazard of a question getting answered drops to 0 and stays there pretty consistently, with a few small spikes here and there
 * Right before that 45th hour, hazard spikes up twice to about 1.25
 
+##### Nelson-Aalen Type Instantaneous Hazard Rate
 
-##### Cumulative Hazard Rates
+```{r, echo = FALSE}
+fit <- data.frame(surv = s$surv, time = s$time, n.event = s$n.event, n.risk = s$n.risk)
+fit$h.tilde <- fit$n.event/fit$n.risk
+
+a <- fit %>%
+  select(time = time, estimate = h.tilde, num_experience_event = n.event, num_at_risk = n.risk)
+a[1:10,]
+```
+
+* Max Nelson-Aalen Type Hazard: `r round(max(fit$h.tilde, na.rm = TRUE),5)` at `r round(fit$time[which(fit$h.tilde == max(fit$h.tilde, na.rm = TRUE))],2)` hours
+* Min Nelson-Aalen Type Hazard: `r min(fit$h.tilde, na.rm = TRUE)` at `r round(fit$time[which(fit$h.tilde == min(fit$h.tilde, na.rm = TRUE))],2)` hours
+* Interpretations:
+    + h(t = 0.0083) = 0.000129: Given that a randomly selected question has not been answered by 0.0083 hours (0.498 min), the estimated probability that a question is answered in the next 0.0006 hours is 0.000129.
+    + h(t = 0.0164) = 0.000258: Given that a randomly selected question has not been answered by 0.0164 hours (0.984 min), the estiamted probability that a question is answered in the next 0.0008 hours is 0.000258. 
+    
+```{r, echo = FALSE}
+ggplot(fit, aes(x = time, y = h.tilde)) + 
+  geom_line() + 
+  scale_x_continuous("Time (hours)") + 
+  scale_y_continuous("Instantaneous Hazard") + 
+  ggtitle("Nelson-Aalen Type Instantaneous Hazard Plot")
+
+ggplot(fit, aes(x = time, y = h.tilde)) + 
+  geom_line(na.rm = TRUE) + 
+  scale_x_continuous("Time (hours)", limits = c(0,25)) + 
+  scale_y_continuous("Instantaneous Hazard") + 
+  ggtitle("Nelson-Aalen Type Instantaneous Hazard Plot, showing up to 25 hours")
+```
+
+##### Cumulative Hazard
 
 * Nelson-Aalen plot: rate of increase of H(t) starts to decrease/levels out around ~50 hours (indicates that instantaneous hazard is decreasing)
 
 ```{r, echo = FALSE}
+#Nelson-Aalen estimator of cumulative hazard
+fit$H.tilde <- cumsum(fit$h.tilde)
+
+ggplot(fit, aes(x = time, y = H.tilde)) +
+  geom_line(na.rm = TRUE) +
+  scale_x_continuous("Time (hours)", limits = c(0,1000), breaks = seq(0, 1000, by = 100)) +
+  scale_y_continuous("Cumulative Hazard Rate based off of Nelson Aalen Type") + 
+  ggtitle("Cumulative Hazard Plot (Nelson-Aalen)")
+
 #KM estimator of cumulative hazard 
-fit <- data.frame(surv = s$surv, time = s$time, n.event = s$n.event, n.risk = s$n.risk)
 fit$H.hat <- -log(fit$surv)
 
 ggplot(fit, aes(x = time, y = H.hat)) + 
@@ -165,14 +227,5 @@ ggplot(fit, aes(x = time, y = H.hat)) +
   scale_x_continuous("Time (hours)") + 
   scale_y_continuous("Cumulative Hazard Rate based off of KM Estimates") + 
   ggtitle("Cumulative Hazard Plot (KM)")
-
-#Nelson-Aalen estimator of cumulative hazard
-fit$H.tilde <- cumsum(fit$n.event/fit$n.risk)
-
-ggplot(fit, aes(x = time, y = H.tilde)) +
-  geom_line() +
-  scale_x_continuous("Time (hours)", limits = c(0,1000)) +
-  scale_y_continuous("Cumulative Hazard Rate based off of Nelson Aalen Type") + 
-  ggtitle("Cumulative Hazard Plot (Nelson-Aalen)")
 ```
 

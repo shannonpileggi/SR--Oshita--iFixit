@@ -57,5 +57,8 @@ Date   | Hours | Time        | Description
 7/31/2017 | 2 | 3:00-5:00PM | Text mining and wordclouds on iPhone and Android Phone subcategories 
 8/1/2017 | 3.5 | 12:00-3:30PM | Started the process of fitting the model 
 8/1/2017 | 3 | 5:30-8:30PM | Organized/added to files
-8/2/2017 | 5 | 1:15-6:15PM | Fitted CR models, changes summary_stats files..
+8/2/2017 | 5 | 1:15-6:15PM | Fitted CR models, changed summary_stats files
+8/3/2017 | 5.5 | 12:00-5:30 | Added to summary stats, created ratio of newlines to textlength variable, tried to estimate MLEs, ran in to problems
+8/3/2017 | 2.75 | 8:00-10:45 | Continued to try out MLEs, looked into Tex and downloaded mendeley, continued fitting the model
+
 >> __Total Hours: 1...__

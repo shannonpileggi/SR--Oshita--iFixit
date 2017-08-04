@@ -37,7 +37,42 @@ get_aic <- function(cr_obj, num_parameters, data) {
 }
 
 #function to calculate r-square adjusted
-get_r2adj <- function(cr_obj)
+get_rsq_adj <- function(cr_obj, k) {
+  r <- unname(summary(cr_obj)$rsq[1])
+  n <- summary(cr_obj)$n
+  radj <- 1- (((1- (r**2)) * (n - 1))/(n-k-1))
+  return(radj)
+}
+  
+
+#function that takes in character vector and returns a data frame of words and frequencies sorted by most to least frequent, n and stopwrds are an optional arguments
+freq_terms <- function(vec, n = NULL, stopwrds = NULL) {
+  source <- VectorSource(vec)
+  corpus <- VCorpus(source)
+  
+  if (is.null(stopwrds)) {
+    cleaned_corpus <- clean_corpus(corpus) 
+    dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = weightTfIdf))
+    m <- as.matrix(dtm) 
+    freq <- colSums(m)
+    freq <- sort(freq, decreasing = TRUE)
+    freq_df <- data.frame(word = names(freq), frequency = unname(freq))    
+  } else {
+    cleaned_corpus <- clean_corpus(corpus, stopwrds) 
+    dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = weightTfIdf))
+    m <- as.matrix(dtm) 
+    freq <- colSums(m)
+    freq <- sort(freq, decreasing = TRUE)
+    freq_df <- data.frame(word = names(freq), frequency = unname(freq))
+  }
+  
+  if (missing(n)) {
+    return(freq_df)
+  }
+  else {
+    return(freq_df[1:n,])
+  }
+}
 ```
 
 
@@ -77,19 +112,22 @@ x$categorized <- 0
 x$categorized[!is.na(x$category)] <- 1
 
 #length of sentence till first punctuation mark 
-x$first_punct <- str_locate(x$text, pattern = "[.|?|!]")[,1]
+x$text_till_punct <- str_locate(x$text, pattern = "[.|?|!]")[,1]
+x$text_till_punct[is.na(x$text_till_punct)] <- 5000
 
-#if text contains punct
+#if text contains end punctuation
 x$contain_punct <- FALSE
-x$contain_punct[!is.na(x$first_punct)] <- TRUE
+x$contain_punct[!is.na(x$text_till_punct)] <- TRUE
 
 #if the text ends in a punctuation
-x$end_punct <- str_detect(x$text, pattern = "[.|?|!]$")
+x$text_end_punct <- str_detect(x$text, pattern = "[.|?|!]$")
 
 #if the title ends in a question mark
-x$contain_question <- str_detect(x$title, pattern = QUESTION %R% END)
+x$title_questionmark <- str_detect(x$title, pattern = QUESTION %R% END)
 
-#leaving out if title begins with "wh" (should i check if text is significant tho)
+#if the title starts with "Wh"
+x$title_begin_wh <- str_detect(str_to_lower(x$title), pattern = "^wh")
+
 #if first letter of title is capitalized
 x$capital_title <- str_detect(x$title, pattern = "^[[:upper:]]")
 
@@ -100,7 +138,7 @@ x$capital_text <- str_detect(x$text, pattern = "^[[:upper:]]")
 x$removed <- str_replace_all(x$text, " ", "")
 x$removed <- str_replace_all(x$removed, "[[:punct:]]|[[:digit:]]", "")
 
-x$all_lower <- str_detect(x$removed, pattern = "^[[:lower:]]+$")
+x$text_all_lower <- str_detect(x$removed, pattern = "^[[:lower:]]+$")
 x <- x[,-which(names(x) == "removed")]
 
 #prior effort
@@ -137,6 +175,7 @@ for (i in not_na) {
   total_tags <- sum(as.vector(split_tags[i,]) != "")
   x$avg_tag_length[i] <- total_char / total_tags
 }
+x$avg_tag_length[is.na(x$avg_tag_length)] <- 0
 
 x$max_tagwords <- rep(0, nrow(x))
 for (i in which(x$n_tags != 0)) {
@@ -149,6 +188,7 @@ tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, 
 
 tag_freq <- tag_freq %>%
               arrange(desc(percent))
+top50 <- tag_freq[1:50,]
 
 x$tag1 <- split_tags[,1]
 x$tag2 <- split_tags[,2]
@@ -169,13 +209,13 @@ x$score2 <- assign_score(x, "tag2")
 x$score3 <- assign_score(x, "tag3")
 x$score4 <- assign_score(x, "tag4")
 
-x$avg_score <- (x$score1 + x$score2 + x$score3 + x$score4)/x$n_tags
-x$avg_score[is.nan(x$avg_score)] <- 0
+x$avg_tag_score <- (x$score1 + x$score2 + x$score3 + x$score4)/x$n_tags
+x$avg_tag_score[is.nan(x$avg_tag_score)] <- 0
 
-percentile80 <- quantile(x$avg_score, probs = 0.80)
+percentile80 <- quantile(x$avg_tag_score, probs = 0.80)
 
 x$frequent_tag <- FALSE
-x$frequent_tag[x$avg_score >= percentile80] <- TRUE
+x$frequent_tag[x$avg_tag_score >= percentile80] <- TRUE
 
 top50tag <- as.character(top50$tag)
 
@@ -214,7 +254,9 @@ answered <- x %>%
 unanswered <- x %>%
   tbl_df() %>% 
   filter(answered == 0)
-  
+
+library(qdap)
+library(tm)
 terms_a <- freq_terms(answered$title)
 terms_a$prop_in_answered <- terms_a$frequency/nrow(terms_a)
 colnames(terms_a)[2] <- "frequency_a"
@@ -236,105 +278,145 @@ freq_terms_a <- combined %>%
                   filter(prop_in_answered > p_threshold) %>%
                   filter(ratio > ratio_threshold)
 
-x$contain_u <- str_detect(as.character(x$title), pattern = or1(freq_terms_u$word))
-x$contain_a <- str_detect(as.character(x$title), pattern = or1(freq_terms_a$word))
+x$contain_unanswered <- str_detect(as.character(x$title), pattern = or1(freq_terms_u$word))
+x$contain_answered <- str_detect(as.character(x$title), pattern = or1(freq_terms_a$word))
 
+#ratio of newlines to length of text
+x$newline_ratio <- str_count(x$text, pattern = "\n")/str_length(x$text)
 
 ```
 
-```{r, echo = FALSE}
-cr1 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + as.factor(pic_included) + 
-               text_length + title_length + device_length + as.factor(new_user) + post_weekday + 
-               as.factor(post_hour) + category + as.factor(categorized) + first_punct + 
-               contain_punct + end_punct + contain_question + capital_text + all_lower + prior_effort + 
-               gratitude + greeting + update + avg_tag_length + max_tagwords + avg_score + frequent_tag + 
-               contain_toptag + contain_u + contain_a, data = x)
-summary(cr1)
-get_aic(cr1 , num_parameters = 70, data = x) #31604.12
-```
-
-
 
 ```{r, echo = FALSE}
-#removed categorized, contain_punct, end_punct, capital_text, max_tagwords
-cr2 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + as.factor(pic_included) + 
-               text_length + title_length + device_length + as.factor(new_user) + post_weekday + 
-               as.factor(post_hour) + category + first_punct + 
-               contain_question + all_lower + prior_effort + 
-               gratitude + greeting + update + avg_tag_length + avg_score + frequent_tag + 
-               contain_toptag + contain_u + contain_a, data = x)
+cr1 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
+                  device_length + post_weekday + as.factor(post_hour) + text_till_punct + 
+                  text_end_punct + title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  greeting + update + avg_tag_length + max_tagwords + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
+s <- summary(cr1)
+s$rsq
+get_aic(cr1, 72, data = x) #83471.68
+get_rsq_adj(cr1, 72) #0.00513921
+
+#removed greeting and text_end punct (p-values > .8)
+cr2 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
+                  device_length + post_weekday + as.factor(post_hour) + text_till_punct + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  update + avg_tag_length + max_tagwords + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
 summary(cr2)
-get_aic(cr2, 66, data = x) #31594.76
- 70794.28
-```
+get_aic(cr2, 70, data = x) #83467.71
+get_rsq_adj(cr2, 70) #0.005397121
 
-```{r, echo = FALSE}
-#removed n_tags (-4) and added tag_included (+1), took out average_tag length (-1)
-cr3 <- coxph(Surv(time_until_answer, answered)~as.factor(tag_included) + as.factor(pic_included) + 
-               text_length + title_length + device_length + as.factor(new_user) + post_weekday + 
-               as.factor(post_hour) + category + first_punct + 
-               contain_question + all_lower + prior_effort + 
-               gratitude + greeting + update + avg_score + frequent_tag + 
-               contain_toptag + contain_u + contain_a, data = x)
+#removed max_tagwords
+cr3 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
+                  device_length + post_weekday + as.factor(post_hour) + text_till_punct + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  update + avg_tag_length + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
 summary(cr3)
-get_aic(cr3, 61, data = x) #70794.28
+get_aic(cr3, 69, data = x) #83465.91
+get_rsq_adj(cr3, 69) #0.005520927
 
-#took out post_weekday (-6), added back in average tag length (+1), take out post_hour (-23)
-cr4 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + as.factor(pic_included) + 
-               text_length + title_length + device_length + as.factor(new_user) + 
-               category + first_punct + 
-               contain_question + all_lower + prior_effort + 
-               gratitude + greeting + update + avg_tag_length + avg_score + frequent_tag + 
-               contain_toptag + contain_u + contain_a, data = x)
+#removed avg_tag_length
+cr4 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
+                  device_length + post_weekday + as.factor(post_hour) + text_till_punct + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  update + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
 summary(cr4)
-get_aic(cr4, 37, data = x) #31594.91 cr2 = 31594.76
+get_aic(cr4, 68, data = x) #83463.95
+get_rsq_adj(cr4, 68) #0.005649183
 
-#remove title and text length (-2) 
-cr5 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + as.factor(pic_included) + 
-               device_length + as.factor(new_user) + 
-               category + first_punct + 
-               contain_question + all_lower + prior_effort + 
-               gratitude + greeting + update + avg_tag_length + avg_score + frequent_tag + 
-               contain_toptag + contain_u + contain_a, data = x)
+#removed text_till_punct
+cr5 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
+                  device_length + post_weekday + as.factor(post_hour) + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  update + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
 summary(cr5)
-get_aic(cr5, 35, data = x) #31591.15
+get_aic(cr5, 67, data = x) #83462.4
+get_rsq_adj(cr5, 67) #0.005766099
 
-#remove if pic included and gratitude 
-cr6 <- coxph(Surv(time_until_answer, answered)~as.factor(n_tags) + 
-               device_length + as.factor(new_user) + 
-               category + first_punct + 
-               contain_question + all_lower + prior_effort + 
-               greeting + update + avg_tag_length + avg_score + frequent_tag + 
-               contain_toptag + contain_u + contain_a, data = x)
+#removing n_tags
+cr6 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  as.factor(pic_included) + text_length + title_length + 
+                  device_length + post_weekday + as.factor(post_hour) + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  update + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
 summary(cr6)
-get_aic(cr6, 33, data = x) #31589.07
+get_aic(cr6, 63, data = x) # 83455.8
+get_rsq_adj(cr6, 63) #0.00624444
 
-
-cr7 <- coxph(Surv(time_until_answer, answered)~ device_length + as.factor(new_user) + 
-               category + first_punct + 
-               contain_question + all_lower + prior_effort + 
-               greeting + update + avg_tag_length + avg_score + 
-               contain_u + contain_a, data = x)
+#remove text_length
+cr7 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  as.factor(pic_included) + title_length + 
+                  device_length + post_weekday + as.factor(post_hour) + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  update + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
 summary(cr7)
-get_aic(cr7, 27, data = x) #31580.82
+get_aic(cr7, 62, data = x) #83455.28
+get_rsq_adj(cr7, 62) #0.006333204
 
-#remove prior effort
-cr8 <- coxph(Surv(time_until_answer, answered)~ device_length + as.factor(new_user) + 
-               category + first_punct + 
-               contain_question + all_lower + 
-               greeting + update + avg_tag_length + avg_score + 
-               contain_u + contain_a, data = x)
+#remove title_length
+cr8 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  as.factor(pic_included) + 
+                  device_length + post_weekday + as.factor(post_hour) + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  update + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
 summary(cr8)
-get_aic(cr8, 26, data = x) #31581.15 
+get_aic(cr8, 61, data = x) #83454.54
+get_rsq_adj(cr8, 61) #0.006427927
 
-#add prior effort back 
-cr7 <- coxph(Surv(time_until_answer, answered)~ device_length + as.factor(new_user) + 
-               category + first_punct + 
-               contain_question + all_lower + prior_effort + 
-               greeting + update + avg_score + 
-               contain_u + contain_a, data = x)
-summary(cr7)
-get_aic(cr7, 27, data = x) #31,580.82 70,819.65
+#remove pic_included
+cr9 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  device_length + post_weekday + as.factor(post_hour) + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
+                  update + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
+summary(cr9)
+get_aic(cr9, 60, data = x) #83454.3
+get_rsq_adj(cr9, 60) #0.0065088
+
+#remove prior_effort
+cr10 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
+                  device_length + post_weekday + as.factor(post_hour) + 
+                  title_questionmark + title_begin_wh + 
+                  capital_title + capital_text + text_all_lower + gratitude + 
+                  update + avg_tag_score + 
+                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
+                  newline_ratio, data = x)
+summary(cr10)
+get_aic(cr10, 59, data = x) #83454.39 aic went up 
+get_rsq_adj(cr10, 59) #0.00658092
+
+
+
 
 ```
-

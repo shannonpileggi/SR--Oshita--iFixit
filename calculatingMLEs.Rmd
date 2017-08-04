@@ -1,0 +1,67 @@
+---
+title: "MLEs of Parametric Distributions"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+dir <- file.path(getwd(),"data")
+out <- read.csv(file.path(dir, "answers_data.csv"))
+
+library(dplyr)
+x <- out %>% 
+  tbl_df() %>%
+  filter(langid == "en")
+
+x$time_until_answer <- (x$first_answer_date - x$post_date)/3600
+empty <- which(is.na(x$time_until_answer))
+for (i in empty) {
+  x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
+}
+
+library(fitdistrplus)
+library(flexsurv)
+library(survival)
+library(mosaic)
+library(ggplot2)
+```
+
+# Formatting data to work with fitdistrplus package
+
+```{r}
+df <- data.frame(left = x$time_until_answer, right = x$time_until_answer)
+df[x$answered == 0,2] <- NA
+
+```
+
+# Identifying estimates
+
+```{r}
+#these distributions work
+fit_logis <- fitdistcens(df, "logis")
+summary(fit_logis)
+
+fit_lnorm <- fitdistcens(df, "lnorm")
+summary(fit_lnorm)
+
+#this "producedNaNs"
+fit_weibull <- fitdistcens(df, "weibull")
+summary(fit_weibull)
+
+#outputs Non-positive shape parameter over and over again
+fit_llogis <- fitdistcens(df, "llogis", control=list(trace=1, REPORT=1))
+summary(fit_llogis)
+##output correct?
+
+#exponential doesn't work
+fit_exp <- fitdistcens(df, "exp", optim.method = "BFGS", lower = 0, start = NULL)
+mledist(df, "exp", optim.method = "BFGS")
+
+
+
+```
+
+
