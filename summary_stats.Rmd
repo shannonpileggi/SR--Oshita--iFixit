@@ -50,6 +50,7 @@ proportion_answered <- sum(x$answered)/nrow(x)
 * `r round(proportion_answered*100, digits = 2)`% of questions were answered (complete)
 * Within an hour, `r round((sum(x$time_until_answer <= 1)/nrow(x))*100,2)`% of the questions have been answered
 * Within 5 hours, `r round((sum(x$time_until_answer <= 5)/nrow(x))*100,2)`% of the questions have been answered
+* Within 1 day, `r round((sum(x$time_until_answer <= 24)/nrow(x))*100,2)`% of the questions have been answered
 
 ```{r, echo = FALSE}
 ggplot(x, aes(x = time_until_answer)) + 

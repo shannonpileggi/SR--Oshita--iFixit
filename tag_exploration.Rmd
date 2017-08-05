@@ -220,7 +220,7 @@ library(forcats)
 
 top50 <- tag_freq[1:50,]
 ggplot(top50, aes(x = fct_reorder(tag, -percent), y = percent)) + 
-  geom_col() + 
+  geom_point() + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
   scale_y_continuous(labels = scales::percent) + 
   ggtitle("Distribution of the top 50 tags and percentage of times they occur in the data")
@@ -247,6 +247,12 @@ x$score1 <- assign_score(x, "tag1")
 x$score2 <- assign_score(x, "tag2")
 x$score3 <- assign_score(x, "tag3")
 x$score4 <- assign_score(x, "tag4")
+
+ggplot(x, aes(x = score1)) + 
+  geom_histogram()
+ggplot(x, aes(x = score2)) + geom_histogram()
+ggplot(x, aes(x = score3)) + geom_histogram()
+ggplot(x, aes(x = score4)) + geom_histogram()
 
 x$avg_score <- (x$score1 + x$score2 + x$score3 + x$score4)/x$n_tags
 x$avg_score[is.nan(x$avg_score)] <- 0
@@ -282,6 +288,26 @@ survdiff(surv_object ~ popular_tag, data = x)
 
 KM_popular <- survfit(surv_object ~ popular_tag, data = x)
 plot_surv(KM_popular, data = x)
+```
+
+
+##### Counting of popular tags a question has 
+```{r}
+threshold <- 0.005
+
+num_pop <- function(var, threshold) {
+  num_pop <- rep(0, nrow(x))
+  num_pop[x[[var]] >= threshold] <- 1
+  return(num_pop)
+}
+
+numpop1 <- num_pop("score1", threshold)
+numpop2 <- num_pop("score2", threshold)
+numpop3 <- num_pop("score3", threshold)
+numpop4 <- num_pop("score4", threshold)
+
+x$num_freq_tags <- numpop1 + numpop2 + numpop3 + numpop4
+
 ```
 
 
