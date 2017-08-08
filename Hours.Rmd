@@ -63,5 +63,6 @@ Date   | Hours | Time        | Description
 8/4/2017 | 5.5 | 3:00-8:30PM | Fit a model similar to one found in literature reviews, compared results
 8/7/2017 | 4.5 | 11:00-3:30PM | Continued with comparing model results to Stack overflow. 
 8/7/2017 | 3 | 5:45-8:45 | Used AIC, fit model 
+8/8/2017 | |
 
 >> __Total Hours: 1...__
