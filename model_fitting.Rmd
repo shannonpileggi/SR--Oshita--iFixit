@@ -27,14 +27,10 @@ for (i in empty) {
 library(stringr)
 library(rebus)
 library(survival) 
+library(stats)
 ```
 
 ```{r, include = FALSE}
-#function to get AIC statistics
-get_aic <- function(cr_obj, num_parameters, data) {
-  aic <- (-2*cr_obj$loglik[2]) + (2*num_parameters)
-  return(aic)
-}
 
 #function to calculate r-square adjusted
 get_rsq_adj <- function(cr_obj, k) {
@@ -44,7 +40,6 @@ get_rsq_adj <- function(cr_obj, k) {
   return(radj)
 }
   
-
 #function that takes in character vector and returns a data frame of words and frequencies sorted by most to least frequent, n and stopwrds are an optional arguments
 freq_terms <- function(vec, n = NULL, stopwrds = NULL) {
   source <- VectorSource(vec)
@@ -97,27 +92,21 @@ x$device_length <- str_length(x$device)
 
 #posting times
 x$post_datetime <- as.POSIXct(x$post_date,origin="1970-01-01")
-x$post_d <- format(x$post_datetime, "%m/%d/%y")
-x$post_time <- format(x$post_datetime, " %H:%M:%S")
 x$post_weekday <- factor(weekdays(x$post_datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
 x$post_hour <- as.numeric(format(x$post_datetime,"%H"))
 
 x$post_ampm <- "Night"
 x$post_ampm[x$post_hour >= 5 & x$post_hour < 12] <- "Morning"
 x$post_ampm[x$post_hour >= 12 & x$post_hour < 17] <- "Afternoon" #noon - 5pm 
-x$postampm[x$post_hour >= 17 & x$post_hour < 20] <- "Evening" #5pm - 8pm 
-
-#whether or not it was cateogorized correctly
-x$categorized <- 0
-x$categorized[!is.na(x$category)] <- 1
+x$post_ampm[x$post_hour >= 17 & x$post_hour < 20] <- "Evening" #5pm - 8pm 
 
 #length of sentence till first punctuation mark 
 x$text_till_punct <- str_locate(x$text, pattern = "[.|?|!]")[,1]
 x$text_till_punct[is.na(x$text_till_punct)] <- 5000
 
 #if text contains end punctuation
-x$contain_punct <- FALSE
-x$contain_punct[!is.na(x$text_till_punct)] <- TRUE
+x$text_contain_punct <- FALSE
+x$text_contain_punct[!is.na(x$text_till_punct)] <- TRUE
 
 #if the text ends in a punctuation
 x$text_end_punct <- str_detect(x$text, pattern = "[.|?|!]$")
@@ -160,11 +149,9 @@ x$tag_included[x$n_tags != 0] <- 1
 
 #matrix of tags (splitting up tags variable wherever there's a comma)
 split_tags <- str_split(x$tags, ", ", simplify = TRUE)
-
 #character vector of all tags (empty strings removed)
 tag_vector <- as.vector(split_tags)
 tag_vector <- tag_vector[which(tag_vector != "")]
-
 unique_tags <- unique(tag_vector)
 
 #average tag length
@@ -284,139 +271,214 @@ x$contain_answered <- str_detect(as.character(x$title), pattern = or1(freq_terms
 #ratio of newlines to length of text
 x$newline_ratio <- str_count(x$text, pattern = "\n")/str_length(x$text)
 
+#number of "popular" tags a question contains
+#setting threshold to define popular tags: tag must occur 0.5% of the time to be considered "popular"
+threshold <- 0.005
+#function that sets num_pop to 1 if the tag is considered popular, 0 if not
+num_pop <- function(var, threshold) {
+  num_pop <- rep(0, nrow(x))
+  num_pop[x[[var]] >= threshold] <- 1
+  return(num_pop)
+}
+numpop1 <- num_pop("score1", threshold)
+numpop2 <- num_pop("score2", threshold)
+numpop3 <- num_pop("score3", threshold)
+numpop4 <- num_pop("score4", threshold)
+#finding the total number of popular tags for a question
+x$num_pop_tags <- numpop1 + numpop2 + numpop3 + numpop4
+
+x$is_weekend <- FALSE
+x$is_weekend[x$post_weekday == "Saturday" | x$post_weekday == "Sunday"] <- TRUE
+
 ```
 
 
 ```{r, echo = FALSE}
-cr1 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
-                  device_length + post_weekday + as.factor(post_hour) + text_till_punct + 
-                  text_end_punct + title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  greeting + update + avg_tag_length + max_tagwords + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-s <- summary(cr1)
-s$rsq
-get_aic(cr1, 72, data = x) #83471.68
-get_rsq_adj(cr1, 72) #0.00513921
+cr1 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + device_length + as.factor(n_tags) + as.factor(pic_included) + new_user + post_weekday + post_ampm + contain_unanswered + contain_answered + avg_tag_length + avg_tag_score + num_pop_tags + text_till_punct + title_questionmark + title_begin_wh + capital_text + capital_title + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio, data = x)
 
-#removed greeting and text_end punct (p-values > .8)
-cr2 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
-                  device_length + post_weekday + as.factor(post_hour) + text_till_punct + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  update + avg_tag_length + max_tagwords + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr2)
-get_aic(cr2, 70, data = x) #83467.71
-get_rsq_adj(cr2, 70) #0.005397121
-
-#removed max_tagwords
-cr3 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
-                  device_length + post_weekday + as.factor(post_hour) + text_till_punct + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  update + avg_tag_length + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr3)
-get_aic(cr3, 69, data = x) #83465.91
-get_rsq_adj(cr3, 69) #0.005520927
-
-#removed avg_tag_length
-cr4 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
-                  device_length + post_weekday + as.factor(post_hour) + text_till_punct + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  update + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr4)
-get_aic(cr4, 68, data = x) #83463.95
-get_rsq_adj(cr4, 68) #0.005649183
-
-#removed text_till_punct
-cr5 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  as.factor(n_tags) + as.factor(pic_included) + text_length + title_length + 
-                  device_length + post_weekday + as.factor(post_hour) + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  update + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr5)
-get_aic(cr5, 67, data = x) #83462.4
-get_rsq_adj(cr5, 67) #0.005766099
-
-#removing n_tags
-cr6 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  as.factor(pic_included) + text_length + title_length + 
-                  device_length + post_weekday + as.factor(post_hour) + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  update + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr6)
-get_aic(cr6, 63, data = x) # 83455.8
-get_rsq_adj(cr6, 63) #0.00624444
-
-#remove text_length
-cr7 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  as.factor(pic_included) + title_length + 
-                  device_length + post_weekday + as.factor(post_hour) + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  update + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr7)
-get_aic(cr7, 62, data = x) #83455.28
-get_rsq_adj(cr7, 62) #0.006333204
-
-#remove title_length
-cr8 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  as.factor(pic_included) + 
-                  device_length + post_weekday + as.factor(post_hour) + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  update + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr8)
-get_aic(cr8, 61, data = x) #83454.54
-get_rsq_adj(cr8, 61) #0.006427927
-
-#remove pic_included
-cr9 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  device_length + post_weekday + as.factor(post_hour) + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + prior_effort + gratitude + 
-                  update + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr9)
-get_aic(cr9, 60, data = x) #83454.3
-get_rsq_adj(cr9, 60) #0.0065088
-
-#remove prior_effort
-cr10 <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + 
-                  device_length + post_weekday + as.factor(post_hour) + 
-                  title_questionmark + title_begin_wh + 
-                  capital_title + capital_text + text_all_lower + gratitude + 
-                  update + avg_tag_score + 
-                  frequent_tag + contain_toptag + contain_unanswered + contain_answered + 
-                  newline_ratio, data = x)
-summary(cr10)
-get_aic(cr10, 59, data = x) #83454.39 aic went up 
-get_rsq_adj(cr10, 59) #0.00658092
-
-
-
-
+summary(cr1)
+library(stats) #to get AIC
+AIC(cr1, k = 2) #83451.51
 ```
+* fit model text_end_punct, compared AIC to that of model containing text_till_punct (text_till_punct had lower AIC)
+* fit model with max_tagwords instead of avg_tag_length (avg_tag_length had lower) 
+* fit model with post_hour instead of post_ampm (post_ampm had lower)
+* fit model with is_weekend instead of post_weekend (post_weekday lower)
+* fit with num_prior_effort, prior_effort is lower
+* fit with n_images instead of pic_included, n_images is better
+* fit with tag_included instead of n_tags, tag_included is better
+
+```{r, echo = FALSE}
+#the new full model (best combination of all variables) 
+cr2 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + 
+                 device_length + as.factor(tag_included) + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_length + avg_tag_score + 
+                 num_pop_tags + text_till_punct + title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + gratitude + greeting + update + 
+                 newline_ratio, data = x)
+AIC(cr2, k = 2) #83445.74
+summary(cr2)
+```
+
+```{r, echo = FALSE}
+#remove avg_tag_length
+cr3 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + 
+                 device_length + as.factor(tag_included) + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 num_pop_tags + text_till_punct + title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + gratitude + greeting + update + 
+                 newline_ratio, data = x)
+AIC(cr3, k = 2) #83443.75
+summary(cr3)
+```
+
+```{r, echo = FALSE}
+#remove greeting
+cr4 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + 
+                 device_length + as.factor(tag_included) + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 num_pop_tags + text_till_punct + title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + gratitude + update + 
+                 newline_ratio, data = x)
+AIC(cr4, k = 2) #83441.81
+summary(cr4)
+```
+
+```{r, echo = FALSE}
+#remove gratitude
+cr5 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + 
+                 device_length + as.factor(tag_included) + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 num_pop_tags + text_till_punct + title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio, data = x)
+AIC(cr5, k = 2) #83439.96
+summary(cr5)
+```
+
+```{r, echo = FALSE}
+#remove text_till_punct
+cr6 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + 
+                 device_length + as.factor(tag_included) + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 num_pop_tags + title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio, data = x)
+AIC(cr6, k = 2) #83448.41
+summary(cr6)
+```
+
+```{r, echo = FALSE}
+#remove num_pop_tags
+cr7 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + 
+                 device_length + as.factor(tag_included) + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio, data = x)
+AIC(cr7, k = 2) #83437.22
+summary(cr7)
+```
+
+```{r, echo = FALSE}
+#remove title_length 
+cr8 <- coxph(Surv(time_until_answer, answered) ~ category + text_length + 
+                 device_length + as.factor(tag_included) + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio, data = x)
+AIC(cr8, k = 2) #83436.49
+summary(cr8)
+```
+
+```{r, echo = FALSE}
+#remove text_length 
+cr9 <- coxph(Surv(time_until_answer, answered) ~ category + 
+                 device_length + as.factor(tag_included) + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio, data = x)
+AIC(cr9, k = 2) #83435.68
+summary(cr9)
+```
+
+```{r, echo = FALSE}
+#remove tag_included 
+cr10 <- coxph(Surv(time_until_answer, answered) ~ category + 
+                 device_length + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio, data = x)
+AIC(cr10, k = 2) #83435.13
+summary(cr10)
+```
+
+* next variable I would remove would be n_images, but doing this increases the AIC, removing any other variable increases the AIC
+* also need to think about if want to keep contain_answered and contain_unanswered (is there an issue with the category var) 
+
+```{r, include = FALSE}
+#function to compare nested models 
+compare_nested <- function(crfull, crreduced, param_full, param_reduced) {
+  like_f <- crfull[[loglik]]
+  like_r <- crreduced[[loglik]]
+  stat <- 2*(like_f - like_r)
+}
+```
+
+
+```{r, echo = FALSE}
+#added interaction between title_questionmark and title_begin_wh
+cr11 <- coxph(Surv(time_until_answer, answered) ~ category + 
+                 device_length + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio + title_questionmark*title_begin_wh, data = x)
+AIC(cr11, k = 2) #83429.68
+summary(cr11)
+```
+
+```{r, echo = FALSE}
+#added interaction between new_user and update
+cr12 <- coxph(Surv(time_until_answer, answered) ~ category + 
+                 device_length + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio + title_questionmark*title_begin_wh + new_user*update, data = x)
+AIC(cr12, k = 2) #83425.59
+summary(cr12)
+```
+
+```{r, echo = FALSE}
+#added interaction between new_user and newline_ratio
+cr13 <- coxph(Surv(time_until_answer, answered) ~ category + 
+                 device_length + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio + title_questionmark*title_begin_wh + new_user*update + 
+                 new_user*newline_ratio, data = x)
+AIC(cr13, k = 2) #83422.18
+summary(cr13)
+```
+
+```{r, echo = FALSE}
+#added interaction between category and device length
+cr14 <- coxph(Surv(time_until_answer, answered) ~ category + 
+                 device_length + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio + title_questionmark*title_begin_wh + new_user*update + 
+                 new_user*newline_ratio + category*device_length, data = x)
+AIC(cr14, k = 2) #83335.8
+summary(cr14)
+```
+
+ 
+
+

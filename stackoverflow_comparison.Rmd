@@ -25,33 +25,74 @@ for (i in empty) {
 library(stringr)
 library(rebus)
 library(survival)
+library(ggplot2)
 ```
 
-### Fitting a model similar to the one described in "Min(e)d Your Tags"
+## Fitting a model similar to the one described in "Min(e)d your tags" for Stack Overflow
 
-##### Variables including:
-* avg_score: (describe what the variables are)
-* num_pop_tags
-* n_images
-* text_length
-* title_length
-* title_questionmark
-* title_begin_wh
-* is_weekend
-* prior_effort
+##### Including variables: 
+* **avg_score:** The frequency score of a tag is defined as the proportion of times it occurs in the data (the proportion of questions that contain it as a tag). The avg_score (average score) for a question is equal to the average of the proportions for all of a question's tags. 
+* **num_pop_tags:** Tags were grouped into popular/unpopular tags based on a threshold frequency score. num_pop_tags is equal to the number of popular tags (out of a maximum of 4) a question contains. 
+* **n_images:** The number of images a question contains. (Most don't include any images)
+* **text_length:** The length (in characters) of a question's text. 
+* **title_length:** The length (in characters) of a question's title.
+* **title_questionmark:** Whether or not the title ends with a question mark. 
+* **title_begin_wh:** Whether or not the title begins with a "Wh".
+* **is_weekend:** Whether or not the question was posted over the weekend. 
+* **prior_effort:** Whether or not the question contains action verbs like "tried", "searched", "replaced", that indicate that the asker made an effort to research/solve their problem prior to posting the question. Prior effort may be an indicator of question quality. 
 
-```{r, creating variables, include = FALSE}
-#setting up the variables for the model
+##### Variables I excluded:
+* **tag_specificity:** The "togetherness" of two tags, extent to which the two co-occur in a question. Measured using the point-wise mutual information. 
+* **num_subs_ans:** Average number of active subscribers for individual tags in each question. Excluded because currently there is no option to subscribe to a certain tag on Answers
+* **percent_subs_ans:** % of active subscribers
+* **num_subs_t, and percent_subs_t:** Number and percentage of responsive subscribers. 
+* **num_code_snippet and code_len:** Number of code segments and length of the code (in characters) a question contains.
+* **num_selfref:** Number of self references like "I", "myself", "we". Used in Stack Overflow analysis to indicate if the asker has done research/work prior to posting the question. After examining questions that contained self-references, I found that it would not be a good indicator of prior effort (ex: "I need help", "Help me").
 
+##### Differences between the Stack Overflow and iFixit Answers
+* Statistics: 
+    + proportion of questions answered on SO: 91.3%, Answers: 63.8%
+    + median time until answer for SO: 16 minutes, Answers: 9 hours
+    + Questions answered in <= 1 hour for SO: 63.5%, Answers: 26.6%
+    
+* Tagging system:
+    + **SO:** can include a maximum of 5 tags (4 on Answers)
+    + **SO:** can subscribe to certain tags/favorite tags (can only subscribe to certain questions on Answers)
+    
+* Analysis of tag-based features
+    + **S0:** tag-based features were the most powerful predictors of response time. 
+    + As tag popularity increased, or as the number of popular tags increased for a question, response time decreased
+    + **Answers:** found similar results. Questions that contain popular tags have faster median response times than questions without popular tags. However, tag based variables are barely signficant as predictors in the CR model (p-values = 0.05). Probably due to the inconsistent nature of Answers' tags.
+
+* Analysis of title and text length variables
+    + **SO:** as both post and title length increases, response time also increases (succinct questions tended to recieve faster responses). 
+    + **Answers:** didn't see as much of a clear-cut trend that SO analysis saw. Titles/texts that are not too long/short recieve the fastest response times (character length ranges in the middle have the lowest median answer times) 
+    + Title_length is insignificant in the CR model, but text_length is
+
+* Analysis of action verbs
+    + **SO:** as number of action verbs increases, response time decreases slightly 
+    + **Answers:** found similar results. Questions that included more action verbs have lower median response times, but is insignficant in the CR model
+
+* Analysis of question mark and "Wh" 
+    + **SO:** questions that contain "?" or/and start with "wh" in their title are more likely to recieve faster responses. 
+    + **Answers:** found similar results. Questions that have titles that include ? and begin with "Wh" or don't begin with "Wh", have faster median response times. 
+    + This interaction term is signficant in the CR model (individual effects of title_begin_wh is not)
+
+* Other correlations found
+    + **SO:** n_images, and posting on weekend days were correlated with lower response times. 
+    + **Answers:** as questions include more images, response time decreases. But found that questions posted on weekend days have higher median response times. 
+    
+    
+
+```{r, setting up the variables, include = FALSE}
 #tag popularity (frequency)
 split_tags <- str_split(x$tags, ", ", simplify = TRUE)
-#character vector of all tags (empty strings removed)
 tag_vector <- as.vector(split_tags)
 tag_vector <- tag_vector[which(tag_vector != "")]
-unique_tags <- unique(tag_vector)
+unique_tags <- unique(tag_vector) 
 
+#data frame of each unique tag along with the proportion of times it occurs in the dataset 
 tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, ~mean(rowSums(split_tags == .) > 0)))
-
 tag_freq <- tag_freq %>%
               arrange(desc(percent))
 
@@ -60,7 +101,7 @@ x$tag1 <- split_tags[,1]
 x$tag2 <- split_tags[,2]
 x$tag3 <- split_tags[,3]
 x$tag4 <- split_tags[,4]
-
+#function to take each tag, match it with one in the tag_freq data frame, and return the proportion
 assign_score <- function(data, variable) {
   score <- rep(0, nrow(data))
   notempty <- which(data[[variable]] != "")
@@ -69,29 +110,28 @@ assign_score <- function(data, variable) {
   }
   return(score)
 }
-
 x$score1 <- assign_score(x, "tag1")
 x$score2 <- assign_score(x, "tag2")
 x$score3 <- assign_score(x, "tag3")
 x$score4 <- assign_score(x, "tag4")
-
+#calculating the average score for each question
 x$avg_score <- (x$score1 + x$score2 + x$score3 + x$score4)/x$n_tags
 x$avg_score[is.nan(x$avg_score)] <- 0
 
-#number of popular tag a question contains
+#number of "popular" tags a question contains
+#setting threshold to define popular tags: tag must occur 0.5% of the time to be considered "popular"
 threshold <- 0.005
-
+#function that sets num_pop to 1 if the tag is considered popular, 0 if not
 num_pop <- function(var, threshold) {
   num_pop <- rep(0, nrow(x))
   num_pop[x[[var]] >= threshold] <- 1
   return(num_pop)
 }
-
 numpop1 <- num_pop("score1", threshold)
 numpop2 <- num_pop("score2", threshold)
 numpop3 <- num_pop("score3", threshold)
 numpop4 <- num_pop("score4", threshold)
-
+#finding the total number of popular tags for a question
 x$num_pop_tags <- numpop1 + numpop2 + numpop3 + numpop4
 
 #text length
@@ -112,180 +152,300 @@ x$post_weekday <- factor(weekdays(x$post_datetime), levels = c("Monday", "Tuesda
 x$is_weekend <- FALSE
 x$is_weekend[x$post_weekday == "Saturday" | x$post_weekday == "Sunday"] <- TRUE
 
-#num_active verb
+#whether or not the question contains words indicating prior effort
 x$prior_effort <- str_detect(str_to_lower(x$text), pattern = or("tried", "searched", "researched", "tested", "replaced", "used", "checked", "investigated", "considered", "measured", "attempted", "inspected", "fitted"))
 
+#the number of times a question uses action verbs to indicate prior effort 
 x$num_prior_effort <- str_count(str_to_lower(x$text), pattern = or("tried", "searched", "researched", "tested", "replaced", "used", "checked", "investigated", "considered", "measured", "attempted", "inspected", "fitted"))
 ```
 
-```{r, model, echo = FALSE}
-crSO <- coxph(Surv(time_until_answer, answered) ~ avg_score + num_pop_tags + n_images + text_length + title_length + title_questionmark + title_begin_wh + is_weekend + prior_effort, data = x)
+```{r, functions, include = FALSE}
+#function to get AIC statistics
+get_aic <- function(cr_obj, num_parameters, data) {
+  aic <- (-2*cr_obj$loglik[2]) + (2*num_parameters)
+  return(aic)
+}
 
-summary(crSO)
-```
+#function to calculate r-square adjusted
+get_rsq_adj <- function(cr_obj, k) {
+  r <- unname(summary(cr_obj)$rsq[1])
+  n <- summary(cr_obj)$n
+  radj <- 1- (((1- (r**2)) * (n - 1))/(n-k-1))
+  return(radj)
+}
 
-```{r, echo = FALSE}
-#function to get medians grouped by variables within the data set (since you can't see it in the boxplot)
-#input variable with ""
+#function to get median answer times grouped by specified variables (since you can't see it in the boxplot)
+#input var using ""
 get_medians <- function(var) {
   if (class(var) != "character" | class(var) != "factor") {
     medians <- x %>%
       group_by(as.factor(x[[var]])) %>%
-      summarise(median_time = median(time_until_answer), n = n())
+      summarise(median_time = round(median(time_until_answer), 2), n = n())
   } else {
     medians <- x %>%
       group_by(x[[var]]) %>%
-      summarise(median_time = median(time_until_answer), n = n())    
+      summarise(median_time = round(median(time_until_answer), 2), n = n())    
   }
+  names(medians)[1] <- var
   return(medians)
 }
+
+#function to create boxplot 
+get_boxplot <- function(var, xaxis, title) {
+  if (class(var) != "character" | class(var) != "factor") {
+    ggplot(x, aes(x = as.factor(x[[var]]), y = time_until_answer)) + 
+      geom_boxplot() + 
+      scale_x_discrete(xaxis) + 
+      scale_y_continuous("Answer time (hours)") + 
+      ggtitle(paste("Boxplots of answer times grouped by", title))
+  } else {
+    ggplot(x, aes(x = x[[var]], y = time_until_answer)) + 
+      geom_boxplot() + 
+      scale_x_discrete(xaxis) + 
+      scale_y_continuous("Answer time (hours)") + 
+      ggtitle(paste("Boxplots of answer times grouped by", title))
+  }
+}
+
 ```
 
+
+## Cox Regression Model
+
+* look into the HR for avg_score
+* when avg_score is taken out of model, AIC shoots up 
+
+```{r, model, echo = FALSE}
+crSO <- coxph(Surv(time_until_answer, answered) ~ avg_score + num_pop_tags + n_images + text_length + title_length + title_questionmark + title_begin_wh + is_weekend + prior_effort + title_questionmark*title_begin_wh, data = x)
+
+summary(crSO)
+# AIC(crSO, k = 2)
+# 
+# #took out prior_effort and added num_prior_effort
+# crSO1 <- coxph(Surv(time_until_answer, answered) ~ avg_score + num_pop_tags + n_images + text_length + title_length + title_questionmark + title_begin_wh + is_weekend + num_prior_effort + title_questionmark*title_begin_wh, data = x)
+# summary(crSO1)
+# AIC(crSO1, k = 2)
+```
+
+## Exploring each variable 
+
+### num_pop_tags
 
 ```{r, echo = FALSE}
 #boxplots for number of popular/frequent tags a question contains
-ggplot(x, aes(x = as.factor(num_pop_tags), y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("Number of popular tags in a question") + 
-  scale_y_continuous("Answer time (hours)") + 
-  ggtitle("Boxplots of answer times grouped by number of popular tags")
-  
-get_medians("num_pop_tags")
+get_boxplot("num_pop_tags", xaxis = "Number of popular tags", title = "num_pop_tags")
+```
 
-#logrank test
+##### Median answer times 
+
+```{r, echo = FALSE}
+get_medians("num_pop_tags")
+```
+
+##### log-rank test
+
+```{r, echo = FALSE}
 surv_ob <- Surv(x$time_until_answer, x$answered, type = "right")
 survdiff(surv_ob ~ as.factor(num_pop_tags), data = x)
 ```
+
+### n_images
+
+##### frequency table 
 
 ```{r, echo = FALSE}
 #boxplots for n_images
 table(x$n_images)
 
-ggplot(x, aes(x = as.factor(n_images), y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("number of images") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots of answer times grouped by number of images") 
-#maybe group 8-13 together
+#creating a new variable for n_images to group questions that have over 6 images as one (>=8)
+x$new_n_images <- as.character(x$n_images)
+x$new_n_images[x$n_images >= 6] <- ">= 6"
+x$new_n_images <- factor(x$new_n_images, levels = c("0", "1", "2", "3", "4", "5", ">= 6"))
 
-get_medians("n_images")
+get_boxplot("new_n_images", xaxis = "Number of images", title = "n_images")
+```
 
+##### Median answer times 
+
+```{r, echo = FALSE}
+get_medians("new_n_images")
+```
+
+##### log-rank test
+
+```{r, echo = FALSE}
 survdiff(surv_ob ~ as.factor(n_images), data = x)
 ```
 
-
+### title_length
 
 ```{r, echo = FALSE}
-#creating boxplots for title lengths
 #using cut function to divide range of title lengths into intervals 
 x$title_ints <- cut(x$title_length, breaks = 5)
-table(x$title_ints)
 
-ggplot(x, aes(x = title_ints, y = time_until_answer)) +
-  geom_boxplot() + 
-  scale_x_discrete("Intervals of title length (characters)") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots of answer times grouped by intervals of title length")
+get_boxplot("title_ints", xaxis = "Intervals of title length (characters)", title = "title_ints")
+```
 
-#logrank test
+##### Median answer times 
+
+```{r, echo = FALSE}
+get_medians("title_ints")
+```
+
+##### log-rank test
+
+```{r, echo = FALSE}
 survdiff(surv_ob ~ title_ints, data = x)
 ```
 
+### text_length
+
 ```{r, echo = FALSE}
-#creating boxplots for text lengths
 x$text_ints <- cut(x$text_length, breaks = 5)
-table(x$text_ints)
 
-ggplot(x, aes(x = text_ints, y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("Intervals of text length (characters)") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots of answer times grouped by intervals of text length")
+get_boxplot("text_ints", xaxis = "Intervals of text length (characters)", title = "text_ints")
+#figure out how to make it not scientific notation 
+```
 
-#logrank test
+##### Median answer times 
+
+```{r, echo = FALSE}
+get_medians("text_ints")
+```
+
+##### log-rank test
+
+```{r, echo = FALSE}
 survdiff(surv_ob ~ text_ints, data = x)
 ```
 
+### prior_effort
+
 ```{r, echo = FALSE}
-#boxplots for prior effort
-ggplot(x, aes(x = prior_effort, y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("If the question text indicates prior effort") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots for answer times grouped by whether or not the question indicated prior effort")
-
-get_medians("prior_effort")
-
-ggplot(x, aes(x = as.factor(num_prior_effort), y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("Number of prior effort references in a questionss text") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots for answer times grouped by number of prior effort references")
-
-get_medians("num_prior_effort")
-
-#logrank tests
-survdiff(surv_ob ~ prior_effort, data = x)
-survdiff(surv_ob ~ as.factor(num_prior_effort), data = x)
+get_boxplot("prior_effort", xaxis = "Whether or not the question indicates prior effort",
+            title = "prior_effort")
 ```
 
+##### Median answer times 
+
 ```{r, echo = FALSE}
-#boxplots for is_weekend
-ggplot(x, aes(x = is_weekend, y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("Whether or not the question was posted on the weekend") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots for answer times grouped by weekend or not")
+get_medians("prior_effort")
+```
 
+##### log-rank test
+
+```{r, echo = FALSE}
+survdiff(surv_ob ~ prior_effort, data = x)
+```
+
+### num_prior_effort
+
+```{r, echo = FALSE}
+x$new_num_prior <- as.character(x$num_prior_effort)
+x$new_num_prior[x$num_prior_effort >= 4] <- ">= 4"
+x$new_num_prior <- factor(x$new_num_prior, levels = c("0", "1", "2", "3", ">= 4"))
+
+get_boxplot("new_num_prior", xaxis = "Number of times an action verb is used", 
+            title = "num_prior_effort")
+```
+
+##### Median answer times 
+
+```{r, echo = FALSE}
+get_medians("new_num_prior")
+```
+
+##### log-rank test
+
+```{r, echo = FALSE}
+survdiff(surv_ob ~ as.factor(new_num_prior), data = x)
+```
+
+### is_weekend
+
+```{r, echo = FALSE}
+get_boxplot("is_weekend", xaxis = "Whether or not the question was posted over a weekend", 
+            title = "is_weekend")
+```
+
+##### Median answer times 
+
+```{r, echo = FALSE}
 get_medians("is_weekend")
+```
 
-#logrank test
+##### log-rank test
+
+```{r, echo = FALSE}
 survdiff(surv_ob ~ is_weekend, data = x)
 ```
 
+### title_questionmark
+
 ```{r, echo = FALSE}
+get_boxplot("title_questionmark", xaxis = "Whether or not the title ends with a questionmark", 
+            title = "title_questionmark")
+```
+
+##### Median answer times 
+
+```{r, echo = FALSE}
+get_medians("title_questionmark")
+```
+
+##### log-rank test
+
+```{r, echo = FALSE}
+survdiff(surv_ob ~ title_questionmark, data = x)
+```
+
+### title_begin_wh
+
+```{r, echo = FALSE}
+get_boxplot("title_begin_wh", xaxis = "Whether or not the title begins with `Wh`", 
+            title = "title_begin_wh")
+```
+
+##### Median answer times 
+
+```{r, echo = FALSE}
+get_medians("title_begin_wh")
+```
+
+##### log-rank test
+
+```{r, echo = FALSE}
+survdiff(surv_ob ~ title_begin_wh, data = x)
+```
+
+### Interaction between title_questionmark and title_begin_wh (wh_q)
+
+* Defining each level:
+    + 1: title begins with "Wh" and ends with ?
+    + 2: title contains neither
+    + 3: title doesn't begin with "Wh" but does end with ?
+    + 4: title begins with "Wh" but doesn't end with ?
+
+```{r, echo = FALSE}
+#creating the varaible
 x$wh_q[x$title_questionmark == TRUE & x$title_begin_wh == TRUE] <- 1
 x$wh_q[x$title_questionmark == FALSE & x$title_begin_wh == FALSE] <- 2
 x$wh_q[x$title_questionmark == TRUE & x$title_begin_wh == FALSE] <- 3
 x$wh_q[x$title_questionmark == FALSE & x$title_begin_wh == TRUE] <- 4
 
-#1: title contains both a question mark and begins with "wh"
-#2: title doesn't contain a question mark and doesn't begin with "wh"
-#3: title contains question mark but doesn't begin with "wh"
-#4: title doesn't contain question mark but does start with "wh"
-
-ggplot(x, aes(x = as.factor(wh_q), y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("Interaction between title_questionmark and title_begin_wh") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots for answer times grouped by levels of interaction")
-
-ggplot(x, aes(x = title_questionmark, y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("Whether or not the title contains a question mark") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots for answer times grouped by question mark")
-
-ggplot(x, aes(x = title_begin_wh, y = time_until_answer)) + 
-  geom_boxplot() + 
-  scale_x_discrete("Whether or not the title begins with 'Wh'") + 
-  scale_y_continuous("Time until answer (hours)") + 
-  ggtitle("Boxplots for answer times grouped by 'Wh'")  
-
-get_medians("wh_q")
-get_medians("title_questionmark")
-get_medians("title_begin_wh")
-
-#logrank tests
-survdiff(surv_ob ~ as.factor(wh_q), data = x)
-survdiff(surv_ob ~ title_questionmark, data = x)
-survdiff(surv_ob ~ title_begin_wh, data = x)
+get_boxplot("wh_q", xaxis = "Levels of the interaction", 
+            title = "title_questionmark*title_begin_wh")
 ```
 
-# STILL NEED TO DO 
-* figure out what's going on with the HR for avg_score
-* compare how these results are different from stack overflows, why are they different?
-* make boxplots easier to read, find a way to actually see the bottom halves of boxplots, ignore outliers? 
-* for boxplots that only have 1 observation in them, figure out how to group it with a diff value? 
-* make this report easier to read 
+##### Median answer times 
+
+```{r, echo = FALSE}
+get_medians("wh_q")
+```
+
+##### log-rank test
+
+```{r, echo = FALSE}
+survdiff(surv_ob ~ as.factor(wh_q), data = x)
+```
 

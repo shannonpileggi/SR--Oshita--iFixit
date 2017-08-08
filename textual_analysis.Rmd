@@ -197,6 +197,7 @@ x %>%
 ```
 
 ##### Log-rank test
+
 ```{r, echo = FALSE}
 survdiff(surv_object ~ end_punct, data = x)
 
@@ -312,7 +313,7 @@ plot_surv(KM_textcaps, data = x)
 ```
 
 
-### Checking if text is in single caps (all lower or upper case)
+### Checking if text is in single caps (all lower case)
 
 * since there are no questions with text in all caps, will only search for all lower case
 ```{r, echo = FALSE}
@@ -424,7 +425,6 @@ x %>%
   group_by(greeting) %>%
   summarise(n = n(), prop_new = sum(new_user)/n)
 ```
-
 
 
 ##### log-rank test

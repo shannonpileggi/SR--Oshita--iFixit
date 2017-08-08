@@ -61,5 +61,7 @@ Date   | Hours | Time        | Description
 8/3/2017 | 5.5 | 12:00-5:30 | Added to summary stats, created ratio of newlines to textlength variable, tried to estimate MLEs, ran in to problems
 8/3/2017 | 2.75 | 8:00-10:45 | Continued to try out MLEs, looked into Tex and downloaded mendeley, continued fitting the model
 8/4/2017 | 5.5 | 3:00-8:30PM | Fit a model similar to one found in literature reviews, compared results
+8/7/2017 | 4.5 | 11:00-3:30PM | Continued with comparing model results to Stack overflow. 
+8/7/2017 | 3 | 5:45-8:45 | Used AIC, fit model 
 
 >> __Total Hours: 1...__

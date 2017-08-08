@@ -284,10 +284,10 @@ prop_frequent <- sum(x$frequent_tag)/sum(x$n_tags != 0)
 
 ```{r, echo = FALSE}
 surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
-survdiff(surv_object ~ popular_tag, data = x)
+survdiff(surv_object ~ frequent_tag, data = x)
 
-KM_popular <- survfit(surv_object ~ popular_tag, data = x)
-plot_surv(KM_popular, data = x)
+KM_frequent <- survfit(surv_object ~ frequent_tag, data = x)
+plot_surv(KM_frequent, data = x)
 ```
 
 
