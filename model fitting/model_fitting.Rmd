@@ -33,6 +33,7 @@ library(stats)
 ```{r, include = FALSE}
 
 #function to calculate r-square adjusted
+#k = number of independent predictors 
 get_rsq_adj <- function(cr_obj, k) {
   r <- unname(summary(cr_obj)$rsq[1])
   n <- summary(cr_obj)$n
@@ -296,9 +297,10 @@ x$is_weekend[x$post_weekday == "Saturday" | x$post_weekday == "Sunday"] <- TRUE
 ```{r, echo = FALSE}
 cr1 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + device_length + as.factor(n_tags) + as.factor(pic_included) + new_user + post_weekday + post_ampm + contain_unanswered + contain_answered + avg_tag_length + avg_tag_score + num_pop_tags + text_till_punct + title_questionmark + title_begin_wh + capital_text + capital_title + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio, data = x)
 
-summary(cr1)
 library(stats) #to get AIC
 AIC(cr1, k = 2) #83451.51
+
+summary(cr1)
 ```
 * fit model text_end_punct, compared AIC to that of model containing text_till_punct (text_till_punct had lower AIC)
 * fit model with max_tagwords instead of avg_tag_length (avg_tag_length had lower) 

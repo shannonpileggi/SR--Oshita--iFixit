@@ -92,8 +92,6 @@ sum_stats <- function(variable, data) {
   return(tbl)
 }
 
-#took out phone iphone and android 
-
 #function to clean corpus (stopwrds is an optional argument)
 clean_corpus <- function(corpus, stopwrds = NULL){
   if (is.null(stopwrds)) {

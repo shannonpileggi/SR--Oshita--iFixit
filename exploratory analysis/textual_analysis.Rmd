@@ -35,8 +35,10 @@ library(openNLP)
 
 ```{r, include = FALSE}
 #function to plot survival curves with ggplot
-plot_surv <- function(survfit, data, xlim) {
-
+plot_surv <- function(survfit, data, xlim = NULL) {
+  library(ggfortify)
+  library(directlabels)
+  
   df <- fortify(survfit, data = data)
   
   if (missing(xlim)) {
@@ -460,7 +462,6 @@ x %>%
 ```
 
 
-
 ##### log-rank test
 
 ```{r, echo = FALSE}
@@ -468,7 +469,6 @@ survdiff(surv_object ~ update, data = x)
 KM_update <- survfit(surv_object ~ update, data = x)
 plot_surv(KM_update, data = x)
 ```
-
 
 
 ### Ratio of sentences to question length (number of characters)

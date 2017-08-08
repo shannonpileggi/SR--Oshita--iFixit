@@ -10,36 +10,38 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-library(dplyr)
-library(ggfortify)
-library(directlabels)
 library(tm)
 library(qdap)
 ```
 
 
 ```{r}
-#imports data set, includes only questions in English, creates time_until_answer (in hrs)
+#function to import and set up the data 
 setup <- function() {
   dir <- file.path(getwd(),"data")
   out <- read.csv(file.path(dir, "answers_data.csv"))
   
-  out_english <- out %>% 
-                  tbl_df() %>%
-                  filter(langid == "en")
+  library(dplyr)
+  x <- out %>% 
+    tbl_df() %>%
+    filter(langid == "en")
 
-  out_english$time_until_answer <- (out_english$first_answer_date - out_english$post_date)/3600
-  empty <- which(is.na(out_english$time_until_answer))
+  x$time_until_answer <- (x$first_answer_date - x$post_date)/3600
+  empty <- which(is.na(x$time_until_answer))
   for (i in empty) {
-    out_english$time_until_answer[i] <- (out_english$download_date[i] - out_english$post_date[i])/3600
+    x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
 }
 }
 ```
 
 ```{r}
+#functions used in exploratory analysis
+
 #function to plot survfit objects
 #input: survfit object, data, optional x-axis limits
-plot_surv <- function(survfit, data, xlim) {
+plot_surv <- function(survfit, data, xlim = NULL) {
+  library(ggfortify)
+  library(directlabels)
   
   df <- fortify(survfit, data = data)
   
@@ -49,14 +51,14 @@ plot_surv <- function(survfit, data, xlim) {
         ggplot(df, aes(x = time, y = surv)) + 
           geom_line() + 
           scale_y_continuous("Survival Probability") +
-          scale_x_continuous("Time")
+          scale_x_continuous("Time (hours)")
           ggtitle("Survival Curve")
         }
     if ("strata" %in% names(df)) {
       ggplot(df, aes(x = time, y = surv, color = strata)) + 
         geom_line() + 
         scale_y_continuous("Survival Probabilities") +
-        scale_x_continuous("Time") + 
+        scale_x_continuous("Time (hours)") + 
         ggtitle("Survival Curves") + 
         geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
     }
@@ -66,7 +68,7 @@ plot_surv <- function(survfit, data, xlim) {
         ggplot(df, aes(x = time, y = surv)) + 
           geom_line() + 
           scale_y_continuous("Survival Probability") +
-          scale_x_continuous("Time", limits = xlim)
+          scale_x_continuous("Time (hours)", limits = xlim)
           ggtitle("Survival Curve")
       }
 
@@ -74,36 +76,60 @@ plot_surv <- function(survfit, data, xlim) {
         ggplot(df, aes(x = time, y = surv, color = strata)) + 
           geom_line() + 
           scale_y_continuous("Survival Probabilities") +
-          scale_x_continuous("Time", limits = xlim) + 
+          scale_x_continuous("Time (hours)", limits = xlim) + 
           ggtitle("Survival Curves") + 
           geom_dl(aes(label = strata), method = list(dl.trans(x = x + 0.2), "last.points", cex = 0.5))
       }
   }
 }
+
+#function that prints out summary stats grouped by that variable 
+sum_stats <- function(variable, data) {
+  tbl <- x %>%
+    group_by(data[[variable]]) %>%
+    summarise(n = n(), median_time = median(time_until_answer), median_views = median(daily_views), prop_answered = sum(answered)/n) %>%
+    arrange(median_time)
+  names(tbl)[1] <- variable
+  return(tbl)
+}
 ```
 
 ```{r}
-#function to clean corpus
-clean_corpus <- function(corpus){
-
-  corpus <- tm_map(corpus, stripWhitespace)
-  corpus <- tm_map(corpus, content_transformer(tolower))
-  corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need"))
-  return(corpus)
+#function to clean corpus, can specify stopwords to remove 
+clean_corpus <- function(corpus, stopwrds = NULL){
+  if (is.null(stopwrds)) {
+    corpus <- tm_map(corpus, stripWhitespace)
+    corpus <- tm_map(corpus, content_transformer(tolower))
+    corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
+    return(corpus)    
+  } else {
+    corpus <- tm_map(corpus, stripWhitespace)
+    corpus <- tm_map(corpus, content_transformer(tolower))
+    corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need", "fix", stopwrds))
+    return(corpus)
+  }
 }
 
-#returns a data frame of words and frequencies sorted by most to least frequent
-#input: character vector of words, n is optional (to output top n most frequent words)
-freq_terms <- function(vec, n) {
-  
+#function that takes in character vector and returns a data frame of words and frequencies sorted by most to least frequent, n and stopwrds are an optional arguments
+freq_terms <- function(vec, n = NULL, stopwrds = NULL) {
   source <- VectorSource(vec)
   corpus <- VCorpus(source)
-  cleaned_corpus <- clean_corpus(corpus) 
-  dtm <- DocumentTermMatrix(cleaned_corpus)
-  m <- as.matrix(dtm) 
-  freq <- colSums(m)
-  freq <- sort(freq, decreasing = TRUE)
-  freq_df <- data.frame(word = names(freq), frequency = unname(freq))
+  
+  if (is.null(stopwrds)) {
+    cleaned_corpus <- clean_corpus(corpus) 
+    dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = weightTfIdf))
+    m <- as.matrix(dtm) 
+    freq <- colSums(m)
+    freq <- sort(freq, decreasing = TRUE)
+    freq_df <- data.frame(word = names(freq), frequency = unname(freq))    
+  } else {
+    cleaned_corpus <- clean_corpus(corpus, stopwrds) 
+    dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = weightTfIdf))
+    m <- as.matrix(dtm) 
+    freq <- colSums(m)
+    freq <- sort(freq, decreasing = TRUE)
+    freq_df <- data.frame(word = names(freq), frequency = unname(freq))
+  }
   
   if (missing(n)) {
     return(freq_df)
@@ -114,5 +140,56 @@ freq_terms <- function(vec, n) {
 }
 ```
 
+```{r}
+#functions used in model fitting
 
+#function to calculate r-square adjusted
+#k = number of independent predictors 
+get_rsq_adj <- function(cr_obj, k) {
+  r <- unname(summary(cr_obj)$rsq[1])
+  n <- summary(cr_obj)$n
+  radj <- 1- (((1- (r**2)) * (n - 1))/(n-k-1))
+  return(radj)
+}
+
+#add in function to compare nested models 
+
+```
+
+```{r}
+#functions used to compare stackoverflow's model
+
+#function to get median answer times grouped by specified variables (since you can't see it in the boxplot)
+#input var using ""
+get_medians <- function(var) {
+  if (class(var) != "character" | class(var) != "factor") {
+    medians <- x %>%
+      group_by(as.factor(x[[var]])) %>%
+      summarise(median_time = round(median(time_until_answer), 2), n = n())
+  } else {
+    medians <- x %>%
+      group_by(x[[var]]) %>%
+      summarise(median_time = round(median(time_until_answer), 2), n = n())    
+  }
+  names(medians)[1] <- var
+  return(medians)
+}
+
+#function to create boxplot 
+get_boxplot <- function(var, xaxis, title) {
+  if (class(var) != "character" | class(var) != "factor") {
+    ggplot(x, aes(x = as.factor(x[[var]]), y = time_until_answer)) + 
+      geom_boxplot() + 
+      scale_x_discrete(xaxis) + 
+      scale_y_continuous("Answer time (hours)") + 
+      ggtitle(paste("Boxplots of answer times grouped by", title))
+  } else {
+    ggplot(x, aes(x = x[[var]], y = time_until_answer)) + 
+      geom_boxplot() + 
+      scale_x_discrete(xaxis) + 
+      scale_y_continuous("Answer time (hours)") + 
+      ggtitle(paste("Boxplots of answer times grouped by", title))
+  }
+}
+```
 

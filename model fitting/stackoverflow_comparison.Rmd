@@ -160,12 +160,6 @@ x$num_prior_effort <- str_count(str_to_lower(x$text), pattern = or("tried", "sea
 ```
 
 ```{r, functions, include = FALSE}
-#function to get AIC statistics
-get_aic <- function(cr_obj, num_parameters, data) {
-  aic <- (-2*cr_obj$loglik[2]) + (2*num_parameters)
-  return(aic)
-}
-
 #function to calculate r-square adjusted
 get_rsq_adj <- function(cr_obj, k) {
   r <- unname(summary(cr_obj)$rsq[1])

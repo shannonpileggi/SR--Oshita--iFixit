@@ -33,24 +33,41 @@ library(survival)
 library(qdap)
 library(tm)
 
-#function to clean corpus
-clean_corpus <- function(corpus){
-  corpus <- tm_map(corpus, stripWhitespace)
-  corpus <- tm_map(corpus, content_transformer(tolower))
-  corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need"))
-  return(corpus)
+#function to clean corpus, can specify stopwords to remove 
+clean_corpus <- function(corpus, stopwrds = NULL){
+  if (is.null(stopwrds)) {
+    corpus <- tm_map(corpus, stripWhitespace)
+    corpus <- tm_map(corpus, content_transformer(tolower))
+    corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
+    return(corpus)    
+  } else {
+    corpus <- tm_map(corpus, stripWhitespace)
+    corpus <- tm_map(corpus, content_transformer(tolower))
+    corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "can", "will", "cant", "wont", "works", "get", "help", "need", "fix", stopwrds))
+    return(corpus)
+  }
 }
 
-#function that takes in character vector and returns a data frame of words and frequencies sorted by most to least frequent, n is an optional argument 
-freq_terms <- function(vec, n = NULL) {
+#function that takes in character vector and returns a data frame of words and frequencies sorted by most to least frequent, n and stopwrds are an optional arguments
+freq_terms <- function(vec, n = NULL, stopwrds = NULL) {
   source <- VectorSource(vec)
   corpus <- VCorpus(source)
-  cleaned_corpus <- clean_corpus(corpus) 
-  dtm <- DocumentTermMatrix(cleaned_corpus)
-  m <- as.matrix(dtm) 
-  freq <- colSums(m)
-  freq <- sort(freq, decreasing = TRUE)
-  freq_df <- data.frame(word = names(freq), frequency = unname(freq))
+  
+  if (is.null(stopwrds)) {
+    cleaned_corpus <- clean_corpus(corpus) 
+    dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = weightTfIdf))
+    m <- as.matrix(dtm) 
+    freq <- colSums(m)
+    freq <- sort(freq, decreasing = TRUE)
+    freq_df <- data.frame(word = names(freq), frequency = unname(freq))    
+  } else {
+    cleaned_corpus <- clean_corpus(corpus, stopwrds) 
+    dtm <- DocumentTermMatrix(cleaned_corpus, control = list(weighting = weightTfIdf))
+    m <- as.matrix(dtm) 
+    freq <- colSums(m)
+    freq <- sort(freq, decreasing = TRUE)
+    freq_df <- data.frame(word = names(freq), frequency = unname(freq))
+  }
   
   if (missing(n)) {
     return(freq_df)
@@ -59,7 +76,6 @@ freq_terms <- function(vec, n = NULL) {
     return(freq_df[1:n,])
   }
 }
-
 
 #function to plot survival curves with ggplot
 plot_surv <- function(survfit, data, xlim = NULL) {
@@ -235,6 +251,7 @@ ggplot(combined, aes(x = prop_in_unanswered)) +
 * want the ratio to be large (or small) enough to allow us to decide whether or not that word is more likely to show up in an answered/unanswered question
 
 ###### words that appear more than 1% of the time in unanswered questions and are more likely (ratio < 1) to be used in unanswered questions
+
 ```{r, echo = FALSE}
 p_threshold <- 0.01
 ratio_threshold <- 1
