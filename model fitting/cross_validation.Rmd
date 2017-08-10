@@ -33,108 +33,108 @@ test1 <- x[splitPlan[[1]]$train, ]
 # Univariate analyses (select variables with p-value < 0.01)
 
 # category 
-x$category <- as.character(x$category)
-x$category[is.na(x$category)] <- "Other"
-x$category <- as.factor(x$category)
-cr_cat <- coxph(Surv(time_until_answer, answered) ~ category, data = x)
+test1$category <- as.character(test1$category)
+test1$category[is.na(test1$category)] <- "Other"
+test1$category <- as.factor(test1$category)
+cr_cat <- coxph(Surv(time_until_answer, answered) ~ category, data = test1)
 summary(cr_cat) # p=0 
 
 # n_images
-cr_image <- coxph(Surv(time_until_answer, answered) ~ n_images, data = x)
-summary(cr_image) # p=4.27e-06
-x$new_n_images <- as.character(x$n_images) # recoding to group questions with >= 6 images 
-x$new_n_images[x$n_images >= 6] <- ">= 6"
-cr_image1 <- coxph(Surv(time_until_answer, answered) ~ new_n_images, data = x)
-summary(cr_image1) # p=1.064e-05
+cr_image <- coxph(Surv(time_until_answer, answered) ~ n_images, data = test1)
+summary(cr_image) # p=2.23e-06
+test1$new_n_images <- as.character(test1$n_images) # recoding to group questions with >= 6 images 
+test1$new_n_images[test1$n_images >= 6] <- ">= 6"
+cr_image1 <- coxph(Surv(time_until_answer, answered) ~ new_n_images, data = test1)
+summary(cr_image1) # p=6.461e-06
 
 # n_tags
-cr_ntags <- coxph(Surv(time_until_answer, answered) ~ as.factor(n_tags), data = x)
-summary(cr_ntags) # p=1.729e-09
+cr_ntags <- coxph(Surv(time_until_answer, answered) ~ as.factor(n_tags), data = test1)
+summary(cr_ntags) # p=2.039e-09
 
 # new_user
-cr_user <- coxph(Surv(time_until_answer, answered) ~ as.factor(new_user), data = x)
+cr_user <- coxph(Surv(time_until_answer, answered) ~ as.factor(new_user), data = test1)
 summary(cr_user) # p=0
 
 # weekday 
-x$datetime <- as.POSIXct(x$post_date,origin="1970-01-01")
-x$weekday <- factor(weekdays(x$datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
-cr_weekday <- coxph(Surv(time_until_answer, answered) ~ weekday, data = x)
-summary(cr_weekday) # p=0.0002063
+test1$datetime <- as.POSIXct(test1$post_date,origin="1970-01-01")
+test1$weekday <- factor(weekdays(test1$datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+cr_weekday <- coxph(Surv(time_until_answer, answered) ~ weekday, data = test1)
+summary(cr_weekday) # p=0.0006061
 
 # is_weekend
-x$is_weekend <- FALSE
-x$is_weekend[x$weekday == "Saturday" | x$weekday == "Sunday"] <- TRUE
-cr_weekend <- coxph(Surv(time_until_answer, answered) ~ is_weekend, data = x)
-summary(cr_weekend) # p=0.001501
+test1$is_weekend <- FALSE
+test1$is_weekend[test1$weekday == "Saturday" | test1$weekday == "Sunday"] <- TRUE
+cr_weekend <- coxph(Surv(time_until_answer, answered) ~ is_weekend, data = test1)
+summary(cr_weekend) # p=0.001602
 
 # hour of the day
-x$hour <- as.numeric(format(x$datetime,"%H"))
-cr_hour <- coxph(Surv(time_until_answer, answered) ~ hour, data = x)
-summary(cr_hour) # p=0.4161
+test1$hour <- as.numeric(format(test1$datetime,"%H"))
+cr_hour <- coxph(Surv(time_until_answer, answered) ~ hour, data = test1)
+summary(cr_hour) # p=0.3994
 
 # morning/noon/evening/night?
-x$ampm <- "Night"
-x$ampm[x$hour >= 5 & x$hour < 12] <- "Morning"
-x$ampm[x$hour >= 12 & x$hour < 17] <- "Afternoon" #noon - 5pm 
-x$ampm[x$hour >= 17 & x$hour < 20] <- "Evening" #5pm - 8pm 
-cr_ampm <- coxph(Surv(time_until_answer, answered) ~ ampm, data = x)
-summary(cr_ampm) # p=2.128e-06
+test1$ampm <- "Night"
+test1$ampm[test1$hour >= 5 & test1$hour < 12] <- "Morning"
+test1$ampm[test1$hour >= 12 & test1$hour < 17] <- "Afternoon" #noon - 5pm 
+test1$ampm[test1$hour >= 17 & test1$hour < 20] <- "Evening" #5pm - 8pm 
+cr_ampm <- coxph(Surv(time_until_answer, answered) ~ ampm, data = test1)
+summary(cr_ampm) # p=0.0001333
 
 # title length 
-x$title_length <- str_length(x$title)
-cr_title_len <- coxph(Surv(time_until_answer, answered) ~ title_length, data = x)
-summary(cr_title_len) # p=0.4185
+test1$title_length <- str_length(test1$title)
+cr_title_len <- coxph(Surv(time_until_answer, answered) ~ title_length, data = test1)
+summary(cr_title_len) # p=0.4386
 
 # text length
-x$text_length <- str_length(x$text)
-cr_text_len <- coxph(Surv(time_until_answer, answered) ~ text_length, data = x)
-summary(cr_text_len) # p=3.442e-15
+test1$text_length <- str_length(test1$text)
+cr_text_len <- coxph(Surv(time_until_answer, answered) ~ text_length, data = test1)
+summary(cr_text_len) # p=1.477e-14
 
 # device name length
-x$device_length <- str_length(x$device)
-cr_device_len <- coxph(Surv(time_until_answer, answered) ~ device_length, data = x)
-summary(cr_device_len) # p=0.0008583
+test1$device_length <- str_length(test1$device)
+cr_device_len <- coxph(Surv(time_until_answer, answered) ~ device_length, data = test1)
+summary(cr_device_len) # p=0.0113
 
 # length of sentence until first punctuation mark 
-x$length <- str_locate(x$text, pattern = "[.|?|!]")[,1]
-q <- quantile(x$length, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
-x$text_till_punct <- "none"
-x$text_till_punct[x$length <= q[2]] <- "short"
-x$text_till_punct[x$length >= q[2] & x$length <= q[3]] <- "medium"
-x$text_till_punct[x$length >= q[3] & x$length <= q[4]] <- "moderate"
-x$text_till_punct[x$length >= q[4]] <- "long"
-cr_tillpunct <- coxph(Surv(time_until_answer, answered) ~ text_till_punct, data = x)
-summary(cr_tillpunct) # p=0.01604
+test1$length <- str_locate(test1$text, pattern = "[.|?|!]")[,1]
+q <- quantile(test1$length, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
+test1$text_till_punct <- "none"
+test1$text_till_punct[test1$length <= q[2]] <- "short"
+test1$text_till_punct[test1$length >= q[2] & test1$length <= q[3]] <- "medium"
+test1$text_till_punct[test1$length >= q[3] & test1$length <= q[4]] <- "moderate"
+test1$text_till_punct[test1$length >= q[4]] <- "long"
+cr_tillpunct <- coxph(Surv(time_until_answer, answered) ~ text_till_punct, data = test1)
+summary(cr_tillpunct) # p=1.017e-06
 
 # if text contains any end punctuation
-x$text_contain_punct <- FALSE
-x$text_contain_punct[!is.na(x$text_till_punct)] <- TRUE
-cr_containpun <- coxph(Surv(time_until_answer, answered) ~ text_contain_punct, data = x)
-summary(cr_containpun) # p=7.862e-11
+test1$text_contain_punct <- FALSE
+test1$text_contain_punct[!is.na(test1$length)] <- TRUE
+cr_containpun <- coxph(Surv(time_until_answer, answered) ~ text_contain_punct, data = test1)
+summary(cr_containpun) # p=8.269e-09
 
 # if the text ends in a punctuation
-x$text_end_punct <- str_detect(x$text, pattern = "[.|?|!]$")
-cr_endpunct <- coxph(Surv(time_until_answer, answered) ~ text_end_punct, data = x)
-summary(cr_endpunct) # p=0.02284
+test1$text_end_punct <- str_detect(test1$text, pattern = "[.|?|!]$")
+cr_endpunct <- coxph(Surv(time_until_answer, answered) ~ text_end_punct, data = test1)
+summary(cr_endpunct) # p=0.185
 
 # if the title ends with a question mark
 library(rebus)
-x$title_questionmark <- str_detect(x$title, pattern = QUESTION %R% END)
-cr_title_q <- coxph(Surv(time_until_answer, answered) ~ title_questionmark, data = x)
-summary(cr_title_q) # p=5.551e-16
+test1$title_questionmark <- str_detect(test1$title, pattern = QUESTION %R% END)
+cr_title_q <- coxph(Surv(time_until_answer, answered) ~ title_questionmark, data = test1)
+summary(cr_title_q) # p=6.55e-15
 
 # if title begins with "wh"
-x$title_beginwh <- str_detect(str_to_lower(x$title), pattern = "^wh")
-cr_begin <- coxph(Surv(time_until_answer, answered) ~ title_beginwh, data = x)
-summary(cr_begin) # p=0.04327
+test1$title_beginwh <- str_detect(str_to_lower(test1$title), pattern = "^wh")
+cr_begin <- coxph(Surv(time_until_answer, answered) ~ title_beginwh, data = test1)
+summary(cr_begin) # p=0.2241
 
 # if first letter of title is capitalized
-x$capital_title <- str_detect(as.character(x$title), pattern = "^[[:upper:]]")
-cr_title <- coxph(Surv(time_until_answer, answered) ~ capital_title, data = x)
-summary(cr_title) # p=0.9636
+test1$capital_title <- str_detect(as.character(test1$title), pattern = "^[[:upper:]]")
+cr_title <- coxph(Surv(time_until_answer, answered) ~ capital_title, data = test1)
+summary(cr_title) # p=0.6906
 
 # if first letter of text is capitalized
-x$capital_text <- str_detect(x$text, pattern = "^[[:upper:]]")
+test1$capital_text <- str_detect(test1$text, pattern = "^[[:upper:]]")
 
 ```
 
