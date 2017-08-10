@@ -1,0 +1,124 @@
+---
+title: "Supervised Learning Notes"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##### Basic Regression notes
+
+* predict(model, newdata) for lm to make predictions from model, using newdata values 
+
+##### Gain Curve
+
+* WVPlots::GainCurvePlot(frame, xvar, truthvar, title)
+    + frame is a data frame
+    + xvar and truthvar are strings naming the prediction and actual outcome columns of frame
+    + title is the title of the plot
+* For situations where order is more important than exact values, the gain curve helps you check if the model's predictions sort in the same order as the true outcome.
+* When the predictions sort in exactly the same order, the relative Gini coefficient is 1. When the model sorts poorly, the relative Gini coefficient is close to zero, or even negative.
+
+##### RMSE
+
+* An RMSE much smaller than the outcome's standard deviation suggests a model that predicts well.
+* `residuals <- df$residuals`
+* `RMSE <- sqrt(mean(residuals^2))`
+* Compare it to the standard deviation of the model's outcome/response
+
+### Training data
+
+##### train a model using test/train split
+
+* working with mpg data set, splitting it into train and test data sets
+
+```{r}
+library(ggplot2)
+
+N <- nrow(mpg)
+#how many rows 75% of N should be:
+(target <- round(N * 0.75))
+#vector of N uniform random variables
+gp <- runif(N)
+#using gp to split mpg 
+mpg_train <- mpg[gp < 0.75, ] #should contain about 75% of N (the target) 
+mpg_test <- mpg[gp >= 0.75, ]
+
+#now train the model 
+#formula to express cty as a function of hwy
+(fmla <- cty ~ hwy)
+
+#build mpg_model from mpg_train that predicts cty from hwy 
+mpg_model <- lm(fmla, data = mpg_train)
+summary(mpg_model)
+
+#predict cty from hwy for the training set
+mpg_train$pred <- predict(mpg_model)
+
+#predict cty from hwy for the test set + add it as column to the test data 
+mpg_test$pred <- predict(mpg_model, newdata = mpg_test)
+
+#to evaluate performance, compute RMSE for training and test data and compare, do the same for r-square
+```
+
+##### cross validation plan
+
+* vtreat::kWayCrossValidation(nRows, nSplits, dframe, y)
+    + nrows: number of rows to be split
+    + nSplits: desired number of cross-validation folds
+    + can set other two arguments to null (aren't used for kWayCrossVal but for compatibility with vtreat)
+* Cross-validation predicts how well a model built from all the data will perform on new data. As with the test/train split, for a good modeling procedure, cross-validation performance and training performance should be close
+* if the estimated model performance looks good enough, then fit a final model with all of the data (performance between cv and full model should be similar), can't evaluate final model's future performance since there is no data to do so
+    + cross validation validates the MODELING PROCESS, not the actual model (test/train split does test how the model will perform on future data)
+    
+
+```{r}
+splitPlan <- vtreat::kWayCrossValidation(nrow(mpg), 3, NULL, NULL)
+#splitPlan is a list of nSplits elements; each element contains two vectors: train: the indices of dframe that will form the training set, and app: the indices of dframe that will form the test (or application) set
+str(splitPlan)
+
+#================================================
+
+#dframe is the training data, one way to add a column of cross validation predictions to a frame is: 
+
+# Initialize a column of the appropriate length
+# dframe$pred.cv <- 0 
+
+# k is the number of folds
+# splitPlan is the cross validation plan
+
+# for(i in 1:k) {
+  # Get the ith split
+  # split <- splitPlan[[i]]
+  # Build a model on the training data from this split (lm, in this case)
+  # model <- lm(fmla, data = dframe[split$train,])
+  # make predictions on the application data from this split
+  # dframe$pred.cv[split$app] <- predict(model, newdata = dframe[split$app,])
+}
+
+#================================================
+
+# Run the 3-fold cross validation plan from splitPlan
+k <- 3 # Number of folds
+mpg$pred.cv <- 0 #initialize column
+for(i in 1:k) {
+  split <- splitPlan[[i]]
+  #build model on the training data
+  model <- lm(cty ~ hwy, data = mpg[split$train, ]) 
+  #make predictions on app data from the split
+  mpg$pred.cv[split$app] <- predict(model, newdata = mpg[split$app, ]) 
+}
+
+#Predict from a full model
+mpg$pred <- predict(lm(cty ~ hwy, data = mpg))
+
+#Get the rmse of the full model's predictions : rmse(mpg$pred, mpg$cty) = 1.247045
+#Get the rmse of the cross-validation predictions : rmse(mpg$pred.cv, mpg$cty) = 1.260323
+```
+
+
+
+
+
+
