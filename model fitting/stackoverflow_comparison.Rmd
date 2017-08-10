@@ -276,8 +276,12 @@ survdiff(surv_ob ~ as.factor(n_images), data = x)
 ```{r, echo = FALSE}
 #using cut function to divide range of title lengths into intervals 
 x$title_ints <- cut(x$title_length, breaks = 5)
+table(x$title_ints)
 
 get_boxplot("title_ints", xaxis = "Intervals of title length (characters)", title = "title_ints")
+
+cr5 <- coxph(Surv(time_until_answer, answered) ~ title_ints, data = x)
+summary(cr5)
 ```
 
 ##### Median answer times 

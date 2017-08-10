@@ -14,24 +14,9 @@ library(tm)
 library(qdap)
 ```
 
-
 ```{r}
 #function to import and set up the data 
-setup <- function() {
-  dir <- file.path(getwd(),"data")
-  out <- read.csv(file.path(dir, "answers_data.csv"))
-  
-  library(dplyr)
-  x <- out %>% 
-    tbl_df() %>%
-    filter(langid == "en")
-
-  x$time_until_answer <- (x$first_answer_date - x$post_date)/3600
-  empty <- which(is.na(x$time_until_answer))
-  for (i in empty) {
-    x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
-}
-}
+oshitar::setup()
 ```
 
 ```{r}
@@ -39,7 +24,7 @@ setup <- function() {
 
 #function to plot survfit objects
 #input: survfit object, data, optional x-axis limits
-plot_surv <- function(survfit, data, xlim = NULL) {
+get_survplot <- function(survfit, data, xlim = NULL) {
   library(ggfortify)
   library(directlabels)
   
@@ -84,7 +69,7 @@ plot_surv <- function(survfit, data, xlim = NULL) {
 }
 
 #function that prints out summary stats grouped by that variable 
-sum_stats <- function(variable, data) {
+get_summaries <- function(variable, data) {
   tbl <- x %>%
     group_by(data[[variable]]) %>%
     summarise(n = n(), median_time = median(time_until_answer), median_views = median(daily_views), prop_answered = sum(answered)/n) %>%
@@ -111,7 +96,7 @@ clean_corpus <- function(corpus, stopwrds = NULL){
 }
 
 #function that takes in character vector and returns a data frame of words and frequencies sorted by most to least frequent, n and stopwrds are an optional arguments
-freq_terms <- function(vec, n = NULL, stopwrds = NULL) {
+get_freq_terms <- function(vec, n = NULL, stopwrds = NULL) {
   source <- VectorSource(vec)
   corpus <- VCorpus(source)
   
@@ -145,14 +130,28 @@ freq_terms <- function(vec, n = NULL, stopwrds = NULL) {
 
 #function to calculate r-square adjusted
 #k = number of independent predictors 
-get_rsq_adj <- function(cr_obj, k) {
-  r <- unname(summary(cr_obj)$rsq[1])
-  n <- summary(cr_obj)$n
-  radj <- 1- (((1- (r**2)) * (n - 1))/(n-k-1))
+get_rsq_adj <- function(cox, k) {
+  r <- unname(summary(cox)$rsq[1])
+  n <- summary(cox)$n
+  radj <- 1 - (((1 - (r**2)) * (n - 1))/(n-k-1))
   return(radj)
 }
 
-#add in function to compare nested models 
+#function to compare nested models
+#full and reduced = number of parameters 
+compare_nested <- function(crfull, crreduced) {
+  loglik_f <- summary(crfull)[["loglik"]][2]
+  loglik_r <- summary(crreduced)[["loglik"]][2]
+  stat <- 2*(loglik_f - loglik_r)
+  
+  full <- length(crfull[["coefficients"]])
+  reduced <- length(crreduced[["coefficients"]])
+  
+  df <- full - reduced
+  pval <- 1 - pchisq(stat, df)
+  results <- data.frame(statistic = stat, pval = pval)
+  return(results)
+}
 
 ```
 

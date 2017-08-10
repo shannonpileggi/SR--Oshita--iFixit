@@ -104,6 +104,7 @@ x$post_ampm[x$post_hour >= 17 & x$post_hour < 20] <- "Evening" #5pm - 8pm
 #length of sentence till first punctuation mark 
 x$text_till_punct <- str_locate(x$text, pattern = "[.|?|!]")[,1]
 x$text_till_punct[is.na(x$text_till_punct)] <- 5000
+#categorize this- zero, small, short, long...
 
 #if text contains end punctuation
 x$text_contain_punct <- FALSE
@@ -294,6 +295,14 @@ x$is_weekend[x$post_weekday == "Saturday" | x$post_weekday == "Sunday"] <- TRUE
 ```
 
 
+```{r}
+ggplot(x, aes(x = time_until_answer, y = avg_tag_score, color = as.factor(answered))) + 
+  geom_point()
+
+library(ggplot2)
+```
+
+
 ```{r, echo = FALSE}
 cr1 <- coxph(Surv(time_until_answer, answered) ~ category + title_length + text_length + device_length + as.factor(n_tags) + as.factor(pic_included) + new_user + post_weekday + post_ampm + contain_unanswered + contain_answered + avg_tag_length + avg_tag_score + num_pop_tags + text_till_punct + title_questionmark + title_begin_wh + capital_text + capital_title + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio, data = x)
 
@@ -437,16 +446,27 @@ summary(cr11)
 ```{r}
 #function to compare nested models
 #full and reduced = number of parameters 
-compare_nested <- function(crfull, crreduced, full, reduced) {
-  s_full <- summary(crfull)
-  s_red <- summary(crreduced)
-  like_f <- s_full[[loglik]]
-  like_r <- s_red[[loglik]]
-  stat <- 2*(like_f - like_r)
-  df <- param_full - param_reduced
+compare_nested <- function(crfull, crreduced) {
+  loglik_f <- summary(crfull)[["loglik"]][2]
+  loglik_r <- summary(crreduced)[["loglik"]][2]
+  stat <- 2*(loglik_f - loglik_r)
+  
+  full <- length(crfull[["coefficients"]])
+  reduced <- length(crreduced[["coefficients"]])
+  
+  df <- full - reduced
   pval <- 1 - pchisq(stat, df)
-  return(stat, pval)
+  results <- data.frame(statistic = stat, pval = pval)
+  return(results)
 }
+
+#full
+cr11 <- coxph(Surv(time_until_answer, answered) ~ category + 
+                 device_length + n_images + new_user + post_weekday + 
+                 post_ampm + contain_unanswered + contain_answered + avg_tag_score + 
+                 title_questionmark + title_begin_wh + capital_text + 
+                 capital_title + text_all_lower + prior_effort + update + 
+                 newline_ratio + title_questionmark*title_begin_wh, data = x)
 
 #reduced model
 cr11_r <- coxph(Surv(time_until_answer, answered) ~ category + 
@@ -456,9 +476,7 @@ cr11_r <- coxph(Surv(time_until_answer, answered) ~ category +
                  capital_title + text_all_lower + prior_effort + update + 
                  newline_ratio, data = x)
 
-#not calling loglik 
-compare_nested("cr11", "cr11_r", full = 18, reduced = 17)
-
+compare_nested(cr11, cr11_r)
 ```
 
 
@@ -498,6 +516,13 @@ cr14 <- coxph(Surv(time_until_answer, answered) ~ category +
                  new_user*newline_ratio + category*device_length, data = x)
 AIC(cr14, k = 2) #83335.8
 summary(cr14)
+```
+
+```{r}
+cr14 <- coxph(Surv(time_until_answer, answered) ~ avg_tag_score, data = x)
+summary(cr14)
+names(cr14)
+length(cr14$coefficients)
 ```
 
  
