@@ -69,7 +69,8 @@ mpg_test$pred <- predict(mpg_model, newdata = mpg_test)
     + nSplits: desired number of cross-validation folds
     + can set other two arguments to null (aren't used for kWayCrossVal but for compatibility with vtreat)
 * Cross-validation predicts how well a model built from all the data will perform on new data. As with the test/train split, for a good modeling procedure, cross-validation performance and training performance should be close
-* if the estimated model performance looks good enough, then fit a final model with all of the data (performance between cv and full model should be similar), can't evaluate final model's future performance since there is no data to do so
+* all predictions from CV are essentially test set predictions- so RMSE and r-square calculated from these predictions should give an unbiased estimate of how a model fit to all the training data will perform on future data 
+if the estimated model performance looks good enough, then fit a final model with all of the data (performance between cv and full model should be similar), can't evaluate final model's future performance since there is no data to do so
     + cross validation validates the MODELING PROCESS, not the actual model (test/train split does test how the model will perform on future data)
     
 
@@ -95,7 +96,7 @@ str(splitPlan)
   # model <- lm(fmla, data = dframe[split$train,])
   # make predictions on the application data from this split
   # dframe$pred.cv[split$app] <- predict(model, newdata = dframe[split$app,])
-}
+#}
 
 #================================================
 
