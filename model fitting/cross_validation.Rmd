@@ -387,19 +387,18 @@ summary(results2)
 results2 <- coxph(Surv(time_until_answer, answered) ~ category + n_images + as.factor(new_user) + weekday + ampm + device_length + title_questionmark + title_beginwh + capital_text + update + newline_ratio + frequent_tag + contain_answered + contain_unanswered, data = train1) # 65050.45
 
 # adding interaction terms
-r2_i <- coxph(Surv(time_until_answer, answered) ~ new_category + n_images + new_user + weekday + ampm + device_length + title_questionmark + title_beginwh + capital_text + update + newline_ratio + frequent_tag + contain_answered + contain_unanswered + title_questionmark*title_beginwh + new_user*update + new_user*newline_ratio, data = train1)
+r2_i <- coxph(Surv(time_until_answer, answered) ~ category + n_images + new_user + weekday + ampm + device_length + title_questionmark + title_beginwh + capital_text + update + newline_ratio + frequent_tag + contain_answered + contain_unanswered + title_questionmark*title_beginwh + new_user*update + new_user*newline_ratio, data = train1)
 AIC(r2_i, k = 2) # 65037.36
 summary(r2_i)
 ```
 
 ##### recoding category variable
 
-* separate iPhones/Androids (or group all apple products together?) - use str_detect to find categories with apple/iphone/mac (since there are apple watches in the apparel category)
-* keep Mac and PC the same
-* group all categories that have less than 100 questions together? 
-* group electronics + median player
-* group household + appliance
-* group car and truck + vehicle 
+* group all apple products together (use str_detect to search for Apple, ipad, ipod)
+* recode left over Phones to Android/Other Phone
+* group household + appliance as "Home"
+* group car and truck + vehicle as "Vehicle"
+* set a rule: any category with less than 50 questions gets grouped with "Other"
 
 ```{r}
 # pie chart of product categories
@@ -407,37 +406,39 @@ ggplot(train1, aes(x = factor(1), fill = category)) + geom_bar(width = 1) +
   coord_polar(theta = "y")
 
 train1 %>%
-  group_by(category) %>%
-  summarise(median_t = median(time_until_answer), n = n()) %>%
-  arrange(median_t)
+  filter(category == "Media Player") %>%
+  group_by(subcategory) %>%
+  summarise(median = median(time_until_answer), n = n(), prop_a = sum(answered)/n)
 
+#===================================================
 # recoding category variable
 train1$new_category <- as.character(train1$category)
-train1$new_category[train1$subcategory == "iPhone"] <- "iPhone"
-train1$new_category[train1$new_category == "Phone"] <- "Android/Other OS Phone"
-train1$new_category[train1$new_category == "Electronics" | train1$new_category == "Media Player"] <- "Electronics/Media"
-train1$new_category[train1$new_category == "Household" | train1$new_category == "Appliance"] <- "Home"
-train1$new_category[train1$new_category == "Car and Truck"] <- "Vehicle"
 
-#if there are less than 50 questions in a certain category, group with "Other"
-n <- train1 %>%
-  group_by(category) %>%
+# grouping apple products together
+apple_terms <- c("apple", "ipod", "ipad")
+train1$apple <- str_detect(str_to_lower(train1$device), pattern = START %R% or1(apple_terms) %R% SPC)
+train1$new_category[train1$apple == TRUE | train1$subcategory == "iPhone" | train1$category == "Mac"] <- "Apple Product"
+
+# renaming left over phones 
+train1$new_category[train1$new_category == "Phone"] <- "Android/Other Phone"
+train1$new_category[train1$new_category == "Appliance" | train1$new_category == "Household"] <- "Home"
+train1$new_category[train1$new_category == "Car and Truck" | train1$new_category == "Vehicle"] <- "Vehicle"
+
+# if there are less than 60 questions in a category, group them with other
+counts <- train1 %>%
+  group_by(new_category) %>%
   summarise(n = n())
-# fix this (not working correctly)
-for (i in nrow(n)) {
-  if (n$n[i] < 50) {
-    train1$new_category[train1$category == n$category[i]] <- "Other"
-  }
+for (i in which(counts$n <= 100)) {
+  train1$new_category[train1$new_category == counts$new_category[i]] <- "Other"
 }
 
-# model with new_category- AIC dropped 
+table(train1$new_category)
+
+# model with new_category 
 r2_new <- coxph(Surv(time_until_answer, answered) ~ new_category + n_images + new_user + weekday + ampm + device_length + title_questionmark + title_beginwh + capital_text + update + newline_ratio + frequent_tag + contain_answered + contain_unanswered + title_questionmark*title_beginwh + new_user*update + new_user*newline_ratio, data = train1)
-AIC(r2_new, k = 2) # 64743.48
+AIC(r2_new, k = 2) # 64728.77
 summary(r2_new)
 ```
 
-```{r}
-
-```
 
 
