@@ -67,6 +67,7 @@ Date   | Hours | Time        | Description
 8/8/2017 | 3 | 1:00-4:00PM | Worked with Anthony on building an R package 
 8/9/2017 | 4.25 | 10:45-3:00PM | Predictive model fitting research, reviewed cox regression notes from STAT 417
 8/9/2017 | 3 | 9:30-12:30AM | Found predictive model article, researched terminology from the article, found r packages to use
-8/10/2017 | | 8:00- | Finished putting functions in r package, organized files, continued with model fitting research
+8/10/2017 | 8 | 8:00-4:00PM | Finished putting functions in r package, organized files, data camp course on cross validation, continued with model fitting research
+8/10/2017 | 2 | 6:00-8:00PM | Tried to figure out backwards selection function to fit model
 
 >> __Total Hours: 1...__

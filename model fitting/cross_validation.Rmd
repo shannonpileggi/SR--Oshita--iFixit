@@ -332,7 +332,7 @@ summary(cr_ans) # p=2.314e-08
 ### Backwards selection of variables 
 
 * using selectCox function from pec package
-* choose between n_images or new_n_images, determine if should treat n_images as discrete (don't treat as discrete cuz beta goes to infinity)
+* choose between n_images or new_n_images
 * weekday or is_weekend
 * text_till_punct or text_contain_punct? 
 * frequent_tag or num_freq_tags 
