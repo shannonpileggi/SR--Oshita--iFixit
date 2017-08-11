@@ -13,6 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 x <- oshitar::setup()
 library(survival)
 library(stringr)
+library(rebus)
+library(dplyr)
+library(stats)
 ```
 
 ### Creating cross-validation plan with k = 5
@@ -26,124 +29,367 @@ str(splitPlan)
 
 ##### Univariate analyses 
 
-```{r, echo = FALSE}
-test1 <- x[splitPlan[[1]]$train, ]
+```{r, include = FALSE}
+train1 <- x[splitPlan[[1]]$train, ]
 
 #===================================================================
 # Univariate analyses (select variables with p-value < 0.01)
-
 # category 
-test1$category <- as.character(test1$category)
-test1$category[is.na(test1$category)] <- "Other"
-test1$category <- as.factor(test1$category)
-cr_cat <- coxph(Surv(time_until_answer, answered) ~ category, data = test1)
+train1$category <- as.character(train1$category)
+train1$category[is.na(train1$category)] <- "Other"
+train1$category <- as.factor(train1$category)
+cr_cat <- coxph(Surv(time_until_answer, answered) ~ category, data = train1)
 summary(cr_cat) # p=0 
 
+#===================================================================
 # n_images
-cr_image <- coxph(Surv(time_until_answer, answered) ~ n_images, data = test1)
-summary(cr_image) # p=0.0006857
-test1$new_n_images <- as.character(test1$n_images) # recoding to group questions with >= 6 images 
-test1$new_n_images[test1$n_images >= 6] <- ">= 6"
-cr_image1 <- coxph(Surv(time_until_answer, answered) ~ new_n_images, data = test1)
-summary(cr_image1) # p=0.004347
+cr_image <- coxph(Surv(time_until_answer, answered) ~ n_images, data = train1)
+summary(cr_image) # p=2.23e-06
+train1$new_n_images <- as.character(train1$n_images) # recoding to group questions with >= 6 images 
+train1$new_n_images[train1$n_images >= 6] <- ">= 6"
+cr_image1 <- coxph(Surv(time_until_answer, answered) ~ new_n_images, data = train1)
+summary(cr_image1) # p=6.461e-06
 
+#===================================================================
 # n_tags
-cr_ntags <- coxph(Surv(time_until_answer, answered) ~ as.factor(n_tags), data = test1)
-summary(cr_ntags) # p=5.701e-07
+cr_ntags <- coxph(Surv(time_until_answer, answered) ~ as.factor(n_tags), data = train1)
+summary(cr_ntags) # p=2.039e-09
+train1$n_tags <- as.factor(train1$n_tags)
 
+#===================================================================
 # new_user
-cr_user <- coxph(Surv(time_until_answer, answered) ~ as.factor(new_user), data = test1)
+cr_user <- coxph(Surv(time_until_answer, answered) ~ as.factor(new_user), data = train1)
 summary(cr_user) # p=0
+train1$new_user <- as.factor(train1$new_user)
 
-# weekday 
-test1$datetime <- as.POSIXct(test1$post_date,origin="1970-01-01")
-test1$weekday <- factor(weekdays(test1$datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
-cr_weekday <- coxph(Surv(time_until_answer, answered) ~ weekday, data = test1)
-summary(cr_weekday) # p=0.04325
+#===================================================================
+# weekday
+train1$datetime <- as.POSIXct(train1$post_date,origin="1970-01-01")
+train1$weekday <- factor(weekdays(train1$datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+cr_weekday <- coxph(Surv(time_until_answer, answered) ~ weekday, data = train1)
+summary(cr_weekday) # p=0.0006061
 
+#===================================================================
 # is_weekend
-test1$is_weekend <- FALSE
-test1$is_weekend[test1$weekday == "Saturday" | test1$weekday == "Sunday"] <- TRUE
-cr_weekend <- coxph(Surv(time_until_answer, answered) ~ is_weekend, data = test1)
-summary(cr_weekend) # p=0.02989
+train1$is_weekend <- FALSE
+train1$is_weekend[train1$weekday == "Saturday" | train1$weekday == "Sunday"] <- TRUE
+cr_weekend <- coxph(Surv(time_until_answer, answered) ~ is_weekend, data = train1)
+summary(cr_weekend) # p=0.001602
 
+#===================================================================
 # hour of the day
-test1$hour <- as.numeric(format(test1$datetime,"%H"))
-cr_hour <- coxph(Surv(time_until_answer, answered) ~ hour, data = test1)
-summary(cr_hour) # p=0.6104
+train1$hour <- as.numeric(format(train1$datetime,"%H"))
+cr_hour <- coxph(Surv(time_until_answer, answered) ~ hour, data = train1)
+summary(cr_hour) # p=0.3994
 
+#===================================================================
 # morning/noon/evening/night?
-test1$ampm <- "Night"
-test1$ampm[test1$hour >= 5 & test1$hour < 12] <- "Morning"
-test1$ampm[test1$hour >= 12 & test1$hour < 17] <- "Afternoon" #noon - 5pm 
-test1$ampm[test1$hour >= 17 & test1$hour < 20] <- "Evening" #5pm - 8pm 
-cr_ampm <- coxph(Surv(time_until_answer, answered) ~ ampm, data = test1)
-summary(cr_ampm) # p=0.0001601
+train1$ampm <- "Night"
+train1$ampm[train1$hour >= 5 & train1$hour < 12] <- "Morning"
+train1$ampm[train1$hour >= 12 & train1$hour < 17] <- "Afternoon" #noon - 5pm
+train1$ampm[train1$hour >= 17 & train1$hour < 20] <- "Evening" #5pm - 8pm
+cr_ampm <- coxph(Surv(time_until_answer, answered) ~ ampm, data = train1)
+summary(cr_ampm) # p=0.0001333
 
-# title length 
-test1$title_length <- str_length(test1$title)
-cr_title_len <- coxph(Surv(time_until_answer, answered) ~ title_length, data = test1)
-summary(cr_title_len) # p=0.8039
+#===================================================================
+# title length
+train1$title_length <- str_length(train1$title)
+cr_title_len <- coxph(Surv(time_until_answer, answered) ~ title_length, data = train1)
+summary(cr_title_len) # p=0.4386
 
+#===================================================================
 # text length
-test1$text_length <- str_length(test1$text)
-cr_text_len <- coxph(Surv(time_until_answer, answered) ~ text_length, data = test1)
-summary(cr_text_len) # p=3.658e-10
+train1$text_length <- str_length(train1$text)
+cr_text_len <- coxph(Surv(time_until_answer, answered) ~ text_length, data = train1)
+summary(cr_text_len) # p=1.477e-14
 
+#===================================================================
 # device name length
-test1$device_length <- str_length(test1$device)
-cr_device_len <- coxph(Surv(time_until_answer, answered) ~ device_length, data = test1)
-summary(cr_device_len) # p=0.003921
+train1$device_length <- str_length(train1$device)
+cr_device_len <- coxph(Surv(time_until_answer, answered) ~ device_length, data = train1)
+summary(cr_device_len) # p=0.0113
 
-# length of sentence until first punctuation mark 
-test1$length <- str_locate(test1$text, pattern = "[.|?|!]")[,1]
-q <- quantile(test1$length, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
-test1$text_till_punct <- "none"
-test1$text_till_punct[test1$length <= q[2]] <- "short"
-test1$text_till_punct[test1$length >= q[2] & test1$length <= q[3]] <- "medium"
-test1$text_till_punct[test1$length >= q[3] & test1$length <= q[4]] <- "moderate"
-test1$text_till_punct[test1$length >= q[4]] <- "long"
-cr_tillpunct <- coxph(Surv(time_until_answer, answered) ~ text_till_punct, data = test1)
-summary(cr_tillpunct) # p=2.943e-05
+#===================================================================
+# length of sentence until first punctuation mark
+train1$length <- str_locate(train1$text, pattern = "[.|?|!]")[,1]
+q <- quantile(train1$length, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
+train1$text_till_punct <- "none"
+train1$text_till_punct[train1$length <= q[3]] <- "short"
+train1$text_till_punct[train1$length >= q[3] & train1$length <= q[4]] <- "medium"
+train1$text_till_punct[train1$length >= q[4]] <- "long"
 
+cr_tillpunct <- coxph(Surv(time_until_answer, answered) ~ text_till_punct, data = train1)
+summary(cr_tillpunct) # p=2.769e-07
+
+#===================================================================
 # if text contains any end punctuation
-test1$text_contain_punct <- FALSE
-test1$text_contain_punct[!is.na(test1$length)] <- TRUE
-cr_containpun <- coxph(Surv(time_until_answer, answered) ~ text_contain_punct, data = test1)
-summary(cr_containpun) # p=7.733e-07
-
+train1$text_contain_punct <- str_detect(train1$text, pattern = "[.|?|!]")
+cr_containpun <- coxph(Surv(time_until_answer, answered) ~ text_contain_punct, data = train1)
+summary(cr_containpun) # p=8.269e-09
+identical(train1$text_contain_punct, train1$contain_punct)
+#===================================================================
 # if the text ends in a punctuation
-test1$text_end_punct <- str_detect(test1$text, pattern = "[.|?|!]$")
-cr_endpunct <- coxph(Surv(time_until_answer, answered) ~ text_end_punct, data = test1)
-summary(cr_endpunct) # p=0.07902
+train1$text_end_punct <- str_detect(train1$text, pattern = "[.|?|!]$")
+cr_endpunct <- coxph(Surv(time_until_answer, answered) ~ text_end_punct, data = train1)
+summary(cr_endpunct) # p=0.185
 
+#===================================================================
 # if the title ends with a question mark
 library(rebus)
-test1$title_questionmark <- str_detect(test1$title, pattern = QUESTION %R% END)
-cr_title_q <- coxph(Surv(time_until_answer, answered) ~ title_questionmark, data = test1)
-summary(cr_title_q) # p=9.198e-13
+train1$title_questionmark <- str_detect(train1$title, pattern = QUESTION %R% END)
+cr_title_q <- coxph(Surv(time_until_answer, answered) ~ title_questionmark, data = train1)
+summary(cr_title_q) # p=6.55e-15
 
+#===================================================================
 # if title begins with "wh"
-test1$title_beginwh <- str_detect(str_to_lower(test1$title), pattern = "^wh")
-cr_begin <- coxph(Surv(time_until_answer, answered) ~ title_beginwh, data = test1)
-summary(cr_begin) # p=0.1047
+train1$title_beginwh <- str_detect(str_to_lower(train1$title), pattern = "^wh")
+cr_begin <- coxph(Surv(time_until_answer, answered) ~ title_beginwh, data = train1)
+summary(cr_begin) # p=0.2241
 
+#===================================================================
 # if first letter of title is capitalized
-test1$capital_title <- str_detect(as.character(test1$title), pattern = "^[[:upper:]]")
-cr_title <- coxph(Surv(time_until_answer, answered) ~ capital_title, data = test1)
-summary(cr_title) # p=0.5077
+train1$capital_title <- str_detect(as.character(train1$title), pattern = "^[[:upper:]]")
+cr_title <- coxph(Surv(time_until_answer, answered) ~ capital_title, data = train1)
+summary(cr_title) # p=0.6906
 
+#===================================================================
 # if first letter of text is capitalized
-test1$capital_text <- str_detect(test1$text, pattern = "^[[:upper:]]")
-cr_text <- coxph(Surv(time_until_answer, answered) ~ capital_text, data = test1)
-summary(cr_text) # p=0.0002079
+train1$capital_text <- str_detect(as.character(train1$text), pattern = "^[[:upper:]]")
+cr_text <- coxph(Surv(time_until_answer, answered) ~ capital_text, data = train1)
+summary(cr_text) # p=6.642e-05
 
+#===================================================================
 # if text is in all lower case
-test1$removed <- str_replace_all(test1$text, " ", "")
-test1$removed <- str_replace_all(test1$removed, "[[:punct:]]|[[:digit:]]", "")
-test1$text_all_lower <- str_detect(test1$removed, pattern = "^[[:lower:]]+$")
-test1 <- test1[,-which(names(x) == "removed")]
-cr_lower <- coxph(Surv(time_until_answer, answered) ~ text_all_lower, data = test1)
+train1$cleaned <- str_replace_all(train1$text, " ", "")
+train1$cleaned <- str_replace_all(train1$cleaned, "[[:punct:]]|[[:digit:]]", "")
+train1$text_all_lower <- str_detect(train1$cleaned, pattern = "^[[:lower:]]+$")
+cr_lower <- coxph(Surv(time_until_answer, answered) ~ text_all_lower, data = train1)
+summary(cr_lower) # p=1.605e-05
+
+#===================================================================
+# prior_effort
+train1$prior_effort <- str_detect(str_to_lower(train1$text), pattern = or("tried", "searched", "researched", "tested", "replaced", "used", "checked", "investigated", "considered", "measured", "attempted", "inspected", "fitted"))
+cr_prior <- coxph(Surv(time_until_answer, answered) ~ prior_effort, data = train1)
+summary(cr_prior) # p=0.0002236
+
+#===================================================================
+# num_prior_effort
+train1$num_prior_effort <- str_count(str_to_lower(train1$text), pattern = or("tried", "searched", "researched", "tested", "replaced", "used", "checked", "investigated", "considered", "measured", "attempted", "inspected", "fitted"))
+cr_numprior <- coxph(Surv(time_until_answer, answered) ~ as.factor(num_prior_effort), data = train1)
+summary(cr_numprior) # p=0.000436 (lower p-value if treated as numeric)
+
+#===================================================================
+# expressing gratitude 
+train1$gratitude <- str_detect(str_to_lower(train1$text), pattern = or("please", "thank you", "thanks", "thankful", "appreciate", "appreciated", "grateful"))
+cr_gratitude <- coxph(Surv(time_until_answer, answered) ~ gratitude, data = train1)
+summary(cr_gratitude) # p=0.0001431
+
+#===================================================================
+# greeting
+train1$greeting <- str_detect(str_to_lower(train1$text), pattern = START %R% or("hey", "hello", "greetings", "hi"))
+cr_greeting <- coxph(Surv(time_until_answer, answered) ~ greeting, data = train1)
+summary(cr_greeting) # p=2.252e-08
+
+#===================================================================
+# update the question?
+train1$update <- str_detect(train1$text, pattern = "===")
+cr_up <- coxph(Surv(time_until_answer, answered) ~ update, data = train1)
+summary(cr_up) # p=3.398e-09
+
+#===================================================================
+# newline ratio to length of text
+train1$newline_ratio <- str_count(train1$text, pattern = "\n")/str_length(train1$text)
+cr_newline <- coxph(Surv(time_until_answer, answered) ~ newline_ratio, data = train1)
+summary(cr_newline) # p=1.228e-08
 ```
 
+
+```{r, include = FALSE}
+# tag-based variables
+#===================================================================
+# avg_tag_length
+split_tags <- str_split(train1$tags, ", ", simplify = TRUE)
+train1$avg_tag_length <- NA
+not_na <- which(train1$tags != "")
+for (i in not_na) {
+  total_char <- sum(str_length(as.vector(split_tags[i,])))
+  total_tags <- sum(as.vector(split_tags[i,]) != "")
+  train1$avg_tag_length[i] <- total_char / total_tags
+}
+cr_tagl <- coxph(Surv(time_until_answer, answered) ~ avg_tag_length, data = train1)
+summary(cr_tagl) # p=0.1948
+
+#===================================================================
+# maximum number of words for a question's tags
+train1$max_tagwords <- rep(0, nrow(train1))
+for (i in which(train1$n_tags != 0)) {
+  tags <- as.vector(split_tags[i,])
+  train1$max_tagwords[i] <- max(str_count(tags, pattern = "\\w+"))
+}
+cr_max <- coxph(Surv(time_until_answer, answered) ~ max_tagwords, data = train1)
+summary(cr_max) # p=0.0001012 (should I treat this as categorical?)
+
+#===================================================================
+# frequent tags
+tag_vector <- as.vector(split_tags)
+tag_vector <- tag_vector[which(tag_vector != "")]
+unique_tags <- unique(tag_vector)
+
+tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, ~mean(rowSums(split_tags == .) > 0)))
+tag_freq <- tag_freq %>%
+              arrange(desc(percent))
+
+#creating average frequency score variable
+train1$tag1 <- split_tags[,1]
+train1$tag2 <- split_tags[,2]
+train1$tag3 <- split_tags[,3]
+train1$tag4 <- split_tags[,4]
+
+assign_score <- function(data, variable) {
+  score <- rep(0, nrow(data))
+  notempty <- which(data[[variable]] != "")
+  for (i in notempty) {
+    score[i] <- tag_freq$percent[which(tag_freq$tag == data[[variable]][i])]
+  }
+  return(score)
+}
+train1$score1 <- assign_score(train1, "tag1")
+train1$score2 <- assign_score(train1, "tag2")
+train1$score3 <- assign_score(train1, "tag3")
+train1$score4 <- assign_score(train1, "tag4")
+train1$avg_tag_score <- (train1$score1 + train1$score2 + train1$score3 + train1$score4)/as.numeric(train1$n_tags)
+train1$avg_tag_score[is.nan(train1$avg_tag_score)] <- 0
+cr_score <- coxph(Surv(time_until_answer, answered) ~ avg_tag_score, data = train1)
+summary(cr_score) # p=2.614e-10 insanely high hazard ratio
+
+#===================================================================
+# if question contains "frequent" tag
+percentile80 <- quantile(train1$avg_tag_score, probs = 0.80)
+
+train1$frequent_tag <- FALSE
+train1$frequent_tag[train1$avg_tag_score >= percentile80] <- TRUE
+cr_frequent <- coxph(Surv(time_until_answer, answered) ~ frequent_tag, data = train1)
+summary(cr_frequent) # p=1.814e-13
+
+#===================================================================
+# number of "frequent" tags a question contains
+threshold <- 0.005
+num_pop <- function(var, threshold) {
+  num_pop <- rep(0, nrow(train1))
+  num_pop[train1[[var]] >= threshold] <- 1
+  return(num_pop)
+}
+numpop1 <- num_pop("score1", threshold)
+numpop2 <- num_pop("score2", threshold)
+numpop3 <- num_pop("score3", threshold)
+numpop4 <- num_pop("score4", threshold)
+train1$num_freq_tags <- numpop1 + numpop2 + numpop3 + numpop4
+cr_numfreq <- coxph(Surv(time_until_answer, answered) ~ num_freq_tags, data = train1)
+summary(cr_numfreq) # p=3.432e-10
+
+#==================================================================================
+#frequent terms in unanswered/answered questions
+answered <- train1 %>%
+  tbl_df() %>% 
+  filter(answered == 1)
+
+unanswered <- train1 %>%
+  tbl_df() %>% 
+  filter(answered == 0)
+
+library(qdap)
+library(tm)
+terms_a <- oshitar::get_freq_terms(answered$title, stopwords = c("can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
+terms_a$prop_in_answered <- terms_a$frequency/nrow(terms_a)
+colnames(terms_a)[2] <- "frequency_a"
+
+terms_u <- oshitar::get_freq_terms(unanswered$title, stopwords = c("can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
+terms_u$prop_in_unanswered <- terms_u$frequency/nrow(terms_u)
+colnames(terms_u)[2] <- "frequency_u"
+
+combined <- dplyr::full_join(terms_a, terms_u, by = "word")
+combined$ratio <- combined$prop_in_answered / combined$prop_in_unanswered
+
+p_threshold <- 0.01
+ratio_threshold <- 1
+
+freq_terms_u <- combined %>%
+                  filter(prop_in_unanswered > p_threshold) %>%
+                  filter(ratio < ratio_threshold)
+freq_terms_a <- combined %>%
+                  filter(prop_in_answered > p_threshold) %>%
+                  filter(ratio > ratio_threshold)
+
+train1$contain_unanswered <- str_detect(as.character(train1$title), pattern = or1(freq_terms_u$word))
+train1$contain_answered <- str_detect(as.character(train1$title), pattern = or1(freq_terms_a$word))
+
+cr_unans <- coxph(Surv(time_until_answer, answered) ~ contain_unanswered, data = train1)
+summary(cr_unans) # p=1.11e-16
+cr_ans <- coxph(Surv(time_until_answer, answered) ~ contain_answered, data = train1)
+summary(cr_ans) # p=2.314e-08
+```
+
+### Backwards selection of variables 
+
+* using selectCox function from pec package
+* choose between n_images or new_n_images, determine if should treat n_images as discrete (don't treat as discrete cuz beta goes to infinity)
+* weekday or is_weekend
+* text_till_punct or text_contain_punct? 
+* frequent_tag or num_freq_tags 
+
+```{r}
+model1 <- coxph(Surv(time_until_answer, answered) ~ category + n_images + as.factor(n_tags) + as.factor(new_user) + weekday + ampm + text_length + device_length + text_till_punct + title_questionmark + title_beginwh + capital_text + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio + max_tagwords + avg_tag_score + contain_answered + contain_unanswered, data = train1)
+summary(model1)
+AIC(model1, k = 2) # 65065.97
+
+# with new_n_images instead of n_images: 65072.75 
+
+# fitting is_weekend instead of weekday: 65066.88 - keep weekday
+model2 <- coxph(Surv(time_until_answer, answered) ~ category + n_images + as.factor(n_tags) + as.factor(new_user) + is_weekend + ampm + text_length + device_length + text_till_punct + title_questionmark + title_beginwh + capital_text + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio + max_tagwords + avg_tag_score + contain_answered + contain_unanswered, data = train1)
+AIC(model2, k = 2) 
+
+# fitting with text_contain_punct instead of text_till_punct: 65061.46
+model3 <- coxph(Surv(time_until_answer, answered) ~ category + n_images + as.factor(n_tags) + as.factor(new_user) + weekday + ampm + text_length + device_length + text_contain_punct + title_questionmark + title_beginwh + capital_text + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio + max_tagwords + avg_tag_score + contain_answered + contain_unanswered, data = train1)
+AIC(model3, k = 2) #  (keep text_contain_punct)
+
+# text_contain_punct + is_weekend: 65063.91
+model4 <- coxph(Surv(time_until_answer, answered) ~ category + n_images + as.factor(n_tags) + as.factor(new_user) + is_weekend + ampm + text_length + device_length + text_contain_punct + title_questionmark + title_beginwh + capital_text + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio + max_tagwords + avg_tag_score + contain_answered + contain_unanswered, data = train1)
+AIC(model4, k = 2) #  (keep text_contain_punct)
+
+# fitting with num_prior_effect instead of prior effect: 65063.25
+model5 <- coxph(Surv(time_until_answer, answered) ~ category + n_images + as.factor(n_tags) + as.factor(new_user) + weekday + ampm + text_length + device_length + text_contain_punct + title_questionmark + title_beginwh + capital_text + text_all_lower + num_prior_effort + gratitude + greeting + update + newline_ratio + max_tagwords + avg_tag_score + contain_answered + contain_unanswered, data = train1)
+AIC(model5, k = 2) 
+
+# fitting with frequent_tag instead of avg_tag_score
+# final model 
+model6 <- coxph(Surv(time_until_answer, answered) ~ category + n_images + as.factor(n_tags) + as.factor(new_user) + is_weekend + ampm + text_length + device_length + text_contain_punct + title_questionmark + title_beginwh + capital_text + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio + max_tagwords + avg_tag_score + contain_answered + contain_unanswered, data = train1)
+AIC(model6, k = 2) # keep avg_tag_score
+```
+
+
+```{r}
+model <- pec::selectCox(Surv(time_until_answer, answered) ~ category + n_images + n_tags + new_user + is_weekend + ampm + text_length + device_length + text_contain_punct + title_questionmark + title_beginwh + capital_text + text_all_lower + prior_effort + gratitude + greeting + update + newline_ratio + max_tagwords + avg_tag_score + contain_answered + contain_unanswered, data = train1, rule = "aic") # 65058.03
+
+#results:
+final1 <- coxph(Surv(time_until_answer, answered) ~ category + new_user + is_weekend + ampm + device_length + title_questionmark + update + avg_tag_score + contain_answered + contain_unanswered, data = train1)
+summary(final1)
+
+#added interaction term 
+final <- coxph(Surv(time_until_answer, answered) ~ category + new_user + is_weekend + ampm + device_length + title_questionmark + title_beginwh + update + avg_tag_score + contain_answered + contain_unanswered + title_questionmark*title_beginwh + new_user*update, data = train1)
+AIC(final, k = 2) #65054.87  
+summary(final)
+```
+
+
+### trying out a different stepwise function
+```{r}
+# variables <- c("category", "n_images", "n_tags", "new_user", "is_weekend", "ampm", "text_length", "device_length", "text_contain_punct", "title_questionmark", "title_beginwh", "capital_text", "text_all_lower", "prior_effort", "gratitude", "greeting", "update", "newline_ratio", "max_tagwords", "avg_tag_score", "contain_answered", "contain_unanswered")
+# 
+# modell <- My.stepwise.coxph(Time = "time_until_answer", Status = "answered", variable.list = variables, data = train1)
+# #my.variable.list <- c("inst", "age", "sex", "ph.ecog", "ph.karno", "pat.karno", "meal.cal",
+# levels(train1$category)[4] <- "CarTruck"
+# levels(train1$category)[5] <- "ComputerHardware"
+# levels(train1$category)[10] <- "MediaPlayer"
+# levels(train1$category)[7] <- "GameConsole"
+```
 
