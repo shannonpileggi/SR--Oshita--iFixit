@@ -431,8 +431,8 @@ counts <- train1 %>%
 for (i in which(counts$n <= 100)) {
   train1$new_category[train1$new_category == counts$new_category[i]] <- "Other"
 }
-
 table(train1$new_category)
+#===================================================
 
 # model with new_category 
 r2_new <- coxph(Surv(time_until_answer, answered) ~ new_category + n_images + new_user + weekday + ampm + device_length + title_questionmark + title_beginwh + capital_text + update + newline_ratio + frequent_tag + contain_answered + contain_unanswered + title_questionmark*title_beginwh + new_user*update + new_user*newline_ratio, data = train1)
@@ -440,5 +440,74 @@ AIC(r2_new, k = 2) # 64728.77
 summary(r2_new)
 ```
 
+### residuals, PH assumption
+
+```{r}
+#=============================================
+#martingale residuals
+train1$mart <- residuals(r2_new, type = "martingale")
+
+plot_res <- function(var, residuals, data, title) {
+  ggplot(data, aes(x = data[[var]], y = residuals)) +
+    geom_point() +
+    geom_smooth() + 
+    ggtitle(title) + 
+    scale_x_continuous(var)
+}
+
+res_image <- plot_res(var = "n_images", residuals = mart, data = train1, title = "Martingale Residuals for n_images")
+res_dev <- plot_res("device_length", mart, data = train1, title = "Martingale Residuals for device_length")
+res_newline <- plot_res("newline_ratio", mart, data = train1, title = "Martingale Residuals for newline_ratio")
+
+gridExtra::grid.arrange(res_image, res_dev, res_newline, nrow=1, ncol=3)
+
+#=============================================
+#deviance residuals 
+train1$deviance <- residuals(r2_new, type = "deviance")
+ggplot(train1, aes(x = 1:nrow(train1), y = deviance)) + 
+  geom_point() + 
+  scale_x_continuous("Question index") + 
+  scale_y_continuous(breaks = seq(-4, 4, by = 0.5))
+# quite a few questions have a deviance residual of larger than 2.5 
+
+#=============================================
+#schoenfeld residuals
+schoen <- as.data.frame(residuals(r2_new, type = "schoenfeld"))
+# complete event times sorted from shortest to longest
+schoen$comp_times <- sort(train1[train1$answered != 0,]$time_until_answer)
+
+plot_schoen <- function(var) {
+  ggplot(schoen, aes(x = comp_times, y = schoen[[var]])) + 
+    geom_point() + 
+    geom_smooth() + 
+    ggtitle(paste("Schoenfeld Residuals for", var)) + 
+    scale_y_continuous("Residuals")
+}
+names <- names(schoen)[-31]
+purrr::map(names, plot_schoen)
+
+#=============================================
+# score residuals
+score <- as.data.frame(residuals(r2_new, type = "score"))
+# function to plot score residuals
+plot_score <- function(column) {
+  ggplot(score, aes(x = 1:nrow(score), y = score[[column]])) + 
+    geom_point() + 
+    geom_smooth() + 
+    ggtitle(paste("Score residuals for", column)) + 
+    scale_y_continuous("Score Residuals") + 
+    scale_x_continuous("Question index")
+}
+columns <- names(score)
+purrr::map(columns, plot_score)
+```
+
+
+### Predicting on the test data
+
+```{r}
+test1 <- x[splitPlan[[1]]$app, ]
+# predict.coxph
+```
 
 
