@@ -1,0 +1,327 @@
+---
+title: "Univariate Analysis"
+author: "Lisa Oshita"
+date: "8/15/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+x <- oshitar::setup()
+library(survival)
+library(stringr)
+library(rebus)
+library(dplyr)
+library(stats)
+library(ggplot2)
+```
+
+### Setting up cross validation paths
+
+* cross validation paths stored in splitPlan
+* set seed for reproducible results
+
+```{r, echo = FALSE}
+set.seed(444)
+splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
+str(splitPlan)
+```
+
+### Analysis on test data 
+
+```{r, data and text variables, include = FALSE}
+train1 <- x[splitPlan[[1]]$train, ]
+
+pvalues <- data.frame(variable = character(), pvalue = numeric())
+
+#function to get summary of cox model + append pvalue of variable from loglik test to data frame
+get_pvalue <- function(variable, factor = FALSE) {
+  if (factor == FALSE){
+    coxmodel <- coxph(Surv(time_until_answer, answered) ~ train1[[variable]], data = train1)
+  } else {
+    coxmodel <- coxph(Surv(time_until_answer, answered) ~ as.factor(train1[[variable]]), data = train1)
+  }
+  summary <- summary(coxmodel)
+  print(summary)
+  df <- data.frame(variable = variable, pvalue = unname(summary$logtest[[3]]))
+  pvalues <- rbind(pvalues, df)
+  return(pvalues)
+}
+
+#===================================================================
+# Univariate analyses (select variables with p-value < 0.01)
+# category 
+train1$category <- as.character(train1$category)
+train1$category[is.na(train1$category)] <- "Other"
+train1$category <- as.factor(train1$category)
+pvalues <- get_pvalue("category")
+#===================================================================
+# n_images
+pvalues <- get_pvalue("n_images")
+
+# new_n_images (recoding to group questions with >= 6 images) 
+train1$new_n_images <- as.character(train1$n_images)
+train1$new_n_images[train1$n_images >= 6] <- ">= 6"
+pvalues <- get_pvalue("new_n_images")
+
+#===================================================================
+# n_tags
+pvalues <- get_pvalue("n_tags")
+
+#===================================================================
+# new_user
+pvalues <- get_pvalue("new_user", factor = TRUE)
+
+#===================================================================
+# weekday
+train1$datetime <- as.POSIXct(train1$post_date,origin="1970-01-01")
+train1$weekday <- factor(weekdays(train1$datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+pvalues <- get_pvalue("weekday")
+
+#===================================================================
+# is_weekend
+train1$is_weekend <- FALSE
+train1$is_weekend[train1$weekday == "Saturday" | train1$weekday == "Sunday"] <- TRUE
+pvalues <- get_pvalue("is_weekend")
+
+#===================================================================
+# hour of the day
+train1$hour <- as.numeric(format(train1$datetime,"%H"))
+pvalues <- get_pvalue("hour", factor = TRUE)
+
+#===================================================================
+# morning/noon/evening/night?
+train1$ampm <- "Night"
+train1$ampm[train1$hour >= 5 & train1$hour < 12] <- "Morning"
+train1$ampm[train1$hour >= 12 & train1$hour < 17] <- "Afternoon" #noon - 5pm
+train1$ampm[train1$hour >= 17 & train1$hour < 20] <- "Evening" #5pm - 8pm
+pvalues <- get_pvalue("ampm")
+
+#===================================================================
+# title length
+train1$title_length <- str_length(train1$title)
+pvalues <- get_pvalue("title_length", factor = FALSE)
+
+#===================================================================
+# text length
+train1$text_length <- str_length(train1$text)
+pvalues <- get_pvalue("text_length")
+
+#===================================================================
+# device name length
+train1$device_length <- str_length(train1$device)
+pvalues <- get_pvalue("device_length")
+
+#===================================================================
+# length of sentence until first punctuation mark
+train1$length <- str_locate(train1$text, pattern = "[.|?|!]")[,1]
+q <- stats::quantile(train1$length, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
+train1$text_till_punct <- "none"
+train1$text_till_punct[train1$length <= q[3]] <- "short"
+train1$text_till_punct[train1$length >= q[3] & train1$length <= q[4]] <- "medium"
+train1$text_till_punct[train1$length >= q[4]] <- "long"
+pvalues <- get_pvalue("text_till_punct")
+
+#===================================================================
+# if text contains any end punctuation
+train1$text_contain_punct <- str_detect(train1$text, pattern = "[.|?|!]")
+pvalues <- get_pvalue("text_contain_punct")
+
+#===================================================================
+# if the text ends in a punctuation
+train1$text_end_punct <- str_detect(train1$text, pattern = "[.|?|!]$")
+pvalues <- get_pvalue("text_end_punct")
+
+#===================================================================
+# if the title ends with a question mark
+train1$title_questionmark <- str_detect(train1$title, pattern = QUESTION %R% END)
+pvalues <- get_pvalue("title_questionmark")
+
+#===================================================================
+# if title begins with "wh"
+train1$title_beginwh <- str_detect(str_to_lower(train1$title), pattern = "^wh")
+pvalues <- get_pvalue("title_beginwh")
+
+#===================================================================
+# if first letter of title is capitalized
+train1$capital_title <- str_detect(as.character(train1$title), pattern = "^[[:upper:]]")
+pvalues <- get_pvalue("capital_title")
+
+#===================================================================
+# if first letter of text is capitalized
+train1$capital_text <- str_detect(as.character(train1$text), pattern = "^[[:upper:]]")
+pvalues <- get_pvalue("capital_text")
+
+#===================================================================
+# if text is in all lower case
+train1$cleaned <- str_replace_all(train1$text, " ", "")
+train1$cleaned <- str_replace_all(train1$cleaned, "[[:punct:]]|[[:digit:]]", "")
+train1$text_all_lower <- str_detect(train1$cleaned, pattern = "^[[:lower:]]+$")
+pvalues <- get_pvalue("text_all_lower")
+
+#===================================================================
+# prior_effort
+prior_terms <- c("tried", "searched", "researched", "tested", "replaced", "used", "checked", "investigated", "considered", "measured", "attempted", "inspected", "fitted")
+train1$prior_effort <- str_detect(str_to_lower(train1$text), pattern = or1(prior_terms))
+pvalues <- get_pvalue("prior_effort")
+
+#===================================================================
+# num_prior_effort
+train1$num_prior_effort <- str_count(str_to_lower(train1$text), pattern = or1(prior_terms))
+pvalues <- get_pvalue("num_prior_effort")
+
+#===================================================================
+# expressing gratitude 
+gratitude_terms <- c("please", "thank you", "thanks", "thankful", "appreciate", "appreciated", "grateful")
+train1$gratitude <- str_detect(str_to_lower(train1$text), pattern = or1(gratitude_terms))
+pvalues <- get_pvalue("gratitude")
+
+#===================================================================
+# greeting
+greeting_terms <- c("hey", "hello", "greetings", "hi")
+train1$greeting <- str_detect(str_to_lower(train1$text), pattern = START %R% or1(greeting_terms))
+pvalues <- get_pvalue("greeting")
+
+#===================================================================
+# update the question?
+train1$update <- str_detect(train1$text, pattern = "===")
+pvalues <- get_pvalue("update")
+
+#===================================================================
+# newline ratio to length of text
+train1$newline_ratio <- str_count(train1$text, pattern = "\n")/str_length(train1$text)
+pvalues <- get_pvalue("newline_ratio")
+```
+
+
+```{r, tag based and frequent term variables, include = FALSE}
+# tag-based variables
+#===================================================================
+# avg_tag_length
+split_tags <- str_split(train1$tags, ", ", simplify = TRUE)
+train1$avg_tag_length <- NA
+not_na <- which(train1$tags != "")
+for (i in not_na) {
+  total_char <- sum(str_length(as.vector(split_tags[i,])))
+  total_tags <- sum(as.vector(split_tags[i,]) != "")
+  train1$avg_tag_length[i] <- total_char / total_tags
+}
+pvalues <- get_pvalue("avg_tag_length")
+
+#===================================================================
+# maximum number of words for a question's tags
+train1$max_tagwords <- rep(0, nrow(train1))
+for (i in which(train1$n_tags != 0)) {
+  tags <- as.vector(split_tags[i,])
+  train1$max_tagwords[i] <- max(str_count(tags, pattern = "\\w+"))
+}
+pvalues <- get_pvalue("max_tagwords")
+
+#===================================================================
+# frequent tags
+tag_vector <- as.vector(split_tags)
+tag_vector <- tag_vector[which(tag_vector != "")]
+unique_tags <- unique(tag_vector)
+
+tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, ~mean(rowSums(split_tags == .) > 0)))
+tag_freq <- tag_freq %>%
+              arrange(desc(percent))
+
+#creating average frequency score variable
+train1$tag1 <- split_tags[,1]
+train1$tag2 <- split_tags[,2]
+train1$tag3 <- split_tags[,3]
+train1$tag4 <- split_tags[,4]
+
+assign_score <- function(data, variable) {
+  score <- rep(0, nrow(data))
+  notempty <- which(data[[variable]] != "")
+  for (i in notempty) {
+    score[i] <- tag_freq$percent[which(tag_freq$tag == data[[variable]][i])]
+  }
+  return(score)
+}
+train1$score1 <- assign_score(train1, "tag1")
+train1$score2 <- assign_score(train1, "tag2")
+train1$score3 <- assign_score(train1, "tag3")
+train1$score4 <- assign_score(train1, "tag4")
+train1$avg_tag_score <- (train1$score1 + train1$score2 + train1$score3 + train1$score4)/as.numeric(train1$n_tags)
+train1$avg_tag_score[is.nan(train1$avg_tag_score)] <- 0
+
+pvalues <- get_pvalue("avg_tag_score")
+
+#===================================================================
+# if question contains "frequent" tag
+percentile80 <- quantile(train1$avg_tag_score, probs = 0.80)
+
+train1$frequent_tag <- FALSE
+train1$frequent_tag[train1$avg_tag_score >= percentile80] <- TRUE
+
+pvalues <- get_pvalue("frequent_tag")
+
+#===================================================================
+# number of "frequent" tags a question contains
+threshold <- 0.005
+num_pop <- function(var, threshold) {
+  num_pop <- rep(0, nrow(train1))
+  num_pop[train1[[var]] >= threshold] <- 1
+  return(num_pop)
+}
+numpop1 <- num_pop("score1", threshold)
+numpop2 <- num_pop("score2", threshold)
+numpop3 <- num_pop("score3", threshold)
+numpop4 <- num_pop("score4", threshold)
+train1$num_freq_tags <- numpop1 + numpop2 + numpop3 + numpop4
+
+pvalues <- get_pvalue("num_freq_tags")
+
+#==================================================================================
+#frequent terms in unanswered/answered questions
+answered <- train1 %>%
+  tibble::as_tibble() %>% 
+  filter(answered == 1)
+
+unanswered <- train1 %>%
+  tibble::as_tibble() %>% 
+  filter(answered == 0)
+
+terms_a <- oshitar::get_freq_terms(answered$title, stopwords = c("can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
+terms_a$prop_in_answered <- terms_a$frequency/nrow(terms_a)
+colnames(terms_a)[2] <- "frequency_a"
+
+terms_u <- oshitar::get_freq_terms(unanswered$title, stopwords = c("can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
+terms_u$prop_in_unanswered <- terms_u$frequency/nrow(terms_u)
+colnames(terms_u)[2] <- "frequency_u"
+
+combined <- dplyr::full_join(terms_a, terms_u, by = "word")
+combined$ratio <- combined$prop_in_answered / combined$prop_in_unanswered
+
+p_threshold <- 0.01
+ratio_threshold <- 1
+
+freq_terms_u <- combined %>%
+                  filter(prop_in_unanswered > p_threshold) %>%
+                  filter(ratio < ratio_threshold)
+freq_terms_a <- combined %>%
+                  filter(prop_in_answered > p_threshold) %>%
+                  filter(ratio > ratio_threshold)
+
+train1$contain_unanswered <- str_detect(as.character(train1$title), pattern = or1(freq_terms_u$word))
+train1$contain_answered <- str_detect(as.character(train1$title), pattern = or1(freq_terms_a$word))
+
+pvalues <- get_pvalue("contain_unanswered")
+pvalues <- get_pvalue("contain_answered")
+```
+
+### examining univariate analyses results 
+
+
+```{r, echo = FALSE}
+options(scipen=999)
+(pvalues <- pvalues %>%
+  arrange(pvalue))
+```
+
