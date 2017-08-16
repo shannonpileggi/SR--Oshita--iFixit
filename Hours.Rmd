@@ -70,6 +70,7 @@ Date   | Hours | Time        | Description
 8/10/2017 | 8 | 8:00-4:00PM | Finished putting functions in r package, organized files, data camp course on cross validation, continued with model fitting research
 8/10/2017 | 2 | 6:00-8:00PM | Tried to figure out backwards selection function to fit model
 8/11/2017 | 5.5 | 10:30-4:00PM | Researched more model fitting functions, recoded category variable
-8/11/2017 | 2 | 8:00-10:00 | Plotted residuals 
+8/11/2017 | 2 | 8:00-10:00PM | Plotted residuals + predicted on test data set
+8/15/2017 | 9.5 | 11:00-8:30PM | Cross validation + model fitting 
 
 >> __Total Hours: 1...__
