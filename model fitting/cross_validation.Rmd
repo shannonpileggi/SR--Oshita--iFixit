@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, echo = FALSE}
+```{r, data setup, echo = FALSE}
 x <- oshitar::setup()
 library(survival)
 library(stringr)
@@ -29,16 +29,16 @@ str(splitPlan)
 
 ### Building the model on one of the training data sets
 
-##### Fitting model with all significant variables (univariate analysis p-value < 0.01), select variables using stepwise functions 
+##### Fitting model with all significant variables (univariate analysis p-value < 0.01)
 
-```{r}
+```{r, echo = FALSE}
 train1 <- x[splitPlan[[1]]$train, ]
 
 first <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + contain_unanswered + title_questionmark + text_length + text_contain_punct + as.factor(num_freq_tags) + as.factor(n_tags) + contain_answered + newline_ratio + text_all_lower + update + greeting + capital_text + prior_effort + gratitude + ampm + n_images + weekday + device_length + title_beginwh, data = train1)
 AIC(first, k = 2) #65294.56
 
 # backwards step-wise selection with selectCox function
-# converting to factors since function doesn't work with as.factor
+# converting to factors since function doesn't work with as.factor()
 train1$new_user <- as.factor(train1$new_user)
 train1$num_freq_tags <- as.factor(train1$num_freq_tags)
 train1$n_tags <- as.factor(train1$n_tags)
@@ -54,15 +54,13 @@ model2 <- MASS::stepAIC(first, direction = "both", k = 2)
 # results
 results2 <- coxph(Surv(time_until_answer, answered) ~ category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh, data = train1)
 AIC(results2, k = 2) # 65277.47
-
 ```
 
 ### Adding interaction terms 
 
-```{r}
-# working with model from backward/forward stepwise selection
+* working with model from backward/forward stepwise selection
 
-# adding interaction terms
+```{r, echo = FALSE}
 # adding title_questionmark*title_beginwh
 model2 <- coxph(Surv(time_until_answer, answered) ~ category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh, data = train1)
 AIC(model2, k = 2) # 65274.49
@@ -85,19 +83,15 @@ AIC(model_i, k = 2) # 65263.35
 
 ##### recoding category variable
 
-* group all apple products together (use str_detect to search for Apple, ipad, ipod)
+* group all apple products together
+    + use str_detect to search for ipad, ipod, apple watch 
+    + group with iPhones and Macs 
 * recode left over Phones to Android/Other Phone
 * group household + appliance as "Home"
 * group car and truck + vehicle as "Vehicle"
-* set a rule: any category with less than 50 questions gets grouped with "Other"
+* set a rule: any category with less than 100 questions gets grouped with "Other"
 
-```{r}
-# pie chart of product categories
-ggplot(train1, aes(x = factor(1), fill = category)) + geom_bar(width = 1) + 
-  coord_polar(theta = "y")
-
-#===================================================
-# recoding category variable
+```{r, echo = FALSE}
 train1$new_category <- as.character(train1$category)
 
 # grouping apple products together
@@ -107,12 +101,14 @@ train1$new_category[train1$apple == TRUE | train1$subcategory == "iPhone" | trai
 
 # renaming left over phones 
 train1$new_category[train1$new_category == "Phone"] <- "Android/Other Phone"
+
 # merge household and appliance into "Home"
 train1$new_category[train1$new_category == "Appliance" | train1$new_category == "Household"] <- "Home"
+
 # merging Car and Truck with Vehicle 
 train1$new_category[train1$new_category == "Car and Truck" | train1$new_category == "Vehicle"] <- "Vehicle"
 
-# if there are less than 100 questions in a category, group them with other
+# if there are less than 100 questions in a category, group them with Other
 counts <- train1 %>%
   group_by(new_category) %>%
   summarise(n = n())
@@ -120,13 +116,13 @@ for (i in which(counts$n <= 100)) {
   train1$new_category[train1$new_category == counts$new_category[i]] <- "Other"
 }
 table(train1$new_category)
+
 #===================================================
 
 model_new <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh, data = train1)
 AIC(model_new, k = 2) #64999.87
 
 #new_cateogry*new_user
-#new_cateogry*
 model_new1 <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + new_category*new_user, data = train1)
 AIC(model_new1, k = 2) # 64994.49
 compare_nested(model_new1, model_new)
@@ -155,8 +151,9 @@ summary(model_full)
     + plot for each predictor 
 * **figure out how to identify certain points on ggplots**
 * statified on new_category, AIC dropped drastically. But this means that I can't compare the different groups in new_category 
+    + Concordance statistic and rsquare dropped
 
-```{r}
+```{r, residuals, echo = FALSE}
 #=============================================
 #martingale residuals
 train1$mart <- residuals(model_full, type = "martingale")
@@ -214,6 +211,9 @@ rownames(ph_test) = NULL
 ph_test <- ph_test %>%
   arrange(p)
 
+#=============================================
+# addression PH assumption violations
+
 # stratifying on new_category
 strat_model <- coxph(Surv(time_until_answer, answered) ~ strata(new_category) + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm, data = train1)
 AIC(strat_model, k = 2) # 49766.8
@@ -224,58 +224,223 @@ strat_model1 <- coxph(Surv(time_until_answer, answered) ~ new_category + strata(
 AIC(strat_model1, k = 2) # 60543.75
 summary(strat_model1)
 
-# final model: stratified on new_category
-final <- strat_model
+# stratifying on ampm 
+strat_model2 <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + strata(ampm) + weekday + device_length + title_beginwh + title_questionmark*title_beginwh, data = train1)
+AIC(strat_model2, k = 2) # 54447.8
+summary(strat_model2)
+
+# stratifying on ampm, new_user, new_category
+strat_model3 <- coxph(Surv(time_until_answer, answered) ~ strata(new_category) + strata(new_user) + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + strata(ampm) + weekday + device_length + title_beginwh + title_questionmark*title_beginwh, data = train1)
+AIC(strat_model3, k = 2) # 35370.81
+summary(strat_model3)
 ```
 
 ### Performance metric on training data set
 
-```{r}
-train_predict <- predict(object = final, type = "risk", se.fit = TRUE)
-train1$predictions <- train_predict[[1]]
-performance <- coxph(Surv(time_until_answer, answered) ~ predictions, data = train1)
-summary(performance)
-AIC(performance, k = 2)
+* model not stratified on new_category has higher R2, higher Dxy than model stratified on new_category
+* survConcordance: 
+    + Concordance is defined as Pr(agreement) for any two randomly chosen observations, where in this case agreement means that the observation with the shorter survival time of the two also has the larger risk score. The predictor (or risk score) will often be the result of a Cox model or other regression
+    + some of the pairs are incomparable. For instance a pair of times (5+, 8), the first being a censored value. We do not know whether the first survival time is greater than or less than the second
+    + observations that are comparable, pairs may also be tied on survival time (but only if both are uncensored) or on the predictor. The final concondance is (agree + tied/2)/(agree + disagree + tied)
+    + 
 
-#using cph from rms package to get Dxy and other performance metrics
-library(rms)
-options(scipen=999)
-(cox <- cph(Surv(time_until_answer, answered) ~ predictions, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE))
-cox$stats
+```{r}
+# working with final model (stratified on new_category) 
+train_predict <- predict(object = strat_model, type = "risk", se.fit = TRUE)
+train1$predictions <- train_predict[[1]]
+
+(performance <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE)) # Dxy 0.115
+AIC(performance, k = 2) # 65781.26
+
+survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train1) # Concordance = 0.5573537
+
+Hmisc::rcorrcens(Surv(time_until_answer, answered) ~ predictions, data = train1)
+
+#=============================================
+
+# working with full_model (not stratified on new_category)
+train_predict2 <- predict(object = model_full, type = "risk", se.fit = TRUE)
+train1$predictions2 <- train_predict2[[1]]
+(performance2 <- rms::cph(Surv(time_until_answer, answered) ~ predictions2, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE)) # Dxy 0.270
+
+survConcordance(Surv(time_until_answer, answered) ~ predictions2, data = train1) # Concordance = 0.634903
+
+Hmisc::rcorrcens(Surv(time_until_answer, answered) ~ predictions2, outx = TRUE, data = train1)
+
+#=============================================
+
+# working with strat_model1 (stratified on new_user)
+train_predict3 <- predict(object = strat_model1, type = "risk", se.fit = TRUE)
+train1$predictions3 <- train_predict3[[1]]
+(performance3 <- rms::cph(Surv(time_until_answer, answered) ~ predictions3, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE)) # Dxy 0.244
+
+survConcordance(Surv(time_until_answer, answered) ~ predictions3, data = train1) # Concordance = 0.6221597
+
+Hmisc::rcorrcens(Surv(time_until_answer, answered) ~ predictions3, data = train1)
+
+#=============================================
+
+# working with strat_model2 (stratified on ampm)
+train_predict4 <- predict(object = strat_model2, type = "risk", se.fit = TRUE)
+train1$predictions4 <- train_predict4[[1]]
+(performance4 <- rms::cph(Surv(time_until_answer, answered) ~ predictions4, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE)) # Dxy 0.258 
+
+survConcordance(Surv(time_until_answer, answered) ~ predictions4, data = train1) # Concordance = 0.6289692
+
+Hmisc::rcorrcens(Surv(time_until_answer, answered) ~ predictions4, data = train1)
 ```
 
+### working with the rms package for cross validation
 
+```{r, echo = FALSE}
+(cox <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm + new_category*new_user, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE))
+
+options(scipen=999)
+(cv <- rms::validate(cox, method = "crossvalidation", B = 10, dxy = TRUE, pr = TRUE))
+
+# for calibrate function, had to add in surv = TRUE and time.inc = a constant (time at which to estimate survival probabilities)
+cox1 <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm + new_category*new_user, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE, surv=TRUE, time.inc=1.5)
+
+calibrate <- rms::calibrate(cox1, method = "crossvalidation", B = 10, pr = TRUE)
+```
 
 ### Predicting on the test data
 
 * categorical variables must be the same across data sets, but I want the categorical variable to change with each data set, any way to do this? 
 
-```{r}
+```{r, echo = FALSE}
+# function to perform cross validation + compute performance metrics
+crossvalidate <- function(train, test) {
+ 
+  # building model on training data set
+  model <- survival::coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm + new_category*new_user, data = train)
+  
+  # performance metrics for training data 
+  train[["predictions"]] <- predict(model, type = "risk")
+  metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train)
+  train_metrics <- data.frame(HR = exp(metric$coefficients), 
+                              LR = round(metric$stats[3],2), 
+                              pval = round(metric$stats[5],2), 
+                              R2 = round(metric$stats[8],2), 
+                              Dxy = round(metric$stats[9],2), 
+                              AIC = stats::AIC(metric, k = 2), 
+                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train)$concordance)
 
-#calculating root
+  # predicting on test data
+  test[["predictions"]] <- predict(model, newdata = test, type = "risk")
+  
+  # computing performance metrics 
+  metric1 <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = test)
+  test_metrics <- data.frame(HR = exp(metric1$coefficients), 
+                             LR = round(metric1$stats[3],2), 
+                             pval = round(metric1$stats[5],2), 
+                             R2 = round(metric1$stats[8],2), 
+                             Dxy = round(metric1$stats[9],2), 
+                             AIC = stats::AIC(metric1, k = 2), 
+                             Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
+  
+  # returns data frame with train/test metrics 
+  statistics <- rbind(train_metrics, test_metrics)
+  rownames(statistics) <- c("Training Data", "Test Data")
+  return(statistics) 
+}
+
+#=============================================
+test1 <- oshitar::variable_setup(x[splitPlan[[1]]$app, ])
+(iteration1 <- crossvalidate(train1, test1))
+
+#=============================================
+train2 <- oshitar::variable_setup(x[splitPlan[[2]]$train, ])
+test2 <- oshitar::variable_setup(x[splitPlan[[2]]$app, ])
+(iteration2 <- crossvalidate(train2, test2))
+
+#=============================================
+train3 <- oshitar::variable_setup(x[splitPlan[[3]]$train, ])
+test3 <- oshitar::variable_setup(x[splitPlan[[3]]$app, ])
+test3$num_freq_tags <- as.character(test3$num_freq_tags)
+test3$num_freq_tags[test3$num_freq_tags == "4"] <- "3"
+(iteration3 <- crossvalidate(train3, test3))
+# make this more reproducible!!! rule: if a factors level has less than 3 observations in it, merge it with the nearest level 
+
+#=============================================
+train4 <- oshitar::variable_setup(x[splitPlan[[4]]$train, ])
+test4 <- oshitar::variable_setup(x[splitPlan[[4]]$app, ])
+(iteration4 <- crossvalidate(train4, test4))
+
+#=============================================
+train5 <- oshitar::variable_setup(x[splitPlan[[5]]$train, ])
+test5 <- oshitar::variable_setup(x[splitPlan[[5]]$app, ])
+(iteration5 <- crossvalidate(train5, test5))
+
+iteration1
+iteration2
+iteration3
+iteration4
+iteration5
+```
+
+# Fitting model to the full data set
+
+```{r, echo = FALSE}
+x <- oshitar::variable_setup(x)
+
+final <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm + new_category*new_user, data = x)
+summary(final)
+AIC(final, k = 2) # 83051.61
+
+x$predictions <- predict(final, type = "risk")
+(performance <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = x))
+AIC(performance, k = 2)
+
+# extracting predicted survival probabilities
+prob <- pec::predictSurvProb(final, newdata = x, times = c(0.5, 1, 1.5, 2, quantile(x$time_until_answer)))
 
 
-test1 <- x[splitPlan[[1]]$app, ]
-# setting up variables for model 
-test1 <- oshitar::variable_setup(test1)
+#==================================================================================================
+# function to take in a data set, fit the model, output performance metrics, and allow you to specify times to predict survival probabilities 
 
-test_predict <- predict(object = final, newdata = test1, type = "risk", se.fit = TRUE)
-test1$predictions <- test_predict[[1]]
+predict_survprob <- function(dataset, times) {
+  # fitting the model 
+  data <- oshitar::variable_setup(dataset)
+  model <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm + new_category*new_user, data = data)
+  
+  # performance metrics
+  data[["predictions"]] <- predict(model, type = "risk")
+  p <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = data)
+  metrics <- data.frame(HR = exp(p$coefficients), 
+                             LR = round(p$stats[3],2), 
+                             pval = round(p$stats[5],2), 
+                             R2 = round(p$stats[8],2), 
+                             Dxy = round(p$stats[9],2), 
+                             AIC = stats::AIC(p, k = 2), 
+                             Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = data)$concordance)
+  
+  # calculating predicted survival probabilities
+  probs <- pec::predictSurvProb(model, newdata = data, times)
+  
+  # returns a list containing performance metrics, and data frame with predicted survival probabilities
+  output <- list(metrics, probs)
+  return(output)
+}
 
-metric <- coxph(Surv(time_until_answer, answered) ~ predictions, data = test1)
-summary(metric)
-AIC(metric, k = 2)
 ```
 
 
-### working with the rms package for cross validation
 
 ```{r}
-library(rms)
-(cox <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm + new_category*new_user, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE))
+b <- oshitar::variable_setup(b)
+counts <- b %>% 
+  select(new_user, weekday, num_freq_tags) %>%
+  purrr::map(~table(.))
 
-(cv <- validate(cox, method = "crossvalidation", B = 10, dxy = TRUE, pr = TRUE))
+# if a factor has less than 3 questions in a level, merge it with the nearest level 
+for (i in length(counts)) {
+  if (which(unname(counts[[i]]) < 3) != integer(0)) {
+    names(which(counts[[i]] < 3)) 
+  }
+}
+
+class(counts[[1]])
+which(unname(counts[[1]]) < 1)
 ```
-
-
 
