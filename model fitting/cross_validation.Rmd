@@ -422,6 +422,5 @@ predict_survprob <- function(dataset, times) {
   output <- list(metrics, probs)
   return(output)
 }
-
 ```
 
