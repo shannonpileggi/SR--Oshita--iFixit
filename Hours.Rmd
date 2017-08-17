@@ -72,5 +72,7 @@ Date   | Hours | Time        | Description
 8/11/2017 | 5.5 | 10:30-4:00PM | Researched more model fitting functions, recoded category variable
 8/11/2017 | 2 | 8:00-10:00PM | Plotted residuals + predicted on test data set
 8/15/2017 | 9.5 | 11:00-8:30PM | Cross validation + model fitting 
+8/16/2017 | 5 | 10:30-3:30PM | Wrote function for cross validation 
+8/16/2017 | 2.5 | 7:00-9:30PM | Fit model to full data set, wrote function to take data, fit model, and get predicted survival probabilities 
 
 >> __Total Hours: 1...__

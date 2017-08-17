@@ -442,5 +442,15 @@ for (i in length(counts)) {
 
 class(counts[[1]])
 which(unname(counts[[1]]) < 1)
+
+n_levels <- x %>% 
+  select_if(is.factor) %>%
+  purrr::map_dbl(~length(levels(.)))
+
+for (i in (which(n_levels > 10))) {
+  x[[names(n_levels)[i]]] <- as.character(x[[names(n_levels)[i]]])
+}
+
+
 ```
 
