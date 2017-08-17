@@ -425,32 +425,3 @@ predict_survprob <- function(dataset, times) {
 
 ```
 
-
-
-```{r}
-b <- oshitar::variable_setup(b)
-counts <- b %>% 
-  select(new_user, weekday, num_freq_tags) %>%
-  purrr::map(~table(.))
-
-# if a factor has less than 3 questions in a level, merge it with the nearest level 
-for (i in length(counts)) {
-  if (which(unname(counts[[i]]) < 3) != integer(0)) {
-    names(which(counts[[i]] < 3)) 
-  }
-}
-
-class(counts[[1]])
-which(unname(counts[[1]]) < 1)
-
-n_levels <- x %>% 
-  select_if(is.factor) %>%
-  purrr::map_dbl(~length(levels(.)))
-
-for (i in (which(n_levels > 10))) {
-  x[[names(n_levels)[i]]] <- as.character(x[[names(n_levels)[i]]])
-}
-
-
-```
-
