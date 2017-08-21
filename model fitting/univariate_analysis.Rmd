@@ -69,7 +69,7 @@ pvalues <- get_pvalue("new_n_images")
 
 #===================================================================
 # n_tags
-pvalues <- get_pvalue("n_tags")
+pvalues <- get_pvalue("n_tags", factor = TRUE)
 
 #===================================================================
 # new_user
@@ -104,6 +104,10 @@ pvalues <- get_pvalue("ampm")
 # title length
 train1$title_length <- str_length(train1$title)
 pvalues <- get_pvalue("title_length", factor = FALSE)
+
+# splines
+fit <- coxph(Surv(time_until_answer, answered) ~ pspline(title_length, df = 0, method = "AIC"), data = train1)
+summary(fit) # p=0.2322
 
 #===================================================================
 # text length
@@ -194,11 +198,14 @@ pvalues <- get_pvalue("update")
 # newline ratio to length of text
 train1$newline_ratio <- str_count(train1$text, pattern = "\n")/str_length(train1$text)
 pvalues <- get_pvalue("newline_ratio")
+
+ggplot2::ggplot(train1, aes(x = time_until_answer, y = newline_ratio)) + 
+  geom_point()
 ```
 
 
 ```{r, tag based and frequent term variables, include = FALSE}
-# tag-based variables
+# tag-based variables 
 #===================================================================
 # avg_tag_length
 split_tags <- str_split(train1$tags, ", ", simplify = TRUE)
@@ -323,5 +330,70 @@ pvalues <- get_pvalue("contain_answered")
 options(scipen=999)
 (pvalues <- pvalues %>%
   arrange(pvalue))
+```
+
+
+### researching splines
+
+* spline: piecewise m - 1 degree polynomial that is continuous up to its first m - 2 derivatives
+* obtain more flexible curves: increase the degree of spline/add more knots
+* tradeoff: 
+    + few knots/low degree: class of functions may be too restrictive (bias)
+    + many knots/high degree: risk overfitting 
+* spline has m + K degrees of freedom 
+* types of splines
+    + cubic splines (most common)
+* truncated power basis - flawed
+* B-spline basis: much more stable, typically used 
+* Natural cubic splines
+    + polynomial fits tend to be erratic at boundaries of data (even worse for cubic splines)
+    + natural cubic splines fix this by adding 4 constraints that the function is linear beyond the boundaries of the data 
+    + because basis functions are fixed, model fitting and inference are straightforward exentsions to how the model would normally be without splines 
+
+```{r, echo = FALSE}
+# fit splines + sqrt/log transformations on title_length, text_length, device_length, avg_tag_length, newline_ratio
+
+# title_length
+fit <- coxph(Surv(time_until_answer, answered) ~ pspline(title_length, df = 0, method = "AIC"), data = train1)
+summary(fit) # p=0.2322
+
+fit1 <- coxph(Surv(time_until_answer, answered) ~ sqrt(title_length), data = train1)
+summary(fit1) # p=0.4874
+
+# text_length
+fit2 <- coxph(Surv(time_until_answer, answered) ~ pspline(text_length, df = 0, method = "AIC"), data = train1)
+summary(fit1) # p=0
+fit3 <- coxph(Surv(time_until_answer, answered) ~ sqrt(text_length), data = train1)
+summary(fit2) # p=0.000000000000000111
+AIC(fit2, k = 2) # 65867.02
+fit4 <- coxph(Surv(time_until_answer, answered) ~ log10(text_length), data = train1)
+summary(fit3) # p=0.000000000000000111
+AIC(fit3, k = 2) # 65862.83
+
+# device_length
+fit5 <- coxph(Surv(time_until_answer, answered) ~ pspline(device_length, df = 0, method = "AIC"), data = train1)
+summary(fit5) # p=0 (original = 0.0065304314223657567)
+fit6 <- coxph(Surv(time_until_answer, answered) ~ sqrt(device_length), data = train1)
+summary(fit6) # p=0.0002291 (lower p-value than without sqrt)
+
+# newline_ratio
+fit7 <- coxph(Surv(time_until_answer, answered) ~ pspline(newline_ratio, df = 0, method = "AIC"), data = train1)
+summary(fit7) # p=0.00000000008754 (original = 0.0000001398791481533)
+
+fit8 <- coxph(Surv(time_until_answer, answered) ~ sqrt(newline_ratio), data = train1)
+summary(fit8) # p=0.00000000001149
+AIC(fit8, k = 2) # 65890.28
+
+# avg_tag_length
+fit9 <- coxph(Surv(time_until_answer, answered) ~ pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
+summary(fit9) # p=0.009088 (original = 0.05)
+fit10 <- coxph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_length), data = train1)
+summary(fit10) # p=0.1278
+
+# avg_tag_score
+fit10 <- coxph(Surv(time_until_answer, answered) ~ pspline(avg_tag_score, df = 0, method = "AIC"), data = train1)
+summary(fit10) # p=0.0000000002831
+fit11 <- coxph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_score), data = train1)
+summary(fit11) # p=0.00000000003211 (original = 0.0000000166232489995)
 ```
 

@@ -32,6 +32,8 @@ str(splitPlan)
 ##### Fitting model with all significant variables (univariate analysis p-value < 0.01)
 
 ```{r, echo = FALSE}
+# write a function to set up variables for this training data 
+
 train1 <- x[splitPlan[[1]]$train, ]
 
 first <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + contain_unanswered + title_questionmark + text_length + text_contain_punct + as.factor(num_freq_tags) + as.factor(n_tags) + contain_answered + newline_ratio + text_all_lower + update + greeting + capital_text + prior_effort + gratitude + ampm + n_images + weekday + device_length + title_beginwh, data = train1)
@@ -54,6 +56,7 @@ model2 <- MASS::stepAIC(first, direction = "both", k = 2)
 # results
 results2 <- coxph(Surv(time_until_answer, answered) ~ category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh, data = train1)
 AIC(results2, k = 2) # 65277.47
+summary(results2)
 ```
 
 ### Adding interaction terms 
@@ -64,7 +67,7 @@ AIC(results2, k = 2) # 65277.47
 # adding title_questionmark*title_beginwh
 model2 <- coxph(Surv(time_until_answer, answered) ~ category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh, data = train1)
 AIC(model2, k = 2) # 65274.49
-compare_nested(model2, results2)
+oshitar::compare_nested(model2, results2)
 
 # adding new_user*update
 model2_1 <- coxph(Surv(time_until_answer, answered) ~ category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + new_user*update, data = train1)
@@ -74,7 +77,7 @@ compare_nested(model2_1, results2)
 # adding new_user*ampm 
 model2_2 <- coxph(Surv(time_until_answer, answered) ~ category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + new_user*ampm, data = train1)
 AIC(model2_2, k = 2) # 65271.84
-compare_nested(model2_2, results2)
+oshitar::compare_nested(model2_2, results2)
 
 # all signficant interaction terms 
 model_i <- coxph(Surv(time_until_answer, answered) ~ category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm, data = train1)
@@ -121,6 +124,7 @@ table(train1$new_category)
 
 model_new <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh, data = train1)
 AIC(model_new, k = 2) #64999.87
+summary(model_new)
 
 #new_cateogry*new_user
 model_new1 <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + new_category*new_user, data = train1)
@@ -170,7 +174,8 @@ train1$deviance <- residuals(model_full, type = "deviance")
 ggplot(train1, aes(x = 1:nrow(train1), y = deviance)) + 
   geom_point() + 
   scale_x_continuous("Question index") + 
-  scale_y_continuous(breaks = seq(-4, 4, by = 0.5))
+  scale_y_continuous(breaks = seq(-4, 4, by = 0.5)) + 
+  ggtitle("Deviance Residuals")
 # quite a few questions have a deviance residual of larger than 2.5 
 
 #=============================================
@@ -205,7 +210,14 @@ columns <- names(score)
 purrr::map(columns, plot_score)
 
 #=============================================
+# working with rms::which.influence to id influential points
+c <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm + new_category*new_user, x = TRUE, y = TRUE, data = train1)
+influence <- rms::which.influence(c)
+rms::show.influence(influence, train1)
+
+#=============================================
 # formal test of PH assumption
+options(scipen=999)
 ph_test <- data.frame(predictors = rownames(cox.zph(model_full)$table), cox.zph(model_full)$table) 
 rownames(ph_test) = NULL
 ph_test <- ph_test %>%
@@ -234,6 +246,14 @@ strat_model3 <- coxph(Surv(time_until_answer, answered) ~ strata(new_category) +
 AIC(strat_model3, k = 2) # 35370.81
 summary(strat_model3)
 ```
+
+### Checking multicolliniearity 
+
+```{r, echo = FALSE}
+rms::vif()
+```
+
+
 
 ### Performance metric on training data set
 
@@ -396,7 +416,7 @@ AIC(performance, k = 2)
 prob <- pec::predictSurvProb(final, newdata = x, times = c(0.5, 1, 1.5, 2, quantile(x$time_until_answer)))
 
 
-#==================================================================================================
+#==================================================================================
 # function to take in a data set, fit the model, output performance metrics, and allow you to specify times to predict survival probabilities 
 
 predict_survprob <- function(dataset, times) {
