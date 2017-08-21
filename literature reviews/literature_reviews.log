@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  17 AUG 2017 11:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  17 AUG 2017 11:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -53,42 +53,32 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 22.
 
+Overfull \hbox (4.52965pt too wide) in paragraph at lines 27--28
+\OT1/cmr/m/n/12 This re-ally cool pa-per about stack-over-flow said some-thing 
+cool (Pon-zanelli et al., 2014). 
+ []
 
-Package natbib Warning: Citation `Ponzanelli2014' on page 1 undefined on input 
-line 27.
+(./literature_reviews.bbl) [1
 
-
-Package natbib Warning: Citation `Ponzanelli2014' on page 1 undefined on input 
-line 30.
-
-(./literature_reviews.bbl
-
-Package natbib Warning: Empty `thebibliography' environment on input line 3.
-
-)
-
-Package natbib Warning: There were undefined citations.
-
-[1
-
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-(./literature_reviews.aux) ) 
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./lite
+rature_reviews.aux) ) 
 Here is how much of TeX's memory you used:
- 566 strings out of 492995
- 6764 string characters out of 6132704
- 59623 words of memory out of 5000000
- 4190 multiletter control sequences out of 15000+600000
- 6063 words of font info for 22 fonts, out of 8000000 for 9000
+ 572 strings out of 492995
+ 6859 string characters out of 6132704
+ 60623 words of memory out of 5000000
+ 4195 multiletter control sequences out of 15000+600000
+ 6103 words of font info for 22 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 22i,6n,22p,194b,181s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr17.pfb>
-Output written on literature_reviews.pdf (1 page, 34395 bytes).
+ 22i,6n,20p,194b,181s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmti12.pfb>
+Output written on literature_reviews.pdf (1 page, 50428 bytes).
 PDF statistics:
- 20 PDF objects out of 1000 (max. 8388607)
- 13 compressed objects within 1 object stream
+ 24 PDF objects out of 1000 (max. 8388607)
+ 16 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
