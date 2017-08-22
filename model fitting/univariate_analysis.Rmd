@@ -45,19 +45,18 @@ get_pvalue <- function(variable, factor = FALSE) {
     coxmodel <- coxph(Surv(time_until_answer, answered) ~ as.factor(train1[[variable]]), data = train1)
   }
   summary <- summary(coxmodel)
-  print(summary)
   df <- data.frame(variable = variable, pvalue = unname(summary$logtest[[3]]))
   pvalues <- rbind(pvalues, df)
   return(pvalues)
 }
 
-#===================================================================
 # Univariate analyses (select variables with p-value < 0.01)
+#===================================================================
 # category 
-train1$category <- as.character(train1$category)
-train1$category[is.na(train1$category)] <- "Other"
-train1$category <- as.factor(train1$category)
 pvalues <- get_pvalue("category")
+#===================================================================
+# new_category
+pvalues <- get_pvalue("new_category")
 #===================================================================
 # n_images
 pvalues <- get_pvalue("n_images")
@@ -73,80 +72,46 @@ pvalues <- get_pvalue("n_tags", factor = TRUE)
 
 #===================================================================
 # new_user
-pvalues <- get_pvalue("new_user", factor = TRUE)
+pvalues <- get_pvalue("new_user")
 
 #===================================================================
 # weekday
-train1$datetime <- as.POSIXct(train1$post_date,origin="1970-01-01")
-train1$weekday <- factor(weekdays(train1$datetime), levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
 pvalues <- get_pvalue("weekday")
 
 #===================================================================
-# is_weekend
-train1$is_weekend <- FALSE
-train1$is_weekend[train1$weekday == "Saturday" | train1$weekday == "Sunday"] <- TRUE
-pvalues <- get_pvalue("is_weekend")
-
-#===================================================================
 # hour of the day
-train1$hour <- as.numeric(format(train1$datetime,"%H"))
 pvalues <- get_pvalue("hour", factor = TRUE)
 
 #===================================================================
 # morning/noon/evening/night?
-train1$ampm <- "Night"
-train1$ampm[train1$hour >= 5 & train1$hour < 12] <- "Morning"
-train1$ampm[train1$hour >= 12 & train1$hour < 17] <- "Afternoon" #noon - 5pm
-train1$ampm[train1$hour >= 17 & train1$hour < 20] <- "Evening" #5pm - 8pm
 pvalues <- get_pvalue("ampm")
 
 #===================================================================
 # title length
-train1$title_length <- str_length(train1$title)
-pvalues <- get_pvalue("title_length", factor = FALSE)
-
-# splines
-fit <- coxph(Surv(time_until_answer, answered) ~ pspline(title_length, df = 0, method = "AIC"), data = train1)
-summary(fit) # p=0.2322
+pvalues <- get_pvalue("title_length")
 
 #===================================================================
 # text length
-train1$text_length <- str_length(train1$text)
 pvalues <- get_pvalue("text_length")
 
 #===================================================================
 # device name length
-train1$device_length <- str_length(train1$device)
 pvalues <- get_pvalue("device_length")
 
 #===================================================================
 # length of sentence until first punctuation mark
-train1$length <- str_locate(train1$text, pattern = "[.|?|!]")[,1]
-q <- stats::quantile(train1$length, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
-train1$text_till_punct <- "none"
-train1$text_till_punct[train1$length <= q[3]] <- "short"
-train1$text_till_punct[train1$length >= q[3] & train1$length <= q[4]] <- "medium"
-train1$text_till_punct[train1$length >= q[4]] <- "long"
 pvalues <- get_pvalue("text_till_punct")
 
 #===================================================================
 # if text contains any end punctuation
-train1$text_contain_punct <- str_detect(train1$text, pattern = "[.|?|!]")
 pvalues <- get_pvalue("text_contain_punct")
 
 #===================================================================
-# if the text ends in a punctuation
-train1$text_end_punct <- str_detect(train1$text, pattern = "[.|?|!]$")
-pvalues <- get_pvalue("text_end_punct")
-
-#===================================================================
 # if the title ends with a question mark
-train1$title_questionmark <- str_detect(train1$title, pattern = QUESTION %R% END)
 pvalues <- get_pvalue("title_questionmark")
 
 #===================================================================
 # if title begins with "wh"
-train1$title_beginwh <- str_detect(str_to_lower(train1$title), pattern = "^wh")
 pvalues <- get_pvalue("title_beginwh")
 
 #===================================================================
@@ -161,46 +126,27 @@ pvalues <- get_pvalue("capital_text")
 
 #===================================================================
 # if text is in all lower case
-train1$cleaned <- str_replace_all(train1$text, " ", "")
-train1$cleaned <- str_replace_all(train1$cleaned, "[[:punct:]]|[[:digit:]]", "")
-train1$text_all_lower <- str_detect(train1$cleaned, pattern = "^[[:lower:]]+$")
 pvalues <- get_pvalue("text_all_lower")
 
 #===================================================================
 # prior_effort
-prior_terms <- c("tried", "searched", "researched", "tested", "replaced", "used", "checked", "investigated", "considered", "measured", "attempted", "inspected", "fitted")
-train1$prior_effort <- str_detect(str_to_lower(train1$text), pattern = or1(prior_terms))
 pvalues <- get_pvalue("prior_effort")
 
 #===================================================================
-# num_prior_effort
-train1$num_prior_effort <- str_count(str_to_lower(train1$text), pattern = or1(prior_terms))
-pvalues <- get_pvalue("num_prior_effort")
-
-#===================================================================
 # expressing gratitude 
-gratitude_terms <- c("please", "thank you", "thanks", "thankful", "appreciate", "appreciated", "grateful")
-train1$gratitude <- str_detect(str_to_lower(train1$text), pattern = or1(gratitude_terms))
 pvalues <- get_pvalue("gratitude")
 
 #===================================================================
 # greeting
-greeting_terms <- c("hey", "hello", "greetings", "hi")
-train1$greeting <- str_detect(str_to_lower(train1$text), pattern = START %R% or1(greeting_terms))
 pvalues <- get_pvalue("greeting")
 
 #===================================================================
 # update the question?
-train1$update <- str_detect(train1$text, pattern = "===")
 pvalues <- get_pvalue("update")
 
 #===================================================================
 # newline ratio to length of text
-train1$newline_ratio <- str_count(train1$text, pattern = "\n")/str_length(train1$text)
 pvalues <- get_pvalue("newline_ratio")
-
-ggplot2::ggplot(train1, aes(x = time_until_answer, y = newline_ratio)) + 
-  geom_point()
 ```
 
 
@@ -208,132 +154,23 @@ ggplot2::ggplot(train1, aes(x = time_until_answer, y = newline_ratio)) +
 # tag-based variables 
 #===================================================================
 # avg_tag_length
-split_tags <- str_split(train1$tags, ", ", simplify = TRUE)
-train1$avg_tag_length <- NA
-not_na <- which(train1$tags != "")
-for (i in not_na) {
-  total_char <- sum(str_length(as.vector(split_tags[i,])))
-  total_tags <- sum(as.vector(split_tags[i,]) != "")
-  train1$avg_tag_length[i] <- total_char / total_tags
-}
 pvalues <- get_pvalue("avg_tag_length")
 
 #===================================================================
-# maximum number of words for a question's tags
-train1$max_tagwords <- rep(0, nrow(train1))
-for (i in which(train1$n_tags != 0)) {
-  tags <- as.vector(split_tags[i,])
-  train1$max_tagwords[i] <- max(str_count(tags, pattern = "\\w+"))
-}
-pvalues <- get_pvalue("max_tagwords")
-
-#===================================================================
-# frequent tags
-tag_vector <- as.vector(split_tags)
-tag_vector <- tag_vector[which(tag_vector != "")]
-unique_tags <- unique(tag_vector)
-
-tag_freq <- data.frame(tag = unique_tags, percent = purrr::map_dbl(unique_tags, ~mean(rowSums(split_tags == .) > 0)))
-tag_freq <- tag_freq %>%
-              arrange(desc(percent))
-
-#creating average frequency score variable
-train1$tag1 <- split_tags[,1]
-train1$tag2 <- split_tags[,2]
-train1$tag3 <- split_tags[,3]
-train1$tag4 <- split_tags[,4]
-
-assign_score <- function(data, variable) {
-  score <- rep(0, nrow(data))
-  notempty <- which(data[[variable]] != "")
-  for (i in notempty) {
-    score[i] <- tag_freq$percent[which(tag_freq$tag == data[[variable]][i])]
-  }
-  return(score)
-}
-train1$score1 <- assign_score(train1, "tag1")
-train1$score2 <- assign_score(train1, "tag2")
-train1$score3 <- assign_score(train1, "tag3")
-train1$score4 <- assign_score(train1, "tag4")
-train1$avg_tag_score <- (train1$score1 + train1$score2 + train1$score3 + train1$score4)/as.numeric(train1$n_tags)
-train1$avg_tag_score[is.nan(train1$avg_tag_score)] <- 0
-
+# avg_tag_score
 pvalues <- get_pvalue("avg_tag_score")
 
 #===================================================================
-# if question contains "frequent" tag
-percentile80 <- quantile(train1$avg_tag_score, probs = 0.80)
-
-train1$frequent_tag <- FALSE
-train1$frequent_tag[train1$avg_tag_score >= percentile80] <- TRUE
-
-pvalues <- get_pvalue("frequent_tag")
-
-#===================================================================
 # number of "frequent" tags a question contains
-threshold <- 0.005
-num_pop <- function(var, threshold) {
-  num_pop <- rep(0, nrow(train1))
-  num_pop[train1[[var]] >= threshold] <- 1
-  return(num_pop)
-}
-numpop1 <- num_pop("score1", threshold)
-numpop2 <- num_pop("score2", threshold)
-numpop3 <- num_pop("score3", threshold)
-numpop4 <- num_pop("score4", threshold)
-train1$num_freq_tags <- numpop1 + numpop2 + numpop3 + numpop4
-
 pvalues <- get_pvalue("num_freq_tags")
 
 #==================================================================================
 #frequent terms in unanswered/answered questions
-answered <- train1 %>%
-  tibble::as_tibble() %>% 
-  filter(answered == 1)
-
-unanswered <- train1 %>%
-  tibble::as_tibble() %>% 
-  filter(answered == 0)
-
-terms_a <- oshitar::get_freq_terms(answered$title, stopwords = c("can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
-terms_a$prop_in_answered <- terms_a$frequency/nrow(terms_a)
-colnames(terms_a)[2] <- "frequency_a"
-
-terms_u <- oshitar::get_freq_terms(unanswered$title, stopwords = c("can", "will", "cant", "wont", "works", "get", "help", "need", "fix"))
-terms_u$prop_in_unanswered <- terms_u$frequency/nrow(terms_u)
-colnames(terms_u)[2] <- "frequency_u"
-
-combined <- dplyr::full_join(terms_a, terms_u, by = "word")
-combined$ratio <- combined$prop_in_answered / combined$prop_in_unanswered
-
-p_threshold <- 0.01
-ratio_threshold <- 1
-
-freq_terms_u <- combined %>%
-                  filter(prop_in_unanswered > p_threshold) %>%
-                  filter(ratio < ratio_threshold)
-freq_terms_a <- combined %>%
-                  filter(prop_in_answered > p_threshold) %>%
-                  filter(ratio > ratio_threshold)
-
-train1$contain_unanswered <- str_detect(as.character(train1$title), pattern = or1(freq_terms_u$word))
-train1$contain_answered <- str_detect(as.character(train1$title), pattern = or1(freq_terms_a$word))
-
 pvalues <- get_pvalue("contain_unanswered")
 pvalues <- get_pvalue("contain_answered")
 ```
 
-### examining univariate analyses results 
-
-
-```{r, echo = FALSE}
-options(scipen=999)
-(pvalues <- pvalues %>%
-  arrange(pvalue))
-```
-
-
-### researching splines
+### researching splines + quadratic terms + square root transformations 
 
 * spline: piecewise m - 1 degree polynomial that is continuous up to its first m - 2 derivatives
 * obtain more flexible curves: increase the degree of spline/add more knots
@@ -349,51 +186,129 @@ options(scipen=999)
     + polynomial fits tend to be erratic at boundaries of data (even worse for cubic splines)
     + natural cubic splines fix this by adding 4 constraints that the function is linear beyond the boundaries of the data 
     + because basis functions are fixed, model fitting and inference are straightforward exentsions to how the model would normally be without splines 
+* **use pspline and penalized spline smoothing method with AIC criteria**
 
 ```{r, echo = FALSE}
 # fit splines + sqrt/log transformations on title_length, text_length, device_length, avg_tag_length, newline_ratio
 
-# title_length
-fit <- coxph(Surv(time_until_answer, answered) ~ pspline(title_length, df = 0, method = "AIC"), data = train1)
-summary(fit) # p=0.2322
+# new function to add p-values from these fits to pvalue data frame
+get_pvalue_new <- function(variable, fit) {
+  summary <- summary(fit)
+  df <- data.frame(variable = variable, pvalue = unname(summary$logtest[[3]]))
+  pvalues <- rbind(pvalues, df)
+  return(pvalues)
+}
 
-fit1 <- coxph(Surv(time_until_answer, answered) ~ sqrt(title_length), data = train1)
-summary(fit1) # p=0.4874
+#===================================================================
+
+# title_length
+spline_title <- coxph(Surv(time_until_answer, answered) ~ pspline(title_length, df = 0, method = "AIC"), data = train1)
+pvalues <- get_pvalue_new("title_length_spline", fit = spline_title)
+
+sqrt_title <- coxph(Surv(time_until_answer, answered) ~ sqrt(title_length), data = train1)
+pvalues <- get_pvalue_new("title_length_sqrt", fit = sqrt_title)
+
+# quadratic/cubic terms 
+
+title2 <- coxph(Surv(time_until_answer, answered) ~ title_length + I(title_length^2), data = train1)
+pvalues <- get_pvalue_new("quad_title", fit = title2)
+
+title3 <- coxph(Surv(time_until_answer, answered) ~ title_length + I(title_length^2) + I(title_length^3), data = train1)
+pvalues <- get_pvalue_new("cubic_title", fit = title3)
+
+#===================================================================
 
 # text_length
-fit2 <- coxph(Surv(time_until_answer, answered) ~ pspline(text_length, df = 0, method = "AIC"), data = train1)
-summary(fit1) # p=0
-fit3 <- coxph(Surv(time_until_answer, answered) ~ sqrt(text_length), data = train1)
-summary(fit2) # p=0.000000000000000111
-AIC(fit2, k = 2) # 65867.02
-fit4 <- coxph(Surv(time_until_answer, answered) ~ log10(text_length), data = train1)
-summary(fit3) # p=0.000000000000000111
-AIC(fit3, k = 2) # 65862.83
+spline_text <- coxph(Surv(time_until_answer, answered) ~ pspline(text_length, df = 0, method = "AIC"), data = train1)
+pvalues <- get_pvalue_new("text_length_spline", fit = spline_text)
+
+sqrt_text <- coxph(Surv(time_until_answer, answered) ~ sqrt(text_length), data = train1)
+pvalues <- get_pvalue_new("text_length_sqrt", fit = sqrt_text)
+
+logtext <- coxph(Surv(time_until_answer, answered) ~ log10(text_length), data = train1)
+pvalues <- get_pvalue_new("text_length_log10", fit = logtext)
+
+# quadratic/cubic terms 
+
+text2 <- coxph(Surv(time_until_answer, answered) ~ text_length + I(text_length^2), data = train1)
+pvalues <- get_pvalue_new("quad_text", fit = text2)
+
+text3 <- coxph(Surv(time_until_answer, answered) ~ text_length + I(text_length^2) + I(text_length^3), data = train1)
+pvalues <- get_pvalue_new("cubic_text", fit = text3)
+
+#===================================================================
 
 # device_length
-fit5 <- coxph(Surv(time_until_answer, answered) ~ pspline(device_length, df = 0, method = "AIC"), data = train1)
-summary(fit5) # p=0 (original = 0.0065304314223657567)
-fit6 <- coxph(Surv(time_until_answer, answered) ~ sqrt(device_length), data = train1)
-summary(fit6) # p=0.0002291 (lower p-value than without sqrt)
+spline_dev <- coxph(Surv(time_until_answer, answered) ~ pspline(device_length, df = 0, method = "AIC"), data = train1)
+pvalues <- get_pvalue_new("device_length_spline", fit = spline_dev)
+
+sqrt_dev <- coxph(Surv(time_until_answer, answered) ~ sqrt(device_length), data = train1)
+pvalues <- get_pvalue_new("device_length_sqrt", fit = sqrt_dev)
+
+# quadratic/cubic terms 
+
+dev2 <- coxph(Surv(time_until_answer, answered) ~ device_length + I(device_length^2), data = train1)
+pvalues <- get_pvalue_new("quad_dev", fit = dev2)
+
+dev3 <- coxph(Surv(time_until_answer, answered) ~ device_length + I(device_length^2) + I(device_length^3), data = train1)
+pvalues <- get_pvalue_new("cubic_dev", fit = dev3)
+
+#===================================================================
 
 # newline_ratio
 fit7 <- coxph(Surv(time_until_answer, answered) ~ pspline(newline_ratio, df = 0, method = "AIC"), data = train1)
-summary(fit7) # p=0.00000000008754 (original = 0.0000001398791481533)
+pvalues <- get_pvalue_new("newline_ratio_spline", fit = fit7)
 
 fit8 <- coxph(Surv(time_until_answer, answered) ~ sqrt(newline_ratio), data = train1)
-summary(fit8) # p=0.00000000001149
-AIC(fit8, k = 2) # 65890.28
+pvalues <- get_pvalue_new("newline_ratio_sqrt", fit = fit8)
+
+# quadratic/cubic terms
+
+newline2 <- coxph(Surv(time_until_answer, answered) ~ newline_ratio + I(newline_ratio^2), data = train1)
+pvalues <- get_pvalue_new("quad_newline", fit = newline2)
+
+newline3 <- coxph(Surv(time_until_answer, answered) ~ newline_ratio + I(newline_ratio^2) + I(newline_ratio^3), data = train1)
+pvalues <- get_pvalue_new("cubic_newline", fit = newline3)
+
+#===================================================================
 
 # avg_tag_length
 fit9 <- coxph(Surv(time_until_answer, answered) ~ pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
-summary(fit9) # p=0.009088 (original = 0.05)
+pvalues <- get_pvalue_new("avg_tag_length_spline", fit = fit9)
+
 fit10 <- coxph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_length), data = train1)
-summary(fit10) # p=0.1278
+pvalues <- get_pvalue_new("avg_tag_length_sqrt", fit = fit10)
+
+# quadratic/cubic terms 
+
+tag2 <- coxph(Surv(time_until_answer, answered) ~ avg_tag_length + I(avg_tag_length^2), data = train1)
+pvalues <- get_pvalue_new("quad_tag", fit = tag2)
+
+tag3 <- coxph(Surv(time_until_answer, answered) ~ avg_tag_length + I(avg_tag_length^2) + I(avg_tag_length^3), data = train1)
+pvalues <- get_pvalue_new("cubic_tag", fit = tag3)
+
+#===================================================================
 
 # avg_tag_score
-fit10 <- coxph(Surv(time_until_answer, answered) ~ pspline(avg_tag_score, df = 0, method = "AIC"), data = train1)
-summary(fit10) # p=0.0000000002831
-fit11 <- coxph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_score), data = train1)
-summary(fit11) # p=0.00000000003211 (original = 0.0000000166232489995)
+fit11 <- coxph(Surv(time_until_answer, answered) ~ pspline(avg_tag_score, df = 0, method = "AIC"), data = train1)
+pvalues <- get_pvalue_new("avg_tag_score_spline", fit = fit11)
+
+fit12 <- coxph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_score), data = train1)
+pvalues <- get_pvalue_new("avg_tag_score_sqrt", fit = fit12)
+
+# quadratic/cubic terms 
+
+score2 <- coxph(Surv(time_until_answer, answered) ~ avg_tag_score + I(avg_tag_score^2), data = train1)
+pvalues <- get_pvalue_new("quad_score", fit = score2)
+
+score3 <- coxph(Surv(time_until_answer, answered) ~ avg_tag_score + I(avg_tag_score^2) + I(avg_tag_score^3), data = train1)
+pvalues <- get_pvalue_new("cubic_score", fit = score3)
 ```
 
+### examining univariate analyses results 
+
+```{r, echo = FALSE}
+options(scipen=999)
+(pvalues <- pvalues %>%
+  arrange(pvalue))
+```
