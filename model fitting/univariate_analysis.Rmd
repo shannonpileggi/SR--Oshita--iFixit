@@ -52,13 +52,8 @@ get_pvalue <- function(variable, factor = FALSE) {
 
 # Univariate analyses (select variables with p-value < 0.01)
 #===================================================================
-# category 
 pvalues <- get_pvalue("category")
-#===================================================================
-# new_category
 pvalues <- get_pvalue("new_category")
-#===================================================================
-# n_images
 pvalues <- get_pvalue("n_images")
 
 # new_n_images (recoding to group questions with >= 6 images) 
@@ -66,131 +61,45 @@ train1$new_n_images <- as.character(train1$n_images)
 train1$new_n_images[train1$n_images >= 6] <- ">= 6"
 pvalues <- get_pvalue("new_n_images")
 
-#===================================================================
-# n_tags
 pvalues <- get_pvalue("n_tags", factor = TRUE)
-
-#===================================================================
-# new_user
 pvalues <- get_pvalue("new_user")
-
-#===================================================================
-# weekday
 pvalues <- get_pvalue("weekday")
-
-#===================================================================
-# hour of the day
 pvalues <- get_pvalue("hour", factor = TRUE)
-
-#===================================================================
-# morning/noon/evening/night?
 pvalues <- get_pvalue("ampm")
-
-#===================================================================
-# title length
 pvalues <- get_pvalue("title_length")
-
-#===================================================================
-# text length
 pvalues <- get_pvalue("text_length")
-
-#===================================================================
-# device name length
 pvalues <- get_pvalue("device_length")
-
-#===================================================================
-# length of sentence until first punctuation mark
 pvalues <- get_pvalue("text_till_punct")
-
-#===================================================================
-# if text contains any end punctuation
 pvalues <- get_pvalue("text_contain_punct")
-
-#===================================================================
-# if the title ends with a question mark
 pvalues <- get_pvalue("title_questionmark")
-
-#===================================================================
-# if title begins with "wh"
 pvalues <- get_pvalue("title_beginwh")
 
-#===================================================================
-# if first letter of title is capitalized
+# if first letter of title is capitalized 
 train1$capital_title <- str_detect(as.character(train1$title), pattern = "^[[:upper:]]")
 pvalues <- get_pvalue("capital_title")
 
-#===================================================================
 # if first letter of text is capitalized
 train1$capital_text <- str_detect(as.character(train1$text), pattern = "^[[:upper:]]")
 pvalues <- get_pvalue("capital_text")
 
-#===================================================================
-# if text is in all lower case
 pvalues <- get_pvalue("text_all_lower")
-
-#===================================================================
-# prior_effort
 pvalues <- get_pvalue("prior_effort")
-
-#===================================================================
-# expressing gratitude 
 pvalues <- get_pvalue("gratitude")
-
-#===================================================================
-# greeting
 pvalues <- get_pvalue("greeting")
-
-#===================================================================
-# update the question?
 pvalues <- get_pvalue("update")
-
-#===================================================================
-# newline ratio to length of text
 pvalues <- get_pvalue("newline_ratio")
-```
-
-
-```{r, tag based and frequent term variables, include = FALSE}
-# tag-based variables 
-#===================================================================
-# avg_tag_length
 pvalues <- get_pvalue("avg_tag_length")
-
-#===================================================================
-# avg_tag_score
 pvalues <- get_pvalue("avg_tag_score")
-
-#===================================================================
-# number of "frequent" tags a question contains
 pvalues <- get_pvalue("num_freq_tags")
-
-#==================================================================================
-#frequent terms in unanswered/answered questions
 pvalues <- get_pvalue("contain_unanswered")
 pvalues <- get_pvalue("contain_answered")
 ```
 
-### researching splines + quadratic terms + square root transformations 
+### splines + quadratic/cubic terms + square root/log transformations 
 
-* spline: piecewise m - 1 degree polynomial that is continuous up to its first m - 2 derivatives
-* obtain more flexible curves: increase the degree of spline/add more knots
-* tradeoff: 
-    + few knots/low degree: class of functions may be too restrictive (bias)
-    + many knots/high degree: risk overfitting 
-* spline has m + K degrees of freedom 
-* types of splines
-    + cubic splines (most common)
-* truncated power basis - flawed
-* B-spline basis: much more stable, typically used 
-* Natural cubic splines
-    + polynomial fits tend to be erratic at boundaries of data (even worse for cubic splines)
-    + natural cubic splines fix this by adding 4 constraints that the function is linear beyond the boundaries of the data 
-    + because basis functions are fixed, model fitting and inference are straightforward exentsions to how the model would normally be without splines 
 * **use pspline and penalized spline smoothing method with AIC criteria**
 
 ```{r, echo = FALSE}
-# fit splines + sqrt/log transformations on title_length, text_length, device_length, avg_tag_length, newline_ratio
-
 # new function to add p-values from these fits to pvalue data frame
 get_pvalue_new <- function(variable, fit) {
   summary <- summary(fit)
