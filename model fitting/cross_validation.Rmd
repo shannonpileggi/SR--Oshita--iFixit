@@ -32,8 +32,6 @@ str(splitPlan)
 ##### Fitting model with all significant variables (univariate analysis p-value < 0.01)
 
 ```{r, echo = FALSE}
-# write a function to set up variables for this training data 
-
 train1 <- x[splitPlan[[1]]$train, ]
 
 first <- coxph(Surv(time_until_answer, answered) ~ category + as.factor(new_user) + contain_unanswered + title_questionmark + text_length + text_contain_punct + as.factor(num_freq_tags) + as.factor(n_tags) + contain_answered + newline_ratio + text_all_lower + update + greeting + capital_text + prior_effort + gratitude + ampm + n_images + weekday + device_length + title_beginwh, data = train1)
@@ -59,6 +57,45 @@ AIC(results2, k = 2) # 65277.47
 summary(results2)
 ```
 
+### splines/square root transformed variables
+
+```{r, echo = FALSE}
+fit3 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + log10(text_length) + title_questionmark + title_beginwh + sqrt(newline_ratio) + sqrt(avg_tag_score) + text_contain_punct + text_all_lower + update + greeting + as.factor(n_tags) + gratitude + prior_effort + ampm + n_images + weekday, data = train1)
+
+fit4 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + sqrt(text_length) + title_questionmark + title_beginwh + sqrt(newline_ratio) + sqrt(avg_tag_score) + text_contain_punct + text_all_lower + update + greeting + as.factor(n_tags) + gratitude + prior_effort + ampm + n_images + weekday, data = train1)
+model4 <- MASS::stepAIC(fit4, direction = "both", k = 2)
+
+#AIC=64986.23
+model3 <- MASS::stepAIC(fit3, direction = "both", k = 2)
+
+resultsa <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday, data = train1)
+summary(resultsa)
+AIC(resultsa, k = 2) # 64965.19
+
+# adding in spline on device_length
+resultsb <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(text_length, df = 0, method = "AIC"), data = train1)
+summary(resultsb)
+AIC(resultsb, k = 2) # 64908.37
+
+# adding in spline on 
+
+results3 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + 
+    pspline(device_length, df = 0, method = "AIC") + contain_unanswered + 
+    title_questionmark + sqrt(avg_tag_score) + contain_answered + 
+    text_all_lower + update + num_prior_effort + ampm + weekday + 
+    pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
+summary(results3)
+AIC(results3, k = 2) # 64891.93
+
+results4 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + pspline(device_length, df = 0, method = "AIC") + contain_unanswered + title_questionmark + sqrt(avg_tag_score) + contain_answered + text_all_lower + update + prior_effort + ampm + weekday + sqrt(newline_ratio) + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
+summary(results4)
+
+AIC(results4, k = 2) # 64888.83
+summary(results4)
+
+```
+
+
 ### Adding interaction terms 
 
 * working with model from backward/forward stepwise selection
@@ -82,6 +119,7 @@ oshitar::compare_nested(model2_2, results2)
 # all signficant interaction terms 
 model_i <- coxph(Surv(time_until_answer, answered) ~ category + new_user + contain_unanswered + title_questionmark + num_freq_tags + contain_answered + text_all_lower + update + ampm + weekday + device_length + title_beginwh + title_questionmark*title_beginwh + new_user*update + new_user*ampm, data = train1)
 AIC(model_i, k = 2) # 65263.35
+summary(model_i)
 ```
 
 ##### recoding category variable
