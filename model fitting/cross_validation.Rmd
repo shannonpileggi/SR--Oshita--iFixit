@@ -316,45 +316,13 @@ get_avgmetrics <- function(list) {
 ##### spline on device_length, text_length, avg_tag_length
 
 ```{r, echo = FALSE}
-# function to perform cross validation + compute performance metrics
-cv_allsplines <- function(train, test) {
- 
-  # building model on training data set
-  model <- survival::coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(text_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train)
-  
-  # performance metrics for training data 
-  train[["predictions"]] <- predict(model, type = "risk")
-  metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train)
-  train_metrics <- data.frame(HR = exp(metric$coefficients), 
-                              LR = round(metric$stats[3],2), 
-                              pval = round(metric$stats[5],2), 
-                              Dxy = round(metric$stats[9],2), 
-                              AIC = stats::AIC(metric, k = 2), 
-                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train)$concordance)
-
-  # predicting on test data
-  test[["predictions"]] <- predict(model, newdata = test, type = "risk")
-  
-  # computing performance metrics 
-  metric1 <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = test)
-  test_metrics <- data.frame(HR = exp(metric1$coefficients), 
-                             LR = round(metric1$stats[3],2), 
-                             pval = round(metric1$stats[5],2), 
-                             Dxy = round(metric1$stats[9],2), 
-                             AIC = stats::AIC(metric1, k = 2), 
-                             Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
-  
-  # returns data frame with train/test metrics 
-  statistics <- rbind(train_metrics, test_metrics)
-  rownames(statistics) <- c("Training Data", "Test Data")
-  return(statistics) 
-}
-
 trains <- list(train1, train2, train3, train4, train5)
 tests <- list(test1, test2, test3, test4, test5)
 
-allspline_models <- purrr::map2(trains, tests, ~cv_allsplines(.x, .y))
-allspline_models
+allvars <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = 'AIC') + pspline(text_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC')"
+allsplines <- purrr::map2(trains, tests, ~crossval(allvars, .x, .y))
+
+allsplines
 # 5th iteration: pvalue for loglikelihood ratio test = 0.51 on test data 
 ```
 
@@ -391,14 +359,73 @@ varsnew <- "new_category + as.factor(new_user) + contain_unanswered + contain_an
 splinenew <- purrr::map2(trains, tests, ~crossval(varsnew, .x, .y))
 ```
 
+##### with splines on device_length and text_length 
+
+* splines on device_length and text_length ahd the most signficant p-values out of all splines in univariate analysis
+
+```{r}
+devtextvars <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = 'AIC') + pspline(text_length, df = 0, method = 'AIC')"
+
+devtext <- purrr::map2(trains, tests, ~crossval(devtextvars, .x, .y))
+
+```
+
+```{r}
+sqrtdev <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + sqrt(device_length) + pspline(text_length, df = 0, method = 'AIC')"
+
+sqrtdev <- purrr::map2(trains, tests, ~crossval(sqrtdev, .x, .y))
+sqrtdev
+
+sqrttext <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + sqrt(text_length) + pspline(device_length, df = 0, method = 'AIC')"
+
+sqrttext <- purrr::map2(trains, tests, ~crossval(sqrttext, .x, .y))
+
+```
+
+##### without splines
+
+```{r}
+vars <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday"
+
+nospline <- purrr::map2(trains, tests, ~crossval(vars, .x, .y))
+```
+
 
 ##### viewing all metrics 
 
 ```{r}
+allspline_avg <- get_avgmetrics(allsplines)
 splinedev_avg <- get_avgmetrics(splinedev)
 splinetext_avg <- get_avgmetrics(splinetext)
 splinetag_avg <- get_avgmetrics(splinetag)
 splinenew_avg <- get_avgmetrics(splinenew)
+nospline_avg <- get_avgmetrics(nospline)
+devtext_avg <- get_avgmetrics(devtext)
+sqrtdev_avg <- get_avgmetrics(sqrtdev)
+sqrttext_avg <- get_avgmetrics(sqrttext)
+
+allspline_avg; splinedev_avg; splinetext_avg; splinetag_avg; splinenew_avg; nospline_avg; devtext_avg; sqrtdev_avg; sqrttext_avg
+```
+
+
+```{r}
+get_avgdiff <- function(list) {
+  list_diff <- purrr::map(1:length(list), ~diff(as.matrix(list[[.]], lag = 1)))
+  df <- plyr::ldply(list_diff, data.frame) %>%
+    select(HR, Dxy, Concordance) %>%
+    colMeans()
+  return(df)
+}
+
+list <- list(allsplines, splinedev, splinetext, splinetag, splinenew, nospline, devtext, sqrtdev, sqrttext)
+names <- c("allsplines", "splinedev", "splinetext", "splinetag", "splinenew", "nospline", "devtext", "sqrtdev", "sqrttext") # change this to avoid hard coding 
+
+l_diff <- purrr::map(list, ~get_avgdiff(.))
+df_diff <- plyr::ldply(purrr::map(1:length(l_diff), ~data.frame(as.list(l_diff[[.]]))), data.frame)
+rownames(df_diff) <- names
+df_diff
+
+#least amount of average change found in model with only the spline on newline_ratio 
 ```
 
 ##### restricted cubic spline on text_length (had the smallest AIC)
