@@ -74,5 +74,11 @@ Date   | Hours | Time        | Description
 8/15/2017 | 9.5 | 11:00-8:30PM | Cross validation + model fitting 
 8/16/2017 | 5 | 10:30-3:30PM | Wrote function for cross validation 
 8/16/2017 | 2.5 | 7:00-9:30PM | Fit model to full data set, wrote function to take data, fit model, and get predicted survival probabilities 
+8/17/2017 | 3.25 | 9:00-12:15PM | Met with Dr. Pileggi, started researching splines 
+8/17/2017 | 1 | 1:30-2:30PM | More spline research
+8/21/2017 | 4 | 2:00-6:00PM | Fit splines with univariate analysis, backward/forward selection on model including splines + square root + log transformed variables 
+8/22/2017 | 5.5 | 10:00-3:30PM  | Univariate analysis for quadratic terms of variables, fixed setup function, removed devices from frequently answered/answered terms list
+8/22/2017 | 3.75 | 6:15-10:00PM | More work with splines + cross validation 
+
 
 >> __Total Hours: 1...__
