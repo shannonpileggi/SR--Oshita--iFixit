@@ -16,7 +16,7 @@ library(stringr)
 library(rebus)
 library(dplyr)
 library(stats)
-library(ggplot2)
+library(rms)
 ```
 
 ### Creating cross-validation plan with k = 5
@@ -27,58 +27,118 @@ splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
 str(splitPlan)
 
 train1 <- x[splitPlan[[1]]$train, ]
+test1 <- x[splitPlan[[1]]$app, ]
+
+train2 <- x[splitPlan[[2]]$train, ]
+test2 <- x[splitPlan[[2]]$app, ]
+
+train3 <- x[splitPlan[[3]]$train, ]
+test3 <- x[splitPlan[[3]]$app, ]
+
+train4 <- x[splitPlan[[4]]$train, ]
+test4 <- x[splitPlan[[4]]$app, ]
+
+train5 <- x[splitPlan[[5]]$train, ]
+test5 <- x[splitPlan[[5]]$app, ]
 ```
 
 ### Building the model on one of the training data sets
 
-##### Fitting model with all significant variables (univariate analysis p-value < 0.01)
+##### Fitting model with all significant variables
+
+* univariate analysis p-value < 0.01
+* using stepAIC to perform backwards and forwards stepwise variable selection with AIC criteria 
+* transformed text_length + avg_tag_length + newline_ratio all insignificant (don't include in model)
 
 ```{r, echo = FALSE}
 fit <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + log10(text_length) + title_questionmark + title_beginwh + sqrt(newline_ratio) + sqrt(avg_tag_score) + text_contain_punct + text_all_lower + update + greeting + as.factor(n_tags) + gratitude + prior_effort + ampm + n_images + weekday, data = train1)
 
 model <- MASS::stepAIC(fit, direction = "both", k = 2)
-#results of stepAIC (but keeping contain_answered)
+
+#results of stepAIC (including contain_answered even though it was dropped)
 results <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday, data = train1)
 summary(results)
-AIC(results, k = 2) # 64965.89
+AIC(results, k = 2) # 64969.63
+```
 
+##### Adding in splines 
+
+* using penalized spline smoothing with AIC criteria 
+    + pspline function from survival package 
+* splines on device_length and avg_tag_length decreased the AIC the most 
+    + it seems like adding in any spline decreases the AIC (is the AIC valid to use) 
+* also fit using corrected AIC as criteria - no difference 
+
+```{r}
 # adding in spline on device_length
 model_spline <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC"), data = train1)
 AIC(model_spline, k = 2) # 64907.21
+summary(model_spline)
 
 # adding in spline on text_length
-model_spline1 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(text_length, df = 0, method = "AIC"), data = train1)
-AIC(model_spline1, k = 2) # 64894.01
+model_spline1 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(text_length, df = 0, method = "AIC"), data = train1)
+AIC(model_spline1, k = 2) # 64914.27
 
 # adding in spline on avg_tag_length
-model_spline2 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(text_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
+model_spline2 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
 summary(model_spline2)
-AIC(model_spline2, k = 2) # 64848.5
+AIC(model_spline2, k = 2) # 64893.52
 
-anova(model_spline2)
-
-#=====================================================
-# adding interaction between title_questionmark + title_beginwh (probably leave out)
-# probably leave interactions out, don't do much for the model 
-
-resultse <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + title_questionmark + title_beginwh + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(text_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC") + title_questionmark*title_beginwh, data = train1)
-summary(resultse)
-AIC(resultse, k = 2) # 64843
+# adding in spline on newline_ratio
+model_spline3 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(newline_ratio, df = 0, method = "AIC"), data = train1)
+summary(model_spline3)
+AIC(model_spline3, k = 2) # 64915.6
 ```
 
-# using rcs (restricted cubic spline) in rms package 
+##### Restricted cubic splines  
+
+* using rcs (restricted cubic spline) in rms package
 * fit knots at quantiles of the predictor 
 * recommended in Regression Modeling Strategies to have 5 knots for large data sets 
-```{r}
-unname(quantile(train1$device_length, c(0.05, 0.275, 0.5, 0.725, 0.95)))
+* estimates less parameters than penalized spline smoothing with AIC criteria 
+* **AIC is higher for these splines** 
 
+```{r}
 library(rms)
+# fitting with spline on device_length
 model <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + rcs(device_length, unname(quantile(train1$device_length, c(0.05, 0.275, 0.5, 0.65, 0.95)))), data = train1)
-AIC(model_spline, k = 2) # 64907.21
-model
+AIC(model, k = 2) # 64968.39
+
+# fitting with spline on text_length
+model2 <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + rcs(text_length, unname(quantile(train1$text_length, c(0.05, 0.275, 0.5, 0.65, 0.95)))), data = train1)
+AIC(model2, k = 2) # 64967.25
+
+# fitting with spline on avg_tag_length (output keeps giving errors)
+# model3 <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + rcs(avg_tag_length, unname(quantile(train1$avg_tag_length, c(0.05, 0.35, 0.65, 0.95)))), data = train1)
+# AIC(model3, k = 2) # 64967.25
+
+# fitting with spline on newline_ratio (keep getting errors with this one too)
+# model4 <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + rcs(newline_ratio, unname(quantile(train1$newline_ratio, c(0.05, 0.275, 0.5, 0.65, 0.95)))), data = train1)
+# AIC(model4, k = 2) # 64967.25
+
+# fitting with splines on device and text length
+model5 <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + rcs(device_length, unname(quantile(train1$device_length, c(0.05, 0.275, 0.5, 0.65, 0.95)))) + rcs(text_length, unname(quantile(train1$text_length, c(0.05, 0.275, 0.5, 0.65, 0.95)))), data = train1)
+AIC(model5, k = 2) # 64969.7
+
+# fitting model with spline on text_length + sqrt(device_length)
+model6 <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + sqrt(device_length) + rcs(text_length, unname(quantile(train1$text_length, c(0.05, 0.275, 0.5, 0.65, 0.95)))), data = train1)
+AIC(model6, k = 2) # 64967.95
+
 ```
 
+##### Interactions
 
+* probably not going to include any interactions - don't do much for the model 
+
+```{r, echo = FALSE}
+# adding interaction between title_questionmark + title_beginwh 
+reduced <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + title_beginwh + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday, data = train1) # title_beginwh was not included in result from stepAIC, added in this model to compare it to the model with the interaction 
+
+interaction <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + title_beginwh + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + title_questionmark*title_beginwh, data = train1)
+summary(interaction)
+AIC(interaction, k = 2) # 64963.33 barely drops 
+oshitar::compare_nested(interaction, reduced)
+```
 
 ### residuals, PH assumption
 
@@ -206,14 +266,58 @@ Hmisc::rcorrcens(Surv(time_until_answer, answered) ~ predictions, data = train1)
 
 ```
 
-
 ### Predicting on the test data
 
-* categorical variables must be the same across data sets, but I want the categorical variable to change with each data set, any way to do this? 
+```{r, include = FALSE}
+# function to perform cross validation
+# vars is a string of variables, ex: "new_category + new_user..."
+# outputs df with performance metrics (for model on train and test data 
+crossval <- function(vars, train, test) {
+  formula <- paste("Surv(time_until_answer, answered) ~ ", vars, sep = "")
+  model <- survival::coxph(as.formula(formula), data = train)
+  
+  train[["predictions"]] <- predict(model, type = "risk")
+  metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train)
+  train_metrics <- data.frame(HR = exp(metric$coefficients), 
+                              LR = round(metric$stats[3],2), 
+                              pval = round(metric$stats[5],2), 
+                              AIC = stats::AIC(metric, k = 2),
+                              Dxy = round(metric$stats[9],2), 
+                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train)$concordance)
+  
+  # predicting on test data
+  test[["predictions"]] <- predict(model, newdata = test, type = "risk")
+  
+  # computing performance metrics 
+  metric1 <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = test)
+  test_metrics <- data.frame(HR = exp(metric1$coefficients), 
+                             LR = round(metric1$stats[3],2), 
+                             pval = round(metric1$stats[5],2), 
+                             AIC = stats::AIC(metric1, k = 2),
+                             Dxy = round(metric1$stats[9],2), 
+                             Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
+  
+  # returns data frame with train/test metrics 
+  statistics <- rbind(train_metrics, test_metrics)
+  rownames(statistics) <- c("Training Data", "Test Data")
+  return(statistics) 
+  
+}
+
+# function to get average performance metric for each iteration 
+# takes list of performance metrics 
+get_avgmetrics <- function(list) {
+  avg <- rbind(train_avg = colMeans(purrr::map_df(1:length(list), ~rbind(list[[.]][1,]))), test_avg = colMeans(purrr::map_df(1:length(list), ~rbind(list[[.]][2,]))))
+  return(avg)
+}
+
+```
+
+##### spline on device_length, text_length, avg_tag_length
 
 ```{r, echo = FALSE}
 # function to perform cross validation + compute performance metrics
-crossvalidate <- function(train, test) {
+cv_allsplines <- function(train, test) {
  
   # building model on training data set
   model <- survival::coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(text_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train)
@@ -246,81 +350,104 @@ crossvalidate <- function(train, test) {
   return(statistics) 
 }
 
-#=============================================
-test1 <- x[splitPlan[[1]]$app, ]
-iteration1 <- crossvalidate(train1, test1)
+trains <- list(train1, train2, train3, train4, train5)
+tests <- list(test1, test2, test3, test4, test5)
 
-#=============================================
-train2 <- x[splitPlan[[2]]$train, ]
-test2 <- x[splitPlan[[2]]$app, ]
-iteration2 <- crossvalidate(train2, test2)
-
-#=============================================
-train3 <- x[splitPlan[[3]]$train, ]
-test3 <- x[splitPlan[[3]]$app, ]
-iteration3 <- crossvalidate(train3, test3)
-
-#=============================================
-train4 <- x[splitPlan[[4]]$train, ]
-test4 <- x[splitPlan[[4]]$app, ]
-iteration4 <- crossvalidate(train4, test4)
-
-#=============================================
-train5 <- x[splitPlan[[5]]$train, ]
-test5 <- x[splitPlan[[5]]$app, ]
-iteration5 <- crossvalidate(train5, test5)
-
-iteration1
-iteration2
-iteration3
-iteration4
-iteration5
+allspline_models <- purrr::map2(trains, tests, ~cv_allsplines(.x, .y))
+allspline_models
+# 5th iteration: pvalue for loglikelihood ratio test = 0.51 on test data 
 ```
 
+##### spline on device_length only 
 
 ```{r}
-# without pspline on text_length (if take out pspline on text_length, pvalue for fifth iteration goes back down to 0 (from 0.53))
-crossvalidate1 <- function(train, test) {
- 
-  # building model on training data set
-  model <- survival::coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train)
-  
-  # performance metrics for training data 
-  train[["predictions"]] <- predict(model, type = "risk")
-  metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train)
-  train_metrics <- data.frame(HR = exp(metric$coefficients), 
-                              LR = round(metric$stats[3],2), 
-                              pval = round(metric$stats[5],2), 
-                              Dxy = round(metric$stats[9],2), 
-                              AIC = stats::AIC(metric, k = 2), 
-                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train)$concordance)
+varsdev <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = 'AIC')"
 
-  # predicting on test data
-  test[["predictions"]] <- predict(model, newdata = test, type = "risk")
-  
-  # computing performance metrics 
-  metric1 <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = test)
-  test_metrics <- data.frame(HR = exp(metric1$coefficients), 
-                             LR = round(metric1$stats[3],2), 
-                             pval = round(metric1$stats[5],2), 
-                             Dxy = round(metric1$stats[9],2), 
-                             AIC = stats::AIC(metric1, k = 2), 
-                             Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
-  
-  # returns data frame with train/test metrics 
-  statistics <- rbind(train_metrics, test_metrics)
-  rownames(statistics) <- c("Training Data", "Test Data")
-  return(statistics) 
-}
-
-i1 <- crossvalidate1(train1, test1)
-i2 <- crossvalidate1(train2, test2)
-i3 <- crossvalidate1(train3, test3)
-i4 <- crossvalidate1(train4, test4)
-i5 <- crossvalidate1(train5, test5)
-
-i1; i2; i3; i4; i5
+splinedev <- purrr::map2(trains, tests, ~crossval(varsdev, .x, .y))
+splinedev
 ```
+
+##### spline on text_length only 
+
+```{r}
+varstext <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(text_length, df = 0, method = 'AIC')"
+
+splinetext <- purrr::map2(trains, tests, ~crossval(varstext, .x, .y))
+```
+
+##### spline on avg_tag_length only
+
+```{r}
+varstag <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(avg_tag_length, df = 0, method = 'AIC')"
+
+splinetag <- purrr::map2(trains, tests, ~crossval(varstag, .x, .y))
+```
+
+##### spline on newline_ratio only 
+
+```{r}
+varsnew <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(newline_ratio, df = 0, method = 'AIC')"
+
+splinenew <- purrr::map2(trains, tests, ~crossval(varsnew, .x, .y))
+```
+
+
+##### viewing all metrics 
+
+```{r}
+splinedev_avg <- get_avgmetrics(splinedev)
+splinetext_avg <- get_avgmetrics(splinetext)
+splinetag_avg <- get_avgmetrics(splinetag)
+splinenew_avg <- get_avgmetrics(splinenew)
+```
+
+##### restricted cubic spline on text_length (had the smallest AIC)
+
+* predictions on test data not working 
+
+```{r}
+#  cv_rcstext <- function(train, test) {
+# 
+#   # building model on training data set
+#   model <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + rcs(text_length, unname(quantile(train1$text_length, c(0.05, 0.275, 0.5, 0.65, 0.95)))), data = train)
+# 
+#   metric <- cph(Surv(time_until_answer, answered) ~ p, data = train)
+#   train_metrics
+# 
+#   # performance metrics for training data
+#   train[["predictions"]] <- exp(predict(model, type = "lp"))
+#   metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train)
+#   train_metrics <- data.frame(HR = exp(metric$coefficients),
+#                               LR = round(metric$stats[3],2),
+#                               pval = round(metric$stats[5],2),
+#                               Dxy = round(metric$stats[9],2),
+#                               AIC = stats::AIC(metric, k = 2),
+#                               Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train)$concordance)
+# 
+#   # predicting on test data
+#   test[["predictions"]] <- exp(predict(model, newdata = test, type = "lp"))
+# 
+#   # computing performance metrics
+#   metric1 <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = test)
+#   test_metrics <- data.frame(HR = exp(metric1$coefficients),
+#                              LR = round(metric1$stats[3],2),
+#                              pval = round(metric1$stats[5],2),
+#                              Dxy = round(metric1$stats[9],2),
+#                              AIC = stats::AIC(metric1, k = 2),
+#                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
+# 
+#   # returns data frame with train/test metrics
+#   statistics <- rbind(train_metrics, test_metrics)
+#   rownames(statistics) <- c("Training Data", "Test Data")
+#   return(statistics)
+# }
+# 
+# rcstext_models <- purrr::map2(trains, tests, ~cv_rcstext(.x, .y))
+# splinenew_models
+
+```
+
+
 
 
 
