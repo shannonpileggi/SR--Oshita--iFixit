@@ -84,10 +84,27 @@ model_spline2 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.fac
 summary(model_spline2)
 AIC(model_spline2, k = 2) # 64893.52
 
-# adding in spline on newline_ratio
-model_spline3 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(newline_ratio, df = 0, method = "AIC"), data = train1)
+# spline = avg_tag_length + device_length
+model_spline3 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
 summary(model_spline3)
-AIC(model_spline3, k = 2) # 64915.6
+AIC(model_spline3, k = 2) # 64865.95
+
+# adding in spline on newline_ratio
+model_spline4 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + pspline(newline_ratio, df = 0, method = "AIC"), data = train1)
+summary(model_spline3)
+AIC(model_spline4, k = 2) # 64915.6
+
+# log10(text_length), spline = avg_tag_length + device_length
+model_spline5 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
+AIC(model_spline5, k = 2) # 64865.73
+
+# log10(text_length), sqrt(newline_ratio), spline = avg_tag_length + device_length
+model_spline5 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
+AIC(model_spline5, k = 2) # 64864.73
+
+# title_beginwh*title_questionmark, log10(text_length), sqrt(newline_ratio), spline = avg_tag_length + device_length
+model_spline5 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC") + title_beginwh + title_questionmark*title_beginwh, data = train1)
+AIC(model_spline5, k = 2) # 64858.68
 ```
 
 ##### Restricted cubic splines  
@@ -390,21 +407,22 @@ vars <- "new_category + as.factor(new_user) + contain_unanswered + contain_answe
 nospline <- purrr::map2(trains, tests, ~crossval(vars, .x, .y))
 ```
 
+##### log10(text_length) + sqrt(newline_ratio) + splines: device_length, avg_tag_length + interaction between titlebeginwh*title_questionmark
+```{r}
+vars1 <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC') + title_beginwh + title_questionmark*title_beginwh"
+
+lots <- purrr::map2(trains, tests, ~crossval(vars1, .x, .y))
+lots
+```
+
 
 ##### viewing all metrics 
 
 ```{r}
-allspline_avg <- get_avgmetrics(allsplines)
-splinedev_avg <- get_avgmetrics(splinedev)
-splinetext_avg <- get_avgmetrics(splinetext)
-splinetag_avg <- get_avgmetrics(splinetag)
-splinenew_avg <- get_avgmetrics(splinenew)
-nospline_avg <- get_avgmetrics(nospline)
-devtext_avg <- get_avgmetrics(devtext)
-sqrtdev_avg <- get_avgmetrics(sqrtdev)
-sqrttext_avg <- get_avgmetrics(sqrttext)
-
-allspline_avg; splinedev_avg; splinetext_avg; splinetag_avg; splinenew_avg; nospline_avg; devtext_avg; sqrtdev_avg; sqrttext_avg
+# turn avg_list into a data frame with rownames???
+list <- list(allsplines, splinedev, splinetext, splinetag, splinenew, nospline, devtext, sqrtdev, sqrttext, lots)
+avg_list <- purrr::map(list, ~get_avgmetrics(.))
+avg_list
 ```
 
 
@@ -417,16 +435,21 @@ get_avgdiff <- function(list) {
   return(df)
 }
 
-list <- list(allsplines, splinedev, splinetext, splinetag, splinenew, nospline, devtext, sqrtdev, sqrttext)
-names <- c("allsplines", "splinedev", "splinetext", "splinetag", "splinenew", "nospline", "devtext", "sqrtdev", "sqrttext") # change this to avoid hard coding 
-
+# find a way to put rownames on df_diff in a reproducible way 
 l_diff <- purrr::map(list, ~get_avgdiff(.))
-df_diff <- plyr::ldply(purrr::map(1:length(l_diff), ~data.frame(as.list(l_diff[[.]]))), data.frame)
-rownames(df_diff) <- names
+df_diff <- plyr::ldply(purrr::map(1:length(l_diff), ~data.frame(as.list(l_diff[[.]]))))
 df_diff
-
 #least amount of average change found in model with only the spline on newline_ratio 
 ```
+
+```{r}
+newline_text <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + pspline(newline_ratio, df = 0, method = 'AIC')"
+
+sqrtdev <- purrr::map2(trains, tests, ~crossval(newline_text, .x, .y))
+sqrtdev
+```
+
+
 
 ##### restricted cubic spline on text_length (had the smallest AIC)
 
