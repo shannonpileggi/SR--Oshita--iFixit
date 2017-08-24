@@ -79,6 +79,7 @@ Date   | Hours | Time        | Description
 8/21/2017 | 4 | 2:00-6:00PM | Fit splines with univariate analysis, backward/forward selection on model including splines + square root + log transformed variables 
 8/22/2017 | 5.5 | 10:00-3:30PM  | Univariate analysis for quadratic terms of variables, fixed setup function, removed devices from frequently answered/answered terms list
 8/22/2017 | 3.75 | 6:15-10:00PM | More work with splines + cross validation 
+8/23/2017 | 9.5 | 9:00-6:30 | More spline research, cross-validated on models with different splines, compared models, fit final model(?)
 
 
 >> __Total Hours: 1...__
