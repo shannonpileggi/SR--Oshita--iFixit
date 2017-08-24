@@ -53,13 +53,26 @@ test5 <- x[splitPlan[[5]]$app, ]
 ```{r, echo = FALSE}
 fit <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + log10(text_length) + title_questionmark + title_beginwh + sqrt(newline_ratio) + sqrt(avg_tag_score) + text_contain_punct + text_all_lower + update + greeting + as.factor(n_tags) + gratitude + prior_effort + ampm + n_images + weekday, data = train1)
 
-model <- MASS::stepAIC(fit, direction = "both", k = 2)
+fit2 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + log10(text_length) + title_questionmark + title_beginwh + sqrt(newline_ratio) + sqrt(avg_tag_score) + text_contain_punct + text_all_lower + update + greeting + as.factor(n_tags) + gratitude + prior_effort + ampm + n_images + weekday + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
+
+model <- MASS::stepAIC(fit2, direction = "both", k = 2)
 
 #results of stepAIC (including contain_answered even though it was dropped)
 results <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday, data = train1)
 summary(results)
 AIC(results, k = 2) # 64969.63
 ```
+
+```{r}
+results2 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + 
+    contain_unanswered + title_questionmark + sqrt(avg_tag_score) + 
+    text_all_lower + update + prior_effort + ampm + weekday + 
+    pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, 
+    df = 0, method = "AIC"), data = train1)
+AIC(results2, k = 2) # 64866.93
+
+```
+
 
 ##### Adding in splines 
 
@@ -104,7 +117,11 @@ AIC(model_spline5, k = 2) # 64864.73
 
 # title_beginwh*title_questionmark, log10(text_length), sqrt(newline_ratio), spline = avg_tag_length + device_length
 model_spline5 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC") + title_beginwh + title_questionmark*title_beginwh, data = train1)
-AIC(model_spline5, k = 2) # 64858.68
+AIC(model_spline5, k = 2) # 64858.68 
+
+# title_beginwh*title_questionmark, log10(text_length), sqrt(newline_ratio), spline = avg_tag_length + device_length + newline_ratio
+model_spline5 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC") + title_beginwh + pspline(newline_ratio, df = 0, method = "AIC") + title_questionmark*title_beginwh, data = train1)
+AIC(model_spline5, k = 2) # 64841.25
 ```
 
 ##### Restricted cubic splines  
@@ -416,11 +433,32 @@ lots
 ```
 
 
+##### log10(text_length) + sqrt(newline_ratio) + splines: device_length, avg_tag_length, newline_ratio + interaction between titlebeginwh*title_questionmark 
+
+```{r}
+vars2 <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC') + title_beginwh + pspline(newline_ratio, df = 0, method = 'AIC') + title_questionmark*title_beginwh"
+
+lots2 <- purrr::map2(trains, tests, ~crossval(vars2, .x, .y))
+lots2
+```
+
+##### splines on device_length and avg_tag_length (FINAL MODEL???)
+
+```{r}
+varsdevtag <- "new_category + as.factor(new_user) + 
+    contain_unanswered + title_questionmark + sqrt(avg_tag_score) + 
+    text_all_lower + update + prior_effort + ampm + weekday + 
+    pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, 
+    df = 0, method = 'AIC')"
+devtag <- purrr::map2(trains, tests, ~crossval(varsdevtag, .x, .y))
+```
+
+
 ##### viewing all metrics 
 
 ```{r}
 # turn avg_list into a data frame with rownames???
-list <- list(allsplines, splinedev, splinetext, splinetag, splinenew, nospline, devtext, sqrtdev, sqrttext, lots)
+list <- list(allsplines, splinedev, splinetext, splinetag, splinenew, nospline, devtext, sqrtdev, sqrttext, lots, lots2, devtag)
 avg_list <- purrr::map(list, ~get_avgmetrics(.))
 avg_list
 ```
@@ -442,13 +480,29 @@ df_diff
 #least amount of average change found in model with only the spline on newline_ratio 
 ```
 
+### FINAL MODEL (?)
 ```{r}
-newline_text <- "new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + pspline(newline_ratio, df = 0, method = 'AIC')"
+final <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + 
+    contain_unanswered + title_questionmark + sqrt(avg_tag_score) + 
+    text_all_lower + update + prior_effort + ampm + weekday + 
+    pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, 
+    df = 0, method = 'AIC'), data = x)
+summary(final)
+AIC(final, k = 2) # 82957.53
 
-sqrtdev <- purrr::map2(trains, tests, ~crossval(newline_text, .x, .y))
-sqrtdev
+x$predictions <- predict(final, type = "risk")
+performance <- cph(Surv(time_until_answer, answered) ~ predictions, data = x)
+AIC(performance, k = 2) # 83268.04
+
+final_metrics <- data.frame(HR = exp(performance$coefficients), 
+                              LR = round(performance$stats[3],2), 
+                              pval = round(performance$stats[5],2), 
+                              AIC = stats::AIC(performance, k = 2),
+                              Dxy = round(performance$stats[9],2), 
+                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = x)$concordance)
+final_metrics
+# performance metrics on entire data set are not different from cross validation 
 ```
-
 
 
 ##### restricted cubic spline on text_length (had the smallest AIC)
@@ -496,10 +550,6 @@ sqrtdev
 # splinenew_models
 
 ```
-
-
-
-
 
 
 # Fitting model to the full data set
