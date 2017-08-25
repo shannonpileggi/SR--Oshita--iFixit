@@ -80,7 +80,10 @@ Date   | Hours | Time        | Description
 8/22/2017 | 5.5 | 10:00-3:30PM  | Univariate analysis for quadratic terms of variables, fixed setup function, removed devices from frequently answered/answered terms list
 8/22/2017 | 3.75 | 6:15-10:00PM | More work with splines + cross validation 
 8/23/2017 | 9.5 | 9:00-6:30 | More spline research, cross-validated on models with different splines, compared models, fit final model(?)
-8/23/2017 | 1 | 7:45-8:45 | Plotted residuals, assessed PH assumption, researched effect of violation of PH assumption 
+8/23/2017 | 1 | 7:45-8:45PM | Plotted residuals, assessed PH assumption, researched effect of violation of PH assumption 
+8/24/2017 | 2 | 10:00-12:00AM | Read Regression Modeling Strategies text book
+8/24/2017 | 3.5 | 3:00-6:30PM | Continued reading regression modeling strategies book + other literature, tried to apply it to the data
+8/24/2017 | 1.5 | 7:30-9:00PM | Residuals, checked PH assumption, tried to address PH assumption violations 
 
 
 >> __Total Hours: 1...__
