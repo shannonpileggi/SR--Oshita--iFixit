@@ -1,0 +1,233 @@
+---
+title: "Final Model"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+x <- oshitar::setup()
+```
+
+```{r}
+# cross validation plan with k = 5
+set.seed(444)
+splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
+
+train1 <- x[splitPlan[[1]]$train, ]; test1 <- x[splitPlan[[1]]$app, ]
+train2 <- x[splitPlan[[2]]$train, ]; test2 <- x[splitPlan[[2]]$app, ]
+train3 <- x[splitPlan[[3]]$train, ]; test3 <- x[splitPlan[[3]]$app, ]
+train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
+train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
+```
+
+#### Variables including: 
+
+* new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strata(ampm) + n_images + sqrt(avg_tag_score) + poly(text_length, degree = 2) + pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC') + pspline(newline_ratio, df = 0, method = 'AIC')
+
+```{r}
+# building model on train1 data set
+trainmodel <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strata(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC') + pspline(newline_ratio, df = 0, method = 'AIC'), data = train1)
+
+summary(trainmodel)
+AIC(trainmodel) # 54303.59
+```
+
+##### Assessing residuals/PH assumption
+
+```{r}
+#----Martingale residuals----------------------------------------------
+train1$mart <- residuals(trainmodel, type = "martingale")
+
+ggplot(train1, aes(x = sqrt(avg_tag_score), y = mart)) + 
+  geom_point() + 
+  geom_smooth(method = "loess") + 
+  ggtitle(paste("Martingale Residuals for sqrt(average_tag_score)")) + 
+  scale_x_continuous("Average Tag Score (square root)") 
+# functional form seems adequate 
+
+
+#----Deviance residuals------------------------------------------------
+train1$deviance <- residuals(trainmodel, type = "deviance")
+ggplot(train1, aes(x = 1:nrow(train1), y = deviance)) + 
+  geom_point() + 
+  scale_x_continuous("Question index") + 
+  scale_y_continuous(breaks = seq(-4, 4, by = 0.5)) + 
+  ggtitle("Deviance Residuals")
+# identify questions with residuals > |2.5| (questions poorly predicted by the model)
+
+# examining all questions with > |2.5|
+outliers <- train1 %>%
+  dplyr::filter(abs(deviance) > 2.5)
+# 112 questions in training data set have deviance residuals > 2.5 
+# all were answered with time_until_answer < 1 hr (except for 2 which have time_until_answer > 1050 hours)
+
+
+#----Schoenfeld residuals----------------------------------------------
+schoen <- as.data.frame(residuals(trainmodel, type = "schoenfeld"))
+schoen$comp_times <- sort(train1[train1$answered != 0,]$time_until_answer)
+
+# function to plot schoenfeld residuals for each predictor
+plot_schoen <- function(var) {
+  ggplot(schoen, aes(x = comp_times, y = schoen[[var]])) + 
+    geom_point() + 
+    geom_smooth() + 
+    ggtitle(paste("Schoenfeld Residuals for", var)) + 
+    scale_y_continuous("Residuals")
+}
+purrr::map(names(schoen)[-ncol(schoen)], plot_schoen)
+
+# formal test of PH assumption 
+options(scipen=999)
+ph_test <- data.frame(predictors = rownames(cox.zph(trainmodel)$table), cox.zph(trainmodel)$table) 
+rownames(ph_test) = NULL
+ph_test <- ph_test %>% arrange(p) 
+# linear term of text_length violates PH assumption (quadratic term doesn't)
+# new_category violates, but stratifying on it decreases predictive ability 
+
+
+#----Score residuals--------------------------------------------------
+# check for influential observations
+score <- as.data.frame(residuals(trainmodel, type = "score"))
+
+# function to plot score residuals
+plot_score <- function(column) {
+  ggplot(score, aes(x = 1:nrow(score), y = score[[column]])) + 
+    geom_point() + 
+    geom_smooth() + 
+    ggtitle(paste("Score residuals for", column)) + 
+    scale_y_continuous("Score Residuals") + 
+    scale_x_continuous("Question index")
+}
+
+purrr::map(names(score), ~plot_score(.))
+# tried removing influential questions and doing cross validation: models fit on data with influential questions removed didn't perform as well on the test data compared to models fit on full data
+
+```
+
+##### Cross validation 
+
+```{r}
+# function to perform cross validation, vars should be string: "new_category + new_user..."
+crossval <- function(vars, train, test) {
+  formula <- paste("Surv(time_until_answer, answered) ~ ", vars, sep = "")
+  model <- survival::coxph(as.formula(formula), data = train)
+  
+  train[["predictions"]] <- predict(model, type = "risk")
+  metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train)
+  train_metrics <- data.frame(HR = exp(metric$coefficients), 
+                              LR = round(metric$stats[3],2), 
+                              pval = round(metric$stats[5],2), 
+                              AIC = stats::AIC(metric, k = 2),
+                              Dxy = round(metric$stats[9],2), 
+                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train)$concordance)
+  
+  # predicting on test data
+  test[["predictions"]] <- predict(model, newdata = test, type = "risk")
+  
+  # computing performance metrics 
+  metric1 <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = test)
+  test_metrics <- data.frame(HR = exp(metric1$coefficients), 
+                             LR = round(metric1$stats[3],2), 
+                             pval = round(metric1$stats[5],2), 
+                             AIC = stats::AIC(metric1, k = 2),
+                             Dxy = round(metric1$stats[9],2), 
+                             Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
+  
+  # returns data frame with train/test metrics 
+  statistics <- rbind(train_metrics, test_metrics)
+  rownames(statistics) <- c("Training Data", "Test Data")
+  return(statistics)
+}
+
+# function to average performance metrics, takes list of output from crossval
+get_avgmetrics <- function(list) {
+  avg <- rbind(train_avg = colMeans(purrr::map_df(1:length(list), ~rbind(list[[.]][1,]))), test_avg = colMeans(purrr::map_df(1:length(list), ~rbind(list[[.]][2,]))))
+  return(avg)
+}
+
+# function to get average differences between training and test data metrics for each cv iteration
+get_avgdiff <- function(list) {
+  list_diff <- purrr::map(1:length(list), ~diff(as.matrix(list[[.]], lag = 1)))
+  df <- plyr::ldply(list_diff, data.frame) %>%
+    select(HR, Dxy, Concordance) %>%
+    colMeans()
+  return(df)
+}
+```
+
+```{r}
+vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strata(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC') + pspline(newline_ratio, df = 0, method = 'AIC')"
+
+trains <- list(train1, train2, train3, train4, train5)
+tests <- list(test1, test2, test3, test4, test5)
+
+(cv_results <- purrr::map2(trains, tests, ~crossval(vars, .x, .y)))
+
+get_avgmetrics(cv_results)
+
+get_avgdiff(cv_results) # metrics don't change that much between fitting model on training and test data sets
+```
+
+```{r, not using these functions}
+# not using these functions
+# function to delete overly influential questions (used in function below)
+delete_influential <- function(var) {
+  thresh <- mean(score[[var]]) + (sd(score[[var]]) * 30)
+  delete <- which(abs(score[[var]]) > thresh)
+  return(delete)
+}
+
+# fits model on training data, identifies overly influential questions, removes questions according to threshold, refits model to that data, uses that model to make predictions and computes performance metrics 
+newcrossval <- function(vars, train, test) {
+  formula <- paste("Surv(time_until_answer, answered) ~ ", vars, sep = "")
+  model <- survival::coxph(as.formula(formula), data = train)
+  
+  score <- as.data.frame(residuals(model, type = "score"))
+  
+  to_delete <- unique(unlist(purrr::map(names(score), ~delete_influential(.))))
+  newdata <- train[-to_delete,]
+  
+  newmodel <- survival::coxph(as.formula(formula), data = newdata)
+  
+  newdata[["predictions"]] <- predict(newmodel, type = "risk")
+  metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = newdata)
+  train_metrics <- data.frame(HR = exp(metric$coefficients), 
+                              LR = round(metric$stats[3],2), 
+                              pval = round(metric$stats[5],2), 
+                              AIC = stats::AIC(metric, k = 2),
+                              Dxy = round(metric$stats[9],2), 
+                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = newdata)$concordance)
+  
+  # predicting on test data
+  test[["predictions"]] <- predict(newmodel, newdata = test, type = "risk")
+  
+  # computing performance metrics 
+  metric1 <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = test)
+  test_metrics <- data.frame(HR = exp(metric1$coefficients), 
+                             LR = round(metric1$stats[3],2), 
+                             pval = round(metric1$stats[5],2), 
+                             AIC = stats::AIC(metric1, k = 2),
+                             Dxy = round(metric1$stats[9],2), 
+                             Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
+  
+  # returns data frame with train/test metrics 
+  statistics <- rbind(train_metrics, test_metrics)
+  rownames(statistics) <- c("Training Data", "Test Data")
+  return(statistics)
+}
+```
+
+##### Fitting the model to the full data set
+
+```{r}
+model <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strata(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC') + pspline(newline_ratio, df = 0, method = 'AIC'), data = x)
+summary(model)
+AIC(model, k = 2) # 69830.21
+
+surv_probs <- pec::predictSurvProb(model, times = c(0.5, 1, 10))
+```
+
+
+
+
+
