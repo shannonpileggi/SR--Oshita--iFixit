@@ -1,5 +1,5 @@
 ---
-title: "Predictive modeling with cross validation"
+title: "Predictive modeling with cross validation (this file is a mess)"
 author: "Lisa Oshita"
 date: "8/10/2017"
 output: html_document
@@ -8,12 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 x <- oshitar::setup()
-library(survival)
-library(stringr)
-library(rebus)
-library(dplyr)
-library(stats)
-library(rms)
+library(survival); library(stringr); library(rebus); library(dplyr); library(stats); library(rms)
 ```
 
 ```{r, cross validation, echo = FALSE}
@@ -21,20 +16,15 @@ library(rms)
 set.seed(444)
 splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
 
-train1 <- x[splitPlan[[1]]$train, ]
-test1 <- x[splitPlan[[1]]$app, ]
+train1 <- x[splitPlan[[1]]$train, ]; test1 <- x[splitPlan[[1]]$app, ]
 
-train2 <- x[splitPlan[[2]]$train, ]
-test2 <- x[splitPlan[[2]]$app, ]
+train2 <- x[splitPlan[[2]]$train, ]; test2 <- x[splitPlan[[2]]$app, ]
 
-train3 <- x[splitPlan[[3]]$train, ]
-test3 <- x[splitPlan[[3]]$app, ]
+train3 <- x[splitPlan[[3]]$train, ]; test3 <- x[splitPlan[[3]]$app, ]
 
-train4 <- x[splitPlan[[4]]$train, ]
-test4 <- x[splitPlan[[4]]$app, ]
+train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
 
-train5 <- x[splitPlan[[5]]$train, ]
-test5 <- x[splitPlan[[5]]$app, ]
+train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
 ```
 
 ### Building the model on one of the training data sets
@@ -297,18 +287,26 @@ full <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + cont
 fullvars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + n_tags + gratitude + prior_effort + ampm + weekday + n_images + sqrt(avg_tag_score) + pspline(device_length, df = 5) + pspline(text_length, 3) + pspline(avg_tag_length, 3) + pspline(newline_ratio, 3)"
 full <- purrr::map2(trains, tests, ~crossval(fullvars, .x, .y))
 full
+
+ugh <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + n_tags + gratitude + prior_effort + ampm + weekday + n_images + sqrt(avg_tag_score) + pspline(device_length, df = 0, method = 'AIC') + pspline(text_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC') + pspline(newline_ratio, df = 0, method = 'AIC'), data = train1)
+
+summary(ugh) 
+AIC(ugh, k = 2)
 ```
 
 
 ##### viewing all metrics 
 
 ```{r}
+# model I came to while trying to correct PH assumption violation 
+# stratified on ampm, orthogonal polynomial on text_length (new_category still violates PH)
+fullvars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + n_tags + gratitude + prior_effort + strata(ampm) + weekday + n_images + sqrt(avg_tag_score) + pspline(device_length, df = 5) + poly(text_length, 2) + pspline(avg_tag_length, 3) + pspline(newline_ratio, 3)"
+fullcv <- purrr::map2(trains, tests, ~crossval(fullvars, .x, .y))
+
 # turn avg_list into a data frame with rownames???
 list <- list(dev, text, tag, newline, devtext, logtext, nospline, lots, lots2, devtag, full)
 avg_list <- purrr::map(list, ~get_avgmetrics(.))
-avg_list
 ```
-
 
 ```{r}
 # function to get the average difference between performance metrics for training and test data 
@@ -404,24 +402,12 @@ predict_survprob <- function(dataset, times) {
 
 ### residuals, PH assumption
 
-* Martingale residuals
-    + plot for each continuous predictor 
-    + assess adequacy of functional form of predictors, or suggest a potential form 
-
-* Schoenfeld residuals
-    + one plot for each predictor 
-    + if loess curve is flat, proportional hazard assumption is not violated, doesn't depend on time. Distinct pattern indicates violation of this assumption
-    + **from the plots:** new_user, title_questionmark, num_freq_tags (1), ampm (Morning, Night), weekday (Thursday, Saturday), new_user*AMPM (morning, night) may violate PH assumption 
-* Score residuals
-    + check for influential observations. ID quesitons who's predictor values highly effect parameter estimates
-    + plot for each predictor 
-* **figure out how to identify certain points on ggplots**
-
 ```{r, residuals, echo = FALSE}
-full <- coxph(Surv(time_until_answer, answered) ~ strata(new_category) + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + n_tags + gratitude + prior_effort + strata(ampm) + weekday + n_images + sqrt(avg_tag_score) + pspline(device_length, df = 5) + poly(text_length, 2) + pspline(avg_tag_length, 3) + pspline(newline_ratio, 3), data = train1)
+full <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + n_tags + gratitude + prior_effort + strata(ampm) + weekday + n_images + sqrt(avg_tag_score) + pspline(device_length, df = 5) + poly(text_length, 2) + pspline(avg_tag_length, 3) + pspline(newline_ratio, 3), data = train1)
 # If i fit text_length with poly (orthogonal polynomial), text_length doesn't violate ph anymore 
 #=============================================
 #martingale residuals
+# plot for each continuous predictor, assess adequacy of functional form of predictors, or suggest a potential form 
 train1$mart <- residuals(full, type = "martingale")
 train1$sqrt_score <- sqrt(train1$avg_tag_score)
 
@@ -445,10 +431,12 @@ plotly::ggplotly(ggplot(train1, aes(x = 1:nrow(train1), y = deviance)) +
 # quite a few questions have a deviance residual of larger than 2.5 (use ggplotly to identify) 
 
 # looking at points with deviance residuals > |2.5| (suggested in 417 notes)
-outliers <- train1[abs(train1$deviance) > 2.5,]
+
 # only 2 of these outliers were not answered
 
 #=============================================
+
+spline5 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
 # schoenfeld residuals
 schoen <- as.data.frame(residuals(full, type = "schoenfeld"))
 # complete event times sorted from shortest to longest
@@ -457,7 +445,7 @@ schoen$comp_times <- sort(train1[train1$answered != 0,]$time_until_answer)
 plot_schoen <- function(var) {
   ggplot(schoen, aes(x = comp_times, y = schoen[[var]])) + 
     geom_point() + 
-    geom_smooth() + 
+    geom_smooth(method = "loess") + 
     ggtitle(paste("Schoenfeld Residuals for", var)) + 
     scale_y_continuous("Residuals")
 }
@@ -473,13 +461,20 @@ plotly::ggplotly(plot_schoen("title_questionmarkTRUE")) # same question!!!
 #=============================================
 # formal test of PH assumption
 options(scipen=999)
-ph_test <- data.frame(predictors = rownames(cox.zph(full)$table), cox.zph(full)$table) 
+ph_test <- data.frame(predictors = rownames(cox.zph(spline5)$table), cox.zph(spline5)$table) 
 rownames(ph_test) = NULL
 ph_test <- ph_test %>%
   arrange(p)
-ph_test
+
+# plots of variables that violated PH assumption in cox.zph test
+plot_schoen("new_categoryApple Product")
+plot_schoen("new_categoryElectronics")
+plot_schoen("new_categoryCamera")
+plot_schoen("new_categoryGame Console")
+plot_schoen("title_questionmarkTRUE")
+
 #=============================================
-# score residuals
+# score residuals: check for influential observations. ID quesitons who's predictor values highly effect
 score <- as.data.frame(residuals(full, type = "score"))
 
 # function to plot score residuals
