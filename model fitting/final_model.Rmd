@@ -9,7 +9,7 @@ x <- as.data.frame(oshitar::setup())
 library(survival); library(dplyr); library(rms)
 ```
 
-```{r, echo = FALSE}
+```{r, cross validation plan, echo = FALSE}
 # cross validation plan with k = 5
 set.seed(444)
 splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
@@ -112,7 +112,8 @@ crossval <- function(vars, train, test) {
   metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train)
   train_metrics <- data.frame(HR = exp(metric$coefficients), 
                               LR = round(metric$stats[3],2), 
-                              pval = round(metric$stats[5],2), 
+                              pval = round(metric$stats[5],2),
+                              R2 = round(metric$stats[8], 2),
                               AIC = stats::AIC(metric, k = 2),
                               Dxy = round(metric$stats[9],2), 
                               Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train)$concordance)
@@ -163,6 +164,33 @@ get_avgmetrics(cv_results)
 
 get_avgdiff(cv_results) # metrics don't change that much between fitting model on training and test data sets
 ```
+
+```{r, echo = FALSE}
+# validation and calibration with rms package
+
+valmodel <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE, time.inc = 0.5, dxy = TRUE)
+
+validation <- rms::validate(calmodel, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
+validation
+# output: 
+# Dxy = Somers' Dxy (2 ∗ (C − 0.5), where C is the concordance probability)
+# R2: RN2 index
+# Slope: Calibration slope (slope of predicted log odds vs true log odds) optimism value is a value of overfitting
+# D: Discrimination index — likelihood ratio χ2 divided by the sample size
+# U: Unreliability index — unitless index of how far the logit calibration curve intercept and slope are from (0, 1)
+# Q: Logarithmic accuracy score - scaled version of the log-likelihood achieved by the predictive model
+# g: g index (?)
+
+# validate the model for calibration accuracy in predicting probability at 0.5 hours 
+calibration <- rms::calibrate(calmodel, method = "crossvalidation", B = 100, bw = FALSE, u = 0.5)
+calibration
+plot(calibration)
+# predicts and calibrates at 0.5 hours for each iteration of the bootstrap
+# plot gives mean absolute error in predictions, mean squared error, and the 0.9 quantile of the absolute error
+# error =  difference between the predicted values and the corresponding bias-corrected calibrated values
+
+```
+
 
 ```{r, not using these functions}
 # not using these functions
@@ -218,19 +246,22 @@ newcrossval <- function(vars, train, test) {
 ```{r, echo = FALSE}
 model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE)
 
-x$predictions <- predict(model, type = "lp")
+x$predictions <- exp(predict(model, type = "lp"))
 
 metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = x)
 AIC(metric, k = 2) # 83023
 
 final_metrics <- data.frame(HR = exp(metric$coefficients), 
                               LR = round(metric$stats[3],2), 
-                              pval = round(metric$stats[5],2), 
+                              pval = round(metric$stats[5],2),
+                              R2 = round(metric$stats[8], 2),
                               AIC = stats::AIC(metric, k = 2),
                               Dxy = round(metric$stats[9],2), 
                               Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = x)$concordance)
 final_metrics # metrics on the full data set are similar to the metrics from cross validation
 ```
+
+##### Getting estimated survival probabilities 
 
 ```{r, echo = FALSE}
 # getting estimated survival probabilites
@@ -247,11 +278,5 @@ rms::survest(model, newdata = test1[1:3,], times = c(0.5, 1, 10), conf.int = FAL
 
 # using different function
 pec::predictSurvProb(model, newdata = test1[1:3,], times = c(0.5, 1, 10))
-
-# plot prediction error curves, calibration plots, c index, fix cv function, plot predicted survival curve ?? 
-# turn this into a function 
 ```
-
-
-
 
