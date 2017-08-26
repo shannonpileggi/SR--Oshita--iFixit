@@ -84,6 +84,8 @@ Date   | Hours | Time        | Description
 8/24/2017 | 2 | 10:00-12:00AM | Read Regression Modeling Strategies text book
 8/24/2017 | 3.5 | 3:00-6:30PM | Continued reading regression modeling strategies book + other literature, tried to apply it to the data
 8/24/2017 | 1.5 | 7:30-9:00PM | Residuals, checked PH assumption, tried to address PH assumption violations 
-
+8/25/2017 | 3 | 8:15-11:15AM | Addressed PH assumption violations, meeting with Dr. Pileggi
+8/25/2017 | 4.5 | 12:00-4:30PM | Worked with final model, checked residuals/PH, cross validation, fitted to the full data set
+8/25/2017 | 3 | 5:30-8:30PM | Ran into problems trying to predict survival probabilities 
 
 >> __Total Hours: 1...__
