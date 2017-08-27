@@ -5,9 +5,21 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-x <- as.data.frame(oshitar::setup())
+x <- oshitar::setup()
 library(survival); library(dplyr); library(rms)
 ```
+
+```{r}
+dir <- file.path(getwd(),"data")
+out <- read.csv(system.file("extdata/answers_data.csv", package = "oshitar"))
+
+finaldata <- oshitar::variable_setup(out)
+identical(finaldata$contain_answered, x$contain_answered)
+
+write.csv(finaldata, file = "final_data.csv")
+```
+
+
 
 ```{r, cross validation plan, echo = FALSE}
 # cross validation plan with k = 5
@@ -165,7 +177,7 @@ get_avgmetrics(cv_results)
 get_avgdiff(cv_results) # metrics don't change that much between fitting model on training and test data sets
 ```
 
-##### Validation with rms::validate for Somers’ Dxy rank correlation between pre-dicted log hazard and observed survival time, + slope shrinkage
+##### Validation with rms::validate for Somers’ Dxy rank correlation between predicted log hazard and observed survival time + slope shrinkage
 
 ###### output: 
 * Dxy = Somers' Dxy (2 ∗ (C − 0.5), where C is the concordance probability)
@@ -185,7 +197,6 @@ valmodel <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user
 
 validation <- rms::validate(valmodel, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
 validation
-
 ```
 
 ##### Validating the model for calibration accuracy with rms::calibrate
@@ -302,21 +313,23 @@ pec::plotPredictSurvProb(model, newdata = x[1:4,], times = times) # this is ugly
 
 ```{r}
 # input vector of times to predict on + data set to be used in predictions
-# function runs really slowly because it has to set up the data + fit the model everytime 
-# outputs matrix of predicted survival 
+# function runs really slow
+# outputs matrix of predicted survival probabilities 
 # also include some kind of performance metric? measure of how accurately its predicting 
 # sets up variables needed in the new data 
 get_survival <- function(times, data) {
+  # setting up necessary variables in new data 
   newdata <- oshitar::variable_setup(data)
-  x <- oshitar::setup()
+  
+  # imports data to build model on 
+  x <- read.csv("final_data.csv", head = TRUE)
+  # builds model 
   model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE)
+  # gets survival probabilities 
   surv_probs <- pec::predictSurvProb(model, newdata = newdata, times)
   return(surv_probs)
 }
 
 
-get_survival(times = c(0.5, 1, 10), data = out)
-
 ```
-
 
