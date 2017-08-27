@@ -17,13 +17,9 @@ set.seed(444)
 splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
 
 train1 <- x[splitPlan[[1]]$train, ]; test1 <- x[splitPlan[[1]]$app, ]
-
 train2 <- x[splitPlan[[2]]$train, ]; test2 <- x[splitPlan[[2]]$app, ]
-
 train3 <- x[splitPlan[[3]]$train, ]; test3 <- x[splitPlan[[3]]$app, ]
-
 train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
-
 train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
 ```
 
@@ -104,7 +100,6 @@ AIC(spline8, k = 2) # 64841.25
 library(rms)
 model <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_all_lower + update + prior_effort + ampm + weekday + rcs(device_length, 5) + sqrt(avg_tag_score) + rcs(text_length, 3) + rcs(avg_tag_length, 3) + rcs(newline_ratio, 3), data = train1)
 AIC(model, k = 2) # 64977.65
-# with cph fits, keep getting errors with predict function 
 ```
 
 ##### Interactions
@@ -137,7 +132,6 @@ AIC(full, k = 2)
 ### Performance metric on training data set
 
 ```{r}
-# working with model_spline2 (model with all splines)
 train1$predictions <- predict(object = full , type = "risk")
 performance <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train1, x = TRUE, y = TRUE, se.fit = TRUE, residuals = TRUE)
 performance
@@ -325,32 +319,6 @@ df_diff
 #least amount of average change found in model with only the spline on newline_ratio 
 ```
 
-### FINAL MODEL (?)
-```{r}
-# final <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + 
-#     contain_unanswered + title_questionmark + sqrt(avg_tag_score) + 
-#     text_all_lower + update + prior_effort + ampm + weekday + 
-#     pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, 
-#     df = 0, method = 'AIC'), data = x)
-# summary(final)
-# AIC(final, k = 2) # 82957.53
-
-full <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + n_tags + gratitude + prior_effort + ampm + weekday + n_images + sqrt(avg_tag_score) + pspline(device_length, df = 5) + pspline(text_length, 3) + pspline(avg_tag_length, 3) + pspline(newline_ratio, 3), data = x)
-AIC(full, k = 2) # 82974.66
-
-x$predictions <- predict(full, type = "risk")
-performance <- cph(Surv(time_until_answer, answered) ~ predictions, data = x)
-AIC(performance, k = 2) # 83243.04
-
-final_metrics <- data.frame(HR = exp(performance$coefficients), 
-                              LR = round(performance$stats[3],2), 
-                              pval = round(performance$stats[5],2), 
-                              AIC = stats::AIC(performance, k = 2),
-                              Dxy = round(performance$stats[9],2), 
-                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = x)$concordance)
-final_metrics
-# performance metrics on entire data set are not different from cross validation 
-```
 
 ```{r}
 # plotting predictions against observed values (calibration plot?)
@@ -400,93 +368,3 @@ predict_survprob <- function(dataset, times) {
 }
 ```
 
-### residuals, PH assumption
-
-```{r, residuals, echo = FALSE}
-full <- coxph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + n_tags + gratitude + prior_effort + strata(ampm) + weekday + n_images + sqrt(avg_tag_score) + pspline(device_length, df = 5) + poly(text_length, 2) + pspline(avg_tag_length, 3) + pspline(newline_ratio, 3), data = train1)
-# If i fit text_length with poly (orthogonal polynomial), text_length doesn't violate ph anymore 
-#=============================================
-#martingale residuals
-# plot for each continuous predictor, assess adequacy of functional form of predictors, or suggest a potential form 
-train1$mart <- residuals(full, type = "martingale")
-train1$sqrt_score <- sqrt(train1$avg_tag_score)
-
-ggplot(train1, aes(x = sqrt_score, y = mart)) + 
-  geom_point() + 
-  geom_smooth() + 
-  ggtitle(paste("Martingale Residuals for device_length")) + 
-  scale_x_continuous("Device_length")
-# what do I assess for spline variables? 
-
-#=============================================
-# deviance residuals 
-# check for outliers identify questions poorly predicted by the model
-
-train1$deviance <- residuals(full, type = "deviance")
-plotly::ggplotly(ggplot(train1, aes(x = 1:nrow(train1), y = deviance)) + 
-  geom_point() + 
-  scale_x_continuous("Question index") + 
-  scale_y_continuous(breaks = seq(-4, 4, by = 0.5)) + 
-  ggtitle("Deviance Residuals"))
-# quite a few questions have a deviance residual of larger than 2.5 (use ggplotly to identify) 
-
-# looking at points with deviance residuals > |2.5| (suggested in 417 notes)
-
-# only 2 of these outliers were not answered
-
-#=============================================
-
-spline5 <- coxph(Surv(time_until_answer, answered) ~ new_category + as.factor(new_user) + contain_unanswered + contain_answered + title_questionmark + sqrt(avg_tag_score) + text_all_lower + update + prior_effort + ampm + weekday + log10(text_length) + sqrt(newline_ratio) + pspline(device_length, df = 0, method = "AIC") + pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
-# schoenfeld residuals
-schoen <- as.data.frame(residuals(full, type = "schoenfeld"))
-# complete event times sorted from shortest to longest
-schoen$comp_times <- sort(train1[train1$answered != 0,]$time_until_answer)
-
-plot_schoen <- function(var) {
-  ggplot(schoen, aes(x = comp_times, y = schoen[[var]])) + 
-    geom_point() + 
-    geom_smooth(method = "loess") + 
-    ggtitle(paste("Schoenfeld Residuals for", var)) + 
-    scale_y_continuous("Residuals")
-}
-names <- names(schoen)[-ncol(schoen)]
-purrr::map(names, plot_schoen)
-
-plotly::ggplotly(plot_schoen("ampmMorning")) # comptime 2020.89 (id = 390866) is pulling it up? 
-plotly::ggplotly(plot_schoen("new_categoryApple Product")) # same question
-plotly::ggplotly(plot_schoen("ps(text_length)8")) # same question
-plotly::ggplotly(plot_schoen("title_questionmarkTRUE")) # same question!!! 
-# plots indicate that new_user, ampm and a few others may have violated ph assumption 
-
-#=============================================
-# formal test of PH assumption
-options(scipen=999)
-ph_test <- data.frame(predictors = rownames(cox.zph(spline5)$table), cox.zph(spline5)$table) 
-rownames(ph_test) = NULL
-ph_test <- ph_test %>%
-  arrange(p)
-
-# plots of variables that violated PH assumption in cox.zph test
-plot_schoen("new_categoryApple Product")
-plot_schoen("new_categoryElectronics")
-plot_schoen("new_categoryCamera")
-plot_schoen("new_categoryGame Console")
-plot_schoen("title_questionmarkTRUE")
-
-#=============================================
-# score residuals: check for influential observations. ID quesitons who's predictor values highly effect
-score <- as.data.frame(residuals(full, type = "score"))
-
-# function to plot score residuals
-plot_score <- function(column) {
-  ggplot(score, aes(x = 1:nrow(score), y = score[[column]])) + 
-    geom_point() + 
-    geom_smooth() + 
-    ggtitle(paste("Score residuals for", column)) + 
-    scale_y_continuous("Score Residuals") + 
-    scale_x_continuous("Question index")
-}
-columns <- names(score)
-purrr::map(columns, plot_score)
-# score residuals show that there are quite a few points that may be influential (check with ggplotly)
-```
