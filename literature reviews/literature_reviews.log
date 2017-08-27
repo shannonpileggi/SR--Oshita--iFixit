@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  17 AUG 2017 11:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  26 AUG 2017 22:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -52,33 +52,27 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <14.4> on input line 22.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 22.
-
-Overfull \hbox (4.52965pt too wide) in paragraph at lines 27--28
-\OT1/cmr/m/n/12 This re-ally cool pa-per about stack-over-flow said some-thing 
-cool (Pon-zanelli et al., 2014). 
- []
-
-(./literature_reviews.bbl) [1
+ [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./lite
-rature_reviews.aux) ) 
+rature_reviews.bbl) [2] (./literature_reviews.aux) ) 
 Here is how much of TeX's memory you used:
- 572 strings out of 492995
- 6859 string characters out of 6132704
- 60623 words of memory out of 5000000
- 4195 multiletter control sequences out of 15000+600000
- 6103 words of font info for 22 fonts, out of 8000000 for 9000
+ 576 strings out of 492995
+ 6946 string characters out of 6132704
+ 62623 words of memory out of 5000000
+ 4199 multiletter control sequences out of 15000+600000
+ 6410 words of font info for 23 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 22i,6n,20p,194b,181s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmti12.pfb>
-Output written on literature_reviews.pdf (1 page, 50428 bytes).
+ 22i,6n,20p,1443b,181s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on literature_reviews.pdf (2 pages, 64775 bytes).
 PDF statistics:
- 24 PDF objects out of 1000 (max. 8388607)
- 16 compressed objects within 1 object stream
+ 27 PDF objects out of 1000 (max. 8388607)
+ 18 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

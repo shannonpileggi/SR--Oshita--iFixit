@@ -23,14 +23,16 @@
 
 \section{Introduction}
 
+    Community driven question and answer forums are becoming increasingly popular and more widely used. These forums provide a way for anyone with a question to get an answer no matter where they are, and from people of all backgrounds and levels of expertise. One such forum is iFixit's Answers. This forum features questions regarding the repair of devices. Devices range anywhere from a broken zipper or a cracked iPhone screen, to even an overheated engine. The questions asked on this forum cover an expansive range of devices--almost 9,000 with over 100,000 solutions and answers. Creating a community like this allows individuals to learn how to fix their broken devices themselves, and save money. If they run into any problems, they can always trust that they have a large community of people they can turn to for help. Thus it's important, for both the individuals as well as the forum, that askers get prompt answers. Fast respone times will drive up user engagement and generate more traffice, which in turn is great for the reputation and longevity of the forum. As such, investigation of response times would be both beneficial and informative. Analysis can reveal factors within the forum that affect how quickly questions get answers. Suggestions for how users can ask questions to minimize answer times, as well as suggestions for how the forum design can be improved, can be derived from such analysis. 
 
-This really cool paper about stackoverflow said something cool \citep{Ponzanelli2014a}.
+    In regards to investigation of forum response times, \citep{Bhat2014} developed a classification model (? is that what it's called) to analyze response times of questions posted on Stack Overflow, and found that tag-based features like the number of tags included or the number of subscribers a certain tag has, were the best predictors of answer time. 
 
+    \citep{Mamykina2011} found that the swift answer times of Stack Overflow's community is a result of the reputation system and the strict emphasis on factual and informative questions and answers, rather than discussion-based. 
 
-\cite{Ponzanelli2014a} said this awesome thing.
+    \citep{Asaduzzaman2013} analyzed unanswered questions on Stack Overflow to determine common characteristics and found that questions that went unanswered shared certain characteristics in that they were too short and vague, or utilized the tagging system incorrectly. 
 
+    However, to the best of our knowledge, analysis and prediction of answer times on forums has not been investigated by many researchers. A majority of the research focuses on assessing and predicting the question and answer quality. As such, there is a need for further analysis of resposne times in these forums. This paper presents a survival analysis on the time until a question is answered on iFixit's Answers forum. It attempts to determine the factors that are significantly related to answer time, and create a cox proportional hazards model that can accurately predict the survival probability of a question. 
 
-chen said blah  \citep{Chen}
 
 \bibliographystyle{ECA_jasa}
 \bibliography{questions}

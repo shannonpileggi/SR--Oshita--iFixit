@@ -1,15 +1,27 @@
 \begin{thebibliography}{xx}
 
-\harvarditem[Chen et~al.]{Chen, Kodell, Cheng \harvardand\ Chen}{n.d.}{Chen}
-Chen, H.-C., Kodell, R.~L., Cheng, K.~F., \harvardand\ Chen, J.~J.
-  \harvardyearleft n.d.\harvardyearright , ``{Assessment of performance of
-  survival prediction models for cancer prognosis},'' , .
+\harvarditem[Asaduzzaman et~al.]{Asaduzzaman, Mashiyat, Roy \harvardand\
+  Schneider}{2013}{Asaduzzaman2013}
+Asaduzzaman, M., Mashiyat, A.~S., Roy, C.~K., \harvardand\ Schneider, K.~A.
+  \harvardyearleft 2013\harvardyearright , ``{Answering questions about
+  unanswered questions of Stack Overflow},'' {\em 2013 10th Working Conference
+  on Mining Software Repositories (MSR)}, pp.~97--100.
+\newline\harvardurl{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6624015}
 
-\harvarditem[Ponzanelli et~al.]{Ponzanelli, Mocci, Bacchelli \harvardand\
-  Lanza}{2014}{Ponzanelli2014a}
-Ponzanelli, L., Mocci, A., Bacchelli, A., \harvardand\ Lanza, M.
-  \harvardyearleft 2014\harvardyearright , ``{Understanding and classifying the
-  quality of technical forum questions},'' {\em Proceedings - International
-  Conference on Quality Software}, pp.~343--352.
+\harvarditem[Bhat et~al.]{Bhat, Gokhale, Jadhav, Pudipeddi \harvardand\
+  Akoglu}{2014}{Bhat2014}
+Bhat, V., Gokhale, A., Jadhav, R., Pudipeddi, R., \harvardand\ Akoglu, L.
+  \harvardyearleft 2014\harvardyearright , ``{Min ( e ) d Your Tags : Analysis
+  of Question Response Time in StackOverflow},'' {\em IEEE/ACM International
+  Conference on Advances in Social Networks Analysis and Mining},
+  (Asonam),~328--335.
+
+\harvarditem[Mamykina et~al.]{Mamykina, Manoim, Mittal, Hripcsak \harvardand\
+  Hartmann}{2011}{Mamykina2011}
+Mamykina, L., Manoim, B., Mittal, M., Hripcsak, G., \harvardand\ Hartmann, B.
+  \harvardyearleft 2011\harvardyearright , ``{Design Lessons from the Fastest
+  Q{\&}A Site in the West},'' {\em Proceedings of the 2011 annual conference on
+  Human factors in computing systems - CHI '11}, p.~2857.
+\newline\harvardurl{http://dl.acm.org/citation.cfm?doid=1978942.1979366}
 
 \end{thebibliography}
