@@ -23,7 +23,8 @@ train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
 
 #### Variables: 
 
-* new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strata(ampm) + n_images + sqrt(avg_tag_score) + poly(text_length, degree = 2) + pspline(device_length, df = 0, method = 'AIC') + pspline(avg_tag_length, df = 0, method = 'AIC') + pspline(newline_ratio, df = 0, method = 'AIC')
+* new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strata(ampm) + sqrt(avg_tag_score) + poly(text_length, degree = 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4)
+* device_length has 5 knots since hypothesized that it's a better predictor, others only have 4 (reccomended in Regression Modelling Strategies text) 
 
 ```{r, echo = FALSE}
 # building model on train1
@@ -102,7 +103,7 @@ purrr::map(names(score), ~plot_score(.))
 
 ##### Cross validation 
 
-```{r, echo = FALSE}
+```{r, functions for cv, echo = FALSE}
 # function to perform cross validation, vars should be string: "new_category + new_user..."
 crossval <- function(vars, train, test) {
   formula <- paste("Surv(time_until_answer, answered) ~ ", vars, sep = "")
@@ -161,36 +162,43 @@ tests <- list(test1, test2, test3, test4, test5)
 (cv_results <- purrr::map2(trains, tests, ~crossval(vars, .x, .y)))
 
 get_avgmetrics(cv_results)
-
 get_avgdiff(cv_results) # metrics don't change that much between fitting model on training and test data sets
 ```
 
-```{r, echo = FALSE}
-# validation and calibration with rms package
+##### Validation with rms::validate for Somers’ Dxy rank correlation between pre-dicted log hazard and observed survival time, + slope shrinkage
 
+###### output: 
+* Dxy = Somers' Dxy (2 ∗ (C − 0.5), where C is the concordance probability)
+* R2: RN2 index
+* Slope: Calibration slope (slope of predicted log odds vs true log odds) optimism value is a value of overfitting
+* D: Discrimination index — likelihood ratio χ2 divided by the sample size
+* U: Unreliability index — unitless index of how far the logit calibration curve intercept and slope are from (0, 1)
+* Q: Logarithmic accuracy score - scaled version of the log-likelihood achieved by the predictive model
+* g: g index (?)
+
+###### interpreting:
+* optimism is small- model is a good fit (?)
+* slope shrinkage = 0.0163, indicates over-fitting not present
+
+```{r, echo = FALSE}
 valmodel <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE, time.inc = 0.5, dxy = TRUE)
 
-validation <- rms::validate(calmodel, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
+validation <- rms::validate(valmodel, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
 validation
-# output: 
-# Dxy = Somers' Dxy (2 ∗ (C − 0.5), where C is the concordance probability)
-# R2: RN2 index
-# Slope: Calibration slope (slope of predicted log odds vs true log odds) optimism value is a value of overfitting
-# D: Discrimination index — likelihood ratio χ2 divided by the sample size
-# U: Unreliability index — unitless index of how far the logit calibration curve intercept and slope are from (0, 1)
-# Q: Logarithmic accuracy score - scaled version of the log-likelihood achieved by the predictive model
-# g: g index (?)
-
-# validate the model for calibration accuracy in predicting probability at 0.5 hours 
-calibration <- rms::calibrate(calmodel, method = "crossvalidation", B = 100, bw = FALSE, u = 0.5)
-calibration
-plot(calibration)
-# predicts and calibrates at 0.5 hours for each iteration of the bootstrap
-# plot gives mean absolute error in predictions, mean squared error, and the 0.9 quantile of the absolute error
-# error =  difference between the predicted values and the corresponding bias-corrected calibrated values
 
 ```
 
+##### Validating the model for calibration accuracy with rms::calibrate
+
+* outputs mean absolute error in predictions, mean squared error, and the 0.9 quantile of the absolute error
+* error =  difference between the predicted values and the corresponding bias-corrected calibrated values
+
+```{r, echo = FALSE}
+# calibration accuracy in predicting probability at 0.5 hours (predicts and calibrates at 0.5 hours for each iteration of the bootstrap?)
+calibration <- rms::calibrate(calmodel, method = "crossvalidation", B = 100, bw = FALSE, u = 0.5)
+calibration
+plot(calibration)
+```
 
 ```{r, not using these functions}
 # not using these functions
@@ -264,13 +272,11 @@ final_metrics # metrics on the full data set are similar to the metrics from cro
 ##### Getting estimated survival probabilities 
 
 ```{r, echo = FALSE}
-# getting estimated survival probabilites
 surv_prob <- model$surv # list of 4 (one list for each stratification level)
 
 # allows you to get estimated survival probability at specific time (for each strat level)
 summary(survfit(model), time = c(0.5, 1, 3))
 
-# gives one survival probability (not split up into strat levels)
 # either specify newdata, linear.predictors or x
 # number on the rows of the surv matrix is the index 
 # function is very slow if full data set is used
@@ -278,5 +284,39 @@ rms::survest(model, newdata = test1[1:3,], times = c(0.5, 1, 10), conf.int = FAL
 
 # using different function
 pec::predictSurvProb(model, newdata = test1[1:3,], times = c(0.5, 1, 10))
+
+times <- sort(unique(x$time_until_answer))
+
+pec::plotPredictSurvProb(model, newdata = x[1:4,], times = times) # this is ugly, figure out how to do this in ggplot?
 ```
+
+##### Describing the final model
+
+* predicted survival curve + curves for certain variables (rms functions to do this keep outputting errors about datadist)
+* nomograms? 
+
+##### Function to output survival probabilities
+
+* input data set with any combination of predictors + times to predict on 
+* output corresponding survival probabilities 
+
+```{r}
+# input vector of times to predict on + data set to be used in predictions
+# function runs really slowly because it has to set up the data + fit the model everytime 
+# outputs matrix of predicted survival 
+# also include some kind of performance metric? measure of how accurately its predicting 
+# sets up variables needed in the new data 
+get_survival <- function(times, data) {
+  newdata <- oshitar::variable_setup(data)
+  x <- oshitar::setup()
+  model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE)
+  surv_probs <- pec::predictSurvProb(model, newdata = newdata, times)
+  return(surv_probs)
+}
+
+
+get_survival(times = c(0.5, 1, 10), data = out)
+
+```
+
 
