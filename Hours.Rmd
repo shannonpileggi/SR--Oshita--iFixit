@@ -87,5 +87,7 @@ Date   | Hours | Time        | Description
 8/25/2017 | 3 | 8:15-11:15AM | Addressed PH assumption violations, meeting with Dr. Pileggi
 8/25/2017 | 4.5 | 12:00-4:30PM | Worked with final model, checked residuals/PH, cross validation, fitted to the full data set
 8/25/2017 | 3 | 5:30-8:30PM | Ran into problems trying to predict survival probabilities 
+8/26/2017 | 3.25 | 9:15-12:30PM | Predicted survival probabilites, calibration/validation with rms package, started writing function to predict
+8/26/2017 | 6 | 3:00-9:00PM | Tried to make variable_setup function more reproducible, ran into problems, worked on Mendeley and tex 
 
 >> __Total Hours: 1...__
