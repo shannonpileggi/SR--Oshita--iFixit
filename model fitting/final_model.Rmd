@@ -5,21 +5,9 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-x <- oshitar::setup()
+x <- read.csv("final_data.csv", head = TRUE)
 library(survival); library(dplyr); library(rms)
 ```
-
-```{r}
-dir <- file.path(getwd(),"data")
-out <- read.csv(system.file("extdata/answers_data.csv", package = "oshitar"))
-
-finaldata <- oshitar::variable_setup(out)
-identical(finaldata$contain_answered, x$contain_answered)
-
-write.csv(finaldata, file = "final_data.csv")
-```
-
-
 
 ```{r, cross validation plan, echo = FALSE}
 # cross validation plan with k = 5
@@ -39,9 +27,9 @@ train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
 * device_length has 5 knots since hypothesized that it's a better predictor, others only have 4 (reccomended in Regression Modelling Strategies text) 
 
 ```{r, echo = FALSE}
-# building model on train1
-trainmodel <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = train1, x = TRUE, y = TRUE)
-AIC(trainmodel, k = 2) # 54428.62
+# building model on train1 (df set to 5 for all splines at first, but setting tag and newline to 4 minimized AIC and performed best)
+trainmodel <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + pol(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = train1, x = TRUE, y = TRUE)
+AIC(trainmodel, k = 2) # 54421.53
 trainmodel
 ```
 
@@ -139,6 +127,7 @@ crossval <- function(vars, train, test) {
   test_metrics <- data.frame(HR = exp(metric1$coefficients), 
                              LR = round(metric1$stats[3],2), 
                              pval = round(metric1$stats[5],2), 
+                             R2 = round(metric$stats[8], 2),
                              AIC = stats::AIC(metric1, k = 2),
                              Dxy = round(metric1$stats[9],2), 
                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
@@ -166,7 +155,7 @@ get_avgdiff <- function(list) {
 ```
 
 ```{r, echo = FALSE}
-vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4)"
+vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + pol(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4)"
 
 trains <- list(train1, train2, train3, train4, train5)
 tests <- list(test1, test2, test3, test4, test5)
@@ -180,6 +169,7 @@ get_avgdiff(cv_results) # metrics don't change that much between fitting model o
 ##### Validation with rms::validate for Somers’ Dxy rank correlation between predicted log hazard and observed survival time + slope shrinkage
 
 ###### output: 
+
 * Dxy = Somers' Dxy (2 ∗ (C − 0.5), where C is the concordance probability)
 * R2: RN2 index
 * Slope: Calibration slope (slope of predicted log odds vs true log odds) optimism value is a value of overfitting
@@ -189,13 +179,17 @@ get_avgdiff(cv_results) # metrics don't change that much between fitting model o
 * g: g index (?)
 
 ###### interpreting:
+
 * optimism is small- model is a good fit (?)
 * slope shrinkage = 0.0163, indicates over-fitting not present
 
 ```{r, echo = FALSE}
-valmodel <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE, time.inc = 0.5, dxy = TRUE)
+dd = datadist(x)
+options(datadist = "dd")
 
-validation <- rms::validate(valmodel, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
+final <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + pol(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE, time.inc = 0.5, dxy = TRUE)
+
+validation <- rms::validate(final, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
 validation
 ```
 
@@ -206,7 +200,7 @@ validation
 
 ```{r, echo = FALSE}
 # calibration accuracy in predicting probability at 0.5 hours (predicts and calibrates at 0.5 hours for each iteration of the bootstrap?)
-calibration <- rms::calibrate(calmodel, method = "crossvalidation", B = 100, bw = FALSE, u = 0.5)
+calibration <- rms::calibrate(final, method = "crossvalidation", B = 100, bw = FALSE, u = 0.5)
 calibration
 plot(calibration)
 ```
@@ -263,9 +257,7 @@ newcrossval <- function(vars, train, test) {
 ##### Fitting the model to the full data set
 
 ```{r, echo = FALSE}
-model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + poly(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE)
-
-x$predictions <- exp(predict(model, type = "lp"))
+x$predictions <- exp(predict(final, type = "lp"))
 
 metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = x)
 AIC(metric, k = 2) # 83023
@@ -283,28 +275,42 @@ final_metrics # metrics on the full data set are similar to the metrics from cro
 ##### Getting estimated survival probabilities 
 
 ```{r, echo = FALSE}
-surv_prob <- model$surv # list of 4 (one list for each stratification level)
+surv_prob <- final$surv # list of 4 (one list for each stratification level)
 
 # allows you to get estimated survival probability at specific time (for each strat level)
-summary(survfit(model), time = c(0.5, 1, 3))
+summary(survfit(final), time = c(0.5, 1, 3))
 
 # either specify newdata, linear.predictors or x
 # number on the rows of the surv matrix is the index 
 # function is very slow if full data set is used
-rms::survest(model, newdata = test1[1:3,], times = c(0.5, 1, 10), conf.int = FALSE)
+rms::survest(final, newdata = test1[1:3,], times = c(0.5, 1, 10), conf.int = FALSE)
 
 # using different function
-pec::predictSurvProb(model, newdata = test1[1:3,], times = c(0.5, 1, 10))
-
-times <- sort(unique(x$time_until_answer))
-
-pec::plotPredictSurvProb(model, newdata = x[1:4,], times = times) # this is ugly, figure out how to do this in ggplot?
+pec::predictSurvProb(final, newdata = test1[1:3,], times = c(0.5, 1, 10))
 ```
 
-##### Describing the final model
+##### Estimated survival probability curves
 
-* predicted survival curve + curves for certain variables (rms functions to do this keep outputting errors about datadist)
+* predicted survival curve + curves for certain variables (rms functions keep outputting errors about data dist)
 * nomograms? 
+
+```{r}
+# plots log hazard for each variable 
+plots <- ggplot(Predict(final)) # output is messy, figure out how to access each plot separately 
+
+times <- sort(unique(x$time_until_answer))
+pec::plotPredictSurvProb(final, newdata = x[1:4,], times = times) # ugly output
+
+# must specify a variable 
+rms::survplot(final, ampm, time.inc = 100, col = 1:4, n.risk = TRUE)
+
+# plot the effects of predictors
+plot(Predict(final, new_category))
+plot(Predict(final, new_user))
+plot(Predict(final, new_user, new_category))
+
+```
+
 
 ##### Function to output survival probabilities
 
@@ -315,7 +321,6 @@ pec::plotPredictSurvProb(model, newdata = x[1:4,], times = times) # this is ugly
 # input vector of times to predict on + data set to be used in predictions
 # function runs really slow
 # outputs matrix of predicted survival probabilities 
-# also include some kind of performance metric? measure of how accurately its predicting 
 # sets up variables needed in the new data 
 get_survival <- function(times, data) {
   # setting up necessary variables in new data 
@@ -330,6 +335,6 @@ get_survival <- function(times, data) {
   return(surv_probs)
 }
 
-
+get_survival(times = c(0.5, 1, 10), data = out[1:10,])
 ```
 
