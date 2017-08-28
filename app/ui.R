@@ -1,28 +1,48 @@
 library(shiny)
 
-# Define UI for application that draws a histogram
 shinyUI(fluidPage(
   
-  # Application title
-  titlePanel("Survival Probabilities"),
+  # App title
+  titlePanel("Predict Survival Probabilities"),
   
-  # Sidebar with a slider input for the number of bins
+  # Sidebar layout with input and output definitions
   sidebarLayout(
     
+    # Sidebar panel for inputs
     sidebarPanel(
-      fileInput("file1", "Choose CSV file",
+      
+      # Input: Select a file
+      fileInput("file1", "Choose CSV File",
                 multiple = TRUE,
                 accept = c("text/csv",
                            "text/comma-separated-values,text/plain",
                            ".csv")),
-      tags$hr(),
+
+      checkboxInput("summary", "Display Summary", FALSE),
       
-      checkboxInput("header", "Header", TRUE),
+      tags$hr(), # -------------
       
-      tags$hr()
-      ),
+      # Input: times at which to predict survival probabilities
+      textInput("times", "Time(s) to Predict:", value = "", placeholder = "ex: 0.5, 1, 10"),
+      
+      actionButton("predict", "Predict"),
+      
+      tags$hr(),# -------------
+      
+      # Summary output
+      tableOutput("sum_stats")
+      
+    ),
+    
+    # Main panel for displaying outputs ----
     mainPanel(
-      tableOutput("contents")
+      
+      tabsetPanel(
+        tabPanel("Calculate Survival Probability", verbatimTextOutput("surv_probs")),
+        tabPanel("Input Data", tableOutput("contents"))
+      )
+      
     )
+    
   )
 ))
