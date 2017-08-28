@@ -187,7 +187,11 @@ get_avgdiff(cv_results) # metrics don't change that much between fitting model o
 dd = datadist(x)
 options(datadist = "dd")
 
+x$text_length2 <- x$text_length**2 # for future use
+x$sqrt_tag_score <- sqrt(x$avg_tag_score)
+
 final <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + pol(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = x, x = TRUE, y = TRUE, surv = TRUE, time.inc = 0.5, dxy = TRUE)
+final
 
 validation <- rms::validate(final, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
 validation
@@ -254,7 +258,21 @@ newcrossval <- function(vars, train, test) {
 }
 ```
 
-##### Fitting the model to the full data set
+##### Assessing model fit on full data
+
+* significant predictors (pvalues < 0.05):
+    + new_category: Apple Product, Camera, game console, other, pc, vehicle
+    + new_user
+    + contain_unanswered
+    + text_all_lower
+    + update
+    + prior_effort 
+    + weekday: Thursday
+    + avg_tag_score (sqrt)
+    + spline on avg_tag_length
+* Interpretations of signficant predictors
+    + Apple Product: (beta = 0.93) log hazard of getting answered for apple products is 0.93 higher than for android/othe phones, controlling for other predictors. (HR = exp(beta) = 2.554) Hazard of getting answered is 155% higher for apple products compared to android/other phones, controlling for other predictors 
+    + avg_tag_score (sqrt): (beta = 2.8764) log hazard of getting answered increases by 2.88 for every 1 unique increase in the square root of avg_tag_score, adjusting for other predictors. HR = 17.75, the hazard of getting answered increases by 167.5% for each one unit increase in the square root of the average tag score, adjusting for other predictors
 
 ```{r, echo = FALSE}
 x$predictions <- exp(predict(final, type = "lp"))
@@ -287,6 +305,9 @@ rms::survest(final, newdata = test1[1:3,], times = c(0.5, 1, 10), conf.int = FAL
 
 # using different function
 pec::predictSurvProb(final, newdata = test1[1:3,], times = c(0.5, 1, 10))
+# interpretation:
+#   for question 380, the probability that it remains unanswered beyond 30 minutes is 0.53
+#   for question 2195, the probability that it remains unanswered byond 30 minutes is 0.85
 ```
 
 ##### Estimated survival probability curves
@@ -295,22 +316,21 @@ pec::predictSurvProb(final, newdata = test1[1:3,], times = c(0.5, 1, 10))
 * nomograms? 
 
 ```{r}
-# plots log hazard for each variable 
-plots <- ggplot(Predict(final)) # output is messy, figure out how to access each plot separately 
+# plots log hazard for individual predictors 
+ggplot(Predict(final, new_category))  
+ggplot(Predict(final, device_length))
+ggplot(Predict(final, text_length))
+ggplot(Predict(final, avg_tag_length))
+ggplot(Predict(final, newline_ratio))
 
 times <- sort(unique(x$time_until_answer))
 pec::plotPredictSurvProb(final, newdata = x[1:4,], times = times) # ugly output
 
 # must specify a variable 
-rms::survplot(final, ampm, time.inc = 100, col = 1:4, n.risk = TRUE)
-
-# plot the effects of predictors
-plot(Predict(final, new_category))
-plot(Predict(final, new_user))
-plot(Predict(final, new_user, new_category))
-
+rms::survplot(final, ampm, time.inc = 100, col = 1:4, n.risk = TRUE, xlab = "Hours")
+rms::survplot(final, new_category, time.inc = 100, col = 1:length(levels(x$new_category)), xlab = "hour")
+rms::survplot(final, new_user = 0, conf.int = .95, time.inc = 100) # can change variable it plots 
 ```
-
 
 ##### Function to output survival probabilities
 
@@ -325,7 +345,6 @@ plot(Predict(final, new_user, new_category))
 get_survival <- function(times, data) {
   # setting up necessary variables in new data 
   newdata <- oshitar::variable_setup(data)
-  
   # imports data to build model on 
   x <- read.csv("final_data.csv", head = TRUE)
   # builds model 
