@@ -20,11 +20,7 @@ for (i in empty) {
   x$time_until_answer[i] <- (x$download_date[i] - x$post_date[i])/3600
 }
 
-library(ggplot2)
-library(survival)
-library(epiR)
-library(survminer)
-library(dplyr)
+library(ggplot2); library(survival); library(epiR); library(survminer); library(dplyr)
 ```
 
 
