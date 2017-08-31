@@ -89,5 +89,12 @@ Date   | Hours | Time        | Description
 8/25/2017 | 3 | 5:30-8:30PM | Ran into problems trying to predict survival probabilities 
 8/26/2017 | 3.25 | 9:15-12:30PM | Predicted survival probabilites, calibration/validation with rms package, started writing function to predict
 8/26/2017 | 6 | 3:00-9:00PM | Tried to make variable_setup function more reproducible, ran into problems, worked on Mendeley and tex 
-
->> __Total Hours: 1...__
+8/27/2017 | 5.75 | 10:15-4:00PM | Finished with variable_setup function, started learning about the shiny app
+8/27/2017 | 2.5 | 7:30-10:00PM | Continued working on the shiny app
+8/28/2017 | 7.5 | 8:00-3:30PM | Worked on shiny app, met with Dr. Pileggi
+8/29/2017 | 8 | 7:30-3:30PM | Added interpretations/explanations to the shiny app, met with Anthony
+8/29/2017 | 2 | 5:30-7:30PM | Worked on streamlining code
+8/30/2017 | 4 | 7:45-11:45AM | Continued working on code + started writing functions to fit model and get predictions 
+8/30/2017 | 4 | 6:00-10:00PM | Edited documentation for functions + planned function to plot predictions
+8/31/2017 |  | 8:30- | Organized code, updated hours 
+>> __Total Hours: 334.58.__
