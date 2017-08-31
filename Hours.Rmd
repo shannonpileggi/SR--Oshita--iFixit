@@ -96,5 +96,5 @@ Date   | Hours | Time        | Description
 8/29/2017 | 2 | 5:30-7:30PM | Worked on streamlining code
 8/30/2017 | 4 | 7:45-11:45AM | Continued working on code + started writing functions to fit model and get predictions 
 8/30/2017 | 4 | 6:00-10:00PM | Edited documentation for functions + planned function to plot predictions
-8/31/2017 |  | 8:30- | Organized code, updated hours 
->> __Total Hours: 334.58.__
+8/31/2017 | 4.25 | 8:30-12:15PM | Organized code, updated hours, created markdown demonstrating how to use prediction functions
+>> __Total Hours: 338.83.__
