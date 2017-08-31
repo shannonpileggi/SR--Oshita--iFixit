@@ -3,46 +3,73 @@ library(shiny)
 shinyUI(fluidPage(
   
   # App title
-  titlePanel("Predict Survival Probabilities"),
-  
-  # Sidebar layout with input and output definitions
-  sidebarLayout(
+  titlePanel("Predict Failure Probabilities"),
+  helpText("Failure is defined as the event of a question recieving an answer. This app predicts the 
+           probability that a question posted on iFixit's Answers forum fails, or recieves an answer 
+           before a certain time. The time (in hours) is specified by the user."),
     
-    # Sidebar panel for inputs
-    sidebarPanel(
+  tabsetPanel(
       
-      # Input: Select a file
-      fileInput("file1", "Choose CSV File",
-                multiple = TRUE,
-                accept = c("text/csv",
-                           "text/comma-separated-values,text/plain",
-                           ".csv")),
-
-      checkboxInput("summary", "Display Summary", FALSE),
-      
-      tags$hr(), # -------------
-      
-      # Input: times at which to predict survival probabilities
-      textInput("times", "Time(s) to Predict:", value = "", placeholder = "ex: 0.5, 1, 10"),
-      
-      actionButton("predict", "Predict"),
-      
-      tags$hr(),# -------------
-      
-      # Summary output
-      tableOutput("sum_stats")
-      
-    ),
-    
-    # Main panel for displaying outputs ----
-    mainPanel(
-      
-      tabsetPanel(
-        tabPanel("Calculate Survival Probability", verbatimTextOutput("surv_probs")),
-        tabPanel("Input Data", tableOutput("contents"))
+      tabPanel("Input Data Summary",
+               br(),
+               sidebarLayout(
+                 sidebarPanel(
+                   helpText("Upload the CSV file from which predicted failure probabilities are desired. This app will set up
+                            the variables in the data set required (e.g. time_until_answer, text_length...)"),
+                   fileInput("file1", "Upload CSV File",
+                             multiple = TRUE,
+                             accept = c(".csv")),
+                   tags$hr(),
+                   checkboxInput("km", "Display Kaplan-Meier Estimated Failure Probabilities", FALSE),
+                   tags$hr(),
+                   p("Kaplan-Meier Estimated failure probabilities adjust to the presence of censoring, or in this 
+                            case, the presence of unanswered questions."),
+                   p(strong("Example Interpretation:")),
+                   p("KM Estimated Failure probability at 3 hours: 0.10"),
+                   p("The probability that a question recieves an answer before 3 hours have passed since it was posted
+                     is 0.10. ")
+                 ),
+                 mainPanel(
+                   br(),
+                   tableOutput("sum_stats"), 
+                   br(),
+                   tableOutput("contents"),
+                   br(),
+                   tableOutput("estimates")
+                     )
+                 )
+               ),
+      tabPanel("Calculate Predicted Failure", 
+               br(),
+               sidebarLayout(
+                 sidebarPanel(
+                   textInput("times", "Time(s) to Predict:", value = "", placeholder = "ex: 1, 5, 10"),
+                   actionButton("predict", "Predict"),
+                   br(),
+                   tags$hr(),
+                   p(strong("Example interpretation:")),
+                   p("Failure probabilility at 3 hours: 0.10"),
+                   p("The probability that a question recieves an answer before 3 hours have passed since it was
+                     posted is 0.10")
+                 ),
+                 mainPanel(
+                   helpText("Survival probabilities are calculated using the predictSurvProb function from the pec package"),
+                   tableOutput("surv_probs"))
+               )),
+      tabPanel("Cox Regression Model Summary", 
+               br(),
+               helpText("Overview of the model used to obtain predicted failure probabilities"),
+               br(), 
+               mainPanel(
+                 fluidRow(
+                   column(width = 4, tableOutput("modelvars")),
+                   column(width = 4, tableOutput("modelstats")),
+                   column(width = 3, tableOutput("modelcoeff"))
+                 )
+               )
       )
-      
-    )
-    
-  )
-))
+)
+)
+)
+
+
