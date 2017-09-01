@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This markdown demonstrates how to use functions fit_model, variable_setup and predict_failure to get failure probability predictions for questions posted on iFixit's Answers forum. 
+This markdown demonstrates how to use fit_model, variable_setup, predict_failure and plot_failure to get failure probability predictions for questions posted on iFixit's Answers forum, and plot the failure probability curves for specific questions. 
 
 #### Setting up the data
 
@@ -67,5 +67,18 @@ head(predict2)
     + The probability that question 6 of the new data set recieves an answer before 500 hours (~21 days) have passed since it was posted is `r round(predict2[6,4], 2)`
     + The probability that question 1 of the new data set recieves an answer before 500 hours (~21 days) have passed since it was posted is `r round(predict2[1,4], 2)`
 
+##### plotting predicted failure probabilities for specific questions
+
+```{r}
+# plotting the failure curve for the first question of the prediction data
+question <- for_predict[1,]
+oshitar::plot_failure(model, question)
+```
+
+```{r}
+# plotting the failure curve for the 50th question of the prediction data
+question50 <- for_predict[50,]
+oshitar::plot_failure(model, question50)
+```
 
 
