@@ -11,7 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 x <- oshitar::variable_setup(out)
-x <- x[[1]]
 
 library(survival); library(dplyr); library(rms)
 ```
