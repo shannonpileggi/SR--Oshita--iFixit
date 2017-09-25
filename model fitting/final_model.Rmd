@@ -5,13 +5,13 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
 ```
 
 ```{r}
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 x <- oshitar::variable_setup(out)
+x <- x[[1]]
 
 library(survival); library(dplyr); library(rms)
 ```
@@ -204,7 +204,7 @@ final <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user +
                              data = x, x = TRUE, 
                              y = TRUE, surv = TRUE)
 final
-AIC(final, k = 2) # 69945.32
+  AIC(final, k = 2) # 69945.32
 
 validation <- rms::validate(final, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
 validation
