@@ -110,6 +110,7 @@ ggsurvplot(KM, data = x,
 ##### Kaplan-Meier Survival Curve showing up to 100 hours
 
 ```{r, echo = FALSE}
+library(survminer)
 ggsurvplot(KM, data = x, 
            risk.table = "abs_pct", risk.table.title = "Total number at risk (percentage at risk)", 
            cumevents = TRUE, 
@@ -118,7 +119,7 @@ ggsurvplot(KM, data = x,
            surv.median.line = "hv", 
            xlab = "Time (hours)", 
            xlim = c(0, 100), break.x.by = 10,
-           ylim = c(0, 0.7), break.y.by = 0.1,
+           ylim = c(0, 1), break.y.by = 0.1,
            surv.plot.height = 1, ggtheme = theme_bw(), 
            tables.height = 0.15, tables.theme = theme_cleantable(), fontsize = 2, na.rm = TRUE)
 ```
