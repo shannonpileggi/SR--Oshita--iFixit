@@ -1,0 +1,89 @@
+---
+title: "Tables for Journal Article"
+author: "Lisa Oshita"
+date: "9/30/2017"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+dir <- file.path(getwd(),"data")
+out <- read.csv(file.path(dir, "answers_data.csv"))
+x <- oshitar::variable_setup(out)
+
+library(ggplot2); library(survival); library(rms); library(magrittr)
+```
+
+### Distribution of Answer Times
+
+```{r}
+x$Answered <- NA
+x$Answered[x$answered == 1] <- "Answered"
+x$Answered[x$answered == 0] <- "Unanswered"
+
+ggplot(x, aes(x = time_until_answer, fill = Answered)) + 
+  geom_histogram(bins = 20) + 
+  scale_x_continuous("Time (hours)") +
+  scale_y_continuous("Number of Questions") + 
+  ggtitle("Distribution of Answer Times") + 
+  theme(legend.title = element_blank()) # edit position of axis labels + title
+```
+
+### Table of KM estimate percentiles
+
+```{r}
+surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
+KM <- survfit(surv_object ~ 1, conf.type = "log-log")
+
+q <- quantile(KM, c(0.01, 0.05, 0.10, 0.25, 0.30, 0.40, 0.50, 0.55, 0.58, 0.60, 0.64))
+quantiles <- q[[1]]
+quantilesdf <- data.frame(Percent = names(quantiles), Time = quantiles)
+colnames(quantilesdf) <- c("Percent Answered", "Time (Hours)")
+quantilesdf
+
+# add caption with example interpretation?: At 0.042 hours or 2.52 minutes, 1 percent of question posted recieved an Answer
+# explain the jump in the data? 
+```
+
+### KM Curve
+
+```{r}
+library(survminer)
+ggsurvplot(KM, data = x, 
+           risk.table = "abs_pct", risk.table.title = "Total number at risk (percentage at risk)", 
+           cumevents = TRUE, 
+           conf.int = TRUE, conf.int.style = "step", 
+           censor = FALSE,
+           surv.median.line = "hv", 
+           xlab = "Time (hours)", 
+           xlim = c(0, 100), break.x.by = 10,
+           ylim = c(0, 1), break.y.by = 0.1,
+           surv.plot.height = 1, ggtheme = theme_bw(), 
+           tables.height = 0.15, tables.theme = theme_cleantable(), fontsize = 2, na.rm = TRUE,
+           title = "Kaplan-Meier Curve for all Questions",
+           legend = "none")
+
+# include caption: Dotted line on graph indicates the median answer time (time at which 50% of question recieved an answer)
+
+ggsurvtable(KM, data = x, risk.table.type = "abs_pct",
+            ggtheme = theme_bw())
+```
+
+### Device Categories
+
+```{r}
+dev <- prop.table(table(x$new_category))
+
+devdf <- data.frame(Device = names(dev), Percent = round(as.numeric(unname(dev))*100,2))
+devdf <- devdf %>% dplyr::arrange(desc(Percent))
+colnames(devdf)[2] <- "Percent of all Questions"
+devdf
+```
+
+
+
+
+
