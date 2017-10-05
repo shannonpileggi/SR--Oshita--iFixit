@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  4 OCT 2017 17:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  4 OCT 2017 21:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1254,133 +1254,35 @@ LaTeX Font Info:    Font shape `OT1/lmss/m/it' in size <5> not available
  [2
 
 ]
-
-! LaTeX Error: Environment subfigure undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.44 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing number, treated as zero.
-<to be read again> 
-                   }
-l.44 \end{frame}
-                
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-! Illegal unit of measure (pt inserted).
-<to be read again> 
-                   }
-l.44 \end{frame}
-                
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
-
 <question.png, id=70, 1015.795pt x 485.815pt>
 File: question.png Graphic file (type png)
  <use question.png>
-Package pdftex.def Info: question.png used on input line 44.
-(pdftex.def)             Requested size: 307.28987pt x 146.96133pt.
-
-
-! LaTeX Error: \begin{center} on input line 44 ended by \end{subfigure}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.44 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Environment subfigure undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.44 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Missing number, treated as zero.
-<to be read again> 
-                   }
-l.44 \end{frame}
-                
-A number should have been here; I inserted `0'.
-(If you can't figure out why I needed to see a number,
-look up `weird error' in the index to The TeXbook.)
-
-! Illegal unit of measure (pt inserted).
-<to be read again> 
-                   }
-l.44 \end{frame}
-                
-Dimensions can be in units of em, ex, in, pt, pc,
-cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
-I'll assume that you meant to say pt, for printer's points.
-To recover gracefully from this error, it's best to
-delete the erroneous units; e.g., type `2' to delete
-two letters. (See Chapter 27 of The TeXbook.)
+Package pdftex.def Info: question.png used on input line 40.
+(pdftex.def)             Requested size: 215.10196pt x 102.86923pt.
 
 <answer.png, id=72, 1012.78375pt x 616.3025pt>
 File: answer.png Graphic file (type png)
  <use answer.png>
-Package pdftex.def Info: answer.png used on input line 44.
-(pdftex.def)             Requested size: 307.28987pt x 186.98926pt.
+Package pdftex.def Info: answer.png used on input line 40.
+(pdftex.def)             Requested size: 215.10196pt x 130.89436pt.
+ [3
 
-
-! LaTeX Error: \begin{center} on input line 44 ended by \end{subfigure}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.44 \end{frame}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Overfull \vbox (106.00398pt too high) detected at line 44
- []
-
-[3
-
- <./question.png> <./answer.png>]
-<answersdist.pdf, id=100, 794.97pt x 614.295pt>
+ <./question.png> <./answer.png>] <answersdist.pdf, id=100, 794.97pt x 614.295p
+t>
 File: answersdist.pdf Graphic file (type pdf)
- <use answersdist.pdf>
-Package pdftex.def Info: answersdist.pdf used on input line 75.
+
+<use answersdist.pdf>
+Package pdftex.def Info: answersdist.pdf used on input line 83.
 (pdftex.def)             Requested size: 153.64493pt x 118.72316pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 75.
+(Font)              <10.95> on input line 83.
 LaTeX Font Info:    Font shape `OT1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `OT1/lmss/m/sl' tried instead on input line 75.
-
-<kmcurve.pdf, id=101, 794.97pt x 614.295pt>
+(Font)              Font shape `OT1/lmss/m/sl' tried instead on input line 83.
+ <kmcurve.pdf, id=101, 794.97pt x 614.295pt>
 File: kmcurve.pdf Graphic file (type pdf)
- <use kmcurve.pdf>
-Package pdftex.def Info: kmcurve.pdf used on input line 75.
+
+<use kmcurve.pdf>
+Package pdftex.def Info: kmcurve.pdf used on input line 83.
 (pdftex.def)             Requested size: 153.64493pt x 118.72316pt.
  [4
 
@@ -1400,19 +1302,20 @@ Package pdftex.def Info: kmcurve.pdf used on input line 75.
 \tf@snm=\write8
 \openout8 = `presentation.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 135.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 135.
- (./presentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 135.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 135.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 143.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 143.
+
+(./presentation.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 143.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 143.
 Package rerunfilecheck Info: File `presentation.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 17272 strings out of 492995
- 326318 string characters out of 6132704
+ 17270 strings out of 492995
+ 326297 string characters out of 6132704
  397978 words of memory out of 5000000
- 20389 multiletter control sequences out of 15000+600000
+ 20387 multiletter control sequences out of 15000+600000
  38827 words of font info for 44 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  56i,14n,55p,778b,551s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1422,7 +1325,7 @@ texlive/2017/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/20
 ist/fonts/type1/public/lm/lmss8.pfb></usr/local/texlive/2017/texmf-dist/fonts/t
 ype1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2017/texmf-dist/fon
 ts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on presentation.pdf (7 pages, 631508 bytes).
+Output written on presentation.pdf (7 pages, 631435 bytes).
 PDF statistics:
  241 PDF objects out of 1000 (max. 8388607)
  210 compressed objects within 3 object streams
