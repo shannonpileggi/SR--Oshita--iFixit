@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  4 OCT 2017 11:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  11 OCT 2017 10:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -33,7 +33,7 @@ LaTeX Info: Redefining \cite on input line 694.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2001/04/09 non-zero parskip adjustments
 )
-No file roughdraft.aux.
+(./roughdraft.aux)
 \openout1 = `roughdraft.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
@@ -52,57 +52,57 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <14.4> on input line 22.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 22.
-[1
+ [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
-Package natbib Warning: Citation `Bhat2014' on page 2 undefined on input line 3
-6.
+Package natbib Warning: Citation `Bhat2014' on page 2 undefined on input line 4
+0.
 
 
 Package natbib Warning: Citation `Mamykina2011' on page 2 undefined on input li
-ne 38.
+ne 42.
 
 
 Package natbib Warning: Citation `Asaduzzaman2013' on page 2 undefined on input
- line 40.
+ line 44.
 
 [2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 58.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 62.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 58.
- [3]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 62.
+ [3] [4]
 
-Package natbib Warning: Citation `Chen' on page 4 undefined on input line 89.
+Package natbib Warning: Citation `Chen' on page 5 undefined on input line 93.
 
-[4]
+[5]
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.107 ...ith a p-value of less than 0.01 are: new_
+l.111 ...ith a p-value of less than 0.01 are: new_
                                                   category (apple product, c...
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 107.
+(Font)              <12> on input line 111.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 107.
+(Font)              <8> on input line 111.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 107.
+(Font)              <6> on input line 111.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.108 
+l.112 
       
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 
-Overfull \hbox (703.626pt too wide) in paragraph at lines 107--108
+Overfull \hbox (703.626pt too wide) in paragraph at lines 111--112
 \OT1/cmr/m/n/12 new$[]\OML/cmm/m/it/12 ategory\OT1/cmr/m/n/12 (\OML/cmm/m/it/12
  appleproduct; camera; gameconsole; home; pc; andvehical\OT1/cmr/m/n/12 )\OML/c
 mm/m/it/12 ; contain[]nanswered; title[]uesitonmark; update; prior[]ffort; avg[
@@ -110,11 +110,11 @@ mm/m/it/12 ; contain[]nanswered; title[]uesitonmark; update; prior[]ffort; avg[
 o\OT1/cmr/m/n/12 ?$ 
  []
 
-[5]
+[6]
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.122 ...32 words in uanswered questions. Contain_
+l.126 ...32 words in uanswered questions. Contain_
                                                   answered and contain_unasn...
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -122,23 +122,22 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.123 
+l.127 
       
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 
-Overfull \hbox (645.51532pt too wide) in paragraph at lines 122--123
+Overfull \hbox (645.51532pt too wide) in paragraph at lines 126--127
 \OT1/cmr/m/n/12 Contain$[]\OML/cmm/m/it/12 nsweredandcontain[]nasnweredarelogic
 alvariables; indicatingtrueifaquestion[]stitlecontainedatleastoneofthewordsinth
 efrequentlyusedwordslistforansweredandunansweredquestions; respectively:$ 
  []
 
-[6]
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.126 ...sociated with faster answer times. Title_
+l.130 ...sociated with faster answer times. Title_
                                                   questionmark is a logical ...
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -150,18 +149,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.126 ...off of the findings from \citep{Bhat2014}
+l.130 ...off of the findings from \citep{Bhat2014}
                                                   .
 Please use the math alphabet \mathbf instead of the \bfseries command. 
 
 
 Package natbib Warning: Citation `Bhat2014' on page 7 undefined on input line 1
-26.
+30.
 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.127 
+l.131 
       
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -173,7 +172,7 @@ Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ù in font cmr12!
 
-Overfull \hbox (1065.13144pt too wide) in paragraph at lines 126--127
+Overfull \hbox (1065.13144pt too wide) in paragraph at lines 130--131
 \OT1/cmr/m/n/12 as-so-ci-ated with faster an-swer times. Title$[]\OML/cmm/m/it/
 12 uestionmarkisalogicalvariableindicatingtrueifthequestion[]stitleendswithaque
 stionmark:Title[]eginwhisalogicalvariableindicatingtrueifthetitlebeginswithawhw
@@ -188,12 +187,13 @@ Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
 
 Package natbib Warning: Citation `Bhat2014' on page 7 undefined on input line 1
-35.
+39.
 
 
 Package natbib Warning: Citation `Bhat2014' on page 7 undefined on input line 1
-43.
+47.
 
+[7]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ú in font cmr12!
@@ -209,7 +209,6 @@ Missing character: There is no ú in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ù in font cmr12!
-[7]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
@@ -217,32 +216,27 @@ Missing character: There is no ô in font cmr12!
 
 Package natbib Warning: There were undefined citations.
 
-[8] (./roughdraft.aux
-
-Package natbib Warning: Citation(s) may have changed.
-(natbib)                Rerun to get citations correct.
-
-) ) 
+[8] (./roughdraft.aux) ) 
 Here is how much of TeX's memory you used:
- 611 strings out of 492995
- 7350 string characters out of 6132704
- 64623 words of memory out of 5000000
- 4227 multiletter control sequences out of 15000+600000
- 8848 words of font info for 31 fonts, out of 8000000 for 9000
+ 604 strings out of 492995
+ 7210 string characters out of 6132704
+ 63623 words of memory out of 5000000
+ 4219 multiletter control sequences out of 15000+600000
+ 8501 words of font info for 30 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  22i,6n,22p,1818b,181s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pf
-b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
-></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/
-local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/lo
-cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on roughdraft.pdf (8 pages, 121082 bytes).
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmmi8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy8.pfb>
+Output written on roughdraft.pdf (8 pages, 102092 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
- 44 compressed objects within 1 object stream
+ 59 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
