@@ -4,8 +4,8 @@ shinyUI(fluidPage(
   
   # App title
   titlePanel("Predict Failure Probabilities"),
-  helpText("Failure is defined as the event of a question recieving an answer. This app predicts the 
-           probability that a question posted on iFixit's Answers forum fails, or recieves an answer 
+  helpText("Failure is defined as the event that a question receives an answer. This app predicts the 
+           probability that a question posted on iFixit's Answers forum fails, or receives an answer 
            before a certain time. The time (in hours) is specified by the user."),
     
   tabsetPanel(
@@ -14,8 +14,8 @@ shinyUI(fluidPage(
                br(),
                sidebarLayout(
                  sidebarPanel(
-                   helpText("Upload the CSV file from which predicted failure probabilities are desired. This app will set up
-                            the variables in the data set required (e.g. time_until_answer, text_length...)"),
+                   helpText("Upload the CSV file. This app will set up
+                            the variables required"),
                    fileInput("file1", "Upload CSV File",
                              multiple = TRUE,
                              accept = c(".csv")),
@@ -53,7 +53,7 @@ shinyUI(fluidPage(
                      posted is 0.10")
                  ),
                  mainPanel(
-                   helpText("Survival probabilities are calculated using the predictSurvProb function from the pec package"),
+                   helpText("Failure probabilities are calculated using the predictSurvProb function from the pec package"),
                    tableOutput("surv_probs"))
                )),
       tabPanel("Cox Regression Model Summary", 
