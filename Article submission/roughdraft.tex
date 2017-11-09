@@ -27,13 +27,13 @@ Community-driven online question and answer forums (CQA) are becoming increasing
 
 \section{Introduction}
 
-    Community-driven online question and answer forums (CQA) are becoming widely used sources of information. These online platforms allow for anyone to ask or answer a question, regardless of their background or expertise level. One popular CQA is Yahoo! Answers, featuring questions of all topics and expertise levels. On the other hand of the spectrum is Stack Overflow, the CQA that features strictly computer programming question and answers. Forums like these 2 receive around 40 million visits every month.
+    Community-driven online question and answer forums (CQA) are becoming widely used sources of information. These online platforms allow for anyone to ask or answer a question, regardless of their background or expertise level. One popular CQA is Yahoo! Answers, featuring questions of all topics and expertise levels. On the other hand of the spectrum is Stack Overflow, the CQA that features strictly computer programming question and answers. Forums like these receive around 40 million visits every month.
     
-    The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit helps thousands of people repair their broken devices everyday. The company provides over 30,000 free online repair guides with pictures and step-by-step instructions, and sells the specialized tools and parts needed for such repairs---tools like iPhone 7 battery adhesive strips or Nexus 9 LCD digitizers. The mission of iFixit is to enable people to extend the lifetime of their own devices, effectively saving them money and reducing electronic waste. 
+    The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit helps thousands of people repair their broken devices everyday, by providing over 30,000 free online repair guides and by selling the specialized tools and parts needed for such repairs. The mission of iFixit is to enable people to extend the lifetime of their own devices, effectively saving them money and reducing electronic waste. 
     
-    As not all possible repairs are covered in the published repair guides, and users may have questions related to repair guides, iFixit's \textit{Answers} forum is another important resource. This platform features over 9,000 device topics and over 100,000 solutions. Questions on this forum range from broken devices like a jammed zipper to shattered iPhone screens. As many rely on this forum for help with repairs, it is important that users receive timely answers. Fast response times will enhance user engagement and generate more web traffic, which is valuable to the reputation and longevity of the \textit{Answers} forum. Analysis of answer times can reveal factors that affect how quickly questions are answered, which can lead to suggestions for how users can ask better questions to minimize answer times, and for how the forum design can be improved. 
+    As not all possible repairs are covered in the published repair guides, and users may have questions related to those guides, iFixit's \textit{Answers} forum is another important resource. This platform features questions related to over 9,000 devices with over 100,000 solutions. Questions range from broken devices like jammed zippers to shattered iPhone screens. As many rely on this forum for help with repairs, it is important that users receive timely answers. Fast response times will enhance user engagement and generate more web traffic, which is valuable to the reputation and longevity of the \textit{Answers} forum. Analysis of answer times can reveal factors that affect how quickly questions are answered, which can lead to suggestions for how users can ask better questions to minimize answer times, and for how the forum design can be improved. 
     
-    However, to the best of our knowledge, analysis and prediction of answer \textit{times} on CQAs have not been thoroughly investigated. A majority of the existing research focuses on assessing and predicting question and answer quality. As such, there is need for further analysis of response times in these forums. This paper presents a survival analysis on the time until a question is answered on iFixit's \textit{Answers} forum. In order to determine factors significantly related to answer time predict the failure probability of a question.
+    However, analysis and prediction of answer \textit{times} on CQAs have not been thoroughly investigated. A majority of existing research focuses on assessing and predicting question and answer quality. Therefore, there is need for further analysis of response times in these forums. This paper presents a survival analysis on the time until a question is answered on iFixit's \textit{Answers} forum, in order to determine factors significantly related to answer time and to predict the ``failure'' probability of a question.
 
 \section{Related Work}
 
@@ -61,10 +61,10 @@ Categorical Variables:
   \item Whether or not the question's title begins with a ``Wh'' word (``Why'', ``Which'', ``When'', ``Who'', ``What'', ``Where''). 
   \item Whether or not the question's text contains any end punctuation marks (. ? !). 
   \item Whether or not the question's text is in all lower case. 
-  \item Whether or not the asker edited or added information to the questions text sometime after posting it. 
-  \item Whether or not the asker included a greeting (e.g. ``Hello'', ``Greetings'') in the question's text.
-  \item Whether or not the asker used polite language in the question's text (e.g., ``Thank you'', ``please''). (don't like the way this is worded) 
-  \item Whether or not the asker made an effort to solve the problem on their own, prior to asking the question.
+  \item Whether or not the user edited or added information to the question's text sometime after posting it.
+  \item Whether or not the user included a greeting (e.g. ``Hello'', ``Greetings'') in the question's text.
+  \item Whether or not the user was courteous in asking the question (e.g., ``Thank you'', ``please'').
+  \item Whether or not the user made an effort to solve the problem on their own, prior to asking the question.
   \item The day of the week the question was posted. 
   \item The time of day the question was posted. Times include: Morning, Afternoon, Evening, and Night. 
 \end{itemize}
@@ -72,7 +72,7 @@ Categorical Variables:
 Numeric Variables:
 
 \begin{itemize}
-  \item The average frequency, or proportion of times a tag appeared in all of the data, for all of a question's user-defined tags. Questions without tags were assigned a value of 0 for this variable. 
+  \item The average tag ``score'' for all of a question's tags. Score is defined as the proportion of times a tag appears in all of the data. Questions without tags were assigned an average tag score of 0. 
   \item The average number of characters in each question's tags. 
   \item The number of characters in the question's text. 
   \item The number of characters in the user-defined device name. 
@@ -82,42 +82,34 @@ Numeric Variables:
 
 \section{Methods}
 
-    Questions analyzed were restricted to those posted in English (97\% of the full data). The time until event variable used in survival analysis is defined as the time since posting until a question receives its first answer. Comments posted on the question are not considered answers, and an answer does not have to be accepted as the ``chosen solution'' to be considered the answer. For questions that remained unanswered by the time the data was downloaded, the time until event value is defined as the time since posting to the time the data was downloaded. These questions were considered right censored, meaning that the exact answer time for these questions is unknown and greater than the recorded answer time (these questions can still receive an answer after the data was downloaded, and would then have a higher answer time than what is recorded in the data). 
+    Questions analyzed were restricted to those posted in English (97\% of the full data). The time until event variable used in survival analysis is defined as the time since posting until a question receives its first answer. For questions that were unanswered by the time the data was downloaded, the time until event value was defined as the time since posting to the time the data was downloaded. These questions were considered right censored, meaning that the exact answer time for these questions is unknown (these questions can still receive an answer after the data was downloaded, and would then have a higher observed answer time than what is in the data). 
 
-As there was a considerable amount of unanswered or right-censored questions, Kaplan-Meier estimates of survival probability, which adjust to the presence of these right censored observations, were assessed prior to model fitting. This method factors in the number of questions that have not been answered on each ordered time interval, based on complete answer times. The estimates of survival probablity is the product of all probabilities up to that intervals time (fix this paragraph!!!!). As such, these estimates are roughly equivalent to the conditional probability that a randomly selected question receives an answer in the next moment in time, given that it has not received an answer yet. From these estimates, curves were constructed to examine the survival experience of questions, and mean and median percentiles of survival times were calculated. 
+Prior to model fitting, Kaplan-Meier estimates of survival probability were assessed. This method adjusts to the presence of unanswered, or right-censored questions. Kaplan-Meier estimates factor in the number of questions that have not been answered on each ordered interval of complete answer times. The estimates of survival probablities are the products of all probabilities up to that interval's time (fix this explanation). From these estimates, curves were constructed to examine the survival experience of questions, and mean and median percentiles of survival times were calculated. 
 
-Five-fold cross-validation was used to identify potentially signficant variables and to assess model perofmrance. (explain cross-validation better, and why 5 fold was chosen) The full data was split into five training and five test data sets. Each training data set contained 6,208 questions, and each test data set contained 1,552 questions. To identify variables potentially associated with answer time, univariate analysis was performed on one of the training data sets. Each variable was entered into a Cox regression model as the single predictor with the answer time as the survival time. Variables with p-values of less than 0.01 for the likelihood ratio test were taken into consideration. 
+Five-fold cross-validation was used for model building. The full data was split into five training and five test data sets. Each training data set contained 6,208 questions, and each test data set contained 1,552 questions. To identify variables potentially associated with answer time, univariate analysis was performed on one of the training data sets. Each variable of interest was entered into a Cox regression model as the single predictor. Variables with likelihood ratio test p-values of less than 0.01 were entered into the final model. 
 
-Variables identified in univariate analysis as signficant were entered into a Cox regression model. To assess predictive performance, cross-validation methods were used. For each iteration, the model was fit to one of the training data sets. The resulting model was then used to calculate predicted hazard ratios on the corresponding test data. To assess prediction performance, the predicted hazard ratios were entered into a separate Cox regression model as the single predictor with the question's answer times as the survival time. The resulting hazard ratio, R-square statistic, partial likelihood ratio and p-value, Somers' Dxy and Concordance statistics for that model were used as indicators of the prediction model's performance. Significant statistics for this model indicate that the predicted hazard ratio is signficantly associated with survival time and that our model performs well. The concept behind these metrics came from \cite{Chen}. These metrics were also computed for predictions on the training data. The metrics taken into consideration were the averages of all metrics computed on the test data. 
+After identifying potentially signficant predictors, the full model's performance was assessed with cross-validation. For each iteration, the model was built on one of the training data sets, and then used to calculate predicted hazard ratios on the corresponding test data. To assess prediction performance, the predicted hazard ratios were entered into a separate Cox regression model as the single predictor with the question's answer times as the survival time. The resulting estimated hazard ratio, R-square statistic, partial likelihood ratio and p-value were assessed as indicators of the model's prefromance. Signficant statistics would indicate a signficant association between survival time and predicted hazard. Somers' Dxy and Concordance statistics measured the model's predictive discrimination. Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter survival time also has the higher predicted hazard. Somers' Dxy is the difference between those concordance and discordant probabilities. The concept behind these metrics came from \cite{Chen}. These metrics were computed for each training and test data set.
 
 
-The model with the lowest AIC statistic, and most consistent performance metrics (there wasn't significant change across iterations) was taken as the final model. 
 
-To assess the adequacy of functional forms of variables, Martingale residuals were assessed in plots. 
+To select the final model, the model with the lowest AIC statistic and most consistent performance metrics, in that the values did not change substantially from training to test data sets, was selected.
 
-Deviance residuals were assessed. Score residuals 
+To assess model adequacy, model residuals were examined. Martingale residuals plots were evaluated for each continuous predictor to assess the functional form. Martingale residuals are the differences between the observed number of answers received by question i, and the expected number of answers experienced by question i under the model. Deviance residuals, which are transformed martingale residuals with a mean of 0 and roughly normal distribution, were assessed to check for outliers, or questions with outcomes that are poorly predicted by the model. Score residuals, which are a measure of the approximate change in the parameter estimates that would occur if the ith question were removed from the sample, were assessed to acheck for influential questions, or questions that highly effect the parameter estimates. 
 
-Applying splines (using frank harrel's method) 
+After assessing model residuals, splines and other transformations were applied to variables. Restricted cubic splines were applied to continuous predictors using the method outline in \cite{Harrell2015}. As our data was fairly large (>100), splines of 5 knots were initially fit to each continuous predictor. A higher number of knots were assigned to predictors with lower p-values in the model, those thought to be more important. The optimal number of knots for each spline was determined by the model with the lowest AIC statistic. Other transformations (i.e. square root and polynomial terms) were also applied to variables. 
 
-To assess proportional hazards assumption, cox.zph function was used in r, assesses correlation between scaled Schoenfeld residuals and time. 
+An assumption upon which Cox regression models are built, is the assumption of porportional hazards, or that the effect of predictors on hazard doesn't depend on time. To assess this assumption, the correlations between scaled Schoenfeld resiudals and a function of time were evaluated. Schoenfeld residuals are the differences between observed and expected predictor values for each question with a complete answer time (each question that received an answer). Signficant results from this test would indicate that a predictor has violated this assumption. 
 
   
 \section{Results} 
-(7,760 questions total), percent answered 
-Figure a shows the distribution of answer times for all questions in the data set. 
-summary stats from KM estimates
-    The following statistics were calculated from Kaplan-Meier (explain what KM is) estimates of questions survival probability. As Kaplan-Meier estimates adjust for the presence of censored observations, these statistics are adjusted for the presence of unanswered questions. For questions analyzed, the mean survival time, or the average time until a question receives its first answer is 775.75 hours, or 32.32 days. The median survival time, the time at which 50\% of the questions in the data received an answer is 9.16 hours. Table 1 provides more percentiles of survival time. 
-    
-        Figure A shows the Kaplan-Meier Curve for all questions in the data. The curve indicates that around 100 hours after question is posted, the probability that a question receives an answer after that time hovers around 0.35. The survival probability never reaches 0 due to the large amount of unanswered questions. 
 
-results from univariate analysis 
+  Of 7,760 questions, 63.8\% received an answer by the download date. Figure a shows the distribution of answer times for all questions, grouped by whether or not the question was answered. The following statistics were calculated from Kaplan-Meier estiamtes of survival probability. The mean survival time, or the average time until a question receives its first answer is 775.75 hours, or 32.32 days. The median survival time, the time at which 50\% of the questions in the data received an answer is 9.16 hours. Table 1 provides more percentiles of survival time. Figure B shows the Kaplan-Meier curve for all questions in the data. The curve indicates that at around 100 hours after a question is posted, the probability that a question receives an answer after that time hovers around 0.35. The survival probability never reaches 0 due to the large amount of unanswered questions. 
 
-results of metrics 
-        For each of the five iterations, there was no signficant difference between the metrics computed on the training data prediction, and the metrics computed ont he test data. Table C shows the average metrics for training and test data predictions. The metrics evaluated were the average of all metrics computed on the test data. Although these metrics are not considerably high, they do not vary signicantly from training to test data sets.  (should I explain more about Somers' Dxy and Concordance?) 
+After performing univariate analysis, the predictors with partial likelihood ratio test p-values of less than 0.01 were entered into the final model. Results for univariate analysis can be seen in table 2 (results in pvalues dataframe). Each variable was entered into the Cox regression model. 
 
-final model selected (with variables and transformations) 
-The final model included all variables described above, along with the following transformations: 
+The metrics for each iteration of cross validation are in table 3. Although not impressively high, the metrics did not vary substantially from test to training data, indicating that the model does not overfit.
 
+The final model selected contained variables defined above as well as the following transformations: 
 \begin{itemize}
   \item Stratification on the time of day the question was posted. 
   \item Square root of the average frequency of a question's tags. 
@@ -126,22 +118,24 @@ The final model included all variables described above, along with the following
   \item Restricted cubic spline with 4 knots on the average number of characters in a question's tags.
   \item Restricted cubic spline with 4 knots on the ratio of newlines to the number of characters in a question's text. 
 \end{itemize}
-The partial likelihood ratio test statistic was 1307.15 with a p-value of 0. The R-squared value for this model is 0.1555. Significant predictors with a p-value of less than 0.01 are: the Apple product, Camera, Game Console, Home, PC, and Vehicle categories of the device variable, whether or not the question's text contained at least one term considered ``frequently used'' among answered questions, whether or not question's title ended in question mark, whether or not the asker edited the question's text after posting, whether or not the asker made effort prior to posting the question to find their own solution, the average frequency of a question's tags, and average number of characters for a question's tags. Include some interpretations of the hazard ratio? 
 
-While the model is significant overall, it's predictive accuracy is low. Table blah shows metrics for the model fit to the full data set. One possible explanation for this is the high number of categorical variables included in the model. Including more quantitative variables may improve predictive accuracy. 
+Results for this model can be found in table z.
 
-assessing assumptions 
+Assessing residuals for model adequacy indicated that assumptions were met. Score and deviance residuals showed that there were a few questions that were outliers or highly influenced the fit of the model. However, refitting the model without those questions resulted in worse predictive accuracy. Assessing the proportional hazards assumption indicated that the ``Apple Products'' level of device category was the only probable variable that violated the assumption, but as stratifying on device category substantially reduced predictive accuracy, it was left as is. 
 
-Assessing the indepenedence between the model's Schoenfeld residuals and time indicated that the ``Apple Product'' category of the device variable violated the proportional hazards assumption. Other variables at risk for violation included the Camera and Game Console categories of devices, and the number of characters in the user-defined device name. As ``Apple Product'' was the only major violation of this assumption, and stratifying on this variable substantially decreased predictive power, these variables were left as is. 
-Visually assessing martingale residuals for each quantitative predictor indicated that functional form for each appeared to be adequate. Assessing the deviance residuals indicated that a considerable amount of questions were not predicted well by the model. Similarily, assessing the score residuals showed that some questions might have an influence on the fit of the model. However, fitting the model without questions identified by score and deviance residuals to be either poorly predicted or highly influential, resulted in worse predictive performance. Hence, all questions were left in the data set.
 
 \section{Discussion}
 
+(Discuss importance of findings, not repeat them. A combined results + discussion section is often appropriate) 
 The data we analyzed for this model presented some limitations. Currently, askers have a considerable amount of freedom in the way they ask a question. As a result many have incorrectly specified various input fields when asking their question. For example, a question about a faulty Android tablet screen included as a tag ``someone sat on it :(''. Generally, tags are not more than a couple key words that describe the topic of the question. Many askers on this forum included lengthy and somewhat ambiguous tags in their question. Another issue was the incorrect naming of the device the asker's question was about. A user asking a question about their Turtle Beach Ear Force X device included as the name of their device "Turtle Beach Ear Force Xmy grandson chewed through the wire while we was playing it's brand-new is there anyway I can have it fixedO One". The inconsistencies in this data made it somewhat difficult to analyze, and possibly contributes to the model's low predictive accuracy. 
 
 \section{Conclusion}
 
+This study developed a Cox regression model to predict the probability that a question posted on iFixit's \textit{Answers} forum receives an answer before a certain time. Predictors found to be signficant in the model included: device category, whether or not the question contained words considered to be ``frequently-used'' among unanswered questions, whether or not the title ends in a questionmark, whether or not the user updated the question's text after the initial posting, whether or not the user indicated that he or she made an effort prior to answer their question prior to posting it (how should I write out that different knots of the splines were signficant). While overall the model was signficant, its predictive performance was considerably low. 
 
+\section{Acknowledgement}
+
+This research is supported by the Bill and Linda Frost fund. 
 
 
 \section{Appendix} 
