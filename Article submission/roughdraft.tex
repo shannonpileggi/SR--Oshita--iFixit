@@ -58,15 +58,11 @@ Categorical Variables:
   \item Whether or not the question's title contains at least one word that is considered ``frequently used'' among answered questions. See appendix for a complete list of these terms. 
   \item Whether or not the question's title contains at least one word that is considered ``frequently used'' among unanswered question. See appendix for a complete list of these terms. 
   \item Whether or not the question's title ends in a question mark.
-  \item Whether or not the question's title begins with a ``Wh'' word (``Why'', ``Which'', ``When'', ``Who'', ``What'', ``Where''). 
   \item Whether or not the question's text contains any end punctuation marks (. ? !). 
   \item Whether or not the question's text is in all lower case. 
   \item Whether or not the user edited or added information to the question's text sometime after posting it.
-  \item Whether or not the user included a greeting (e.g. ``Hello'', ``Greetings'') in the question's text.
-  \item Whether or not the user was courteous in asking the question (e.g., ``Thank you'', ``please'').
   \item Whether or not the user made an effort to solve the problem on their own, prior to asking the question.
   \item The day of the week the question was posted. 
-  \item The time of day the question was posted. Times include: Morning, Afternoon, Evening, and Night. 
 \end{itemize}
 
 Numeric Variables:
@@ -82,15 +78,13 @@ Numeric Variables:
 
 \section{Methods}
 
-    Questions analyzed were restricted to those posted in English (97\% of the full data). The time until event variable used in survival analysis is defined as the time since posting until a question receives its first answer. For questions that were unanswered by the time the data was downloaded, the time until event value was defined as the time since posting to the time the data was downloaded. These questions were considered right censored, meaning that the exact answer time for these questions is unknown (these questions can still receive an answer after the data was downloaded, and would then have a higher observed answer time than what is in the data). 
+    Questions analyzed were restricted to those posted in English (97\% of the full data). The time until event variable used in survival analysis is defined as the time since posting until a question receives its first answer. For questions that did not receive an answer by the download date, time until event values were defined as the time since posting to the time the data was downloaded. These questions were considered right censored, meaning that the exact answer times for these questions are higher than the recorded times (questions can still receive answers after the download date). 
 
-Prior to model fitting, Kaplan-Meier estimates of survival probability were assessed. This method adjusts to the presence of unanswered, or right-censored questions. Kaplan-Meier estimates factor in the number of questions that have not been answered on each ordered interval of complete answer times. The estimates of survival probablities are the products of all probabilities up to that interval's time (fix this explanation). From these estimates, curves were constructed to examine the survival experience of questions, and mean and median percentiles of survival times were calculated. 
+Survival was defined as the event that a question remains unanswered beyond a certain time, t. Estimates of survival probability were generated with the Kaplan-Meier method (cite). This method adjusts to the presence of right-censored, or unanswered questions. Estimates factor in the number of questions that have not been answered on each ordered interval of complete answer times. The estimates of survival probablity are the products of all probabilities up to that interval's time (fix this explanation). From these estimates, survival curves were constructed to examine the survival experience of questions. Mean, median and other percentiles of survival times were also generated. 
 
-Five-fold cross-validation was used for model building. The full data was split into five training and five test data sets. Each training data set contained 6,208 questions, and each test data set contained 1,552 questions. To identify variables potentially associated with answer time, univariate analysis was performed on one of the training data sets. Each variable of interest was entered into a Cox regression model as the single predictor. Variables with likelihood ratio test p-values of less than 0.01 were entered into the final model. 
+Five-fold cross-validation was used for model building. The full data was split into five training and five test sets. Each training set contained 6,208 questions, and each test set contained 1,552 questions. Univariate analysis, performed on one of the training sets, was used to identify variables to include in the full Cox proportional hazards model. Predictors were entered into separate Cox models and the strength of association between those predictors and answer times were assessed. Those with partial likelihood ratio test p-values of less than 0.01 were included in the full model.
 
-After identifying potentially signficant predictors, the full model's performance was assessed with cross-validation. For each iteration, the model was built on one of the training data sets, and then used to calculate predicted hazard ratios on the corresponding test data. To assess prediction performance, the predicted hazard ratios were entered into a separate Cox regression model as the single predictor with the question's answer times as the survival time. The resulting estimated hazard ratio, R-square statistic, partial likelihood ratio and p-value were assessed as indicators of the model's prefromance. Signficant statistics would indicate a signficant association between survival time and predicted hazard. Somers' Dxy and Concordance statistics measured the model's predictive discrimination. Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter survival time also has the higher predicted hazard. Somers' Dxy is the difference between those concordance and discordant probabilities. The concept behind these metrics came from \cite{Chen}. These metrics were computed for each training and test data set.
-
-
+In each fold of cross-validation, the full model, with variables found to be signficant in univariate analysis, was built on one of the training sets and used to generate predicted hazard ratios on the corresponding test sets. To assess prediction performance, the predicted hazard ratios were entered into separate Cox models as the single quantitative predictor with answer times as the survival time. The resulting estimated hazard ratio, R-square statistic, partial likelihood ratio and p-value were assessed as indicators of the full model's performance (cite). Signficant statistics would indicate high predictive accuracy. Concordance statistics and Somers' Dxy were also assessed to measure the model's predictive discrimination (cite). Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter survival time also has the higher predicted hazard. Concordance statistics close to 1 indicate high discriminative ability, while statistics close to 0.5 indicate discordance, or random predictions. Somers' Dxy is the difference between the model's concordance statistic and discordance (0.5) (cite). These metrics were computed for each training and test set. The average of metrics across test sets was evaluated.
 
 To select the final model, the model with the lowest AIC statistic and most consistent performance metrics, in that the values did not change substantially from training to test data sets, was selected.
 
@@ -111,7 +105,6 @@ The metrics for each iteration of cross validation are in table 3. Although not 
 
 The final model selected contained variables defined above as well as the following transformations: 
 \begin{itemize}
-  \item Stratification on the time of day the question was posted. 
   \item Square root of the average frequency of a question's tags. 
   \item Quadratic polynomial on the length of the question's text. 
   \item Restricted cubic spline with 5 knots on the number of characters in the device name.
