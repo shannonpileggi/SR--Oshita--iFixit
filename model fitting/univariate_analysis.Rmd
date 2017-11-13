@@ -10,34 +10,33 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, include = FALSE}
-x <- oshitar::setup()
-library(survival)
-library(stringr)
-library(rebus)
-library(dplyr)
-library(stats)
-library(ggplot2)
+dir <- file.path(getwd(),"data")
+out <- read.csv(file.path(dir, "answers_data.csv"))
+list <- oshitar::variable_setup(out)
+x <- list[[1]]
+
+library(survival); library(stringr); library(rebus)
+library(dplyr); library(stats); library(ggplot2)
 ```
 
 ### Setting up cross validation paths
 
-* cross validation paths stored in splitPlan
-* set seed for reproducible results
-
 ```{r, echo = FALSE}
 set.seed(444)
-splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
-str(splitPlan)
+plan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
 ```
 
-### Analysis on test data 
+### Analysis on training data 
 
-```{r, data and text variables, include = FALSE}
-train1 <- x[splitPlan[[1]]$train, ]
+```{r, include = FALSE}
+train1 <- x[plan[[1]]$train, ]
 
-pvalues <- data.frame(variable = character(), pvalue = numeric())
+pvalues <- data.frame(variable = character(), 
+                      pvalue = numeric())
 
-#function to get summary of cox model + append pvalue of variable from loglik test to data frame
+
+# function to get summary of cox model + append pvalue of variable from loglik test to df
+#===================================================================
 get_pvalue <- function(variable, factor = FALSE) {
   if (factor == FALSE){
     coxmodel <- coxph(Surv(time_until_answer, answered) ~ train1[[variable]], data = train1)
@@ -45,7 +44,8 @@ get_pvalue <- function(variable, factor = FALSE) {
     coxmodel <- coxph(Surv(time_until_answer, answered) ~ as.factor(train1[[variable]]), data = train1)
   }
   summary <- summary(coxmodel)
-  df <- data.frame(variable = variable, pvalue = unname(summary$logtest[[3]]))
+  df <- data.frame(variable = variable, 
+                   pvalue = unname(summary$logtest[[3]]))
   pvalues <- rbind(pvalues, df)
   return(pvalues)
 }
@@ -55,21 +55,13 @@ get_pvalue <- function(variable, factor = FALSE) {
 pvalues <- get_pvalue("category")
 pvalues <- get_pvalue("new_category")
 pvalues <- get_pvalue("n_images")
-
-# new_n_images (recoding to group questions with >= 6 images) 
-train1$new_n_images <- as.character(train1$n_images)
-train1$new_n_images[train1$n_images >= 6] <- ">= 6"
-pvalues <- get_pvalue("new_n_images")
-
 pvalues <- get_pvalue("n_tags", factor = TRUE)
 pvalues <- get_pvalue("new_user")
 pvalues <- get_pvalue("weekday")
-pvalues <- get_pvalue("hour", factor = TRUE)
 pvalues <- get_pvalue("ampm")
 pvalues <- get_pvalue("title_length")
 pvalues <- get_pvalue("text_length")
 pvalues <- get_pvalue("device_length")
-pvalues <- get_pvalue("text_till_punct")
 pvalues <- get_pvalue("text_contain_punct")
 pvalues <- get_pvalue("title_questionmark")
 pvalues <- get_pvalue("title_beginwh")
@@ -90,7 +82,6 @@ pvalues <- get_pvalue("update")
 pvalues <- get_pvalue("newline_ratio")
 pvalues <- get_pvalue("avg_tag_length")
 pvalues <- get_pvalue("avg_tag_score")
-pvalues <- get_pvalue("num_freq_tags")
 pvalues <- get_pvalue("contain_unanswered")
 pvalues <- get_pvalue("contain_answered")
 ```
@@ -109,15 +100,12 @@ get_pvalue_new <- function(variable, fit) {
 }
 
 #===================================================================
-
 # title_length
 spline_title <- coxph(Surv(time_until_answer, answered) ~ pspline(title_length, df = 0, method = "AIC"), data = train1)
 pvalues <- get_pvalue_new("title_length_spline", fit = spline_title)
 
 sqrt_title <- coxph(Surv(time_until_answer, answered) ~ sqrt(title_length), data = train1)
 pvalues <- get_pvalue_new("title_length_sqrt", fit = sqrt_title)
-
-# quadratic/cubic terms 
 
 title2 <- coxph(Surv(time_until_answer, answered) ~ title_length + I(title_length^2), data = train1)
 pvalues <- get_pvalue_new("quad_title", fit = title2)
@@ -126,7 +114,6 @@ title3 <- coxph(Surv(time_until_answer, answered) ~ title_length + I(title_lengt
 pvalues <- get_pvalue_new("cubic_title", fit = title3)
 
 #===================================================================
-
 # text_length
 spline_text <- coxph(Surv(time_until_answer, answered) ~ pspline(text_length, df = 0, method = "AIC"), data = train1)
 pvalues <- get_pvalue_new("text_length_spline", fit = spline_text)
@@ -137,8 +124,6 @@ pvalues <- get_pvalue_new("text_length_sqrt", fit = sqrt_text)
 logtext <- coxph(Surv(time_until_answer, answered) ~ log10(text_length), data = train1)
 pvalues <- get_pvalue_new("text_length_log10", fit = logtext)
 
-# quadratic/cubic terms 
-
 text2 <- coxph(Surv(time_until_answer, answered) ~ text_length + I(text_length^2), data = train1)
 pvalues <- get_pvalue_new("quad_text", fit = text2)
 
@@ -146,15 +131,12 @@ text3 <- coxph(Surv(time_until_answer, answered) ~ text_length + I(text_length^2
 pvalues <- get_pvalue_new("cubic_text", fit = text3)
 
 #===================================================================
-
 # device_length
 spline_dev <- coxph(Surv(time_until_answer, answered) ~ pspline(device_length, df = 0, method = "AIC"), data = train1)
 pvalues <- get_pvalue_new("device_length_spline", fit = spline_dev)
 
 sqrt_dev <- coxph(Surv(time_until_answer, answered) ~ sqrt(device_length), data = train1)
 pvalues <- get_pvalue_new("device_length_sqrt", fit = sqrt_dev)
-
-# quadratic/cubic terms 
 
 dev2 <- coxph(Surv(time_until_answer, answered) ~ device_length + I(device_length^2), data = train1)
 pvalues <- get_pvalue_new("quad_dev", fit = dev2)
@@ -163,15 +145,12 @@ dev3 <- coxph(Surv(time_until_answer, answered) ~ device_length + I(device_lengt
 pvalues <- get_pvalue_new("cubic_dev", fit = dev3)
 
 #===================================================================
-
 # newline_ratio
 fit7 <- coxph(Surv(time_until_answer, answered) ~ pspline(newline_ratio, df = 0, method = "AIC"), data = train1)
 pvalues <- get_pvalue_new("newline_ratio_spline", fit = fit7)
 
 fit8 <- coxph(Surv(time_until_answer, answered) ~ sqrt(newline_ratio), data = train1)
 pvalues <- get_pvalue_new("newline_ratio_sqrt", fit = fit8)
-
-# quadratic/cubic terms
 
 newline2 <- coxph(Surv(time_until_answer, answered) ~ newline_ratio + I(newline_ratio^2), data = train1)
 pvalues <- get_pvalue_new("quad_newline", fit = newline2)
@@ -180,15 +159,12 @@ newline3 <- coxph(Surv(time_until_answer, answered) ~ newline_ratio + I(newline_
 pvalues <- get_pvalue_new("cubic_newline", fit = newline3)
 
 #===================================================================
-
 # avg_tag_length
 fit9 <- coxph(Surv(time_until_answer, answered) ~ pspline(avg_tag_length, df = 0, method = "AIC"), data = train1)
 pvalues <- get_pvalue_new("avg_tag_length_spline", fit = fit9)
 
 fit10 <- coxph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_length), data = train1)
 pvalues <- get_pvalue_new("avg_tag_length_sqrt", fit = fit10)
-
-# quadratic/cubic terms 
 
 tag2 <- coxph(Surv(time_until_answer, answered) ~ avg_tag_length + I(avg_tag_length^2), data = train1)
 pvalues <- get_pvalue_new("quad_tag", fit = tag2)
@@ -197,15 +173,12 @@ tag3 <- coxph(Surv(time_until_answer, answered) ~ avg_tag_length + I(avg_tag_len
 pvalues <- get_pvalue_new("cubic_tag", fit = tag3)
 
 #===================================================================
-
 # avg_tag_score
 fit11 <- coxph(Surv(time_until_answer, answered) ~ pspline(avg_tag_score, df = 0, method = "AIC"), data = train1)
 pvalues <- get_pvalue_new("avg_tag_score_spline", fit = fit11)
 
 fit12 <- coxph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_score), data = train1)
 pvalues <- get_pvalue_new("avg_tag_score_sqrt", fit = fit12)
-
-# quadratic/cubic terms 
 
 score2 <- coxph(Surv(time_until_answer, answered) ~ avg_tag_score + I(avg_tag_score^2), data = train1)
 pvalues <- get_pvalue_new("quad_score", fit = score2)
@@ -218,6 +191,57 @@ pvalues <- get_pvalue_new("cubic_score", fit = score3)
 
 ```{r, echo = FALSE}
 options(scipen=999)
-(pvalues <- pvalues %>%
-  arrange(pvalue))
+pvalues <- pvalues %>% arrange(pvalue)
 ```
+
+
+### Include in the article
+
+```{r}
+train1 <- x[plan[[1]]$train, ]
+
+pvalues <- data.frame(variable = character(), 
+                      pvalue = numeric())
+
+# function to get summary of cox model + append pvalue of variable from loglik test to df
+# ---------------------------------------------------------------------------------------
+get_pvalue <- function(variable, factor = FALSE) {
+  if (factor == FALSE){
+    coxmodel <- coxph(Surv(time_until_answer, answered) ~ train1[[variable]], data = train1)
+  } else {
+    coxmodel <- coxph(Surv(time_until_answer, answered) ~ as.factor(train1[[variable]]), data = train1)
+  }
+  summary <- summary(coxmodel)
+  df <- data.frame(variable = variable, 
+                   pvalue = unname(summary$logtest[[3]]))
+  pvalues <- rbind(pvalues, df)
+  return(pvalues)
+}
+# ---------------------------------------------------------------------------------------
+
+pvalues <- get_pvalue("new_category")
+pvalues <- get_pvalue("new_user")
+pvalues <- get_pvalue("title_questionmark")
+pvalues <- get_pvalue("text_contain_punct")
+pvalues <- get_pvalue("weekday")
+pvalues <- get_pvalue("title_length")
+pvalues <- get_pvalue("text_length")
+pvalues <- get_pvalue("device_length")
+pvalues <- get_pvalue("text_all_lower")
+pvalues <- get_pvalue("prior_effort")
+pvalues <- get_pvalue("update")
+pvalues <- get_pvalue("newline_ratio")
+pvalues <- get_pvalue("avg_tag_length")
+pvalues <- get_pvalue("avg_tag_score")
+pvalues <- get_pvalue("contain_unanswered")
+pvalues <- get_pvalue("contain_answered")
+
+options(scipen=999)
+pvalues <- pvalues %>% arrange(pvalue)
+
+rms::cph(Surv(time_until_answer, answered) ~ avg_tag_score, data = x)
+rms::cph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_score), data = x)
+```
+
+
+
