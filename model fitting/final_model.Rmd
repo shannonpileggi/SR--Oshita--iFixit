@@ -10,11 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
-x <- oshitar::variable_setup(out)
+list <- oshitar::variable_setup(out)
+x <- list[[1]]
+x1 <- as.data.frame(x)
 
 library(survival); library(dplyr); library(rms)
 ```
 
+##### Cross validation 
 
 ```{r, cross validation plan, echo = FALSE}
 # cross validation plan with k = 5
@@ -28,91 +31,9 @@ train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
 train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
 ```
 
-#### Variables: 
-
-* new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strata(ampm) + sqrt(avg_tag_score) + poly(text_length, degree = 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4)
-* device_length has 5 knots since hypothesized that it's a better predictor, others only have 4 (reccomended in Regression Modelling Strategies text) 
-
-```{r, echo = FALSE}
-# build model on train1 (df set to 5 for all splines at first, but setting tag and newline to 4 minimized AIC and performed best)
-
-trainmodel <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + pol(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), data = train1, x = TRUE, y = TRUE)
-AIC(trainmodel, k = 2) # 54421.88
-trainmodel
-```
-
-##### Assessing residuals/PH assumption
-
-```{r, echo = FALSE}
-#----Martingale residuals----------------------------------------------
-train1$mart <- residuals(trainmodel, type = "martingale")
-
-ggplot(train1, aes(x = sqrt(avg_tag_score), y = mart)) + 
-  geom_point() + 
-  geom_smooth(method = "loess") + 
-  ggtitle(paste("Martingale Residuals for sqrt(average_tag_score)")) + 
-  scale_x_continuous("Average Tag Score (square root)") 
-# functional form seems adequate 
-
-#----Deviance residuals------------------------------------------------
-train1$deviance <- residuals(trainmodel, type = "deviance")
-ggplot(train1, aes(x = 1:nrow(train1), y = deviance)) + 
-  geom_point() + 
-  scale_x_continuous("Question index") + 
-  scale_y_continuous(breaks = seq(-4, 4, by = 0.5)) + 
-  ggtitle("Deviance Residuals")
-# identify questions with residuals > |2.5| (questions poorly predicted by the model)
-
-# examining all questions with > |2.5|
-outliers <- train1 %>%
-  dplyr::filter(abs(deviance) > 2.5)
-# 117 questions in training data set have deviance residuals > 2.5 
-# all were answered with time_until_answer < 1 hr (except for 2 which have time_until_answer > 1050 hours)
-
-#----Schoenfeld residuals----------------------------------------------
-schoen <- as.data.frame(residuals(trainmodel, type = "schoenfeld"))
-schoen$comp_times <- sort(train1[train1$answered != 0,]$time_until_answer)
-
-# function to plot schoenfeld residuals for each predictor
-plot_schoen <- function(var) {
-  ggplot(schoen, aes(x = comp_times, y = schoen[[var]])) + 
-    geom_point() + 
-    geom_smooth() + 
-    ggtitle(paste("Schoenfeld Residuals for", var)) + 
-    scale_y_continuous("Residuals")
-}
-purrr::map(names(schoen)[-ncol(schoen)], plot_schoen)
-
-# formal test of PH assumption 
-options(scipen=999)
-ph_test <- data.frame(predictors = rownames(cox.zph(trainmodel)$table), cox.zph(trainmodel)$table) 
-rownames(ph_test) = NULL
-ph_test <- ph_test %>% arrange(p) 
-# first term of device_length, Apple Product, Camera, Game Console violate PH (stratifying on new_category decreases predictive ability) 
-
-#----Score residuals--------------------------------------------------
-# check for influential observations
-score <- as.data.frame(residuals(trainmodel, type = "score"))
-
-# function to plot score residuals
-plot_score <- function(column) {
-  ggplot(score, aes(x = 1:nrow(score), y = score[[column]])) + 
-    geom_point() + 
-    geom_smooth() + 
-    ggtitle(paste("Score residuals for", column)) + 
-    scale_y_continuous("Score Residuals") + 
-    scale_x_continuous("Question index")
-}
-
-purrr::map(names(score), ~plot_score(.))
-# tried removing influential questions and doing cross validation: models fit on data with influential questions removed didn't perform as well on the test data compared to models fit on full data
-
-```
-
-##### Cross validation 
 
 ```{r, functions for cv, include = FALSE}
-# function to perform cross validation, vars should be string: "new_category + new_user..."
+# function for cross validation, vars should be string: "new_category + new_user..."
 crossval <- function(vars, train, test) {
   formula <- paste("Surv(time_until_answer, answered) ~ ", vars, sep = "")
   model <- rms::cph(as.formula(formula), data = train)
@@ -165,15 +86,24 @@ get_avgdiff <- function(list) {
 ```{r, echo = FALSE}
 vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + title_beginwh + text_contain_punct + text_all_lower + update + greeting + gratitude + prior_effort + weekday + strat(ampm) + sqrt(avg_tag_score) + pol(text_length, 2) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4)"
 
+vars3 <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + rcs(avg_tag_score, 5) + rcs(text_length, 4) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4)"
+
+vars1 <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + avg_tag_score + text_length + device_length + avg_tag_length + newline_ratio"
+
 trains <- list(train1, train2, train3, train4, train5)
 trains <- purrr::map(trains, ~as.data.frame(.))
 tests <- list(test1, test2, test3, test4, test5)
 tests <- purrr::map(tests, ~as.data.frame(.))
 
-(cv_results <- purrr::map2(trains, tests, ~crossval(vars, .x, .y)))
+(cv_results <- purrr::map2(trains, tests, ~crossval(vars1, .x, .y)))
+avg_1 <- get_avgmetrics(cv_results)
+avg_1
 
-get_avgmetrics(cv_results)
-get_avgdiff(cv_results) # metrics don't change that much between fitting model on training and test data sets
+(cv_results1 <- purrr::map2(trains, tests, ~crossval(vars1, .x, .y)))
+avg_2 <- get_avgmetrics(cv_results1)
+avg_2
+
+avg_1; avg_2
 ```
 
 ##### Validation with rms::validate for Somers’ Dxy rank correlation between predicted log hazard and observed survival time + slope shrinkage
@@ -194,9 +124,9 @@ get_avgdiff(cv_results) # metrics don't change that much between fitting model o
 * slope shrinkage = 0.0163, indicates over-fitting not present
 
 ```{r, echo = FALSE}
-dd <- datadist(x)
+dd <- datadist(x1)
 options(datadist = "dd")
-final <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
+final1 <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
                                contain_unanswered + contain_answered + title_questionmark + 
                                title_beginwh + text_contain_punct + text_all_lower + update + 
                                greeting + gratitude + prior_effort + weekday + strat(ampm) + 
@@ -204,11 +134,19 @@ final <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user +
                                rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), 
                              data = x, x = TRUE, 
                              y = TRUE, surv = TRUE)
-final
-  AIC(final, k = 2) # 69945.32
+final1
+AIC(final1, k = 2) # 69945.32
+(val <- rms::validate(final1, method = "crossvalidation", bw = F, dxy = TRUE, u = 0.5))
 
-validation <- rms::validate(final, method = "crossvalidation", B = 100, bw = F, dxy = TRUE, u = 0.5)
-validation
+final <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
+                  contain_unanswered + contain_answered + title_questionmark + 
+                  text_contain_punct + text_all_lower + update + prior_effort + weekday + 
+                  rcs(avg_tag_score, 5) + rcs(text_length, 4) + rcs(device_length, 5) + 
+                  rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), 
+                  data = x1, x = TRUE, 
+                  y = TRUE, surv = TRUE)
+final
+AIC(final, k = 2)
 ```
 
 
@@ -351,4 +289,70 @@ rms::survplot(final, new_category, time.inc = 100, col = 1:length(levels(x$new_c
 rms::survplot(final, new_user = 0, conf.int = .95, time.inc = 100) # can change variable it plots 
 ```
 
+##### Assessing residuals/PH assumption
 
+```{r, echo = FALSE}
+#----Martingale residuals----------------------------------------------
+train1$mart <- residuals(trainmodel, type = "martingale")
+
+ggplot(train1, aes(x = sqrt(avg_tag_score), y = mart)) + 
+  geom_point() + 
+  geom_smooth(method = "loess") + 
+  ggtitle(paste("Martingale Residuals for sqrt(average_tag_score)")) + 
+  scale_x_continuous("Average Tag Score (square root)") 
+# functional form seems adequate 
+
+#----Deviance residuals------------------------------------------------
+train1$deviance <- residuals(trainmodel, type = "deviance")
+ggplot(train1, aes(x = 1:nrow(train1), y = deviance)) + 
+  geom_point() + 
+  scale_x_continuous("Question index") + 
+  scale_y_continuous(breaks = seq(-4, 4, by = 0.5)) + 
+  ggtitle("Deviance Residuals")
+# identify questions with residuals > |2.5| (questions poorly predicted by the model)
+
+# examining all questions with > |2.5|
+outliers <- train1 %>%
+  dplyr::filter(abs(deviance) > 2.5)
+# 117 questions in training data set have deviance residuals > 2.5 
+# all were answered with time_until_answer < 1 hr (except for 2 which have time_until_answer > 1050 hours)
+
+#----Schoenfeld residuals----------------------------------------------
+schoen <- as.data.frame(residuals(trainmodel, type = "schoenfeld"))
+schoen$comp_times <- sort(train1[train1$answered != 0,]$time_until_answer)
+
+# function to plot schoenfeld residuals for each predictor
+plot_schoen <- function(var) {
+  ggplot(schoen, aes(x = comp_times, y = schoen[[var]])) + 
+    geom_point() + 
+    geom_smooth() + 
+    ggtitle(paste("Schoenfeld Residuals for", var)) + 
+    scale_y_continuous("Residuals")
+}
+purrr::map(names(schoen)[-ncol(schoen)], plot_schoen)
+
+# formal test of PH assumption 
+options(scipen=999)
+ph_test <- data.frame(predictors = rownames(cox.zph(finalz)$table), cox.zph(finalz)$table) 
+rownames(ph_test) = NULL
+ph_test <- ph_test %>% arrange(p) 
+# first term of device_length, Apple Product, Camera, Game Console violate PH (stratifying on new_category decreases predictive ability) 
+
+#----Score residuals--------------------------------------------------
+# check for influential observations
+score <- as.data.frame(residuals(trainmodel, type = "score"))
+
+# function to plot score residuals
+plot_score <- function(column) {
+  ggplot(score, aes(x = 1:nrow(score), y = score[[column]])) + 
+    geom_point() + 
+    geom_smooth() + 
+    ggtitle(paste("Score residuals for", column)) + 
+    scale_y_continuous("Score Residuals") + 
+    scale_x_continuous("Question index")
+}
+
+purrr::map(names(score), ~plot_score(.))
+# tried removing influential questions and doing cross validation: models fit on data with influential questions removed didn't perform as well on the test data compared to models fit on full data
+
+```
