@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  13 NOV 2017 12:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  15 NOV 2017 07:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -97,7 +97,7 @@ e 91.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.128 ...32 words in uanswered questions. Contain_
+l.131 ...32 words in uanswered questions. Contain_
                                                   answered and contain_unasn...
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -105,13 +105,13 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.129 
+l.132 
       
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 
-Overfull \hbox (645.51532pt too wide) in paragraph at lines 128--129
+Overfull \hbox (645.51532pt too wide) in paragraph at lines 131--132
 \OT1/cmr/m/n/12 Contain$[]\OML/cmm/m/it/12 nsweredandcontain[]nasnweredarelogic
 alvariables; indicatingtrueifaquestion[]stitlecontainedatleastoneofthewordsinth
 efrequentlyusedwordslistforansweredandunansweredquestions; respectively:$ 
@@ -121,7 +121,7 @@ efrequentlyusedwordslistforansweredandunansweredquestions; respectively:$
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.138 ...sociated with faster answer times. Title_
+l.141 ...sociated with faster answer times. Title_
                                                   questionmark is a logical ...
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -133,18 +133,18 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.138 ...off of the findings from \citep{Bhat2014}
+l.141 ...off of the findings from \citep{Bhat2014}
                                                   .
 Please use the math alphabet \mathbf instead of the \bfseries command. 
 
 
 Package natbib Warning: Citation `Bhat2014' on page 8 undefined on input line 1
-38.
+41.
 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.139 
+l.142 
       
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -156,7 +156,7 @@ Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no  in font cmr12!
 
-Overfull \hbox (1065.13144pt too wide) in paragraph at lines 138--139
+Overfull \hbox (1065.13144pt too wide) in paragraph at lines 141--142
 \OT1/cmr/m/n/12 as-so-ci-ated with faster an-swer times. Title$[]\OML/cmm/m/it/
 12 uestionmarkisalogicalvariableindicatingtrueifthequestion[]stitleendswithaque
 stionmark:Title[]eginwhisalogicalvariableindicatingtrueifthetitlebeginswithawhw
@@ -171,11 +171,11 @@ Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
 
 Package natbib Warning: Citation `Bhat2014' on page 8 undefined on input line 1
-47.
+50.
 
 
 Package natbib Warning: Citation `Bhat2014' on page 8 undefined on input line 1
-55.
+58.
 
 [8]
 Missing character: There is no â in font cmr12!
@@ -219,7 +219,7 @@ ts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 /cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmsy8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 ti12.pfb>
-Output written on roughdraft.pdf (9 pages, 123741 bytes).
+Output written on roughdraft.pdf (9 pages, 123467 bytes).
 PDF statistics:
  70 PDF objects out of 1000 (max. 8388607)
  49 compressed objects within 1 object stream
