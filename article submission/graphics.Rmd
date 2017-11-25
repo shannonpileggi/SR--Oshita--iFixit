@@ -14,18 +14,21 @@ dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 list <- oshitar::variable_setup(out)
 x <- list[[1]]
+library(rms); library(survival); library(ggplot2)
 ```
 
 ```{r}
 model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
                    contain_unanswered + contain_answered + title_questionmark + 
                    text_contain_punct + text_all_lower + update + prior_effort + weekday +
-                   rcs(avg_tag_score, 5) + rcs(text_length, 4) + rcs(device_length, 5) + 
-                   rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), 
+                   sqrt(avg_tag_score) + rcs(sqrt(avg_tag_length), 3) + rcs(log10(text_length), 3) +
+                   rcs(sqrt(device_length), 4) + rcs(sqrt(newline_ratio), 3), 
                    data = x, 
                    x = TRUE, y = TRUE, 
                    surv = TRUE)
+model
 ```
+
 
 ### Distribution of answer times (Figure 1) 
 
@@ -82,6 +85,76 @@ quantilesdf
 
 ### Univariate analysis results (Table 2) see univariate_analysis file
 
+```{r}
+set.seed(444)
+splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
+
+train1 <- x[splitPlan[[1]]$train, ]; test1 <- x[splitPlan[[1]]$app, ]
+train2 <- x[splitPlan[[2]]$train, ]; test2 <- x[splitPlan[[2]]$app, ]
+train3 <- x[splitPlan[[3]]$train, ]; test3 <- x[splitPlan[[3]]$app, ]
+train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
+train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
+
+pvalues <- data.frame(variable = character(), 
+                      pvalue = numeric())
+
+# function to get summary of cox model + append pvalue of variable from loglik test to df
+# ---------------------------------------------------------------------------------------
+get_pvalue <- function(variable, factor = FALSE) {
+  if (factor == FALSE){
+    coxmodel <- coxph(Surv(time_until_answer, answered) ~ train1[[variable]], data = train1)
+  } else {
+    coxmodel <- coxph(Surv(time_until_answer, answered) ~ as.factor(train1[[variable]]), data = train1)
+  }
+  summary <- summary(coxmodel)
+  df <- data.frame(variable = variable, 
+                   pvalue = unname(summary$logtest[[3]]))
+  pvalues <- rbind(pvalues, df)
+  return(pvalues)
+}
+# ---------------------------------------------------------------------------------------
+
+pvalues <- get_pvalue("new_category")
+pvalues <- get_pvalue("new_user")
+pvalues <- get_pvalue("title_questionmark")
+pvalues <- get_pvalue("text_contain_punct")
+pvalues <- get_pvalue("weekday")
+pvalues <- get_pvalue("text_length")
+pvalues <- get_pvalue("device_length")
+train1$logdevice <- log10(train1$device_length)
+train1$sqrtdevice <- sqrt(train1$device_length)
+pvalues <- get_pvalue("sqrtdevice")
+pvalues <- get_pvalue("text_all_lower")
+pvalues <- get_pvalue("prior_effort")
+pvalues <- get_pvalue("update")
+pvalues <- get_pvalue("newline_ratio")
+train1$sqrtnewline <- sqrt(train1$newline_ratio)
+pvalues <- get_pvalue("sqrtnewline")
+train1$sqrt <- sqrt(train1$avg_tag_length)
+pvalues <- get_pvalue("sqrt")
+pvalues <- get_pvalue("avg_tag_score")
+pvalues <- get_pvalue("contain_unanswered")
+pvalues <- get_pvalue("contain_answered")
+train1$logtext <- log10(train1$text_length)
+pvalues <- get_pvalue("logtext")
+options(scipen=999)
+pvalues <- pvalues %>% arrange(pvalue)
+pvalues
+
+rms::cph(Surv(time_until_answer, answered) ~ avg_tag_score, data = x)
+rms::cph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_score), data = x)
+rms::cph(Surv(time_until_answer, answered) ~ avg_tag_length, data = train1)
+
+rms::cph(Surv(time_until_answer, answered) ~ sqrt(newline_ratio), data = train1)
+
+ggplot(train1, aes(x = logtext)) + 
+  geom_histogram()
+ggplot(train1, aes(x = text_length)) + geom_histogram()
+ggplot(train1, aes(x = log10(device_length))) + geom_histogram()
+ggplot(train1, aes(x = sqrt(newline_ratio))) + geom_histogram()
+```
+
+
 ### Average CV metrics (Table 3 + 4) 
 ```{r}
 # function for cross validation
@@ -124,14 +197,9 @@ get_avgmetrics <- function(list) {
   return(avg)
 }
 
-trains <- list(train1, train2, train3, train4, train5)
-trains <- purrr::map(trains, ~as.data.frame(.))
-tests <- list(test1, test2, test3, test4, test5)
-tests <- purrr::map(tests, ~as.data.frame(.))
-
 # ------------------------------------------
 # without splines
-vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + avg_tag_score + text_length + device_length + avg_tag_length + newline_ratio"
+vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + sqrt(avg_tag_score) + text_length + device_length + sqrt(avg_tag_length) + newline_ratio"
 
 cv_results <- purrr::map2(trains, tests, ~crossval(vars, .x, .y))
 avg_results <- get_avgmetrics(cv_results)
@@ -139,7 +207,7 @@ avg_results
 
 # ------------------------------------------
 # with splines
-vars1 <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + sqrt(avg_tag_score) + rcs(text_length, 4) + rcs(device_length, 5) + rcs(avg_tag_length, 4) + rcs(newline_ratio, 4)"
+vars1 <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + sqrt(avg_tag_score) + rcs(log10(text_length), 3) + rcs(sqrt(avg_tag_length), 3) + rcs(sqrt(device_length), 4) + rcs(sqrt(newline_ratio), 3)"
 
 cv_results1 <- purrr::map2(trains, tests, ~crossval(vars1, .x, .y))
 avg_results1 <- get_avgmetrics(cv_results1)
@@ -147,19 +215,14 @@ avg_results1
 ```
 
 
-# residuals
+```{r}
+avg_results1
+```
+
+### residuals
 
 ```{r}
-final <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
-                  contain_unanswered + contain_answered + title_questionmark + 
-                  text_contain_punct + text_all_lower + update + prior_effort + weekday + 
-                  sqrt(avg_tag_score) + rcs(text_length, 4) + rcs(device_length, 5) + 
-                  rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), 
-                  data = x, x = TRUE, 
-                  y = TRUE, surv = TRUE)
-final
-
-x$mart <- residuals(final, type = "martingale")
+x$mart <- residuals(model, type = "martingale")
 
 ggplot(x, aes(x = avg_tag_score, y = mart)) + 
   geom_point() + 
@@ -174,13 +237,15 @@ plotm <- function(var) {
     ggtitle(paste("Martingale Residuals for", var)) + 
     scale_x_continuous(var)
 }
-plotm("avg_tag_score")
+
+x$sqrt_length <- sqrt(x$avg_tag_length)
+x$sqrt_score <- sqrt(x$avg_tag_score)
+
+plotm("sqrt_score")
 plotm("text_length")
 plotm("device_length")
-plotm("avg_tag_length")
+plotm("sqrt_length")
 plotm("newline_ratio")
-
-
 ```
 
 # final model on full data (table 5)
@@ -188,20 +253,20 @@ plotm("newline_ratio")
 ```{r}
 # model statistics + parameters
 # figure out how to get p-values 
-parameterdf <- data.frame(variable = names(final$coefficients),
-                          coefficients = round(unname(final$coefficients), 3))
+parameterdf <- data.frame(variable = names(model$coefficients),
+                          coefficients = round(unname(model$coefficients), 3))
 parameterdf
 
-modelstats <- data.frame(statistic = names(final$stats), 
-                         value = round(unname(final$stats), 3))
+modelstats <- data.frame(statistic = names(model$stats), 
+                         value = round(unname(model$stats), 3))
 modelstats
 
 # ------------------------------------------
 # cross-validation metrics 
-x$predictions <- exp(predict(final, type = "lp"))
+x$predictions <- exp(predict(model, type = "lp"))
 
 metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = x)
-AIC(metric, k = 2) # 83125.55
+AIC(metric, k = 2) # 83124.21
 
 final_metrics <- data.frame(HR = exp(metric$coefficients), 
                               LR = round(metric$stats[3],2), 
@@ -211,5 +276,16 @@ final_metrics <- data.frame(HR = exp(metric$coefficients),
                               Dxy = round(metric$stats[9],2), 
                               Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = x)$concordance)
 final_metrics 
+
+# ------------------------------------------
+ph <- cox.zph(model)
+ph_test <- data.frame(predictors = rownames(ph$table), ph$table)
+rownames(ph_test) = NULL
+ph_test <- ph_test %>% arrange(p) 
+ph_test
+```
+
+```{r}
+final_metrics
 ```
 
