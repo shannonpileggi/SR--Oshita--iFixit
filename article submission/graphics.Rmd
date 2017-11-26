@@ -14,42 +14,24 @@ dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 list <- oshitar::variable_setup(out)
 x <- list[[1]]
-library(rms); library(survival); library(ggplot2)
+library(rms); library(survival); library(ggplot2); library(dplyr)
 ```
-
-```{r}
-model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
-                   contain_unanswered + contain_answered + title_questionmark + 
-                   text_contain_punct + text_all_lower + update + prior_effort + weekday +
-                   sqrt(avg_tag_score) + rcs(sqrt(avg_tag_length), 3) + rcs(log10(text_length), 3) +
-                   rcs(sqrt(device_length), 4) + rcs(sqrt(newline_ratio), 3), 
-                   data = x, 
-                   x = TRUE, y = TRUE, 
-                   surv = TRUE)
-model
-```
-
 
 ### Distribution of answer times (Figure 1) 
 
 ```{r}
-x$Answered <- NA
-x$Answered[x$answered == 1] <- "Answered"
-x$Answered[x$answered == 0] <- "Unanswered"
+# x$Answered <- NA
+# x$Answered[x$answered == 1] <- "Answered"
+# x$Answered[x$answered == 0] <- "Unanswered"
 
 ggplot(x, aes(x = time_until_answer, fill = Answered)) +
   geom_histogram(bins = 15, alpha = 0.5, position = "identity") + 
-  theme(axis.text = element_text(size = 13),
-        axis.title = element_text(size = 15),
-        plot.title = element_text(size = 17),
-        legend.position = c(0.8, 0.8),
-        legend.text = element_text(size = 13)) + 
   guides(fill = guide_legend(title = NULL)) + 
   scale_x_continuous("Time (hrs)") + 
-  scale_y_continuous("Number of Questions") + 
-  ggtitle("Distribution of Answer Times")
-```
+  scale_y_continuous("Number of Questions")
 
+ggsave("times_dist.pdf", width = 8, height = 5)
+```
 
 ### KM Curve (Figure 2) 
 
@@ -69,18 +51,34 @@ ggsurvplot(KM, data = x,
            ylim = c(0, 1), break.y.by = 0.1,
            surv.plot.height = 1, ggtheme = theme_bw(), 
            tables.height = 0.15, tables.theme = theme_cleantable(), fontsize = 2, na.rm = TRUE,
-           title = "Kaplan-Meier Curve for all Questions",
            legend = "none")
+
+ggsave("kmcurve.pdf", width = 8, height = 5)
 ```
 
 ### Table of percentiles (Table 1)
 
 ```{r}
-q <- quantile(KM, c(0.25, 0.50, 0.55, 0.58, 0.60, 0.64)) # 64% is largest available survival probability
-quantiles <- q$quantile
-quantilesdf <- data.frame(Percent = names(quantiles), Time = round(quantiles, 2))
-colnames(quantilesdf) <- c("Percent Answered", "Time (Hours)")
-quantilesdf
+# 64% is largest available survival probability
+quantiles <- quantile(KM, c(0.25, 0.50, 0.55, 0.58, 0.60, 0.64))$quantile 
+quantilesdf <- data.frame(Percent = names(quantiles), 
+                          Time = round(quantiles, 2))
+colnames(quantilesdf) <- c(paste("Percent", "\n", "Answered", sep = ""), "Time (hours)")
+rownames(quantilesdf) <- NULL
+
+xtable::xtable(quantilesdf, label = "table:quantile")
+```
+
+```{r}
+model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
+                   contain_unanswered + contain_answered + title_questionmark + 
+                   text_contain_punct + text_all_lower + update + prior_effort + weekday +
+                   sqrt(avg_tag_score) + rcs(sqrt(avg_tag_length), 3) + rcs(log10(text_length), 3) +
+                   rcs(sqrt(device_length), 4) + rcs(sqrt(newline_ratio), 3), 
+                   data = x, 
+                   x = TRUE, y = TRUE, 
+                   surv = TRUE)
+model
 ```
 
 ### Univariate analysis results (Table 2) see univariate_analysis file
@@ -95,67 +93,100 @@ train3 <- x[splitPlan[[3]]$train, ]; test3 <- x[splitPlan[[3]]$app, ]
 train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
 train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
 
-pvalues <- data.frame(variable = character(), 
-                      pvalue = numeric())
-
-# function to get summary of cox model + append pvalue of variable from loglik test to df
 # ---------------------------------------------------------------------------------------
-get_pvalue <- function(variable, factor = FALSE) {
-  if (factor == FALSE){
-    coxmodel <- coxph(Surv(time_until_answer, answered) ~ train1[[variable]], data = train1)
-  } else {
-    coxmodel <- coxph(Surv(time_until_answer, answered) ~ as.factor(train1[[variable]]), data = train1)
-  }
-  summary <- summary(coxmodel)
-  df <- data.frame(variable = variable, 
-                   pvalue = unname(summary$logtest[[3]]))
-  pvalues <- rbind(pvalues, df)
-  return(pvalues)
+get_pvalue <- function(var) { 
+  formula <- paste("Surv(time_until_answer, answered) ~ ", var, sep = "")
+  model <- cph(stats::as.formula(formula), data = train1)
+  df <- data.frame(variable = var, 
+                   pvalue = unname(model$stats[5]))
+  return(df)
 }
 # ---------------------------------------------------------------------------------------
+# categorical predictors 
+categorical <- list("new_category", "new_user", "title_questionmark", 
+                    "text_contain_punct", "weekday", "text_all_lower", 
+                    "prior_effort", "update", "contain_unanswered", 
+                    "contain_answered")
+c_pvalue <- purrr::map_dfr(categorical, ~get_pvalue(.))
 
-pvalues <- get_pvalue("new_category")
-pvalues <- get_pvalue("new_user")
-pvalues <- get_pvalue("title_questionmark")
-pvalues <- get_pvalue("text_contain_punct")
-pvalues <- get_pvalue("weekday")
-pvalues <- get_pvalue("text_length")
-pvalues <- get_pvalue("device_length")
-train1$logdevice <- log10(train1$device_length)
-train1$sqrtdevice <- sqrt(train1$device_length)
-pvalues <- get_pvalue("sqrtdevice")
-pvalues <- get_pvalue("text_all_lower")
-pvalues <- get_pvalue("prior_effort")
-pvalues <- get_pvalue("update")
-pvalues <- get_pvalue("newline_ratio")
-train1$sqrtnewline <- sqrt(train1$newline_ratio)
-pvalues <- get_pvalue("sqrtnewline")
-train1$sqrt <- sqrt(train1$avg_tag_length)
-pvalues <- get_pvalue("sqrt")
-pvalues <- get_pvalue("avg_tag_score")
-pvalues <- get_pvalue("contain_unanswered")
-pvalues <- get_pvalue("contain_answered")
-train1$logtext <- log10(train1$text_length)
-pvalues <- get_pvalue("logtext")
+xtable::xtable(c_pvalue, 
+               caption = "Univariate analysis results for categorical predictors, 
+                          ordered by increasing p-values", 
+               label = "table:cresults")
+
+# ---------------------------------------------------------------------------------------
+# quantitative predictors + transformations 
+text_length <- list("text_length", "sqrt(text_length)", "log10(text_length)")
+txt_pvalue <- purrr::map_dfr(text_length, ~get_pvalue(.))
+
+dev_length <- list("device_length", "sqrt(device_length)") # log10 does not work 
+dev_pvalue <- purrr::map_dfr(dev_length, ~get_pvalue(.))
+
+newline <- list("newline_ratio", "sqrt(newline_ratio)") #log10 doens't work
+newline_pvalue <- purrr::map_dfr(newline, ~get_pvalue(.))
+
+tag_length <- list("avg_tag_length", "sqrt(avg_tag_length)")
+taglength_pvalue <- purrr::map_dfr(tag_length, ~get_pvalue(.))
+
+tag_score <- list("avg_tag_score", "sqrt(avg_tag_score)")
+tagscore_pvalue <- purrr::map_dfr(tag_score, ~get_pvalue(.))
+
+univ_results <- rbind(txt_pvalue, dev_pvalue, newline_pvalue, taglength_pvalue, tagscore_pvalue)
+
 options(scipen=999)
-pvalues <- pvalues %>% arrange(pvalue)
-pvalues
+univ_results <- univ_results %>% arrange(pvalue)
 
-rms::cph(Surv(time_until_answer, answered) ~ avg_tag_score, data = x)
-rms::cph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_score), data = x)
-rms::cph(Surv(time_until_answer, answered) ~ avg_tag_length, data = train1)
+xtable::xtable(x = univ_results, 
+               caption = "Univariate analysis results", 
+               label = "table:qresults")
 
-rms::cph(Surv(time_until_answer, answered) ~ sqrt(newline_ratio), data = train1)
+# ---------------------------------------------------------------------------------------
+# choosing number of knots for splines
+fit_splines <- function(var) { 
+  none <- paste("Surv(time_until_answer, answered) ~ ", var, sep = "")
+  model <- cph(stats::as.formula(none), data = train1)
+  df <- data.frame(variable = "none", 
+                   pvalue = unname(model$stats[5]), 
+                   AIC = AIC(model, k = 2))
+  
+  f5 <- paste("Surv(time_until_answer, answered) ~ rcs(", var, ", 5)", sep = "")
+  k5 <- cph(stats::as.formula(f5), data = train1)
+  df5 <- data.frame(variable = "5 knots", 
+                    pvalue = unname(k5$stats[5]), 
+                    AIC = AIC(k5, k = 2))
+  
+  f4 <- paste("Surv(time_until_answer, answered) ~ rcs(", var, ", 4)", sep = "")
+  k4 <- cph(stats::as.formula(f4), data = train1)
+  df4 <- data.frame(variable = "4 knots", 
+                    pvalue = unname(k4$stats[5]), 
+                    AIC = AIC(k4, k = 2))
+  
+  f3 <- paste("Surv(time_until_answer, answered) ~ rcs(", var, ", 3)", sep = "")
+  k3 <- cph(stats::as.formula(f3), data = train1)
+  df3 <- data.frame(variable = "3 knots", 
+                   pvalue = unname(k3$stats[5]), 
+                   AIC = AIC(k3, k = 2))
+  return(rbind(df, df5, df4, df3))
+}
+# ---------------------------------------------------------------------------------------
+txt <- fit_splines("log10(text_length)") # 3 knots or none
+newline <- fit_splines("sqrt(newline_ratio)") # 3 knots
+tagscore <- fit_splines("sqrt(avg_tag_score)") # 5 knots or none 
+device <- fit_splines("sqrt(device_length)") # 5 knots
+taglength <- fit_splines("sqrt(avg_tag_length)") # 4 knots
+txt
+newline
+tagscore
+device
+taglength
 
-ggplot(train1, aes(x = logtext)) + 
-  geom_histogram()
-ggplot(train1, aes(x = text_length)) + geom_histogram()
-ggplot(train1, aes(x = log10(device_length))) + geom_histogram()
-ggplot(train1, aes(x = sqrt(newline_ratio))) + geom_histogram()
+splinedf <- rbind(txt, newline, tagscore, device, taglength)
+
+xtable::xtable(splinedf, caption = "Determining the optimal number of splines for each predictor", label = "table:splines")
 ```
 
-
 ### Average CV metrics (Table 3 + 4) 
+
 ```{r}
 # function for cross validation
 crossval <- function(vars, train, test) {
