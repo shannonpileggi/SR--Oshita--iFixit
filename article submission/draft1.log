@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  26 NOV 2017 10:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  29 NOV 2017 09:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -357,8 +357,8 @@ Package pdftex.def Info: kmcurve.pdf used on input line 97.
 (pdftex.def)             Requested size: 578.15858pt x 361.34912pt.
 
 ! Too many }'s.
-l.102   Of 7760 questions, 4951 (63.8}
-                                      \%) received an answer by the download...
+l.102 ...ll data). Of those questions, 4951 (63.8}
+                                                  \%) received an answer by ...
 You've closed more groups than you opened.
 Such booboos are generally harmless, so keep going.
 
@@ -372,107 +372,43 @@ Overfull \hbox (77.33856pt too wide) in paragraph at lines 162--188
  [][] 
  []
 
-[6] [7] [8] [9]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.267 ...32 words in uanswered questions. Contain_
-                                                  answered and contain_unasn...
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.268 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-Overfull \hbox (623.46092pt too wide) in paragraph at lines 267--268
-\T1/aer/m/n/10 ques-tions. Contain$[]\OML/cmm/m/it/10 nsweredandcontain[]nasnwe
-redarelogicalvariables; indicatingtrueifaquestion[]stitlecontainedatleastoneoft
-hewordsinthefrequentlyusedwordslistforansweredandunansweredquestions; respectiv
-ely:$ 
+[6]
+Overfull \hbox (48.8858pt too wide) in paragraph at lines 254--294
+ [][] 
  []
 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.277 ...sociated with faster answer times. Title_
-                                                  questionmark is a logical ...
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+[7] [8] [9] [10]
 
-! Undefined control sequence.
-l.277 ...ted based off of the findings from \citep
-                                                  {Bhat2014}.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.278 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-Missing character: There is no ‚ in font cmr10!
-Missing character: There is no Ä in font cmr10!
-Missing character: There is no ú in font cmr10!
-Missing character: There is no ‚ in font cmr10!
-Missing character: There is no Ä in font cmr10!
-Missing character: There is no ù in font cmr10!
-
-Overfull \hbox (1028.61002pt too wide) in paragraph at lines 277--278
-\T1/aer/m/n/10 of a ques-tion is as-so-ci-ated with faster an-swer times. Title
-$[]\OML/cmm/m/it/10 uestionmarkisalogicalvariableindicatingtrueifthequestion[]s
-titleendswithaquestionmark:Title[]eginwhisalogicalvariableindicatingtrueiftheti
-tlebeginswithawhword\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 e:g:\OT1/cmr/m/n/10 "\OML
-/cmm/m/it/10 what\OT1/cmr/m/n/10 "\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10 "\OML/cmm/
-m/it/10 when\OT1/cmr/m/n/10 ")\OML/cmm/m/it/10 :Thesevariableswerecreatedbasedo
-ffofthefindingsfrom[]:$ 
- []
-
-[10]
-
-LaTeX Warning: Citation `Bhat2014' on page 11 undefined on input line 286.
+LaTeX Warning: Citation `Bhat2014' on page 11 undefined on input line 387.
 
 
-LaTeX Warning: Citation `Bhat2014' on page 11 undefined on input line 294.
+LaTeX Warning: Citation `Bhat2014' on page 11 undefined on input line 391.
 
-(./draft1.bbl) [11] (./draft1.aux)
+[11] (./draft1.bbl) [12] [13] (./draft1.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 2754 strings out of 492995
- 39820 string characters out of 6132704
- 104872 words of memory out of 5000000
- 6256 multiletter control sequences out of 15000+600000
+ 2757 strings out of 492995
+ 39865 string characters out of 6132704
+ 120897 words of memory out of 5000000
+ 6259 multiletter control sequences out of 15000+600000
  17158 words of font info for 35 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,10n,25p,1827b,230s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,10n,25p,1816b,230s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
 /usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
-local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/loc
-al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local
-/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/
-texlive/2017/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on draft1.pdf (11 pages, 191538 bytes).
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/lo
+cal/texlive/2017/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on draft1.pdf (13 pages, 174176 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
- 65 compressed objects within 1 object stream
+ 92 PDF objects out of 1000 (max. 8388607)
+ 64 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  15 words of extra memory for PDF output out of 10000 (max. 10000000)
 

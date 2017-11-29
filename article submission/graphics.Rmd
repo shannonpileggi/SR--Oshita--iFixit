@@ -73,12 +73,11 @@ xtable::xtable(quantilesdf, label = "table:quantile")
 model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
                    contain_unanswered + contain_answered + title_questionmark + 
                    text_contain_punct + text_all_lower + update + prior_effort + weekday +
-                   sqrt(avg_tag_score) + rcs(sqrt(avg_tag_length), 3) + rcs(log10(text_length), 3) +
-                   rcs(sqrt(device_length), 4) + rcs(sqrt(newline_ratio), 3), 
+                   sqrt(avg_tag_score) + rcs(sqrt(avg_tag_length), 4) + rcs(log10(text_length), 5) +
+                   rcs(sqrt(device_length), 5) + rcs(sqrt(newline_ratio), 3), 
                    data = x, 
                    x = TRUE, y = TRUE, 
                    surv = TRUE)
-model
 ```
 
 ### Univariate analysis results (Table 2) see univariate_analysis file
@@ -92,6 +91,11 @@ train2 <- x[splitPlan[[2]]$train, ]; test2 <- x[splitPlan[[2]]$app, ]
 train3 <- x[splitPlan[[3]]$train, ]; test3 <- x[splitPlan[[3]]$app, ]
 train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
 train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
+
+trains <- list(train1, train2, train3, train4, train5)
+trains <- purrr::map(trains, ~as.data.frame(.))
+tests <- list(test1, test2, test3, test4, test5)
+tests <- purrr::map(tests, ~as.data.frame(.))
 
 # ---------------------------------------------------------------------------------------
 get_pvalue <- function(var) { 
@@ -221,33 +225,73 @@ crossval <- function(vars, train, test) {
   rownames(statistics) <- c("Training Data", "Test Data")
   return(statistics)
 }
-
+# ------------------------------------------
 # function to average performance metrics, takes list of output from crossval
 get_avgmetrics <- function(list) {
   avg <- rbind(train_avg = colMeans(purrr::map_df(1:length(list), ~rbind(list[[.]][1,]))), test_avg = colMeans(purrr::map_df(1:length(list), ~rbind(list[[.]][2,]))))
   return(avg)
 }
-
 # ------------------------------------------
-# without splines
-vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + sqrt(avg_tag_score) + text_length + device_length + sqrt(avg_tag_length) + newline_ratio"
 
-cv_results <- purrr::map2(trains, tests, ~crossval(vars, .x, .y))
-avg_results <- get_avgmetrics(cv_results)
-avg_results
-
-# ------------------------------------------
-# with splines
-vars1 <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + sqrt(avg_tag_score) + rcs(log10(text_length), 3) + rcs(sqrt(avg_tag_length), 3) + rcs(sqrt(device_length), 4) + rcs(sqrt(newline_ratio), 3)"
+vars1 <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + sqrt(avg_tag_score) + rcs(log10(text_length), 5) + rcs(sqrt(avg_tag_length), 4) + rcs(sqrt(device_length), 5) + rcs(sqrt(newline_ratio), 3)"
 
 cv_results1 <- purrr::map2(trains, tests, ~crossval(vars1, .x, .y))
 avg_results1 <- get_avgmetrics(cv_results1)
 avg_results1
+xtable::xtable(avg_results1, caption = "Average performance metrics for training and test sets", label = "table:cv")
 ```
 
+# final model on full data
 
 ```{r}
-avg_results1
+# model statistics + parameters
+# figure out how to get p-values 
+parameterdf <- data.frame(variable = names(model$coefficients),
+                          coefficients = round(unname(model$coefficients), 3))
+parameterdf
+xtable::xtable(parameterdf, caption = "Coefficients for predictors in the final model",
+               label = "table:coefficients")
+# ------------------------------------------
+pvalues <- as.matrix(anova(model))[,3]
+pvaluedf <- data.frame(variable = names(pvalues), 
+                       pvalue = unname(pvalues))
+xtable::xtable(pvaluedf, caption = "P-values for final model fit to the full data",
+               label = "table:pvalues")
+
+  
+modelstats <- data.frame(statistic = names(model$stats), 
+                         value = round(unname(model$stats), 3))
+modelstats
+# ------------------------------------------
+
+# ------------------------------------------
+# cross-validation metrics 
+x$predictions <- exp(predict(model, type = "lp"))
+
+metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = x)
+AIC(metric, k = 2) # 83124.21
+
+final_metrics <- data.frame(HR = exp(metric$coefficients), 
+                              LR = round(metric$stats[3],2), 
+                              pval = round(metric$stats[5],2),
+                              R2 = round(metric$stats[8], 2),
+                              AIC = stats::AIC(metric, k = 2),
+                              Dxy = round(metric$stats[9],2), 
+                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = x)$concordance)
+final_metrics 
+
+# ------------------------------------------
+ph <- cox.zph(model)
+ph_test <- data.frame(predictors = rownames(ph$table), ph$table)
+rownames(ph_test) = NULL
+ph_test <- ph_test %>% arrange(p) 
+ph_test
+```
+
+```{r}
+final_metrics
+pvalues
+anova(model)
 ```
 
 ### residuals
@@ -278,45 +322,3 @@ plotm("device_length")
 plotm("sqrt_length")
 plotm("newline_ratio")
 ```
-
-# final model on full data (table 5)
-
-```{r}
-# model statistics + parameters
-# figure out how to get p-values 
-parameterdf <- data.frame(variable = names(model$coefficients),
-                          coefficients = round(unname(model$coefficients), 3))
-parameterdf
-
-modelstats <- data.frame(statistic = names(model$stats), 
-                         value = round(unname(model$stats), 3))
-modelstats
-
-# ------------------------------------------
-# cross-validation metrics 
-x$predictions <- exp(predict(model, type = "lp"))
-
-metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = x)
-AIC(metric, k = 2) # 83124.21
-
-final_metrics <- data.frame(HR = exp(metric$coefficients), 
-                              LR = round(metric$stats[3],2), 
-                              pval = round(metric$stats[5],2),
-                              R2 = round(metric$stats[8], 2),
-                              AIC = stats::AIC(metric, k = 2),
-                              Dxy = round(metric$stats[9],2), 
-                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = x)$concordance)
-final_metrics 
-
-# ------------------------------------------
-ph <- cox.zph(model)
-ph_test <- data.frame(predictors = rownames(ph$table), ph$table)
-rownames(ph_test) = NULL
-ph_test <- ph_test %>% arrange(p) 
-ph_test
-```
-
-```{r}
-final_metrics
-```
-

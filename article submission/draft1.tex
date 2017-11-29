@@ -69,7 +69,7 @@ Numeric Variables:
 
 
 
-Questions analyzed were restricted to those posted in English (7760 questions, 97\% of the full data). The time until event variable used in survival analysis was defined as the time since posting until a question received its first answer. For questions that did not receive an answer by the download date, time until event values were defined as the time since posting to the time the data was downloaded. These questions were considered right-censored, meaning that exact answer times for these questions are greater than the times in the data (questions can still receive answers after the download date). 
+Questions analyzed were restricted to those posted in English. The time until event variable used in survival analysis was defined as the time since posting until a question received its first answer. For questions that did not receive an answer by the download date, time until event values were defined as the time since posting to the time the data was downloaded. These questions were considered right-censored, meaning that exact answer times for these questions are greater than the times in the data (questions can still receive answers after the download date). 
 
 Survival was defined as the event that a question did not receive an answer beyond a certain time, t. Estimates of survival probability were generated with the Kaplan-Meier method, which adjusts to the presence of right-censored, or unanswered questions (cite). From these estimates, survival curves were constructed to examine the survival experience of questions. Mean, median and other percentiles of survival times were also generated. 
 
@@ -99,7 +99,7 @@ Correlations between scaled Schoenfeld residuals, the differences between observ
   \label{fig:kmcurve}
 \end{figure}
 
-  Of 7760 questions, 4951 (63.8}\%) received an answer by the download date. The shortest answer time was 0.5 hours. The longest was 2159.02 hours (89.96 days). Figure ~\ref{fig:answertimes} shows the distribution of answer times for all questions, grouped by whether or not the question received an answer. 
+  Of 8,025 questions in the full data set, 7760 were in English (97\% of the full data). Of those questions, 4951 (63.8}\%) received an answer by the download date. The shortest answer time was 0.5 hours. The longest was 2159.02 hours (89.96 days). Figure ~\ref{fig:answertimes} shows the distribution of answer times for all questions, grouped by whether or not the question received an answer. 
 
 
 
@@ -181,7 +181,7 @@ Correlations between scaled Schoenfeld residuals, the differences between observ
   \hline
   Whether or not the question's title contains terms considered to be frequently used among unanswered questions & 0.00 \\ 
   \hline
-  Whether or not the question's title contains terms considered to be frequently used among unanswered questions & 0.00 \\ 
+  Whether or not the question's title contains terms considered to be frequently used among answered questions & 0.00 \\ 
    \hline
 \end{tabular}
 \label{table:cresults}
@@ -232,9 +232,115 @@ Results of univariate analyis for transformed and untransformed quantitative pre
 
 Table \ref{table:splines} shows the results of determining the optimal number of knots for each quantitative predictor. Knots marked * were included in the final model for cross-validation. 
 
-Average performance metrics for test and training sets, found in table c, were considerably low. However, metrics did not change substantially from training to test sets, indicating that the model does not overfit. The following restricted cubic splines were applied continuous variables:
+\begin{table}[ht]
+\centering
+\caption{Average performance metrics for training and test sets} 
+\begin{tabular}{rrrrrrrr}
+  \hline
+ & HR & LR & pval & R2 & AIC & Dxy & Concordance \\ 
+  \hline
+  Training Set & 2.00 & 959.49 & 0.00 & 0.14 & 64729.80 & 0.27 & 0.64 \\ 
+  Test Set & 1.96 & 225.44 & 0.00 & 0.14 & 13453.18 & 0.26 & 0.63 \\ 
+   \hline
+\end{tabular}
+\label{table:cv}
+\end{table}
 
-Results of cross-validation for the model including splines are in table d. As refitting the model without insignificant predictors and reperforming cross-validation did not change predictive accuracy, all variables were included. The final model, with all variables described above including splines, was fit to the full data.
+Average performance metrics for test and training sets, found in Table \ref{table:cv}, were considerably low. However, metrics did not change substantially from training to test sets, indicating that the model does not overfit. The final model, with all variables described above including splines, was fit to the full data.
+
+\begin{table}[ht]
+\centering
+\caption{P-values for final model fit to the full data} 
+\begin{tabular}{|p{12cm}|p{1cm}|}
+  \hline
+Predictor & p \\ 
+  \hline \hline
+Device Category & 0.00 \\ 
+  \hline
+Whether or not the user had been a member for less than one day before the question was posted & 0.00 \\ 
+  \hline
+Whether or not the question's title contains terms considered to be frequently used among unanswered questions & 0.00 \\
+  \hline
+Whether or not the question's title contains terms considered to be frequently used among answered questions & 0.22 \\ 
+  \hline
+Whether or not the question's title ended in a questionmark & 0.00 \\ 
+  \hline
+Whether or not the question's text contained at least one end punctuation mark & 0.53 \\ 
+  \hline
+Whether or not the question's text is in all lower case & 0.01 \\ 
+  \hline
+Whether or not the user edited or added information to the question's text sometime after posting it & 0.00 \\ 
+  \hline
+Whether or not the user made an effort to solve the problem on their own, prior to asking the question & 0.01 \\ 
+  \hline
+Day of the week the question was posted & 0.00 \\ 
+  \hline
+Square root transformation of the average frequency ``score'' of a question's tags & 0.00 \\ 
+  \hline
+Square root transformation of the average number of characters in a question's tags & 0.05 \\ 
+Nonlinear & 0.08 \\ 
+  \hline
+Square root transformation of the number of characters in a question's text & 0.43 \\ 
+Nonlinear & 0.46 \\ 
+  \hline
+Square root transformation of the number of characters in the user-defined device title & 0.28 \\ 
+Nonlinear & 0.42 \\ 
+  \hline
+Square root transformation of the ratio of the number of line breaks to the number of characters in a question's text & 0.36 \\ 
+Nonlinear & 0.62 \\ 
+   \hline
+\end{tabular}
+\label{table:pvalues}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlr}
+  \hline
+ & variable & coefficients \\ 
+  \hline
+1 & new\_category=Apple Product & 0.93 \\ 
+  2 & new\_category=Camera & -0.26 \\ 
+  3 & new\_category=Electronics & -0.08 \\ 
+  4 & new\_category=Game Console & 0.21 \\ 
+  5 & new\_category=Home & 0.39 \\ 
+  6 & new\_category=Other & -0.11 \\ 
+  7 & new\_category=PC & 0.43 \\ 
+  8 & new\_category=Tablet & -0.15 \\ 
+  9 & new\_category=Vehicle & 0.38 \\ 
+  10 & new\_user=1 & -0.10 \\ 
+  11 & contain\_unanswered & -0.27 \\ 
+  12 & contain\_answered & 0.05 \\ 
+  13 & title\_questionmark & 0.25 \\ 
+  14 & text\_contain\_punct & 0.03 \\ 
+  15 & text\_all\_lower & -0.18 \\ 
+  16 & update & 0.28 \\ 
+  17 & prior\_effort & -0.09 \\ 
+  18 & weekday=Monday & 0.01 \\ 
+  19 & weekday=Saturday & -0.07 \\ 
+  20 & weekday=Sunday & -0.11 \\ 
+  21 & weekday=Thursday & 0.03 \\ 
+  22 & weekday=Tuesday & 0.09 \\ 
+  23 & weekday=Wednesday & 0.10 \\ 
+  24 & avg\_tag\_score & 2.23 \\ 
+  25 & avg\_tag\_length & -0.08 \\ 
+  26 & avg\_tag\_length' & 0.58 \\ 
+  27 & avg\_tag\_length'' & -1.52 \\ 
+  28 & text\_length & -0.08 \\ 
+  29 & text\_length' & -0.36 \\ 
+  30 & text\_length'' & 2.39 \\ 
+  31 & text\_length''' & -3.69 \\ 
+  32 & device\_length & -0.07 \\ 
+  33 & device\_length' & 0.18 \\ 
+  34 & device\_length'' & -0.27 \\ 
+  35 & device\_length''' & 0.21 \\ 
+  36 & newline\_ratio & 0.12 \\ 
+  37 & newline\_ratio' & 0.36 \\ 
+   \hline
+\end{tabular}
+\caption{Coefficients for predictors in the final model} 
+\label{table:coefficients}
+\end{table}
 
 Score and deviance residuals of the final model identified outliers and highly influential questions. However, because refitting the model without those questions resulted in worse predictive accuracy, all questions were left in the data. Assessing the proportional hazards assumption indicated that several predictors were in violation. P-values for the correlation between predictors schoenfeld residuals and time are shown in table e. But as stratifying on this predictor substantially decreased predictive accuracy, the variable was left as is. Statistics and parameter coefficients of the final model are in table c. Metrics for the final model's performance on the full data, though considerably low, are not different from the metrics computed in cross-validation. 
 
@@ -264,18 +370,13 @@ contain answered and unanswered
 
   These variables were created based on the intuition that certain topics might be more popular, and even unpopular, among the answering community, and that questions concerning these topics might recieve an answer faster, or slower, than questions that don't. 
   
-  To create these variables, the data was separated between answered and unanswered questions. Using text mining techniques, two lists were created-one for answered questions and another for unanswered questions--containing every word within the question's titles and the frequency or the number of time they occured among answered and unanswered questions. For ``frequently-used'' words in answered questions, that word would have to appear in more than 1\% of answered question's titles, and would have to appear in answered questions more than it appeared in unanswered questions. To determine the latter, a ratio of proportions was assessed. This ratio was calculated as the proportion of times a word occured among answered questions, to the proportion of times a word occured in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and in 0.1\% of unanswered questions, it would be considered frequently used among answered questions as it occurs in more than 1\% of answered question's titles and occurs 20 times more in answered questions and in unanswered questions (ratio = 0.02/0.001 = 20). As for ``frequently-used'' words in unanswered questions, they must occur in 1\% or more of the question's titles and occur in more unanswered questions than unanswered questions (ratio < 1). Since there was some overlap between the words in each list and the device categories, every word that matched a device name was removed from the list. The resulting list for answered questions was 111 words, and 32 words in uanswered questions. Contain_answered and contain_unasnwered are logical variables, indicating true if a question's title contained at least one of the words in the frequently used words list for answered and unanswered questions, respectively. 
+  To create these variables, the data was separated between answered and unanswered questions. Using text mining techniques, two lists were created-one for answered questions and another for unanswered questions--containing every word within the question's titles and the frequency or the number of time they occured among answered and unanswered questions. For ``frequently-used'' words in answered questions, that word would have to appear in more than 1\% of answered question's titles, and would have to appear in answered questions more than it appeared in unanswered questions. To determine the latter, a ratio of proportions was assessed. This ratio was calculated as the proportion of times a word occured among answered questions, to the proportion of times a word occured in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and in 0.1\% of unanswered questions, it would be considered frequently used among answered questions as it occurs in more than 1\% of answered question's titles and occurs 20 times more in answered questions and in unanswered questions (ratio = 0.02/0.001 = 20). As for ``frequently-used'' words in unanswered questions, they must occur in 1\% or more of the question's titles and occur in more unanswered questions than unanswered questions (ratio < 1). Since there was some overlap between the words in each list and the device categories, every word that matched a device name was removed from the list. The resulting list for answered questions was 111 words, and 32 words in uanswered questions. Contain\_answered and contain\_unasnwered are logical variables, indicating true if a question's title contained at least one of the words in the frequently used words list for answered and unanswered questions, respectively. 
   
 111 terms found to be ``frequently-used'' among answered questions (ordered from highest frequency): 
 screen, turn, working, replacement, power, work, replace, charging, charge, button, touch, black, turning, broken, start, stuck, new, lcd, upgrade, problem, change, port, replaced, card, open, boot, replacing, remove, reset, back, drive, error, cable, ssd, cracked, hard, one, dropped, logic, lines, white, keeps, pro, dead, now, front, damage, switch, parts, glass, still, charger, issue, sim, turns, digitizer, just, mode, model, backlight, usb, stopped, logo, starting, know, unresponsive, password, factory, call, use, damaged, find, sensor, possible, fixed, side, galaxy, data, ipod, problems, issue, slow, system, connector, without, overheating, code, ram, air, microphone, please, red, much, plugged, getting, booting, left, way, buy, plus, time, loose, lock, coming, got, shuts, says, install, key, door, top
 
 32 terms found to be ``frequently-used'' among unanswered questions (ordered from highest frequency):
 sound, light, wifi, speaker, connect, picture, stay, noise, bluetooth, isnt, apps, going, rear, question, play, stop, service, take, hear, lights, showing, network, volume, come, keep, connection, flashing, shut, print, blue, buttons, edit
-  
-Title\_questionmark and title\_beginwh 
-
-These two variables were created to determine if stating the title in the form of a question is associated with faster answer times. Title_questionmark is a logical variable indicating true if the question's title ends with a question mark. Title_beginwh is a logical variable indicating true if the title begins with a “wh” word (e.g. "what", "when"). These variables were created based off of the findings from \citep{Bhat2014}. 
-  
   
 Text\_contain\_punct
 
@@ -285,14 +386,9 @@ Prior\_effort
 
 Logical variable indicating true if the asker used words that indicate prior effort or research was done before asking the question (e.g. ``tried'', ``attempted'', ``tested''). This variable was created based off of findings from \cite{Bhat2014}. 
 
-Ampm (change name)
-
-The time of day the question was posted. If the question was posted between 5am and 12pm, it was categorized as ``morning''. If it was posted between 12pm and 5pm, it was categorized as ``afternoon'', between 5pm and 8am- ``evening'', and 8pm and 5 am, ``night''
-
 Avg\_tag\_score
 
 This variable was created to investigate the idea that some tags are more popular, or widely used than other, and that including such tags might increase the likelihood of that question recieving an answer. This variable is the average frequency, or proportion of times a question's tags appear in all of the data set. If a question has a higher average, than at least one of it's tags are frequently used. This variable was created based off of findings from \cite{Bhat2014}. 
-
 
 Device\_length
 
