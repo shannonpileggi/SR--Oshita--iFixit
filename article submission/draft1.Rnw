@@ -4,9 +4,8 @@
 \SweaveOpts{concordance=TRUE}
 
 
-
 << echo = FALSE >>=
-# setting up model
+# importing data 
 dir <- file.path(getwd(),"data")
 x <- read.csv(file.path(dir, "dat.csv"))
 
@@ -17,6 +16,7 @@ model <- rms::cph(survival::Surv(time_until_answer, answered) ~ new_category + n
 
 Community-driven online question and answer forums (CQA) house an expansive amount of crowd-sourced knowledge in the form of thousands of questions and answers posted everyday. Forums can cover a broad range of topics, like \textit{Yahoo! Answers}, or can be focused on a specific topic, like computer programming-focused \textit{Stack Overflow}. An example of the latter is iFixit's \textit{Answers} forum. The \textit{Answers} forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users, furthering iFixit's mission to enable individuals to repair their own devices. As such, it is important that questions receive timely answers. This paper presents a survival analysis on the time until a question receives its first answer. We developed a Cox proportional hazards model to predict the failure probability of a question, or the probability that a question receives an answer before a certain time. Though we identified signifcant predictors, the predictive accuracy was low ($R^2 = \Sexpr{round(unname(model$stat[8]), 2)}$). Our findings indicate that the most important predictors were the device category of the question (questions pertaining to Apple products received answers faster than others (HR = 2.56, 95\% CI = (2.31, 2.82))) and factors related to the question's title (e.g., whether or not it was phrased as a question (HR = 1.31, 95\% CI = (1.22, 1.41))). Future studies could investigate if the factors identified as signifcant in our study can be generalized to other CQAs. 
 
+%----------------------------------------------------------------------------------------------------
 
 \section*{Introduction}
 
@@ -27,6 +27,7 @@ The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 20
 As not all possible repairs are covered in the published repair guides, and users may have questions related to those guides, iFixit's \textit{Answers} forum is another important resource. This platform features questions pertaining to over 9,000 devices with over 100,000 solutions. Questions range from broken devices like jammed zippers to shattered iPhone screens. As many rely on this forum for help with repairs, it is important that users receive timely answers. Fast response times will enhance user engagement and generate more web traffic, which is valuable to the reputation and longevity of the \textit{Answers} forum. Analysis of answer times can reveal factors that affect how quickly questions are answered, which can lead to suggestions for how users can ask better questions to minimize answer times, and for how the forum design can be improved. 
 However, analysis and prediction of answer \textit{times} on CQAs have not been thoroughly investigated. As the majority of existing research focuses on assessing and predicting question and answer quality, there is need for further analysis of response times in these forums. This paper presents a survival analysis on the time until a question is answered on iFixit's \textit{Answers} forum, in order to determine factors significantly related to answer time and to predict the ``survival'' probability of a question.
 
+%----------------------------------------------------------------------------------------------------
 
 \section*{Related Work}
   
@@ -36,7 +37,7 @@ In regards to investigation of forum response times, \citep{Bhat2014} developed 
 
 \citep{Asaduzzaman2013} analyzed unanswered questions on \textit{Stack Overflow} to determine common characteristics and found that questions that went unanswered shared certain characteristics in that they were too short and vague, or utilized the tagging system incorrectly. 
 
-
+%----------------------------------------------------------------------------------------------------
 
 \section*{Materials}
 
@@ -62,41 +63,33 @@ Categorical Variables:
 Numeric Variables:
 
 \begin{itemize}
-  \item Average tag ``score'' for all of a question's tags. A tag score is defined as the proportion of times a tag appears in all of the data. Questions without tags were assigned an average tag score of 0. 
+  \item Average tag ``score'' for all of a question's tags. A tag score is defined as the proportion of times a tag appears in all of the data. Questions without tags were assigned a score of 0. 
   \item Average number of characters in each question's tags. 
   \item Number of characters in the question's text. 
   \item Number of characters in the user-defined device name. 
   \item Ratio of the number of line breaks to the number of characters in the question's text.
 \end{itemize}
 
+%----------------------------------------------------------------------------------------------------
 
 \section*{Methods}
 
-<< echo = FALSE >>=
-set.seed(444)
-splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
-
-train1 <- x[splitPlan[[1]]$train, ]; test1 <- x[splitPlan[[1]]$app, ]
-train2 <- x[splitPlan[[2]]$train, ]; test2 <- x[splitPlan[[2]]$app, ]
-train3 <- x[splitPlan[[3]]$train, ]; test3 <- x[splitPlan[[3]]$app, ]
-train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
-train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
-@
-
-
-Questions analyzed were restricted to those posted in English. Time until event was defined as the time since posting until a question received its first answer. For questions that did not receive an answer by the download date, time until event values were defined as the time since posting to the time the data was downloaded. These questions were considered right-censored, meaning that exact answer times for these questions are greater than the recorded times in the data (questions can still receive answers after the download date). 
+Questions analyzed were restricted to those posted in English. Time until event was defined as the time since posting until a question received its first answer. For questions that did not receive an answer by the download date, time until event values were defined as the time since posting to the time the data was downloaded. Such questions were considered right-censored, meaning that exact answer times for these questions are greater than the times in the data (questions can still receive answers after the download date). 
 
 Survival was defined as the event that a question did not receive an answer beyond a certain time, t. Estimates of survival probability were generated with the Kaplan-Meier method, which adjusts to the presence of right-censored, or unanswered questions (cite). From these estimates, survival curves were constructed to examine the survival experience of questions. Mean, median and other percentiles of survival times were also generated. 
 
-As the probability distribution for answer times was unknown, a nonparametric Cox proportional hazards model was developed to predict survival probability (Cox models are not based on an assumption of the shape of the underlying probability distribution (cite)). To build the model, five-fold cross-validation was used. The full data was split into five training and five test sets. Each training set contained \Sexpr{nrow(train1)} questions, and each test set contained \Sexpr{nrow(test1)} questions. Univariate analysis, performed on one training set, was used to identify variables to potentially include in the final Cox model. Distributions of continuous variables were assessed. Each categorical and continuous predictor, both with and without square root and log transformations, were entered into separate univariate Cox models and strength of association with answer times were assessed. Those with partial likelihood ratio test p-values of less than 0.01 were included in the final model. For continuous predictors, the lowest p-value was used to determine if and which transformation was necessary. To determine whether or not splines on continuous predictors were necessary, as well as the optimum number of knots, univariate analysis was again performed. Continuous variables (with transformations found to be necessary in the previous univariate analysis) were again fit to separate univariate Cox models with: no splines and restricted cubic splines of three, four, and five knots. AIC statistics were used to determine whether or not splines were necessary, as well as the optimum number of knots \citep{}Harrell2015. All predictors found to be significant in both stages of univariate analysis were included in the model for cross-validation. 
+As the probability distribution for answer times was unknown, a nonparametric Cox proportional hazards model was developed to predict survival probability (Cox models are not based on an assumption of the shape of the underlying probability distribution (cite)). To build the model, five-fold cross-validation was used. The full data was split into five training sets and five test sets. Univariate analysis, performed on one training set, was used to identify variables and transformations to potentially include in the final Cox model. Distributions of all continuous predictors, both with and without square root and log transformations, were assessed. Each categorical and continuous predictor, both untransformed and transformed, were entered into separate univariate Cox models, and strength of association with answer times were assessed. Those with partial likelihood ratio test p-values of less than 0.01 were included in the final model. For continuous predictors, the p-value was used to determine which form of the predictor to include---transformed or untransformed. To investigate the use of splines on continuous predictors, univariate analysis was again performed. Continuous variables (with transformations previously found to be necessary) were fit to four separate univariate Cox models with: restricted cubic splines of three, four, and five knots, and no splines. AIC statistics were used to determine whether or not splines were necessary, as well as the optimum number of knots \citep{Harrell2015}. All predictors found to be significant in both stages of univariate analysis were included in the model for cross-validation. 
 
-In each fold of cross-validation, the full model was built on one training set and used to generate predicted hazard ratios on the corresponding test set. To assess prediction performance, the predicted hazard ratios were entered into separate Cox models as the single quantitative predictor, with answer times as the survival time. The resulting estimated hazard ratio, R-square statistic, partial likelihood ratio and p-value were assessed as indicators of the full model's performance \citep{Chen}. Signficant results would indicate high predictive accuracy. Concordance statistics and Somers' Dxy were also assessed to measure the model's predictive discrimination. Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter survival time also has the higher predicted hazard. Concordance statistics close to 1 indicate high discriminative ability, while statistics close to 0.5 indicate discordance, or random predictions. Somers' Dxy is the difference between the model's concordance statistic and discordance, 0.5 \citep{Harrell2015}. Metrics were computed for each training and test set. Averages of metrics across test sets were evaluated. The final model was then fit to the full data and the same metrics were computed and compared. 
+In each fold of cross-validation, the full model was built on the training set and used to generate predicted hazard ratios on the corresponding test set. To assess prediction performance, the predicted hazard ratios were entered into separate Cox models as the single quantitative predictor, with answer times as the survival time. The resulting estimated hazard ratio, R-square statistic, partial likelihood ratio and p-value were assessed as indicators of the model's performance \citep{Chen}. Signficant results would indicate high predictive accuracy. Concordance statistics and Somers' Dxy were also assessed to measure the model's predictive discrimination. Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter survival time also has the higher predicted hazard. Concordance statistics close to 1 indicate high discriminative ability, while statistics close to 0.5 indicate discordance, or random predictions. Somers' Dxy is the difference between the model's concordance statistic and discordance, 0.5 \citep{Harrell2015}. These metrics were computed for each iteration on every training and test set. Averages of metrics across test sets were evaluated. The final model was then fit to the full data and the same metrics were computed and compared. 
 
-Martingale residuals were evaluated to assess functional form of each continuous predictor. Deviance residuals were used to identify outliers, or questions poorly predicted by the model. Score residuals were used to identify questions that highly effected parameter estimates. Correlations between scaled Schoenfeld residuals, the differences between observed and expected predictor values for questions that received answers, and a function of time, were examined to assess the proportional hazards assumption that the effect of predictors on hazard does not depend on time. Significant correlations indicate that a predictor has violated this assumption. 
+Martingale residuals were evaluated to assess functional form of each continuous predictor. Deviance residuals were used to identify outliers, or questions poorly predicted by the model. Score residuals were used to identify questions that highly effected parameter estimates. Correlations between scaled Schoenfeld residuals, differences between observed and expected predictor values for questions that received answers, and a function of time, were examined to assess the proportional hazards assumption that the effect of predictors on hazard does not depend on time. Significant correlations would indicate that a predictor has violated this assumption. 
+
+%----------------------------------------------------------------------------------------------------
 
 \section*{Results}
 
 << echo = FALSE >>=
+# for inline code 
 answered <- sum(x$answered)
 percentans <- round((answered / nrow(x)) * 100, 1) 
 shortest <- round(min(x$time_until_answer) * 60, 2) 
@@ -118,12 +111,14 @@ longest_d <- round(longest / 24, 2)
   \label{fig:kmcurve}
 \end{figure}
 
-  Of 8,025 questions in the full data set, \Sexpr{nrow(x)} were in English (97\% of the full data). Of those questions, \Sexpr{answered} (\Sexpr{percentans}}\%) received an answer by the download date. The shortest answer time was \Sexpr{shortest} hours. The longest was \Sexpr{longest} hours (\Sexpr{longest_d} days). Figure ~\ref{fig:answertimes} shows the distribution of answer times for all questions, grouped by whether or not the question received an answer. 
+  Of 8,025 questions in the full data set, \Sexpr{nrow(x)} were in English (97\% of the full data). Of those questions, \Sexpr{answered} (\Sexpr{percentans}}\%) received an answer by the download date. The shortest answer time was \Sexpr{shortest} hours. The longest was \Sexpr{longest} hours (\Sexpr{longest_d} days). Figure ~\ref{fig:answertimes} shows that the distribution of answer times for all questions is extremely right-skewed. 
 
 
 << echo = FALSE >>=
+# Kaplan-Meier survival estimates
 surv_object <- survival::Surv(x$time_until_answer, x$answered, type = "right")
 KM <- survival::survfit(surv_object ~ 1, conf.type = "log-log")
+
 stats <- summary(KM)$table
 mean <- round(unname(stats[5]), 2) 
 median <- round(unname(stats[7]), 2)
@@ -160,25 +155,25 @@ median <- round(unname(stats[7]), 2)
   \hline \hline
   *Log transformation of the number of characters in a question's text & 0.00 \\ 
   \hline
-  *Square root transformation of the number of characters in a question's text & 0.00 \\ 
+  *Square root transformation of the number of characters in a question's text & 1.1102e-16 \\ 
   \hline
-  Number of characters in a question's text (untransformed) & 0.00 \\
+  Number of characters in a question's text (untransformed) & 6.9472e-12 \\
   \hline
-  *Square root transformation of the ratio of the number of line breaks to the number of characters in a question's text & 0.00 \\ 
+  *Square root transformation of the ratio of the number of line breaks to the number of characters in a question's text & 1.1488e-11 \\ 
   \hline
-  *Square root transformation of the average frequency ``score'' of a question's tags & 0.00 \\ 
+  *Square root transformation of the average frequency ``score'' of a question's tags & 1.4642e-11 \\ 
   \hline
-  Average frequency ``score'' of a question's tags (untransformed) & 0.00 \\ 
+  Average frequency ``score'' of a question's tags (untransformed) & 1.2706e-08 \\ 
   \hline
-  Ratio of the number of line breaks to the number of characters in a question's text (untransformed) & 0.00 \\ 
+  Ratio of the number of line breaks to the number of characters in a question's text (untransformed) & 1.3988e-7 \\ 
   \hline
-  *Square root transformation of the number of characters in the user-defined device title & 0.00 \\ 
+  *Square root transformation of the number of characters in the user-defined device title & 2.2914e-4 \\ 
   \hline
-  *Square root transformation of the average number of characters in a question's tags & 0.00 \\ 
+  *Square root transformation of the average number of characters in a question's tags & 2.9999e-4 \\ 
   \hline
-  Number of characters in the user-defined device title (untransformed) & 0.01 \\ 
+  Number of characters in the user-defined device title (untransformed) & 6.5304e-3 \\ 
   \hline
-  Average number of characters in a question's tags (untransformed) & 0.03 \\ 
+  Average number of characters in a question's tags (untransformed) & 2.6115e-2 \\ 
    \hline
 \end{tabular}
 \label{table:qresults}
@@ -196,71 +191,82 @@ median <- round(unname(stats[7]), 2)
   \hline
   Whether or not the user had been a member for less than one day before the question was posted & 0.00 \\ 
   \hline
-  Whether or not the question's title ended in a questionmark & 0.00 \\ 
-  \hline
-  Whether or not the question's text contained at least one end punctuation mark & 0.00 \\ 
-  \hline
-  Day of the week the question was posted & 0.00 \\ 
-  \hline
-  Whether or not the question's text is in all lower case & 0.00 \\ 
-  \hline
-  Whether or not the user made an effort to solve the problem on their own, prior to asking the question & 0.00 \\ 
-  \hline
-  Whether or not the user edited or added information to the question's text sometime after posting it & 0.00 \\
-  \hline
   Whether or not the question's title contains terms considered to be frequently used among unanswered questions & 0.00 \\ 
   \hline
-  Whether or not the question's title contains terms considered to be frequently used among answered questions & 0.00 \\ 
+  Whether or not the question's title ended in a questionmark & 1.1423e-12 \\ 
+  \hline
+  Whether or not the question's text contained at least one end punctuation mark & 2.5354e-9 \\ 
+  \hline
+  Whether or not the question's text is in all lower case & 1.5400e-7 \\ 
+  \hline
+  Whether or not the user edited or added information to the question's text sometime after posting it & 2.5472e-7 \\ 
+  \hline
+  Whether or not the user made an effort to solve the problem on their own, prior to asking the question & 3.1648e-5 \\
+  \hline
+  Whether or not the question's title contains terms considered to be frequently used among answered questions & 7.6397e-5 \\ 
+  \hline
+  Day of the week the question was posted & 7.8677e-4 \\ 
    \hline
 \end{tabular}
 \label{table:cresults}
 \end{table}
 
-Results of univariate analyis for transformed and untransformed quantitative predictors, and categorical predictors, are are shown in Table \ref{table:qresults} and Table \ref{table:cresults}, respectively. All categorical predictors and all * of quantitative predictors were entered into the full model. Restricted cubic splines were fit to all * quantitative variables.
+<< echo = FALSE >>=
+set.seed(444)
+splitPlan <- vtreat::kWayCrossValidation(nrow(x), 5, NULL, NULL)
+
+train1 <- x[splitPlan[[1]]$train, ]; test1 <- x[splitPlan[[1]]$app, ]
+train2 <- x[splitPlan[[2]]$train, ]; test2 <- x[splitPlan[[2]]$app, ]
+train3 <- x[splitPlan[[3]]$train, ]; test3 <- x[splitPlan[[3]]$app, ]
+train4 <- x[splitPlan[[4]]$train, ]; test4 <- x[splitPlan[[4]]$app, ]
+train5 <- x[splitPlan[[5]]$train, ]; test5 <- x[splitPlan[[5]]$app, ]
+@
+
+Each training set contained \Sexpr{nrow(train1)} questions, and each test set contained \Sexpr{nrow(test1)} questions. Results of univariate analyis, performed on one training set, for transformed and untransformed quantitative predictors, and categorical predictors, are are shown in Table \ref{table:qresults} and Table \ref{table:cresults}, respectively. All categorical predictors, as well as all continuous predictors marked with * were entered into the full model.
 
 % Splines
 \begin{table}[ht]
 \centering
 \caption{Determining the optimal k number of splines for each predictor} 
-\begin{tabular}{| p{5cm} | l | l | l |}
+\begin{tabular}{| p{5cm} | l | l |}
   \hline
-  Predictor & K & p-value & AIC \\ 
+  Predictor & K & AIC \\ 
   \hline
   \multirow{ 4 }{ 5cm }{Log transformation of the number of characters in a question's text} 
-  & 0 & 0.00 & 65862.83 \\ 
-  & 5* & 0.00 & 65862.02 \\ 
-  & 4 & 0.00 & 65863.35 \\ 
-  & 3 & 0.00 & 65862.08 \\ 
+  & 0 & 65862.83 \\ 
+  & 5* & 65862.02 \\ 
+  & 4 & 65863.35 \\ 
+  & 3 & 65862.08 \\ 
   \hline
   \multirow{ 4 }{ 5 cm }{Square root transformation of the ratio of the number of line breaks to the number of characters in a question's text}
-  & 0 & 0.00 & 65890.28 \\ 
-  & 5 & 0.00 & 65884.70 \\ 
-  & 4 & 0.00 & 65882.98 \\ 
-  & 3* & 0.00 & 65881.93 \\ 
+  & 0 & 65890.28 \\ 
+  & 5 & 65884.70 \\ 
+  & 4 & 65882.98 \\ 
+  & 3* & 65881.93 \\ 
   \hline
   \multirow{ 4 }{ 5 cm }{Square root transformation of the average frequency ``score'' of a question's tags}
-  & 0* & 0.00 & 65890.75 \\ 
-  & 5 & 0.00 & 65891.69 \\ 
-  & 4 & 0.00 & 65891.75 \\ 
-  & 3 & 0.00 & 65892.35 \\ 
+  & 0* & 65890.75 \\ 
+  & 5 & 65891.69 \\ 
+  & 4 & 65891.75 \\ 
+  & 3 & 65892.35 \\ 
   \hline
   \multirow{ 4 }{ 5 cm }{Square root transformation of the number of characters in the user-defined device title}
-  & 0 & 0.00 & 65922.76 \\ 
-  & 5* & 0.00 & 65853.56 \\ 
-  & 4 & 0.00 & 65882.07 \\ 
-  & 3 & 0.00 & 65881.39 \\ 
+  & 0 & 65922.76 \\ 
+  & 5* & 65853.56 \\ 
+  & 4 & 65882.07 \\ 
+  & 3 & 65881.39 \\ 
   \hline
   \multirow{ 4 }{ 5 cm }{Square root transformation of the average number of characters in a question's tags}
-  & 0 & 0.00 & 65923.26 \\ 
-  & 5 & 0.00 & 65912.11 \\ 
-  & 4* & 0.00 & 65910.10 \\ 
-  & 3 & 0.00 & 65912.38 \\ 
+  & 0 & 65923.26 \\ 
+  & 5 & 65912.11 \\ 
+  & 4* & 65910.10 \\ 
+  & 3 & 65912.38 \\ 
    \hline
 \end{tabular}
 \label{table:splines}
 \end{table}
 
-Table \ref{table:splines} shows the results of determining the optimal number of knots for each quantitative predictor. Knots marked * were included in the final model for cross-validation. 
+Table \ref{table:splines} shows the results of determining the optimal number of knots for each quantitative predictor. Knots marked * were included in the final model. 
 
 % Cross-validation metrics
 \begin{table}[ht]
@@ -270,8 +276,8 @@ Table \ref{table:splines} shows the results of determining the optimal number of
   \hline
  & HR & LR & pval & R2 & AIC & Dxy & Concordance \\ 
   \hline
-  Training Set & 2.00 & 959.49 & 0.00 & 0.14 & 64729.80 & 0.27 & 0.64 \\ 
-  Test Set & 1.96 & 225.44 & 0.00 & 0.14 & 13453.18 & 0.26 & 0.63 \\ 
+  Training Sets & 2.0164 & 937.2018 & 0.0000 & 0.1401 & 64752.0898 & 0.2693 & 0.6346 \\ 
+  Test Sets & 1.9761 & 220.0417 & 0.0000 & 0.1401 & 13458.5808 & 0.2584 & 0.6292 \\
    \hline
 \end{tabular}
 \label{table:cv}
@@ -285,7 +291,7 @@ Table \ref{table:splines} shows the results of determining the optimal number of
   \hline
   HR & LR & pval & R2 & AIC & Dxy & Concordance \\ 
   \hline
-  2.00 & 1192.32 & 0.00 & 0.14 & 83128.28 & 0.27 & 0.63 \\ 
+  2.0010 & 1192.3234 & 0.0000 & 0.1424 & 83128.2780 & 0.2698 & 0.6349 \\ 
    \hline
 \end{tabular}
 \label{table:finalmetrics}
@@ -340,37 +346,45 @@ Average performance metrics for test and training sets, found in Table \ref{tabl
   & avg\_tag\_length' & 0.58 & Nonlinear \\ 
   & avg\_tag\_length'' & -1.52 & 0.0804\\ 
   \hline
-  & text\_length & -0.08 \\ 
-  & text\_length' & -0.36 \\ 
-  & text\_length'' & 2.39 \\
-  & text\_length''' & -3.69 \\ 
+  \multirow{ 4 }{ 2cm }{Log transformation of the number of characters in a question's text} & text length & -0.08 & 0.4344
+  & text\_length' & -0.36 & Nonlinear \\ 
+  & text\_length'' & 2.39 & 0.4578 \\
+  & text\_length''' & -3.69 & \\ 
   \hline
-  & device\_length & -0.07 \\ 
-  & device\_length' & 0.18 \\ 
-  & device\_length'' & -0.27 \\ 
-  & device\_length''' & 0.21 \\ 
+  \multirow{ 4 }{ 2cm }{ Square root transformation of the number of characters in a question's device title} & device length & -0.07 & 0.2790 \\
+  & device\_length' & 0.18 & Nonlinear \\ 
+  & device\_length'' & -0.27 & 0.4185\\ 
+  & device\_length''' & 0.21 & \\ 
   \hline
-  & newline\_ratio & 0.12 \\ 
-  & newline\_ratio' & 0.36 \\ 
+  \multirow{ 2 }{ 2cm }{ Square root transformation of the ratio of number of line breaks to number of characters in a question's text} & line break & 0.12 & 0.3569 \\
+  & newline\_ratio' & 0.36 & Nonlinear: 0.6191 \\ 
    \hline
-\end{tabular}
+\end{tabular} 
 \label{table:coefficients}
 \end{table}
 
 Score and deviance residuals of the final model identified outliers and highly influential questions, respectively. However, as refitting the model without those questions resulted in worse predictive accuracy, all questions were left in the data. Assessing the proportional hazards assumption indicated that several predictors were in violation. Final model statistics and parameter coefficients are in Table \ref{table:coefficients}. Metrics for the final model's performance on the full data, found in \ref{table:finalmetrics}, though considerably low, are not different from the metrics computed in cross-validation.
+
+%----------------------------------------------------------------------------------------------------
 
 \section*{Discussion}
 
 (Discuss importance of findings, not repeat them. A combined results + discussion section is often appropriate) 
 The data we analyzed for this model presented some limitations. Currently, askers have a considerable amount of freedom in the way they ask a question. As a result many incorrectly specify various input fields. For example, a question about a faulty Android tablet screen included as a tag ``someone sat on it :(''. Generally, tags are not more than a couple key words that describe the topic of the question. Many users on this forum included lengthy and somewhat ambiguous tags in their question. Another issue was the incorrect naming of the device the user's question was about. A user asking a question about their Turtle Beach Ear Force X device included as the name of their device "Turtle Beach Ear Force Xmy grandson chewed through the wire while we was playing it's brand-new is there anyway I can have it fixedO One". The inconsistencies in this data made it somewhat difficult to analyze, and possibly contributed to the model's low predictive accuracy. 
 
+%----------------------------------------------------------------------------------------------------
+
 \section*{Conclusion}
 
 This study developed a Cox proportional hazards model to predict the probability that a question posted on iFixit's \textit{Answers} forum receives an answer before a certain time. Predictors found to be signficant in the model included: device category, whether or not the question contained words considered to be ``frequently-used'' among unanswered questions, whether or not the title ends in a questionmark, whether or not the user updated the question's text after the initial posting, whether or not the user indicated that he or she made an effort prior to answer their question prior to posting it (how should I write out that different knots of the splines were signficant). While overall the model was signficant, its predictive performance was considerably low. 
 
+%----------------------------------------------------------------------------------------------------
+
 \section*{Acknowledgement}
 
 This research is supported by the Bill and Linda Frost fund. 
+
+%----------------------------------------------------------------------------------------------------
 
 \section{Appendix} 
 
