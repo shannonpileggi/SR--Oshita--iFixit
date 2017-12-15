@@ -69,6 +69,8 @@ rownames(quantilesdf) <- NULL
 xtable::xtable(quantilesdf, label = "table:quantile")
 ```
 
+### Model on full data 
+
 ```{r}
 model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
                    contain_unanswered + contain_answered + title_questionmark + 
@@ -78,9 +80,10 @@ model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user +
                    data = x, 
                    x = TRUE, y = TRUE, 
                    surv = TRUE)
+model
 ```
 
-### Univariate analysis results (Table 2) see univariate_analysis file
+### Univariate analysis results
 
 ```{r}
 set.seed(444)
@@ -113,6 +116,8 @@ categorical <- list("new_category", "new_user", "title_questionmark",
                     "contain_answered")
 c_pvalue <- purrr::map_dfr(categorical, ~get_pvalue(.))
 
+c_pvalue <- c_pvalue %>% arrange(pvalue)
+
 xtable::xtable(c_pvalue, 
                caption = "Univariate analysis results for categorical predictors, 
                           ordered by increasing p-values", 
@@ -137,7 +142,6 @@ tagscore_pvalue <- purrr::map_dfr(tag_score, ~get_pvalue(.))
 
 univ_results <- rbind(txt_pvalue, dev_pvalue, newline_pvalue, taglength_pvalue, tagscore_pvalue)
 
-options(scipen=999)
 univ_results <- univ_results %>% arrange(pvalue)
 
 xtable::xtable(x = univ_results, 
@@ -178,15 +182,10 @@ newline <- fit_splines("sqrt(newline_ratio)") # 3 knots
 tagscore <- fit_splines("sqrt(avg_tag_score)") # 5 knots or none 
 device <- fit_splines("sqrt(device_length)") # 5 knots
 taglength <- fit_splines("sqrt(avg_tag_length)") # 4 knots
-txt
-newline
-tagscore
-device
-taglength
 
 splinedf <- rbind(txt, newline, tagscore, device, taglength)
 
-xtable::xtable(splinedf, caption = "Determining the optimal number of splines for each predictor", label = "table:splines")
+xtable::xtable(splinedf, caption = "Determining the optimal number of splines for each predictor", label = "table:splines", digits = -16)
 ```
 
 ### Average CV metrics (Table 3 + 4) 
@@ -200,11 +199,11 @@ crossval <- function(vars, train, test) {
   train[["predictions"]] <- exp(predict(model, type = "lp"))
   metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = train)
   train_metrics <- data.frame(HR = exp(metric$coefficients), 
-                              LR = round(metric$stats[3],2), 
-                              pval = round(metric$stats[5],2),
-                              R2 = round(metric$stats[8], 2),
+                              LR = metric$stats[3], 
+                              pval = metric$stats[5],
+                              R2 = metric$stats[8],
                               AIC = stats::AIC(metric, k = 2),
-                              Dxy = round(metric$stats[9],2), 
+                              Dxy = metric$stats[9], 
                               Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = train)$concordance)
   
   # predicting on test data
@@ -213,11 +212,11 @@ crossval <- function(vars, train, test) {
   # computing performance metrics 
   metric1 <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = test)
   test_metrics <- data.frame(HR = exp(metric1$coefficients), 
-                             LR = round(metric1$stats[3],2), 
-                             pval = round(metric1$stats[5],2), 
-                             R2 = round(metric$stats[8], 2),
+                             LR = metric1$stats[3], 
+                             pval = metric1$stats[5], 
+                             R2 = metric$stats[8],
                              AIC = stats::AIC(metric1, k = 2),
-                             Dxy = round(metric1$stats[9],2), 
+                             Dxy = metric1$stats[9], 
                              Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = test)$concordance)
   
   # returns data frame with train/test metrics 
@@ -238,7 +237,7 @@ vars1 <- "new_category + new_user + contain_unanswered + contain_answered + titl
 cv_results1 <- purrr::map2(trains, tests, ~crossval(vars1, .x, .y))
 avg_results1 <- get_avgmetrics(cv_results1)
 avg_results1
-xtable::xtable(avg_results1, caption = "Average performance metrics for training and test sets", label = "table:cv")
+xtable::xtable(avg_results1, caption = "Average performance metrics for training and test sets", label = "table:cv", digits = 4)
 ```
 
 # final model on full data
@@ -262,23 +261,22 @@ xtable::xtable(pvaluedf, caption = "P-values for final model fit to the full dat
 modelstats <- data.frame(statistic = names(model$stats), 
                          value = round(unname(model$stats), 3))
 modelstats
-# ------------------------------------------
 
 # ------------------------------------------
 # cross-validation metrics 
 x$predictions <- exp(predict(model, type = "lp"))
 
 metric <- rms::cph(Surv(time_until_answer, answered) ~ predictions, data = x)
-AIC(metric, k = 2) # 83124.21
 
 final_metrics <- data.frame(HR = exp(metric$coefficients), 
-                              LR = round(metric$stats[3],2), 
-                              pval = round(metric$stats[5],2),
-                              R2 = round(metric$stats[8], 2),
+                              LR = metric$stats[3], 
+                              pval = metric$stats[5],
+                              R2 = metric$stats[8],
                               AIC = stats::AIC(metric, k = 2),
-                              Dxy = round(metric$stats[9],2), 
+                              Dxy = metric$stats[9], 
                               Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = x)$concordance)
-final_metrics 
+final_metrics
+xtable::xtable(final_metrics, caption = "Performance metrics for model fit to the full data", label = "table:finalmetrics", digits = 4)
 
 # ------------------------------------------
 ph <- cox.zph(model)
