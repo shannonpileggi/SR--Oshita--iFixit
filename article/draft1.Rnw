@@ -169,39 +169,40 @@ median <- round(unname(stats[7]), 2)
 \centering
 \begin{tabular}{| p{5cm} | p{2.75cm} | p{2cm} |}
   \hline
-  \textbf{Predictor} & \textbf{Transformation} & \textbf{p-value} \\ 
-  \hline
+  \textbf{Continuous Predictors} & \textbf{Transformation} & \textbf{p-value} \\ 
+  \hline \hline
   \multirow{ 3 }{ 5cm }{ Average frequency score of a question's tags }
   & Untransformed & 1.270620e-08 \\
   & Log + 1 & 1.186521e-08 \\
-  & *Square root & 1.464184e-11 \\ \hline
+  & \textbf{*}Square root & 1.464184e-11 \\ \hline
   \multirow{ 3 }{ 5cm }{ Average number of characters in each question's tags }
   & Untransformed & 2.611529e-02 \\ 
-  & *Log + 1 & 6.018542e-05 \\
+  & \textbf{*}Log + 1 & 6.018542e-05 \\
   & Square root & 2.999917e-04 \\ \hline
   \multirow{ 3 }{ 5cm }{ Number of characters in a question's text }
   & Untransformed & 6.947221e-12 \\
-  & *Log & 0.000000e+00 \\
+  & \textbf{*}Log & 0.000000e+00 \\
   & Square root & 1.110223e-16 \\ \hline
   \multirow{ 3 }{ 5cm }{ Number of characters in the user-defined device title }
   & Untransformed & 6.530431e-03 \\
-  & *Log + 1 & 1.912977e-05 \\
+  & \textbf{*}Log + 1 & 1.912977e-05 \\
   & Square root & 2.291424e-04 \\ \hline
   \multirow{ 3 }{ 5cm }{ Ratio of the number of line breaks to the number of characters in a question's text } 
   & Untransformed & 1.398819e-07 \\
   & Log + 1 & 1.092952e-07 \\
-  & *Square root & 1.148792e-11 \\ \hline
-  \multicolumn{ 2 }{ |l| }{ *Day of the week the question was posted } & 7.867705e-04 \\ \hline
-  \multicolumn{ 2 }{ |l| }{ *Device category } & 0.000000e+00 \\ \hline
-  \multicolumn{ 2 }{ |p{7.75cm}| }{ *Whether or not the question's text contained at least one end punctuation mark } & 2.535394e-09 \\ \hline
-  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the question's text is in all lower case } & 1.540030e-07 \\ \hline
-  \multicolumn{2}{| p{7.75cm}|}{ *Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
-  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
-  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the question's title contains terms considered to be frequently used among unanswered questions } & 0.000000e+00 \\ \hline
-  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the question's title ended in a questionmark } & 1.142308e-12 \\ \hline
-  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the user edited or added information to the question's text sometime after posting it } & 2.547222e-07 \\ \hline
-  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the user had been a member for less than one day before the question was posted } & 0.000000e+00 \\ \hline
-  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the user made an effort to solve the problem on their own, prior to asking the question } & 3.164815e-05 \\ \hline
+  & \textbf{*}Square root & 1.148792e-11 \\ \hline \hline
+  \multicolumn{ 2 }{ |l| }{ \textbf{ Categorical Predictors } } & \textbf{ p-value } \\ \hline \hline
+  \multicolumn{ 2 }{ |l| }{ \textbf{*}Device category } & 0.000000e+00 \\ \hline
+  \multicolumn{ 2 }{ |l| }{ \textbf{*}Weekend or Weekday } & 4.123729e-04 \\ \hline
+  \multicolumn{ 2 }{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's text contained at least one end punctuation mark } & 2.535394e-09 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's text is in all lower case } & 1.540030e-07 \\ \hline
+  \multicolumn{2}{| p{7.75cm}|}{ \textbf{*}Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's title contains terms considered to be frequently used among unanswered questions } & 0.000000e+00 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's title ended in a questionmark } & 1.142308e-12 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the user edited or added information to the question's text sometime after posting it } & 2.547222e-07 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the user had been a member for less than one day before the question was posted } & 0.000000e+00 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the user made an effort to solve the problem on their own, prior to asking the question } & 3.164815e-05 \\ \hline
 \end{tabular}
 \caption{Univariate analysis results} 
 \label{table:univariate_results}
@@ -271,9 +272,9 @@ Table \ref{table:splines} shows the results of determining the optimal number of
   \hline
  & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
   \hline
-  \textbf{Training Sets} & 2.015619 & 936.6705 & 0.0000 & 0.1400518 & 0.2691182 & 0.6345591 \\ 
-  \textbf{Test Sets} & 1.975100 & 219.8065 & 0.0000 & 0.1400518 & 0.2579717 & 0.6289859 \\
-  \textbf{Full Data} & 2.01843 & 1164.784 & 0.0000 & 0.1393817 & 0.2680962 & 0.6340481 \\ 
+  \textbf{Training Sets} & 2.027030 & 937.3877 & 0.0000 & 0.1401511 & 0.2683734 & 0.6341867 \\ 
+  \textbf{Test Sets} & 1.986844 & 220.8309 & 0.0000 & 0.1400518 & 0.2582790 & 0.6291395 \\
+  \textbf{Full Data} & 2.028512 & 1165.441 & 0.0000 & 0.1394545 & 0.2675286 & 0.6337643 \\ 
    \hline
 \end{tabular}
 \caption{Performance Metrics} 
@@ -367,7 +368,7 @@ Future studies can further investigate if the predictors found to be significant
 
 \section*{7. Acknowledgement}
 
-This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. Special thanks also goes to iFixit for providing access to the data and for all the help and assistance in its analysis. 
+This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. Special thanks also goes to iFixit for providing access to the CQA data and for the help and assistance in its analysis. 
 
 
 %===================================================================================================

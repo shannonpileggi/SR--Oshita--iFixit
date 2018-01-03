@@ -14,6 +14,7 @@ dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
 list <- oshitar::variable_setup(out)
 x <- list[[1]]
+
 library(rms); library(survival); library(ggplot2); library(dplyr)
 ```
 
@@ -77,13 +78,12 @@ xtable::xtable(quantilesdf, label = "table:quantile")
 ```{r}
 model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
                    contain_unanswered + contain_answered + title_questionmark + 
-                   text_contain_punct + text_all_lower + update + prior_effort + weekday +
+                   text_contain_punct + text_all_lower + update + prior_effort + day +
                    sqrt(avg_tag_score) + rcs(sqrt(avg_tag_length), 4) + rcs(log10(text_length), 5) +
                    rcs(sqrt(device_length), 5) + rcs(sqrt(newline_ratio), 3), 
                    data = x, 
                    x = TRUE, y = TRUE, 
                    surv = TRUE)
-model
 ```
 
 ### Univariate analysis results
@@ -116,7 +116,7 @@ get_pvalue <- function(var) {
 ```{r}
 # categorical predictors 
 categorical <- list("new_category", "new_user", "title_questionmark", 
-                    "text_contain_punct", "weekday", "text_all_lower", 
+                    "text_contain_punct", "day", "text_all_lower", 
                     "prior_effort", "update", "contain_unanswered", 
                     "contain_answered")
 c_pvalue <- purrr::map_dfr(categorical, ~get_pvalue(.))
@@ -237,7 +237,7 @@ get_avgmetrics <- function(list) {
 }
 # ------------------------------------------
 
-vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + weekday + sqrt(avg_tag_score) + rcs(log10(text_length), 5) + rcs(log10(avg_tag_length + 1), 4) + rcs(log10(device_length + 1), 5) + rcs(sqrt(newline_ratio), 3)"
+vars <- "new_category + new_user + contain_unanswered + contain_answered + title_questionmark + text_contain_punct + text_all_lower + update + prior_effort + day + sqrt(avg_tag_score) + rcs(log10(text_length), 5) + rcs(log10(avg_tag_length + 1), 4) + rcs(log10(device_length + 1), 5) + rcs(sqrt(newline_ratio), 3)"
 
 cv_results <- purrr::map2(trains, tests, ~crossval(vars, .x, .y))
 avg_results1 <- get_avgmetrics(cv_results)

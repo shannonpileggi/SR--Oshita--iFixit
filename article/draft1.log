@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  2 JAN 2018 23:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 JAN 2018 13:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -394,48 +394,48 @@ Overfull \hbox (3.07423pt too wide) in paragraph at lines 172--172
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 177--177
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 178--178
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 180--180
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 181--181
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 [6 <./kmcurve.pdf>] [7]
-Overfull \hbox (67.59767pt too wide) in paragraph at lines 237--246
+Overfull \hbox (67.59767pt too wide) in paragraph at lines 238--247
  [][] 
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 259--259
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 260--260
 [][]| 
  []
 
 
-Underfull \hbox (badness 1014) in paragraph at lines 275--275
+Underfull \hbox (badness 1014) in paragraph at lines 276--276
 []\T1/aer/m/n/10 Whether or not the ques-tion's ti-tle
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 285--285
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 286--286
 [][]| 
  []
 
 
-Overfull \vbox (60.0pt too high) detected at line 294
+Overfull \vbox (60.0pt too high) detected at line 295
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 294--294
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 295--295
 [][]| 
  []
 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.294 ... of characters in a question's tags } & _
+l.295 ... of characters in a question's tags } & _
                                                    & -0.08 & 0.0457\\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -443,7 +443,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing { inserted.
 <to be read again> 
                    \unskip 
-l.294 ...f characters in a question's tags } & _ &
+l.295 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 A left brace was mandatory here, so I've put one in.
 You might want to delete and/or insert some corrections
@@ -453,7 +453,7 @@ so that I will find a matching right brace soon.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.294 ...f characters in a question's tags } & _ &
+l.295 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -461,7 +461,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.294 ...f characters in a question's tags } & _ &
+l.295 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -470,89 +470,89 @@ really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
 
-Overfull \vbox (36.0pt too high) detected at line 298
+Overfull \vbox (36.0pt too high) detected at line 299
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 298--298
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 299--299
 [][]| 
  []
 
 ! Extra alignment tab has been changed to \cr.
 <recently read> \endtemplate 
                              
-l.299   &
+l.300   &
           text\_length' & -0.36 & Nonlinear \\
 You have given more \span or & marks than there were
 in the preamble to the \halign or \valign now in progress.
 So I'll assume that you meant to type \cr instead.
 
 
-Overfull \hbox (8.7499pt too wide) in paragraph at lines 299--299
+Overfull \hbox (8.7499pt too wide) in paragraph at lines 300--300
 []\T1/aer/m/n/10 text_length'| 
  []
 
 
-Overfull \vbox (36.0pt too high) detected at line 303
+Overfull \vbox (36.0pt too high) detected at line 304
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 303--303
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 304--304
 [][]| 
  []
 
 
-Overfull \vbox (96.0pt too high) detected at line 308
+Overfull \vbox (96.0pt too high) detected at line 309
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 308--308
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 309--309
 [][]| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 309--310
+Underfull \hbox (badness 10000) in paragraph at lines 310--311
 []\T1/aer/m/n/10 Nonlinear:
  []
 
 
-Overfull \hbox (58.65941pt too wide) in paragraph at lines 255--312
+Overfull \hbox (58.65941pt too wide) in paragraph at lines 256--313
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 138.17976pt on input line 314.
+LaTeX Warning: Float too large for page by 138.17976pt on input line 315.
 
 
 LaTeX Warning: Reference `table:ph_assumption' on page 8 undefined on input lin
-e 316.
+e 317.
 
 [8] [9]
-Overfull \hbox (98.21436pt too wide) in paragraph at lines 353--370
+Overfull \hbox (98.21436pt too wide) in paragraph at lines 354--371
  [][] 
  []
 
 
-Overfull \hbox (4.72626pt too wide) in paragraph at lines 382--383
+Overfull \hbox (4.72626pt too wide) in paragraph at lines 383--384
 \T1/aer/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Game
  Con-sole, House-
  []
 
 [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 397--397
+Underfull \hbox (badness 10000) in paragraph at lines 398--398
 \T1/aer/bx/n/10 among unan-swered
  []
 
 
-Overfull \hbox (20.43306pt too wide) in paragraph at lines 393--400
+Overfull \hbox (20.43306pt too wide) in paragraph at lines 394--401
  [][] 
  []
 
 
-LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 414.
+LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 415.
 
 
-LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 418.
+LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 419.
 
 [12] [13] (./draft1.bbl) [14] (./draft1.aux)
 
@@ -576,7 +576,7 @@ usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></
 usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
 r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/l
 ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on draft1.pdf (14 pages, 211811 bytes).
+Output written on draft1.pdf (14 pages, 211953 bytes).
 PDF statistics:
  102 PDF objects out of 1000 (max. 8388607)
  71 compressed objects within 1 object stream
