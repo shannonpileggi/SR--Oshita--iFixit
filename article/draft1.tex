@@ -4,6 +4,14 @@
 \begin{document}
 \input{draft1-concordance}
 
+\makeatletter
+\DeclareRobustCommand\bfseries{%
+  \not@math@alphabet\bfseries\mathbf
+  \fontseries\bfdefault\selectfont
+  \boldmath % <-- added
+}
+\makeatother
+
 
 
 \section*{Abstract}
@@ -13,7 +21,7 @@ Community-driven online question and answer forums (CQA) contain an expansive am
 %===================================================================================================
 %===================================================================================================
 
-\section*{Introduction}
+\section*{1. Introduction}
 
 Community-driven online question and answer forums (CQA) are becoming widely-used sources of information. These online platforms feature thousands of user-posted questions and answers and can receive millions of visits every month. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit's mission is to equip users with the knowledge and tools to repair their broken devices, as part of an effort to save money and reduce electronic waste. This company provides over 30,000 free online repair guides and sells the specialized tools and parts needed for such repairs.
     
@@ -24,7 +32,7 @@ However, analysis and prediction of response times on CQAs have not been thoroug
 %===================================================================================================
 %===================================================================================================
 
-\section*{Related Work}
+\section*{2. Related Work}
   
 With the recent increase in the popularity and use of CQAs, these platforms have been the subject of a multitude of studies related to information sciences. Regarding analysis of response times, \cite{Bhat2014} developed a classification model to estimate response times for questions posted on \textit{Stack Overflow}, using both tag-based and textual features. Analysis determine that tag-based features, like the number of ``popular'' tags a question contains or the number of users subscribed to a tag, were the best predictors of response time. \cite{Mahmud2013} proposed models based on exponential distributions to predict response times, and were built from users' previous wait times for responses.  Both \cite{Bhat2014} and \cite{Mahmud2013} restrict analysis to questions for which the response time is observed, ignoring unanswered questions; meanwhile \cite{Asaduzzaman2013} focused exclusively on characteristics of unanswered questions. \cite{Asaduzzaman2013} developed a taxonomy for classifying unanswered questions on \textit{Stack Overflow}, and developed a model to predict how long a question would remain unanswered using textual features like title and post length, and user features like the number of questions asked and answered by the user prior to posting. The research presented in this paper uses the framework of survival analysis, a method not yet applied to CQAs, to allow for analysis of both answered and unanswered questions in a unified framework. 
 
@@ -33,7 +41,7 @@ The majority of existing research has been focused on predicting question and an
 %===================================================================================================
 %===================================================================================================
 
-\section*{Materials}
+\section*{3. Materials}
 
 % Table of categorical predictors
 \begin{table}[!htbp]
@@ -50,7 +58,7 @@ The majority of existing research has been focused on predicting question and an
   Whether or not the user edited or added information to the question's text sometime after posting it. \\ \hline
   Whether or not the user made an effort to solve the problem prior to asking the question. \\ \hline
 \end{tabular}
-\caption{Categorical predictors derived}
+\caption{Categorical variables derived}
 \label{table:categorical}
 \end{table}
 
@@ -65,7 +73,7 @@ The majority of existing research has been focused on predicting question and an
   Number of characters in the user-defined device name \\ \hline
   Ratio of the number of line breaks to the number of characters in the question's text \\ \hline
 \end{tabular}
-\caption{Continuous predictors derived}
+\caption{Continuous variables derived}
 \label{table:continuous}
 \end{table}
 
@@ -74,7 +82,7 @@ The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7,
 %===================================================================================================
 %===================================================================================================
 
-\section*{Methods}
+\section*{4. Methods}
 
 Questions analyzed were restricted to those posted in English. The time until event variable used in survival analysis was defined as the time since posting until a question received its first answer. For questions that did not receive an answer by the download date, time until event values were defined as the time since posting to the time the data was downloaded. Such questions were considered right-censored, meaning that exact answer times for these questions are greater than the observed download time (questions may receive answers after the download date) \cite{Kleinbaum2011}. 
 
@@ -82,7 +90,7 @@ Survival was defined as the event that a question did not receive an answer beyo
 
 As the probability distribution for response times is unknown, a nonparametric Cox proportional hazards model was developed to predict the survival probability of questions \cite{Moore2010}. To build the model, five-fold cross-validation was used \cite{Rodriguez2010}. Univariate analysis, performed on one training set, was used to identify variables to include in the final predictive Cox model \cite{Hammermeister1979}. Each predictor was entered into univarite Cox models, and strength of association with response times was assessed. Those with partial likelihood ratio test p-values of less than 0.001 were included in the final model. Continuous predictors were entered into univariate Cox models both with and without square root and log transformations to determine the form of the predictor to include into the final model. Univariate analysis was again performed on each continuous predictor to investigate the use of splines. Each predictor, with the transformation found necessary in the previous analysis, was fit to three separate Cox models with restricted cubic splines of three, four, and five knots. AIC statistics were used to determine whether or not to include splines, as well as the optimum number of knots \cite{Harrell2015}. All predictors found to be signficant, along with the transformations and functional forms found to be necessary, were included in the model for cross-validation. No variable selection was used after identifying significant predictors in univariate analysis, as \cite{Harrell2015} determined that reducing the number of predictors in the model decreased predictive accuracy more so than including all predictors. 
 
-In each fold of cross-validation, the full model was built on the training set and used to generate predicted hazard ratios on the corresponding test set. To assess prediction performance, predicted hazard ratios were entered into separate Cox models as the single quantitative predictor with response times as the survival time. The resulting Nagelkerke's R-square statistic, concordance statistic, Somers' \textit{Dxy}, partial likelihood ratio and p-value, were assessed as indicators of the model's performance \cite{Chen}. Signficant results from this model would indicate high predictive accuracy. The partial likelihood ratio assessed is a ratio of the log partial likelihood function evaluated at the parameter estimates, equivalent to a goodness of fit measure of the model with all predictors, and the log partial likelihood function for the null model with no predictors and only the baseline hazard function, equivalent to a goodness of fit measure for the null model. The p-value for this statistic was calculated from the $Ichi^2$ distribution \cite{find}. Concordance statistics and Somers' \textit{Dxy} are a measure of the model's discriminative ability. Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter response time also has the higher predicted hazard ratio. Concordance statistics close to 1 indicate high discriminative ability, while statistics close to 0.5 indicate discordance, or random predictions. Somers' \textit{Dxy} is the difference between the model's concordance statistic and discordance, 0.5. A Somers' \textit{Dxy} statistic of 0 indicates random predictions, while a statistic equal to 1 indicates perfect predictions \cite{Harrell2015}. These metrics were computed for each iteration on every training and test set. Averages of metrics across training and test sets were evaluated. The final model was then fit to the full data and the same metrics were computed and compared. 
+In each fold of cross-validation, the full model was built on the training set and used to generate predicted hazard ratios on the corresponding test set. To assess prediction performance, predicted hazard ratios were entered into separate Cox models as the single quantitative predictor with response times as the survival time. The resulting Nagelkerke's R-square statistic, concordance statistic, Somers' \textit{Dxy}, partial likelihood ratio and p-value, were assessed as indicators of the model's performance \cite{Chen}. Signficant results from this model would indicate high predictive accuracy. The partial likelihood ratio assessed is a ratio of the log partial likelihood function evaluated at the parameter estimates, equivalent to a goodness of fit measure of the model with all predictors, and the log partial likelihood function for the null model with no predictors and only the baseline hazard function, equivalent to a goodness of fit measure for the null model. The p-value for this statistic was calculated from the $chi^2$ distribution \cite{find}. Concordance statistics and Somers' \textit{Dxy} are a measure of the model's discriminative ability. Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter response time also has the higher predicted hazard ratio. Concordance statistics close to 1 indicate high discriminative ability, while statistics close to 0.5 indicate discordance, or random predictions. Somers' \textit{Dxy} is the difference between the model's concordance statistic and discordance, 0.5. A Somers' \textit{Dxy} statistic of 0 indicates random predictions, while a statistic equal to 1 indicates perfect predictions \cite{Harrell2015}. These metrics were computed for each iteration on every training and test set. Averages of metrics across training and test sets were evaluated. The final model was then fit to the full data and the same metrics were computed and compared. 
 
 Correlations between scaled Schoenfeld residuals, differences between observed and expected predictor values for questions that received answers, and a function of time, were examined to assess the proportional hazards assumption that the effect of predictors on hazard does not depend on time \cite{Grambsch1994}. Significant correlations would indicate that a predictor has violated this assumption.
 
@@ -91,7 +99,7 @@ To obtain predicted survival probabilities using the model, the \textit{predictS
 %===================================================================================================
 %===================================================================================================
 
-\section*{Results and Discussion}
+\section*{5. Results}
 
 
 % Distribution of answer times
@@ -115,9 +123,9 @@ To obtain predicted survival probabilities using the model, the \textit{predictS
 % Table of percentiles 
 \begin{table}[!h]
 \centering
-\begin{tabular}{rlr}
+\begin{tabular}{| l | l |}
   \hline
- Percent\\ Answered & Time (hrs) \\ 
+ \textbf{Percent Answered} & \textbf{Time (hrs)} \\ 
   \hline
   25 & 0.88 \\ 
   50 & 9.16 \\ 
@@ -136,10 +144,9 @@ To obtain predicted survival probabilities using the model, the \textit{predictS
 % Univariate analysis results
 \begin{table}[!htbp]
 \centering
-\caption{Univariate analysis results for continuous predictors, ordered by increasing p-values} 
-\begin{tabular}{| p{5cm} | p{2.5cm} | p{2cm} |}
+\begin{tabular}{| p{5cm} | p{2.75cm} | p{2cm} |}
   \hline
-  Predictor & Transformation & p-value \\ 
+  \textbf{Predictor} & \textbf{Transformation} & \textbf{p-value} \\ 
   \hline
   \multirow{ 3 }{ 5cm }{ Average frequency score of a question's tags }
   & Untransformed & 1.270620e-08 \\
@@ -163,16 +170,17 @@ To obtain predicted survival probabilities using the model, the \textit{predictS
   & *Square root & 1.148792e-11 \\ \hline
   \multicolumn{ 2 }{ |l| }{ *Day of the week the question was posted } & 7.867705e-04 \\ \hline
   \multicolumn{ 2 }{ |l| }{ *Device category } & 0.000000e+00 \\ \hline
-  \multicolumn{ 2 }{ |p{7.5cm}| }{ *Whether or not the question's text contained at least one end punctuation mark } & 2.535394e-09 \\ \hline
-  \multicolumn{2}{ |p{7.5cm}| }{ *Whether or not the question's text is in all lower case } & 1.540030e-07 \\ \hline
-  \multicolumn{2}{| p{7.5cm}|}{ *Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
-  \multicolumn{2}{ |p{7.5cm}| }{ *Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
-  \multicolumn{2}{ |p{7.5cm}| }{ *Whether or not the question's title contains terms considered to be frequently used among unanswered questions } & 0.000000e+00 \\ \hline
-  \multicolumn{2}{ |p{7.5cm}| }{ *Whether or not the question's title ended in a questionmark } & 1.142308e-12 \\ \hline
-  \multicolumn{2}{ |p{7.5cm}| }{ *Whether or not the user edited or added information to the question's text sometime after posting it } & 2.547222e-07 \\ \hline
-  \multicolumn{2}{ |p{7.5cm}| }{ *Whether or not the user had been a member for less than one day before the question was posted } & 0.000000e+00 \\ \hline
-  \multicolumn{2}{ |p{7.5cm}| }{ *Whether or not the user made an effort to solve the problem on their own, prior to asking the question } & 3.164815e-05 \\ \hline
+  \multicolumn{ 2 }{ |p{7.75cm}| }{ *Whether or not the question's text contained at least one end punctuation mark } & 2.535394e-09 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the question's text is in all lower case } & 1.540030e-07 \\ \hline
+  \multicolumn{2}{| p{7.75cm}|}{ *Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the question's title contains terms considered to be frequently used among unanswered questions } & 0.000000e+00 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the question's title ended in a questionmark } & 1.142308e-12 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the user edited or added information to the question's text sometime after posting it } & 2.547222e-07 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the user had been a member for less than one day before the question was posted } & 0.000000e+00 \\ \hline
+  \multicolumn{2}{ |p{7.75cm}| }{ *Whether or not the user made an effort to solve the problem on their own, prior to asking the question } & 3.164815e-05 \\ \hline
 \end{tabular}
+\caption{Univariate analysis results} 
 \label{table:univariate_results}
 \end{table}
 
@@ -184,11 +192,11 @@ Each training set contained 6208 questions, and each test set contained 1552 que
 \centering
 \begin{tabular}{| p{5cm} | l | l |}
   \hline
-  Predictor & K & AIC \\ 
+  \textbf{Predictor} & \textbf{K} & \textbf{AIC} \\ 
   \hline
   \multirow{ 4 }{ 5cm }{ Log transformation of the number of characters in a question's text } 
   & 0 & 65862.83 \\ 
-  & *5 & 65862.02 \\ 
+  & \textbf{*}5 & 65862.02 \\ 
   & 4 & 65863.35 \\ 
   & 3 & 65862.08 \\ 
   \hline
@@ -196,24 +204,24 @@ Each training set contained 6208 questions, and each test set contained 1552 que
   & 0 & 65890.28 \\ 
   & 5 & 65884.70 \\ 
   & 4 & 65882.98 \\ 
-  & *3 & 65881.93 \\ 
+  & \textbf{*}3 & 65881.93 \\ 
   \hline
   \multirow{ 4 }{ 5 cm }{ Square root transformation of the average frequency ``score'' of a question's tags }
-  & *0 & 65890.75 \\ 
+  & \textbf{*}0 & 65890.75 \\ 
   & 5 & 65891.69 \\ 
   & 4 & 65891.75 \\ 
   & 3 & 65892.35 \\ 
   \hline
   \multirow{ 4 }{ 5 cm }{ Log transformation of the number of characters in the user-defined device title + 1 }
   & 0 & 65918.06 \\ 
-  & *5 & 65847.34 \\ 
+  & \textbf{*}5 & 65847.34 \\ 
   & 4 & 65880.89 \\ 
   & 3 & 65898.00 \\ 
   \hline
   \multirow{ 4 }{ 5 cm }{ Log transformation of the average number of characters in a question's tags + 1 }
   & 0 & 65920.24 \\ 
   & 5 & 65911.20 \\ 
-  & *4 & 65910.81 \\ 
+  & \textbf{*}4 & 65910.81 \\ 
   & 3 & 65914.98 \\ 
    \hline
 \end{tabular}
@@ -228,11 +236,11 @@ Table \ref{table:splines} shows the results of determining the optimal number of
 \centering
 \begin{tabular}{| r | r | r | r | r  | r | r | r |}
   \hline
- & HR & LR & p-value & $R^2$ & \textit{Dxy} & Concordance \\ 
+ & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
   \hline
-  Training Sets & 2.015619 & 936.6705 & 0.0000 & 0.1400518 & 0.2691182 & 0.6345591 \\ 
-  Test Sets & 1.975100 & 219.8065 & 0.0000 & 0.1400518 & 0.2579717 & 0.6289859 \\
-  Full Data & 2.01843 & 1164.784 & 0.0000 & 0.1393817 & 0.2680962 & 0.6340481 \\ 
+  \textbf{Training Sets} & 2.015619 & 936.6705 & 0.0000 & 0.1400518 & 0.2691182 & 0.6345591 \\ 
+  \textbf{Test Sets} & 1.975100 & 219.8065 & 0.0000 & 0.1400518 & 0.2579717 & 0.6289859 \\
+  \textbf{Full Data} & 2.01843 & 1164.784 & 0.0000 & 0.1393817 & 0.2680962 & 0.6340481 \\ 
    \hline
 \end{tabular}
 \caption{Performance Metrics} 
@@ -244,10 +252,9 @@ Average performance metrics for test and training sets and in Table \ref{table:c
 % Final model on full data
 \begin{table}[!htbp]
 \centering
-\caption{Coefficients for predictors in the final model} 
 \begin{tabular}{|p{1.5cm}|p{6cm}|p{2.5cm}|p{2.5cm}|}
   \hline
- Variable &  Levels & Hazard Ratios & p-value \\ 
+ \textbf{Variable} & \textbf{Levels} & \textbf{Hazard Ratios} & \textbf{p-value} \\ 
   \hline
   \multirow{ 9 }{ 2 cm }{ Device Category } & Apple Product & 0.93 & \multirow{ 9 }{ 1.5cm }{ <0.0001 }\\ 
   & Camera & -0.26 & \\ 
@@ -302,6 +309,7 @@ Average performance metrics for test and training sets and in Table \ref{table:c
   & newline\_ratio' & 0.36 & Nonlinear: 0.6191 \\ 
    \hline
 \end{tabular} 
+\caption{Coefficients for predictors in the final model} 
 \label{table:coefficients}
 \end{table}
 
@@ -311,11 +319,11 @@ Assessing the proportional hazards assumption indicated that several predictors 
 %===================================================================================================
 
 
-\section*{Conclusion}
+\section*{6. Conclusion}
 
 This study developed a Cox proportional hazards model to predict the probability that a question posted on iFixit's \textit{Answers} forum receives an answer before a certain time. Predictors found to be signficant in the model included: device category, whether or not the question contained words considered to be ``frequently-used'' among unanswered questions, whether or not the title ends in a questionmark, and whether or not the user updated the question's text after the initial posting. While overall the model was signficant, its predictive performance was considerably low. 
 
-The data analyzed for this model presented limitations, and may explain the model's low predictive accuracy. Many users on the CQA incorrectly specified the device name in their question (e.g. ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!''(tags are generally a couple key words that describe the topic of the question). These inconsistencies in the data presented some difficulties in analysis, and may explain the model's low R^2 and discrimination indexes. 
+The data analyzed for this model presented limitations, and may explain the model's low predictive accuracy. Many users on the CQA incorrectly specified the device name in their question (e.g. ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!''(tags are generally a couple key words that describe the topic of the question). These inconsistencies in the data presented some difficulties in analysis, and may explain the model's low $R^2$ and discrimination indexes. 
 
 Future studies can further investigate if the predictors found to be significant in this study can be generalized to other CQAs. 
 
@@ -324,7 +332,7 @@ Future studies can further investigate if the predictors found to be significant
 %===================================================================================================
 
 
-\section*{Acknowledgement}
+\section*{7. Acknowledgement}
 
 This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. Special thanks also goes to iFixit for providing access to the data and for all the help and assistance in its analysis. 
 
@@ -332,83 +340,92 @@ This research was supported by the Bill and Linda Frost fund of the California P
 %===================================================================================================
 %===================================================================================================
 
-\section*{Appendix} 
+\section*{8. Appendix} 
 
 % -----------------------------------------------------------
-\subsection*{Posted questions}
+\subsection*{8.1 Posted questions}
 
 % answered question id = 397414
 % unanswered question id = 399971
 % Table to display questions
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{| p{2cm} | p{2cm} | p{3cm} | p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
+\begin{tabular}{| l | l | p{6cm} | l |}
   \hline
- Answered & Device & Title & Text & New User? & Date Posted & First Answer Date & Response Time \\
+ \textbf{Answered} & \textbf{Device} & \textbf{Title} & \textbf{Date Posted} \\
   \hline
-  Yes & iPhone 6 & iPhone water damage, touch screen issue & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? & Yes & 2017-05-10 21:50:48 GMT & 2017-05-10 23:12:27 & 1.361 hr \\ \hline
-  No & android tablet & ccccaaaan you help me fix my touch screen & touch screen not worki & No & 2017-05-23 07:35:12 GMT & NA & NA \\
+  Yes & iPhone 6 & iPhone water damage, touch screen issue &  2017-05-10 21:50:48 GMT \\ \cline{2 - 4}
+  & \textbf{New User} & \textbf{Text} & \textbf{Date of First Answer} \\ \cline{2 - 4}
+  & Yes & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? & 2017-05-10 23:12:27 GMT \\ \cline{4 - 4}
+  & & & \textbf{Response Time (hr)} \\ \cline{4 - 4}
+  & & & 1.361 \\ \cline{4-4} \hline
+  \textbf{Answered} & \textbf{Device} & \textbf{Title} & \textbf{Date Posted} \\ \cline{1 - 4}
+  No & android tablet & ccccaaaan you help me fix my touch screen & 2017-05-23 07:35:12 GMT \\ \cline{2 - 4}
+  & \textbf{New User} & \textbf{Text} & \textbf{Date of First Answer} \\ \cline{2 - 4}
+  & No & touch screen not worki & NA \\ \cline{4 - 4}
+  & & & \textbf{Response Time (hr)} \\ \cline{4 - 4}
+  & & & NA \\ 
    \hline
 \end{tabular}
 \caption{Answered and unanswered questions}
 \label{table:questions}
 \end{table}
 
-Table \ref{table:questions} provides an example of an answered and unanswered question. All input fields in the table are as the user entered it. 
+Table \ref{table:questions} provides an example of an answered and unanswered question. All fields in the table are shown as the user entered it. 
 
 % -----------------------------------------------------------
 
-\subsection*{Variable Derivation}
+\subsection*{8.2 Variable Derivation}
 
-\subsubsection*{Device Categorization}
+\subsubsection*{8.2.1 Device Categorization}
 
-Original device categories, defined by iFixit, included: Apparel, Appliance, Camera, Car and Truck, Computer Hardware, Electronics, Game Console, Household, Mac, Media Player, PC, Phone, Skills, Tablet, Vehicle. Device titles were parsed and certain categories were combined or separated to create a new device categorization. Categories in the final variable included: Android/Other Phone, Apple Product, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle. Under original device categorization, 1,954 questions (25.2\% of 7,760) were not categorized correctly and indicated an NA for its category. Missing values were a result of users creating questions for devices not already in the iFixit's database, or from the user incorrectly defining the device name. For questions with missing categories, key words were searched for in device titles to recategorize accordingly. 
+Original device categories, defined by iFixit, included: Apparel, Appliance, Camera, Car and Truck, Computer Hardware, Electronics, Game Console, Household, Mac, Media Player, PC, Phone, Skills, Tablet, Vehicle. Device titles were parsed and certain categories were combined or separated to create a new device categorization variable to use in the Cox model. Categories created included: Android/Other Phone, Apple Product, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle. Under the original device categorization, 1,954 questions (25.2\% of 7,760) were not categorized correctly and indicated an NA for its category. Missing values were a result of users creating questions for devices not already in the iFixit's database, or from the user incorrectly defining the device name. For questions with missing categories, key words were searched for in device titles to recategorize accordingly. All other questions with ambiguous device titles were categorized as Other. 
 
-\subsubsection*{Whether or not the question's title contains terms considered to by frequently-used among answered/unanswered questions}
+\subsubsection*{8.2.2 Whether or not the question's title contains terms considered to by frequently-used among answered/unanswered questions}
 
 These variables were created based on the hypothesis that certain question topics are more popular among the answering community, and that questions concerning these topics might receive an answer faster than questions that do not. Similarly, certain topics might be unpopular, and questions pertaining to those topics might receive answers slower than those that do not (cite).
 
 To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the frequency, or proportion of times those words occurred among all answered questions' titles. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in more than 1\% of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies, or proportions of times a word occurs, was assessed. The ratio was calculated as the proportion of time a word occured among answered questions, to the proportion of times a word occured in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and the device categories, every word that matched a device name was removed from the lists. The resulting list for answered questions contained 111 words. The list for unanswered questions contained 32 words. Lists can be found in Table \ref{table:frequent_terms}
 
-%Table with list of frequently used words
+% Table with list of frequently used words
 \begin{table}[!htbp]
 \centering
-\caption{Lists of ``frequently-used'' terms among answered and unanswered questions' titles, ordered by decreasing frequency}
 \begin{tabular}{|p{4cm}|p{8cm}|}
   \hline
- ``Frequently-used'' terms among answered questions & screen, turn, working, replacement, power, work, replace, charging, charge, button, touch, black, turning, broken, start, stuck, new, lcd, upgrade, problem, change, port, replaced, card, open, boot, replacing, remove, reset, back, drive, error, cable, ssd, cracked, hard, one, dropped, logic, lines, white, keeps, pro, dead, now, front, damage, switch, parts, glass, still, charger, issue, sim, turns, digitizer, just, mode, model, backlight, usb, stopped, logo, starting, know, unresponsive, password, factory, call, use, damaged, find, sensor, possible, fixed, side, galaxy, data, ipod, problems, issue, slow, system, connector, without, overheating, code, ram, air, microphone, please, red, much, plugged, getting, booting, left, way, buy, plus, time, loose, lock, coming, got, shuts, says, install, key, door, top \\
+ \textbf{Frequently-used terms among answered questions} & screen, turn, working, replacement, power, work, replace, charging, charge, button, touch, black, turning, broken, start, stuck, new, lcd, upgrade, problem, change, port, replaced, card, open, boot, replacing, remove, reset, back, drive, error, cable, ssd, cracked, hard, one, dropped, logic, lines, white, keeps, pro, dead, now, front, damage, switch, parts, glass, still, charger, issue, sim, turns, digitizer, just, mode, model, backlight, usb, stopped, logo, starting, know, unresponsive, password, factory, call, use, damaged, find, sensor, possible, fixed, side, galaxy, data, ipod, problems, issue, slow, system, connector, without, overheating, code, ram, air, microphone, please, red, much, plugged, getting, booting, left, way, buy, plus, time, loose, lock, coming, got, shuts, says, install, key, door, top \\
   \hline
-  ``Frequently-used'' terms among unanswered questions & sound, light, wifi, speaker, connect, picture, stay, noise, bluetooth, isnt, apps, going, rear, question, play, stop, service, take, hear, lights, showing, network, volume, come, keep, connection, flashing, shut, print, blue, buttons, edit \\ 
+  \textbf{Frequently-used terms among unanswered questions} & sound, light, wifi, speaker, connect, picture, stay, noise, bluetooth, isnt, apps, going, rear, question, play, stop, service, take, hear, lights, showing, network, volume, come, keep, connection, flashing, shut, print, blue, buttons, edit \\ 
    \hline
 \end{tabular}
+\caption{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
 \label{table:frequent_terms}
 \end{table}
 
-\subsubsection*{Whether or not the question's title ended in a questionmark}
+\subsubsection*{8.2.3 Whether or not the question's title ended in a question mark}
 
 This variable was created based on the hypothesis that questions with titles in the form of questions receive answers faster than those that do not.
 
-\subsubsection*{Whether or not the question's text contained at least one end punctuation mark}
+\subsubsection*{8.2.4 Whether or not the question's text contained at least one end punctuation mark}
 
 This variable was created to investigate if run-on sentences, sentences with no end punctuation, take longer to receive an answer.
 
-\subsubsection*{Whether or not the user made an effort to solve the problem on their own, prior to asking the question}
+\subsubsection*{8.2.5 Whether or not the user made an effort to solve the problem on their own, prior to asking the question}
 
 Logical variable indicating true if the asker included words in the question's text that indicate prior effort or research was done before asking the question (e.g. ``tried'', ``attempted'', ``tested''). This variable was created based off of findings from \cite{Bhat2014}. 
 
-\subsubsection*{Average frequency ``score'' of a question's tags}
+\subsubsection*{8.2.6 Average frequency ``score'' of a question's tags}
 
 This variable was created to investigate the idea that some tags are more ``popular'', or widely used than other tags, and that including such tags might increase the likelihood of that question receiving an answer faster. This variable is the average frequency, or proportion of times a question's tags appear in all of the data set. If a question has a higher average, than at least one of it's tags are frequently used. This variable was created based off of findings from \cite{Bhat2014}. 
 
-\subsubsection*{Number of characters in the user-defined device title}
+\subsubsection*{8.2.7 Number of characters in the user-defined device title}
 
 This variable was included to capture when a user incorrectly defines the device name. For example, the device variable for question 390271 is, “Turtle Beach Ear Force Xmy grandson chewed through the wire while we was playing it's brand-new is there anyway I can have it fixedO One”, and is 136 characters long. 11 questions in the data also did not include any device title. This variable was created based on the intuition that users who incorrectly define their devices, or do not include any device title, make it difficult for the answering community to discern the question's topic, and thus have longer answer times or remain unanswered.
 
-\subsubsection*{Average number of characters in a question's tags}
+\subsubsection*{8.2.8 Average number of characters in a question's tags}
 
 This variable, similar to the device-length variable, was created to capture when a user correctly or incorrectly used the tagging system. For example, question 390989 included the tag tag: “i need to repair the headset because i can not find the bluetoot”, which is 64 characters. Question 410254 includes tags "sound", "sound driver" and "speaker" and has an average of 8 characters per tag. It is hypothesized that users who correctly define tags, as with the latter user, receive answers quicker than the former. 
 
-\subsubsection*{Ratio of the number of line breaks to the number of characters in a question's text}
+\subsubsection*{8.2.9 Ratio of the number of line breaks to the number of characters in a question's text}
 
 This variable was based on the hypothesis that question's that include line breaks in the text are generally easier to read than questions that don't include any, and thus have faster answer times. 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  2 JAN 2018 22:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  2 JAN 2018 23:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -269,97 +269,98 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 (./draft1-concordance.tex)
+LaTeX Info: Redefining \bfseries on input line 8.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 11.
+(Font)              <7> on input line 17.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 11.
+(Font)              <5> on input line 17.
  [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
-LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 29.
+LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 37.
 
 
-LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 29.
+LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 37.
 
 
-LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 29.
+LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 37.
 
 
-LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 29.
+LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 37.
 
 
-LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 29.
-
-
-
-LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 29.
+LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 37.
 
 
 
-LaTeX Warning: Citation `Weimer2007' on page 2 undefined on input line 31.
-
-
-LaTeX Warning: Citation `Blumenstock' on page 2 undefined on input line 31.
-
-
-LaTeX Warning: Citation `H.fu' on page 2 undefined on input line 31.
-
-
-LaTeX Warning: Citation `Yao2015' on page 2 undefined on input line 31.
-
-
-LaTeX Warning: Citation `Toba2014' on page 2 undefined on input line 31.
-
-
-LaTeX Warning: Citation `Ponzanelli2014a' on page 2 undefined on input line 31.
+LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 37.
 
 
 
-LaTeX Warning: Citation `Ravi2014' on page 2 undefined on input line 31.
+LaTeX Warning: Citation `Weimer2007' on page 2 undefined on input line 39.
 
 
-LaTeX Warning: Citation `Anderson2012' on page 2 undefined on input line 31.
+LaTeX Warning: Citation `Blumenstock' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `H.fu' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `Yao2015' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `Toba2014' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `Ponzanelli2014a' on page 2 undefined on input line 39.
+
+
+
+LaTeX Warning: Citation `Ravi2014' on page 2 undefined on input line 39.
+
+
+LaTeX Warning: Citation `Anderson2012' on page 2 undefined on input line 39.
 
 [2]
 
-LaTeX Warning: Citation `Kleinbaum2011' on page 3 undefined on input line 79.
+LaTeX Warning: Citation `Kleinbaum2011' on page 3 undefined on input line 87.
 
 [3]
 
-LaTeX Warning: Citation `Bland1998' on page 4 undefined on input line 81.
+LaTeX Warning: Citation `Bland1998' on page 4 undefined on input line 89.
 
 
-LaTeX Warning: Citation `Moore2010' on page 4 undefined on input line 83.
+LaTeX Warning: Citation `Moore2010' on page 4 undefined on input line 91.
 
 
-LaTeX Warning: Citation `Rodriguez2010' on page 4 undefined on input line 83.
+LaTeX Warning: Citation `Rodriguez2010' on page 4 undefined on input line 91.
 
 
-LaTeX Warning: Citation `Hammermeister1979' on page 4 undefined on input line 8
-3.
+LaTeX Warning: Citation `Hammermeister1979' on page 4 undefined on input line 9
+1.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 83.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 91.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 83.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 91.
 
 
-LaTeX Warning: Citation `Chen' on page 4 undefined on input line 85.
+LaTeX Warning: Citation `Chen' on page 4 undefined on input line 93.
 
 
-LaTeX Warning: Citation `find' on page 4 undefined on input line 85.
+LaTeX Warning: Citation `find' on page 4 undefined on input line 93.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 85.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 93.
 
 [4]
 
-LaTeX Warning: Citation `Grambsch1994' on page 5 undefined on input line 87.
+LaTeX Warning: Citation `Grambsch1994' on page 5 undefined on input line 95.
 
 
-Overfull \hbox (6.3075pt too wide) in paragraph at lines 89--90
+Overfull \hbox (6.3075pt too wide) in paragraph at lines 97--98
 []\T1/aer/m/n/10 To ob-tain pre-dicted sur-vival prob-a-bil-i-ties us-ing the m
 odel, the \T1/aer/m/it/10 pre-dict-SurvProb
  []
@@ -367,74 +368,74 @@ odel, the \T1/aer/m/it/10 pre-dict-SurvProb
 <times_dist.pdf, id=22, 578.16pt x 361.35pt>
 File: times_dist.pdf Graphic file (type pdf)
  <use times_dist.pdf>
-Package pdftex.def Info: times_dist.pdf used on input line 99.
+Package pdftex.def Info: times_dist.pdf used on input line 107.
 (pdftex.def)             Requested size: 578.15858pt x 361.34912pt.
 
 <kmcurve.pdf, id=23, 578.16pt x 361.35pt>
 File: kmcurve.pdf Graphic file (type pdf)
  <use kmcurve.pdf>
-Package pdftex.def Info: kmcurve.pdf used on input line 106.
+Package pdftex.def Info: kmcurve.pdf used on input line 114.
 (pdftex.def)             Requested size: 578.15858pt x 361.34912pt.
 
 ! Too many }'s.
-l.111 ...ll data). Of those questions, 4951 (63.8}
+l.119 ...ll data). Of those questions, 4951 (63.8}
                                                   \%) received an answer by ...
 You've closed more groups than you opened.
 Such booboos are generally harmless, so keep going.
 
 [5 <./times_dist.pdf>]
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 154--155
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 161--162
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 165--165
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 172--172
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 170--170
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 177--177
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 173--173
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 180--180
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 [6 <./kmcurve.pdf>] [7]
-Overfull \hbox (45.618pt too wide) in paragraph at lines 229--238
+Overfull \hbox (67.59767pt too wide) in paragraph at lines 237--246
  [][] 
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 252--252
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 259--259
 [][]| 
  []
 
 
-Underfull \hbox (badness 1014) in paragraph at lines 268--268
+Underfull \hbox (badness 1014) in paragraph at lines 275--275
 []\T1/aer/m/n/10 Whether or not the ques-tion's ti-tle
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 278--278
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 285--285
 [][]| 
  []
 
 
-Overfull \vbox (60.0pt too high) detected at line 287
+Overfull \vbox (60.0pt too high) detected at line 294
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 287--287
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 294--294
 [][]| 
  []
 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.287 ... of characters in a question's tags } & _
+l.294 ... of characters in a question's tags } & _
                                                    & -0.08 & 0.0457\\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -442,7 +443,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing { inserted.
 <to be read again> 
                    \unskip 
-l.287 ...f characters in a question's tags } & _ &
+l.294 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 A left brace was mandatory here, so I've put one in.
 You might want to delete and/or insert some corrections
@@ -452,7 +453,7 @@ so that I will find a matching right brace soon.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.287 ...f characters in a question's tags } & _ &
+l.294 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -460,7 +461,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.287 ...f characters in a question's tags } & _ &
+l.294 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -469,197 +470,116 @@ really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
 
-Overfull \vbox (36.0pt too high) detected at line 291
+Overfull \vbox (36.0pt too high) detected at line 298
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 291--291
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 298--298
 [][]| 
  []
 
 ! Extra alignment tab has been changed to \cr.
 <recently read> \endtemplate 
                              
-l.292   &
+l.299   &
           text\_length' & -0.36 & Nonlinear \\
 You have given more \span or & marks than there were
 in the preamble to the \halign or \valign now in progress.
 So I'll assume that you meant to type \cr instead.
 
 
-Overfull \hbox (8.7499pt too wide) in paragraph at lines 292--292
+Overfull \hbox (8.7499pt too wide) in paragraph at lines 299--299
 []\T1/aer/m/n/10 text_length'| 
  []
 
 
-Overfull \vbox (36.0pt too high) detected at line 296
+Overfull \vbox (36.0pt too high) detected at line 303
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 296--296
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 303--303
 [][]| 
  []
 
 
-Overfull \vbox (96.0pt too high) detected at line 301
+Overfull \vbox (96.0pt too high) detected at line 308
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 301--301
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 308--308
 [][]| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--303
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
 []\T1/aer/m/n/10 Nonlinear:
  []
 
 
-Overfull \hbox (58.65941pt too wide) in paragraph at lines 248--306
+Overfull \hbox (58.65941pt too wide) in paragraph at lines 255--312
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 139.17976pt on input line 306.
+LaTeX Warning: Float too large for page by 138.17976pt on input line 314.
 
 
 LaTeX Warning: Reference `table:ph_assumption' on page 8 undefined on input lin
-e 308.
+e 316.
 
 [8] [9]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.318 ...lysis, and may explain the model's low R^
-                                                  2 and discrimination indexes.
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.319 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-! LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.345 ...p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.345 ...p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.345 ...p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.345 ...p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 350--350
-[]\T1/aer/m/n/10 android
- []
-
-
-Underfull \hbox (badness 2359) in paragraph at lines 350--350
-\T1/aer/m/n/10 me fix my touch
- []
-
-
-Overfull \hbox (433.07376pt too wide) in paragraph at lines 345--353
+Overfull \hbox (98.21436pt too wide) in paragraph at lines 353--370
  [][] 
  []
 
 
-Overfull \hbox (4.72626pt too wide) in paragraph at lines 365--366
+Overfull \hbox (4.72626pt too wide) in paragraph at lines 382--383
 \T1/aer/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Game
  Con-sole, House-
  []
 
 [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 379--379
-[]\T1/aer/m/n/10 ``Frequently-used'' terms
+Underfull \hbox (badness 10000) in paragraph at lines 397--397
+\T1/aer/bx/n/10 among unan-swered
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 381--381
-[]\T1/aer/m/n/10 ``Frequently-used'' terms
- []
-
-
-Overfull \hbox (20.43306pt too wide) in paragraph at lines 377--385
+Overfull \hbox (20.43306pt too wide) in paragraph at lines 393--400
  [][] 
  []
 
-[12]
 
-LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 397.
+LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 414.
 
 
-LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 401.
+LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 418.
 
-[13] (./draft1.bbl) [14] (./draft1.aux)
+[12] [13] (./draft1.bbl) [14] (./draft1.aux)
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
- 2762 strings out of 492995
- 39809 string characters out of 6132704
+ 2780 strings out of 492995
+ 40004 string characters out of 6132704
  122914 words of memory out of 5000000
- 6263 multiletter control sequences out of 15000+600000
- 21466 words of font info for 41 fonts, out of 8000000 for 9000
+ 6273 multiletter control sequences out of 15000+600000
+ 25457 words of font info for 49 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,11n,25p,2010b,237s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,11n,25p,2010b,261s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/
-local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on draft1.pdf (14 pages, 185298 bytes).
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on draft1.pdf (14 pages, 211811 bytes).
 PDF statistics:
- 90 PDF objects out of 1000 (max. 8388607)
- 62 compressed objects within 1 object stream
+ 102 PDF objects out of 1000 (max. 8388607)
+ 71 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  15 words of extra memory for PDF output out of 10000 (max. 10000000)
 
