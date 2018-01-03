@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  2 JAN 2018 21:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  2 JAN 2018 22:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -403,62 +403,38 @@ Overfull \hbox (3.07423pt too wide) in paragraph at lines 173--173
  []
 
 [6 <./kmcurve.pdf>] [7]
-Overfull \hbox (2.02827pt too wide) in paragraph at lines 230--239
+Overfull \hbox (45.618pt too wide) in paragraph at lines 229--238
  [][] 
  []
 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.255 ...iated with response time. However, its R^
-                                                  2 statistic and discrimina...
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.256 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-Overfull \hbox (587.77617pt too wide) in paragraph at lines 255--256
-\T1/aer/m/n/10 sign-f-i-cantly as-so-ci-ated with re-sponse time. How-ever, its
- R$[]\OML/cmm/m/it/10 statisticanddiscriminationindexesareconsiderablylow:Metri
-csdidnotchangesignificantlyfromtrainingtotestsets; indicatingthatthemodelwasnot
-overfit:$ 
- []
-
-
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 265--265
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 252--252
 [][]| 
  []
 
 
-Underfull \hbox (badness 1014) in paragraph at lines 281--281
+Underfull \hbox (badness 1014) in paragraph at lines 268--268
 []\T1/aer/m/n/10 Whether or not the ques-tion's ti-tle
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 291--291
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 278--278
 [][]| 
  []
 
 
-Overfull \vbox (60.0pt too high) detected at line 300
+Overfull \vbox (60.0pt too high) detected at line 287
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 300--300
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 287--287
 [][]| 
  []
 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.300 ... of characters in a question's tags } & _
+l.287 ... of characters in a question's tags } & _
                                                    & -0.08 & 0.0457\\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -466,7 +442,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing { inserted.
 <to be read again> 
                    \unskip 
-l.300 ...f characters in a question's tags } & _ &
+l.287 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 A left brace was mandatory here, so I've put one in.
 You might want to delete and/or insert some corrections
@@ -476,7 +452,7 @@ so that I will find a matching right brace soon.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.300 ...f characters in a question's tags } & _ &
+l.287 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -484,7 +460,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing } inserted.
 <inserted text> 
                 }
-l.300 ...f characters in a question's tags } & _ &
+l.287 ...f characters in a question's tags } & _ &
                                                    -0.08 & 0.0457\\
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
@@ -493,68 +469,68 @@ really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
 
-Overfull \vbox (36.0pt too high) detected at line 304
+Overfull \vbox (36.0pt too high) detected at line 291
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 304--304
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 291--291
 [][]| 
  []
 
 ! Extra alignment tab has been changed to \cr.
 <recently read> \endtemplate 
                              
-l.305   &
+l.292   &
           text\_length' & -0.36 & Nonlinear \\
 You have given more \span or & marks than there were
 in the preamble to the \halign or \valign now in progress.
 So I'll assume that you meant to type \cr instead.
 
 
-Overfull \hbox (8.7499pt too wide) in paragraph at lines 305--305
+Overfull \hbox (8.7499pt too wide) in paragraph at lines 292--292
 []\T1/aer/m/n/10 text_length'| 
  []
 
 
-Overfull \vbox (36.0pt too high) detected at line 309
+Overfull \vbox (36.0pt too high) detected at line 296
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 309--309
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 296--296
 [][]| 
  []
 
 
-Overfull \vbox (96.0pt too high) detected at line 314
+Overfull \vbox (96.0pt too high) detected at line 301
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 314--314
+Overfull \hbox (14.22638pt too wide) in paragraph at lines 301--301
 [][]| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 315--316
+Underfull \hbox (badness 10000) in paragraph at lines 302--303
 []\T1/aer/m/n/10 Nonlinear:
  []
 
 
-Overfull \hbox (58.65941pt too wide) in paragraph at lines 261--319
+Overfull \hbox (58.65941pt too wide) in paragraph at lines 248--306
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 139.17976pt on input line 319.
+LaTeX Warning: Float too large for page by 139.17976pt on input line 306.
 
 
 LaTeX Warning: Reference `table:ph_assumption' on page 8 undefined on input lin
-e 321.
+e 308.
 
 [8] [9]
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.323 ...lysis, and may explain the model's low R^
+l.318 ...lysis, and may explain the model's low R^
                                                   2 and discrimination indexes.
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -562,7 +538,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.324 
+l.319 
       
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -574,7 +550,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.354 ...m}|p{3cm}|p{6cm}|{2cm}|{2cm}|{2cm}|{2cm}}
+l.345 ...p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -586,7 +562,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.354 ...m}|p{3cm}|p{6cm}|{2cm}|{2cm}|{2cm}|{2cm}}
+l.345 ...p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -598,7 +574,7 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.354 ...m}|p{3cm}|p{6cm}|{2cm}|{2cm}|{2cm}|{2cm}}
+l.345 ...p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -610,108 +586,53 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.354 ...m}|p{3cm}|p{6cm}|{2cm}|{2cm}|{2cm}|{2cm}}
+l.345 ...p{6cm} | {2cm} | {2cm} | {2cm} | {2cm} |}
                                                   
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Overfull \hbox (370.44786pt too wide) in paragraph at lines 354--361
- [][] 
- []
-
-
-! LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.368 ...m}|p{3cm}|p{6cm}|{2cm}|{2cm}|{2cm}|{2cm}}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.368 ...m}|p{3cm}|p{6cm}|{2cm}|{2cm}|{2cm}|{2cm}}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.368 ...m}|p{3cm}|p{6cm}|{2cm}|{2cm}|{2cm}|{2cm}}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: Illegal character in array arg.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.368 ...m}|p{3cm}|p{6cm}|{2cm}|{2cm}|{2cm}|{2cm}}
-                                                  
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 372--372
+Underfull \hbox (badness 10000) in paragraph at lines 350--350
 []\T1/aer/m/n/10 android
  []
 
 
-Underfull \hbox (badness 2359) in paragraph at lines 372--372
+Underfull \hbox (badness 2359) in paragraph at lines 350--350
 \T1/aer/m/n/10 me fix my touch
  []
 
 
-Overfull \hbox (365.83708pt too wide) in paragraph at lines 368--375
+Overfull \hbox (433.07376pt too wide) in paragraph at lines 345--353
  [][] 
  []
 
-LaTeX Font Info:    Try loading font information for TS1+aer on input line 384.
 
-(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/ts1aer.fd
-File: ts1aer.fd 
-)
-LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10> not available
-(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 384.
+Overfull \hbox (4.72626pt too wide) in paragraph at lines 365--366
+\T1/aer/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Game
+ Con-sole, House-
+ []
 
 [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 403--403
+Underfull \hbox (badness 10000) in paragraph at lines 379--379
 []\T1/aer/m/n/10 ``Frequently-used'' terms
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 405--405
+Underfull \hbox (badness 10000) in paragraph at lines 381--381
 []\T1/aer/m/n/10 ``Frequently-used'' terms
  []
 
 
-Overfull \hbox (20.43306pt too wide) in paragraph at lines 401--409
+Overfull \hbox (20.43306pt too wide) in paragraph at lines 377--385
  [][] 
  []
 
 [12]
 
-LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 432.
+LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 397.
 
 
-LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 440.
+LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 401.
 
 [13] (./draft1.bbl) [14] (./draft1.aux)
 
@@ -722,25 +643,23 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 2782 strings out of 492995
- 40249 string characters out of 6132704
- 122952 words of memory out of 5000000
- 6284 multiletter control sequences out of 15000+600000
- 17158 words of font info for 35 fonts, out of 8000000 for 9000
+ 2762 strings out of 492995
+ 39809 string characters out of 6132704
+ 122914 words of memory out of 5000000
+ 6263 multiletter control sequences out of 15000+600000
+ 21466 words of font info for 41 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  39i,11n,25p,2010b,237s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
-}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/l
-ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/lo
-cal/texlive/2017/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on draft1.pdf (14 pages, 183702 bytes).
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/
+local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on draft1.pdf (14 pages, 185298 bytes).
 PDF statistics:
- 95 PDF objects out of 1000 (max. 8388607)
- 66 compressed objects within 1 object stream
+ 90 PDF objects out of 1000 (max. 8388607)
+ 62 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  15 words of extra memory for PDF output out of 10000 (max. 10000000)
 
