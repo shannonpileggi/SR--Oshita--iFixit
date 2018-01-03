@@ -48,8 +48,8 @@ The majority of existing research has been focused on predicting question and an
 \centering
 \begin{tabular}{|p{10cm}|}
   \hline
-  Day of the week the question was posted \\ \hline
   Device category the question pertains to. Categories include: Android\/Other Phone, Apple Products, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle \\ \hline
+  If the question was posted on the weekend or on a weekday \\ \hline
   Whether or not the question's text contains any end punctuation marks (. ? !) \\ \hline
   Whether or not the question's text is in all lower case \\ \hline
   Whether or not the question's title contains at least one word that is considered ``frequently used'' among answered questions. See Appendix for a complete list of these terms. \\ \hline
@@ -253,62 +253,53 @@ Average performance metrics for test and training sets and in Table \ref{table:c
 % Final model on full data
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{|p{1.5cm}|p{6cm}|p{2.5cm}|p{2.5cm}|}
+\begin{tabular}{|p{1.5cm} p{4cm}| l | l | l |}
   \hline
- \textbf{Variable} & \textbf{Levels} & \textbf{Hazard Ratios} & \textbf{p-value} \\ 
+ \textbf{Variable} & & \textbf{Hazard Ratio (SE)} & \textbf{95\% CI} & \textbf{p-value}\\ \hline
+  \multirow{ 9 }{ 2 cm }{ Device Category } & Apple Product & 0.9346 (0.0476) & & <0.0001 \\ 
+  & Camera & -0.3199 (0.0476) & & \\ 
+  & Electronics & -0.0138 (0.0904) & & \\ 
+  & Game Console & 0.2458 (0.0784) & & \\ 
+  & Home & 0.3368 (0.0697) & & \\ 
+  & Other & -0.1304 (0.0555) & & \\ 
+  & PC & 0.2818 (0.0597) & & \\ 
+  & Tablet & -0.1566 (0.0815) & & \\ 
+  & Vehicle & 0.4056 (0.0695) & & \\ 
   \hline
-  \multirow{ 9 }{ 2 cm }{ Device Category } & Apple Product & 0.93 & \multirow{ 9 }{ 1.5cm }{ <0.0001 }\\ 
-  & Camera & -0.26 & \\ 
-  & Electronics & -0.08 &\\ 
-  & Game Console & 0.21 &\\ 
-  & Home & 0.39 &\\ 
-  & Other & -0.11 &\\ 
-  & PC & 0.43 &\\ 
-  & Tablet & -0.15 &\\ 
-  & Vehicle & 0.38 &\\
-  \hline
-  & Whether or not the user had been a member for less than one day before the question was posted & -0.10 & 0.0048 \\
-  \hline
-  & Whether or not the question's title contains terms considered to be frequently used among unanswered questions & -0.27 & <0.0001 \\ 
-  \hline
-  & Whether or not the question's title contains terms considered to be frequently used among answered questions & 0.05 & 0.2235\\ 
-  \hline
-  & Whether or not the question's title ended in a questionmark & 0.25 & <0.0001\\ 
-  \hline
-  & Whether or not the question's text contained at least one end punctuation mark & 0.03 & 0.5348\\ 
-  \hline
-  & Whether or not the question's text is in all lower case & -0.18 & 0.0052 \\ 
-  \hline
-  & Whether or not the user edited or added information to the question's text sometime after posting it & 0.28 & 0.0009 \\ 
-  \hline
-  & Whether or not the user made an effort to solve the problem on their own, prior to asking the question & -0.09 & 0.0137 \\ 
-  \hline
-  \multirow{ 6 }{ 2 cm }{ Day of the Week } & Monday & 0.01 & \multirow{ 6 }{ 1.5cm }{ 0.0004 }\\ 
-  & Saturday & -0.07 & \\ 
-  & Sunday & -0.11 & \\ 
-  & Thursday & 0.03 & \\ 
-  & Tuesday & 0.09 & \\ 
-  & Wednesday & 0.10 & \\ 
-  \hline
-  & Square root transformation of the average frequency ``score'' of a question's tags & 2.23 & 0.0020 \\ 
-  \hline
-  \multirow{ 3 }{ 2cm }{ Square root transformation of the average number of characters in a question's tags } & _ & -0.08 & 0.0457\\ 
-  & avg\_tag\_length' & 0.58 & Nonlinear \\ 
-  & avg\_tag\_length'' & -1.52 & 0.0804\\ 
-  \hline
-  \multirow{ 4 }{ 2cm }{Log transformation of the number of characters in a question's text} & text length & -0.08 & 0.4344
-  & text\_length' & -0.36 & Nonlinear \\ 
-  & text\_length'' & 2.39 & 0.4578 \\
-  & text\_length''' & -3.69 & \\ 
-  \hline
-  \multirow{ 4 }{ 2cm }{ Square root transformation of the number of characters in a question's device title} & device length & -0.07 & 0.2790 \\
-  & device\_length' & 0.18 & Nonlinear \\ 
-  & device\_length'' & -0.27 & 0.4185\\ 
-  & device\_length''' & 0.21 & \\ 
-  \hline
-  \multirow{ 2 }{ 2cm }{ Square root transformation of the ratio of number of line breaks to number of characters in a question's text} & line break & 0.12 & 0.3569 \\
-  & newline\_ratio' & 0.36 & Nonlinear: 0.6191 \\ 
-   \hline
+  \multicolumn{ 2 }{ |l| }{ Weekend or weekday } & -0.1334 (0.0331) & & <0.0001 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's text contained at least one end punctuation mark } & 0.0247 (0.0499) & & 0.6204 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's text is in all lower case } & -0.1770 (0.0645) & & 0.0061 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's title contains terms considered to be frequently used among answered questions } & 0.0475 (0.0422) & & 0.2604 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's title contains terms considered to be frequently used among unanswered questions } & -0.2808 (0.0340) & & <0.0001 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's title ended in a questionmark } & 0.2571 (0.0332) & & <0.0001 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the user edited or added information to the question's text sometime after posting it } & 0.2983 (0.0857) & & 0.0005 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the user had been a member for less than one day before the question was posted } & -0.1069 (0.0364) & & 0.0033 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the user made an effort to solve the problem on their own, prior to asking the question } & -0.0724 (0.0362) & & 0.0453 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Square root of the average frequency score of a question's tags } & 2.2609 (0.7196) & & 0.0017 \\ \hline
+  \multicolumn{ 2 }{ |p{5.5cm}| }{ Square root of the average tag length } & -0.0814 (0.0309) & & \\
+  & '' & 0.5945 (0.2661) & & \\
+  & ''' & -1.5879 (0.7231) & & \\
+  
+  
+  
+
+  % \multirow{ 3 }{ 2cm }{ Square root of the average tag length } & _ & -0.08 & 0.0457\\ 
+  % & avg\_tag\_length' & 0.58 & Nonlinear \\ 
+  % & avg\_tag\_length'' & -1.52 & 0.0804\\ 
+  % \hline
+  % \multirow{ 4 }{ 2cm }{Log transformation of the number of characters in a question's text} & text length & -0.08 & 0.4344
+  % & text\_length' & -0.36 & Nonlinear \\ 
+  % & text\_length'' & 2.39 & 0.4578 \\
+  % & text\_length''' & -3.69 & \\ 
+  % \hline
+  % \multirow{ 4 }{ 2cm }{ Square root transformation of the number of characters in a question's device title} & device length & -0.07 & 0.2790 \\
+  % & device\_length' & 0.18 & Nonlinear \\ 
+  % & device\_length'' & -0.27 & 0.4185\\ 
+  % & device\_length''' & 0.21 & \\ 
+  % \hline
+  % \multirow{ 2 }{ 2cm }{ Square root transformation of the ratio of number of line breaks to number of characters in a question's text} & line break & 0.12 & 0.3569 \\
+  % & newline\_ratio' & 0.36 & Nonlinear: 0.6191 \\ 
+  %  \hline
 \end{tabular} 
 \caption{Coefficients for predictors in the final model} 
 \label{table:coefficients}
