@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 JAN 2018 14:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 JAN 2018 14:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -414,8 +414,8 @@ Overfull \hbox (14.22638pt too wide) in paragraph at lines 259--259
  []
 
 
-Underfull \hbox (badness 2334) in paragraph at lines 279--279
-[]\T1/aer/m/n/10 Square root of the av-er-age tag
+Overfull \hbox (6.77783pt too wide) in paragraph at lines 279--279
+[][]| 
  []
 
 
@@ -476,7 +476,7 @@ usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></
 usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
 r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/l
 ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on draft1.pdf (14 pages, 211350 bytes).
+Output written on draft1.pdf (14 pages, 211347 bytes).
 PDF statistics:
  102 PDF objects out of 1000 (max. 8388607)
  71 compressed objects within 1 object stream
