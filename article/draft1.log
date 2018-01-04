@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 JAN 2018 14:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 JAN 2018 20:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -30,29 +30,13 @@ Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
 \multirow@dima=\skip44
 \bigstrutjot=\dimen103
 )
-(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Sweave.sty
-Package: Sweave 
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
-Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks14
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
-File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
-)
-Package graphics Info: Driver file: pdftex.def on input line 99.
+Package color Info: Driver file: pdftex.def on input line 147.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2017/01/12 v0.06k Graphics/color for pdfTeX
@@ -65,8 +49,44 @@ Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count88
 ))
-\Gin@req@height=\dimen104
-\Gin@req@width=\dimen105
+(/usr/local/texlive/2017/texmf-dist/tex/latex/soul/soul.sty
+Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
+\SOUL@word=\toks14
+\SOUL@lasttoken=\toks15
+\SOUL@cmds=\toks16
+\SOUL@buffer=\toks17
+\SOUL@token=\toks18
+\SOUL@spaceskip=\skip45
+\SOUL@ttwidth=\dimen104
+\SOUL@uldp=\dimen105
+\SOUL@ulht=\dimen106
+)
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Sweave.sty
+Package: Sweave 
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+)
+\Gin@req@height=\dimen107
+\Gin@req@width=\dimen108
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2008/02/07
@@ -186,39 +206,39 @@ File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 )))) (./draft1.aux)
 \openout1 = `draft1.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 4.
-LaTeX Font Info:    ... okay on input line 4.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 4.
-LaTeX Font Info:    ... okay on input line 4.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 4.
-LaTeX Font Info:    ... okay on input line 4.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 4.
-LaTeX Font Info:    ... okay on input line 4.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 4.
-LaTeX Font Info:    ... okay on input line 4.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 4.
-LaTeX Font Info:    ... okay on input line 4.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 4.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 4.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 5.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 5.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    ... okay on input line 5.
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count92
-\scratchdimen=\dimen106
+\scratchdimen=\dimen109
 \scratchbox=\box27
 \nofMPsegments=\count93
 \nofMParguments=\count94
-\everyMPshowfont=\toks15
+\everyMPshowfont=\toks20
 \MPscratchCnt=\count95
-\MPscratchDim=\dimen107
+\MPscratchDim=\dimen110
 \MPnumerator=\count96
 \makeMPintoPDFobject=\count97
-\everyMPtoPDFconversion=\toks16
+\everyMPtoPDFconversion=\toks21
 ) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -269,98 +289,98 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 (./draft1-concordance.tex)
-LaTeX Info: Redefining \bfseries on input line 8.
+LaTeX Info: Redefining \bfseries on input line 9.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 17.
+(Font)              <7> on input line 18.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 17.
+(Font)              <5> on input line 18.
  [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
-LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 37.
+LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 38.
 
 
-LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 37.
+LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 38.
 
 
-LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 37.
+LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 38.
 
 
-LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 37.
+LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 38.
 
 
-LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 37.
-
-
-
-LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 37.
+LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 38.
 
 
 
-LaTeX Warning: Citation `Weimer2007' on page 2 undefined on input line 39.
-
-
-LaTeX Warning: Citation `Blumenstock' on page 2 undefined on input line 39.
-
-
-LaTeX Warning: Citation `H.fu' on page 2 undefined on input line 39.
-
-
-LaTeX Warning: Citation `Yao2015' on page 2 undefined on input line 39.
-
-
-LaTeX Warning: Citation `Toba2014' on page 2 undefined on input line 39.
-
-
-LaTeX Warning: Citation `Ponzanelli2014a' on page 2 undefined on input line 39.
+LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 38.
 
 
 
-LaTeX Warning: Citation `Ravi2014' on page 2 undefined on input line 39.
+LaTeX Warning: Citation `Weimer2007' on page 2 undefined on input line 40.
 
 
-LaTeX Warning: Citation `Anderson2012' on page 2 undefined on input line 39.
+LaTeX Warning: Citation `Blumenstock' on page 2 undefined on input line 40.
+
+
+LaTeX Warning: Citation `H.fu' on page 2 undefined on input line 40.
+
+
+LaTeX Warning: Citation `Yao2015' on page 2 undefined on input line 40.
+
+
+LaTeX Warning: Citation `Toba2014' on page 2 undefined on input line 40.
+
+
+LaTeX Warning: Citation `Ponzanelli2014a' on page 2 undefined on input line 40.
+
+
+
+LaTeX Warning: Citation `Ravi2014' on page 2 undefined on input line 40.
+
+
+LaTeX Warning: Citation `Anderson2012' on page 2 undefined on input line 40.
 
 [2]
 
-LaTeX Warning: Citation `Kleinbaum2011' on page 3 undefined on input line 87.
+LaTeX Warning: Citation `Kleinbaum2011' on page 3 undefined on input line 88.
 
 [3]
 
-LaTeX Warning: Citation `Bland1998' on page 4 undefined on input line 89.
+LaTeX Warning: Citation `Bland1998' on page 4 undefined on input line 90.
 
 
-LaTeX Warning: Citation `Moore2010' on page 4 undefined on input line 91.
+LaTeX Warning: Citation `Moore2010' on page 4 undefined on input line 92.
 
 
-LaTeX Warning: Citation `Rodriguez2010' on page 4 undefined on input line 91.
+LaTeX Warning: Citation `Rodriguez2010' on page 4 undefined on input line 92.
 
 
 LaTeX Warning: Citation `Hammermeister1979' on page 4 undefined on input line 9
-1.
+2.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 91.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 92.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 91.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 92.
 
 
-LaTeX Warning: Citation `Chen' on page 4 undefined on input line 93.
+LaTeX Warning: Citation `Chen' on page 4 undefined on input line 94.
 
 
-LaTeX Warning: Citation `find' on page 4 undefined on input line 93.
+LaTeX Warning: Citation `find' on page 4 undefined on input line 94.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 93.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 94.
 
 [4]
 
-LaTeX Warning: Citation `Grambsch1994' on page 5 undefined on input line 95.
+LaTeX Warning: Citation `Grambsch1994' on page 5 undefined on input line 96.
 
 
-Overfull \hbox (6.3075pt too wide) in paragraph at lines 97--98
+Overfull \hbox (6.3075pt too wide) in paragraph at lines 98--99
 []\T1/aer/m/n/10 To ob-tain pre-dicted sur-vival prob-a-bil-i-ties us-ing the m
 odel, the \T1/aer/m/it/10 pre-dict-SurvProb
  []
@@ -368,118 +388,124 @@ odel, the \T1/aer/m/it/10 pre-dict-SurvProb
 <times_dist.pdf, id=22, 578.16pt x 361.35pt>
 File: times_dist.pdf Graphic file (type pdf)
  <use times_dist.pdf>
-Package pdftex.def Info: times_dist.pdf used on input line 107.
+Package pdftex.def Info: times_dist.pdf used on input line 108.
 (pdftex.def)             Requested size: 578.15858pt x 361.34912pt.
 
 <kmcurve.pdf, id=23, 578.16pt x 361.35pt>
 File: kmcurve.pdf Graphic file (type pdf)
  <use kmcurve.pdf>
-Package pdftex.def Info: kmcurve.pdf used on input line 114.
+Package pdftex.def Info: kmcurve.pdf used on input line 115.
 (pdftex.def)             Requested size: 578.15858pt x 361.34912pt.
 
 ! Too many }'s.
-l.119 ...ll data). Of those questions, 4951 (63.8}
+l.120 ...ll data). Of those questions, 4951 (63.8}
                                                   \%) received an answer by ...
 You've closed more groups than you opened.
 Such booboos are generally harmless, so keep going.
 
 [5 <./times_dist.pdf>]
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 161--162
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 162--163
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 172--172
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 173--173
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 178--178
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 179--179
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 181--181
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 182--182
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 [6 <./kmcurve.pdf>] [7]
-Overfull \hbox (67.59767pt too wide) in paragraph at lines 238--247
+Overfull \hbox (67.59767pt too wide) in paragraph at lines 239--248
  [][] 
  []
 
 
-Overfull \hbox (14.22638pt too wide) in paragraph at lines 259--259
+Overfull \hbox (80.35992pt too wide) in paragraph at lines 291--291
 [][]| 
  []
 
 
-Overfull \hbox (6.77783pt too wide) in paragraph at lines 279--279
-[][]| 
- []
-
-
-Overfull \hbox (39.63875pt too wide) in paragraph at lines 256--304
+Overfull \hbox (105.93428pt too wide) in paragraph at lines 257--294
  [][] 
  []
 
 
-LaTeX Warning: Reference `table:ph_assumption' on page 8 undefined on input lin
-e 308.
+LaTeX Warning: Float too large for page by 28.67978pt on input line 296.
 
 [8] [9]
-Overfull \hbox (98.21436pt too wide) in paragraph at lines 345--362
+LaTeX Font Info:    Try loading font information for TS1+aer on input line 315.
+
+
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/ts1aer.fd
+File: ts1aer.fd 
+)
+LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10> not available
+(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 315.
+
+[10]
+Overfull \hbox (98.21436pt too wide) in paragraph at lines 357--374
  [][] 
  []
 
 
-Overfull \hbox (4.72626pt too wide) in paragraph at lines 374--375
+Overfull \hbox (4.72626pt too wide) in paragraph at lines 386--387
 \T1/aer/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Game
  Con-sole, House-
  []
 
-[10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 389--389
+[11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 401--401
 \T1/aer/bx/n/10 among unan-swered
  []
 
 
-Overfull \hbox (20.43306pt too wide) in paragraph at lines 385--392
+Overfull \hbox (20.43306pt too wide) in paragraph at lines 397--404
  [][] 
  []
 
 
-LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 406.
+LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 418.
 
 
-LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 410.
+LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 422.
 
-[12] [13] (./draft1.bbl) [14] (./draft1.aux)
+[13] (./draft1.bbl) [14] (./draft1.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 2780 strings out of 492995
- 40004 string characters out of 6132704
- 111914 words of memory out of 5000000
- 6273 multiletter control sequences out of 15000+600000
- 25457 words of font info for 49 fonts, out of 8000000 for 9000
+ 3017 strings out of 492995
+ 43252 string characters out of 6132704
+ 122859 words of memory out of 5000000
+ 6496 multiletter control sequences out of 15000+600000
+ 26105 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,10n,25p,2010b,261s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/l
-ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on draft1.pdf (14 pages, 211347 bytes).
+ 39i,11n,25p,2010b,309s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
+}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/lo
+cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/loc
+al/texlive/2017/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on draft1.pdf (14 pages, 219048 bytes).
 PDF statistics:
- 102 PDF objects out of 1000 (max. 8388607)
- 71 compressed objects within 1 object stream
+ 107 PDF objects out of 1000 (max. 8388607)
+ 75 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  15 words of extra memory for PDF output out of 10000 (max. 10000000)
 

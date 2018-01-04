@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{multirow}
+\usepackage{color,soul}
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 
@@ -286,10 +287,10 @@ Average performance metrics for test and training sets and in Table \ref{table:c
 % Final model on full data
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{|p{1.5cm} p{4cm}| l | l | l |}
+\begin{tabular}{|p{3.5cm} p{4cm}| c | l | c |}
   \hline
- \textbf{Variable} & & \textbf{Hazard Ratio (SE)} & \textbf{95\% CI} & \textbf{p-value}\\ \hline
-  \multirow{ 9 }{ 2 cm }{ Device Category } & Apple Product & 0.9346 (0.0476) & & <0.0001 \\ 
+ \textbf{Variable} & & \textbf{Coefficient (SE)} & \textbf{95\% CI} & \textbf{p-value} \\ \hline
+  \multirow{ 9 }{ 3.5 cm }{ Device Category } & Apple Product & \hl{0.9346} (0.0476) & & 0.000000e+00 \\ 
   & Camera & -0.3199 (0.0476) & & \\ 
   & Electronics & -0.0138 (0.0904) & & \\ 
   & Game Console & 0.2458 (0.0784) & & \\ 
@@ -299,46 +300,57 @@ Average performance metrics for test and training sets and in Table \ref{table:c
   & Tablet & -0.1566 (0.0815) & & \\ 
   & Vehicle & 0.4056 (0.0695) & & \\ 
   \hline
-  \multicolumn{ 2 }{ |l| }{ Weekend or weekday } & -0.1334 (0.0331) & & <0.0001 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's text contained at least one end punctuation mark } & 0.0247 (0.0499) & & 0.6204 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's text is in all lower case } & -0.1770 (0.0645) & & 0.0061 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's title contains terms considered to be frequently used among answered questions } & 0.0475 (0.0422) & & 0.2604 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's title contains terms considered to be frequently used among unanswered questions } & -0.2808 (0.0340) & & <0.0001 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the question's title ended in a questionmark } & 0.2571 (0.0332) & & <0.0001 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the user edited or added information to the question's text sometime after posting it } & 0.2983 (0.0857) & & 0.0005 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the user had been a member for less than one day before the question was posted } & -0.1069 (0.0364) & & 0.0033 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Whether or not the user made an effort to solve the problem on their own, prior to asking the question } & -0.0724 (0.0362) & & 0.0453 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ Square root of the average frequency score of a question's tags } & 2.2609 (0.7196) & & 0.0017 \\ \hline
-  \multicolumn{ 2 }{ |p{5.5cm}| }{ \multirow{3}{*}{Square root of the average tag length} } & -0.0814 (0.0309) & & \\
+  \multicolumn{ 2 }{ |l| }{ Weekend or weekday } & \hl{-0.1334} (0.0331) & & 5.525114e-05 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Whether or not the question's text contained at least one end punctuation mark } & 0.0247 (0.0499) & & 6.204270e-01 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Whether or not the question's text is in all lower case } & -0.1770 (0.0645) & & 6.065638e-03 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Whether or not the question's title contains terms considered to be frequently used among answered questions } & 0.0475 (0.0422) & & 2.604130e-01 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Whether or not the question's title contains terms considered to be frequently used among unanswered questions } & \hl{-0.2808} (0.0340) & & 1.110223e-16 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Whether or not the question's title ended in a questionmark } & 0.2571 (0.0332) & & 9.880985e-15 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Whether or not the user edited or added information to the question's text sometime after posting it } & 0.2983 (0.0857) & & 5.027830e-04 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Whether or not the user had been a member for less than one day before the question was posted } & -0.1069 (0.0364) & & 3.300423e-03 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Whether or not the user made an effort to solve the problem on their own, prior to asking the question } & -0.0724 (0.0362) & & 4.534803e-02 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ Square root of the average frequency score of a question's tags } & 2.2609 (0.7196) & & 1.679666e-03 \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ \multirow{3}{*}{Square root of the average tag length} } & -0.0814 (0.0309) & & \\
   & & 0.5945 (0.2661) & & \\
   & & -1.5879 (0.7231) & & \\ \hline
-  
-  
-  
-
-  % \multirow{ 3 }{ 2cm }{ Square root of the average tag length } & _ & -0.08 & 0.0457\\ 
-  % & avg\_tag\_length' & 0.58 & Nonlinear \\ 
-  % & avg\_tag\_length'' & -1.52 & 0.0804\\ 
-  % \hline
-  % \multirow{ 4 }{ 2cm }{Log transformation of the number of characters in a question's text} & text length & -0.08 & 0.4344
-  % & text\_length' & -0.36 & Nonlinear \\ 
-  % & text\_length'' & 2.39 & 0.4578 \\
-  % & text\_length''' & -3.69 & \\ 
-  % \hline
-  % \multirow{ 4 }{ 2cm }{ Square root transformation of the number of characters in a question's device title} & device length & -0.07 & 0.2790 \\
-  % & device\_length' & 0.18 & Nonlinear \\ 
-  % & device\_length'' & -0.27 & 0.4185\\ 
-  % & device\_length''' & 0.21 & \\ 
-  % \hline
-  % \multirow{ 2 }{ 2cm }{ Square root transformation of the ratio of number of line breaks to number of characters in a question's text} & line break & 0.12 & 0.3569 \\
-  % & newline\_ratio' & 0.36 & Nonlinear: 0.6191 \\ 
-  %  \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ \multirow{4}{*}{Log of text length} } & -0.0619 (0.1856) & & \\
+  & & -0.5052 (0.8452) & & \\
+  & & 2.9957 (4.1706) & & \\
+  & & -4.4755 (6.8975) & & \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ \multirow{4}{*}{Log of device title length} } & -0.0488 (0.0714) & & \\
+  & & -0.4348 (0.9724) & & \\
+  & & 1.2208 (2.3149) & & \\
+  & & -1.3199 (2.3255) & & \\ \hline
+  \multicolumn{ 2 }{ |p{7.5cm}| }{ \multirow{2}{*}{Square root of the ratio of the number of line breaks to text length} } & -0.0076 (0.4776) & & \\
+  & & 0.4345 (0.7265) & & \\ \hline
 \end{tabular} 
 \caption{Coefficients for predictors in the final model} 
 \label{table:coefficients}
 \end{table}
 
-Assessing the proportional hazards assumption indicated that several predictors were in violation, results can be found in Table \ref{table:ph_assumption}. Final model statistics and parameter coefficients are in Table \ref{table:coefficients}.  Individual predictors found to be significant (alpha = 0.001) are: device category, whether or not the question's text contains ``frequently-used'' terms among unanswered questions, whether or not the questions title ends in a questionmark, whether or not the user updated the question after posting it. 
+% Final model statistics
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{| r | r |}
+  \hline
+  \textbf{LR} & 1266.073 \\ \hline
+  \textbf{p-value} & 0 \\ \hline
+  \textbf{$R^2$} & 0.151 \\ \hline
+  \textbf{\textit{Dxy}} & 0.268 \\ \hline
+\end{tabular}
+\caption{Final model statistics} 
+\label{table:final model}
+\end{table}
+
+Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. Interpretations of the coefficients highlighted above:
+
+\begin{itemize}
+  \item The estimated hazard of receiving an answer is 154.6\% (95\% CI (131.9\%, 179.5\%)) higher for questions pertaining to Apple products than the hazard for questions about Android and Other phones, controlling for all other predictors.
+  \item The estimated hazard of receiving an answer for questions posted on the weekend is 12.5\% (95\% CI (6.6\%, 18.0\%)) lower than the hazard for questions posted on a weekday, controlling for all other predictors.
+  \item The estimated hazard of receiving an answer is 24.5\% (95\% CI (19.3\%, 29.3\%)) lower for questions with titles that contain at least one word considered to be frequently-used among unanswered questions, than the hazard for questions with titles that do not, controlling for all other predictors. 
+\end{itemize}
+
+See Table \ref{table:coefficients} for the full list of model coefficients. Table \ref{table:final model} displays statistics for the final model. 
 
 %===================================================================================================
 %===================================================================================================
