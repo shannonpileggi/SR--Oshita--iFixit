@@ -21,9 +21,9 @@ library(rms); library(survival); library(ggplot2); library(dplyr)
 ### Distribution of answer times
 
 ```{r}
-x$Answered <- NA
-x$Answered[x$answered == 1] <- "Answered"
-x$Answered[x$answered == 0] <- "Unanswered"
+# x$Answered <- NA
+# x$Answered[x$answered == 1] <- "Answered"
+# x$Answered[x$answered == 0] <- "Unanswered"
 
 ggplot(x, aes(x = time_until_answer, fill = Answered)) +
   geom_histogram(bins = 15, alpha = 0.5, position = "identity") + 
