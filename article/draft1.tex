@@ -390,7 +390,7 @@ This variable was created to investigate if run-on sentences, sentences with no 
 
 \subsubsection*{8.2.3 Whether or not the question's title contains terms considered to by frequently-used among answered/unanswered questions}
 
-These variables were created based on the hypothesis that certain question topics are more popular among the answering community, and that questions concerning these topics might receive an answer faster than questions that do not. Similarly, certain topics might be unpopular, and questions pertaining to those topics might receive answers slower than those that do not (cite).
+These variables were created to investigate if questions pertaining to popular topics receive answers faster than questions that do not. Similarly, another variable was created to investigate if questions pertaining to unpopular topics receive answers slower than qustions that do not. This variable was created based off of methods from \cite{Correa2013} and \cite{Ravi2014}.
 
 To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the frequency, or proportion of times those words occurred among all answered questions' titles. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in more than 1\% of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies, or proportions of times a word occurs, was assessed. The ratio was calculated as the proportion of time a word occured among answered questions, to the proportion of times a word occured in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and the device categories, every word that matched a device name was removed from the lists. The resulting list for answered questions contained 111 words. The list for unanswered questions contained 32 words. Lists can be found in Table \ref{table:frequent_terms}
 
@@ -412,37 +412,37 @@ To create the variables, the data was separated between answered and unanswered 
 
 \subsubsection*{8.2.4 Whether or not the question's title ended in a question mark}
 
-This variable was created based on the hypothesis that questions with titles in the form of questions receive answers faster than those that do not.
+This variable was created to investigate if questions with titles in the form of questions receive answers faster than those that do not \citep{Bhat2014}. 
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.5 Whether or not the user made an effort to solve the problem on their own, prior to asking the question}
 
-Logical variable indicating true if the asker included words in the question's text that indicate prior effort or research was done before asking the question (e.g. ``tried'', ``attempted'', ``tested''). This variable was created based off of findings from \cite{Bhat2014}. 
+Logical variable indicating true if the asker included words in the question's text that indicate that prior effort was made to find the solution to the question before posting. Words searched for include: tried, searched, researched, tested, replaced, used, checked, investigated, considered, measured, attempted, inspected, fitted. This variable was created based off of findings and methods from \cite{Bhat2014} \cite{Harper2008}. 
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.6 Average frequency ``score'' of a question's tags}
 
-This variable was created to investigate the idea that some tags are more ``popular'', or widely used than other tags, and that including such tags might increase the likelihood of that question receiving an answer faster. This variable is the average frequency, or proportion of times a question's tags appear in all of the data set. If a question has a higher average, than at least one of it's tags are frequently used. This variable was created based off of findings from \cite{Bhat2014}. 
+This variable was created to investigate if including popular or widely-used tags in a question lead to faster response times. This variable is the average frequency, or proportion of times a question's tags appear in all of the data set. If a question has a higher average, than at least one of it's tags are frequently used. This variable was created based off of findings from \cite{Bhat2014}. 
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.7 Average number of characters in a question's tags}
 
-This variable, similar to the device-length variable, was created to capture when a user correctly or incorrectly used the tagging system. For example, question 390989 included the tag tag: “i need to repair the headset because i can not find the bluetoot”, which is 64 characters. Question 410254 includes tags "sound", "sound driver" and "speaker" and has an average of 8 characters per tag. It is hypothesized that users who correctly define tags, as with the latter user, receive answers quicker than the former. 
+This variable was created to capture when a user correctly or incorrectly used the tagging system. For example, question 390989 included the tag tag: “i need to repair the headset because i can not find the bluetoot”, which is 64 characters. Question 410254 includes tags "sound", "sound driver" and "speaker" and has an average of 8 characters per tag. It is hypothesized that questions with correctly defined tags, as with the latter example, have faster response times.
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.8 Number of characters in the user-defined device title}
 
-This variable was included to capture when a user incorrectly defines the device name. For example, the device variable for question 390271 is, “Turtle Beach Ear Force Xmy grandson chewed through the wire while we was playing it's brand-new is there anyway I can have it fixedO One”, and is 136 characters long. 11 questions in the data also did not include any device title. This variable was created based on the intuition that users who incorrectly define their devices, or do not include any device title, make it difficult for the answering community to discern the question's topic, and thus have longer answer times or remain unanswered.
+This variable was included to capture when a user incorrectly defines the device name. For example, the device variable for question 390271 is, “Turtle Beach Ear Force Xmy grandson chewed through the wire while we was playing it's brand-new is there anyway I can have it fixedO One”, and is 136 characters long. 11 questions in the data also did not include any device title. This variable was created to investigate if questions with incorrectly defined device names make it difficult for the answering community to discern the question's topic, and thus have longer response times or remain unanswered. 
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.9 Ratio of the number of line breaks to the number of characters in a question's text}
 
-This variable was based on the hypothesis that question's that include line breaks in the text are generally easier to read than questions that don't include any, and thus have faster answer times. 
+This variable was based on the hypothesis that questions that include line breaks in the text are easier to read than questions that don't include any, and thus have shorter response times. 
 
 % ------------------------------------------------------------------------
 
