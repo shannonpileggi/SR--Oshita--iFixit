@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 JAN 2018 20:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 JAN 2018 22:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -414,78 +414,79 @@ Overfull \hbox (3.07423pt too wide) in paragraph at lines 173--173
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 179--179
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 178--178
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 182--182
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 181--181
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
 [6 <./kmcurve.pdf>] [7]
-Overfull \hbox (67.59767pt too wide) in paragraph at lines 239--248
+Overfull \hbox (67.59767pt too wide) in paragraph at lines 238--247
  [][] 
  []
 
 
-Overfull \hbox (80.35992pt too wide) in paragraph at lines 291--291
+Overfull \hbox (80.35992pt too wide) in paragraph at lines 290--290
 [][]| 
  []
 
 
-Overfull \hbox (105.93428pt too wide) in paragraph at lines 257--294
+Overfull \hbox (105.93428pt too wide) in paragraph at lines 256--293
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 28.67978pt on input line 296.
+LaTeX Warning: Float too large for page by 28.67978pt on input line 295.
 
 [8] [9]
-LaTeX Font Info:    Try loading font information for TS1+aer on input line 315.
+LaTeX Font Info:    Try loading font information for TS1+aer on input line 314.
 
 
 (/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/ts1aer.fd
 File: ts1aer.fd 
 )
 LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10> not available
-(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 315.
+(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 314.
 
 [10]
-Overfull \hbox (98.21436pt too wide) in paragraph at lines 357--374
+Overfull \hbox (98.21436pt too wide) in paragraph at lines 352--369
  [][] 
  []
 
 
-Overfull \hbox (4.72626pt too wide) in paragraph at lines 386--387
+Overfull \hbox (4.72626pt too wide) in paragraph at lines 381--382
 \T1/aer/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Game
  Con-sole, House-
  []
 
 [11] [12]
-Underfull \hbox (badness 10000) in paragraph at lines 401--401
+Underfull \hbox (badness 10000) in paragraph at lines 404--404
 \T1/aer/bx/n/10 among unan-swered
  []
 
 
-Overfull \hbox (20.43306pt too wide) in paragraph at lines 397--404
+Overfull \hbox (20.43306pt too wide) in paragraph at lines 400--407
  [][] 
  []
 
+[13]
 
-LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 418.
+LaTeX Warning: Citation `Bhat2014' on page 14 undefined on input line 421.
 
 
-LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 422.
+LaTeX Warning: Citation `Bhat2014' on page 14 undefined on input line 427.
 
-[13] (./draft1.bbl) [14] (./draft1.aux)
+[14] (./draft1.bbl) [15] (./draft1.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
  3017 strings out of 492995
- 43252 string characters out of 6132704
+ 43253 string characters out of 6132704
  122859 words of memory out of 5000000
  6496 multiletter control sequences out of 15000+600000
  26105 words of font info for 51 fonts, out of 8000000 for 9000
@@ -502,10 +503,10 @@ sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
 /local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/lo
 cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/loc
 al/texlive/2017/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on draft1.pdf (14 pages, 219048 bytes).
+Output written on draft1.pdf (15 pages, 220390 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
- 75 compressed objects within 1 object stream
+ 110 PDF objects out of 1000 (max. 8388607)
+ 77 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  15 words of extra memory for PDF output out of 10000 (max. 10000000)
 

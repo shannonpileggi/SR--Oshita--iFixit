@@ -17,7 +17,7 @@
 
 \section*{Abstract}
 
-Community-driven online question and answer forums (CQA) contain an expansive amount of crowd-sourced knowledge. Thousands of questions and answers are posted everyday. One such example of a CQA is iFixit's \textit{Answers} forum. This forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users. A reliable measure of the health of these CQAs is question response time. Fast response times enhance user engagement and satisfaction and increase web traffic. This paper presents a survival analysis of the time until a question receives its first answer. A Cox proportional hazards model was developed to predict the survival probability of a question, or the probability that a question receives an answer before a certain time. Though several predictors were signficant, the model's predictive accuracy was low ($R^2 = 0.15$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = 2.56, 95\% CI = (2.31, 2.82))) and factors related to the question's title (e.g., whether or not it was phrased as a question (HR = 1.31, 95\% CI = (1.22, 1.41))). Future studies can investigate if factors identified as signifcant in this analysis can be generalized to other CQAs. 
+Community-driven online question and answer forums (CQA) contain an expansive amount of crowd-sourced knowledge. Thousands of questions and answers are posted everyday. One such example of a CQA is iFixit's \textit{Answers} forum. This forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users. A reliable measure of the health of these CQAs is question response time. Fast response times enhance user engagement and satisfaction and increase web traffic. This paper presents a survival analysis of the time until a question receives its first answer. A Cox proportional hazards model was developed to predict the survival probability of a question, or the probability that a question receives an answer before a certain time. Though several predictors were signficant, the model's predictive accuracy was low ($R^2 = 0.15$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = 2.55, 95\% CI = (2.32, 2.80))), factors related to the question's title (e.g., whether or not it was phrased as a question (HR = 1.29, 95\% CI = (1.21, 1.38))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = 0.88, 95\% CI = (8.20, 9.34))). Future studies can investigate if factors identified as signifcant in this analysis can be generalized to other CQAs. 
 
 %===================================================================================================
 %===================================================================================================
@@ -100,7 +100,7 @@ To obtain predicted survival probabilities using the model, the \textit{predictS
 %===================================================================================================
 %===================================================================================================
 
-\section*{5. Results}
+\section*{5. Results and Discussion}
 
 
 % Distribution of answer times
@@ -174,7 +174,6 @@ To obtain predicted survival probabilities using the model, the \textit{predictS
   \multicolumn{ 2 }{ |l| }{ \textbf{*}Weekend or Weekday } & 4.123729e-04 \\ \hline
   \multicolumn{ 2 }{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's text contained at least one end punctuation mark } & 2.535394e-09 \\ \hline
   \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's text is in all lower case } & 1.540030e-07 \\ \hline
-  \multicolumn{2}{| p{7.75cm}|}{ \textbf{*}Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
   \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's title contains terms considered to be frequently used among answered questions } & 7.639738e-05 \\ \hline
   \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's title contains terms considered to be frequently used among unanswered questions } & 0.000000e+00 \\ \hline
   \multicolumn{2}{ |p{7.75cm}| }{ \textbf{*}Whether or not the question's title ended in a questionmark } & 1.142308e-12 \\ \hline
@@ -249,7 +248,7 @@ Table \ref{table:splines} shows the results of determining the optimal number of
 \label{table:cv}
 \end{table}
 
-Average performance metrics for test and training sets and in Table \ref{table:cv}. Partial likelihood ratio statistics and p-values indicate that the model as a whole is signficantly associated with response time. However, its $R^2$ statistic and discrimination indexes are considerably low. Metrics did not change significantly from training to test sets, indicating that the model was not overfit. Metrics for the final model's performance on the full data, also found in \ref{table:cv}, are consistent with metrics found in cross validation.
+Average performance metrics for test and training sets and in Table \ref{table:cv}. Partial likelihood ratio statistics and p-values indicate that the model as a whole is signficantly associated with response time. However, its $R^2$ statistic and discrimination indexes are considerably low. Metrics did not change significantly from training to test sets, indicating that the model was not overfit. Metrics for the final model's performance on the full data, also found in \ref{table:cv}, are consistent with metrics found in cross validation and indicate low predictive accuracy. 
 
 % Final model on full data
 \begin{table}[!htbp]
@@ -319,34 +318,30 @@ Assessing the proportional hazards assumption indicated that several levels of t
 
 See Table \ref{table:coefficients} for the full list of model coefficients. Table \ref{table:final model} displays statistics for the final model. 
 
-%===================================================================================================
-%===================================================================================================
+Results and coefficients of the final model reveal how users can ask a question in order to decrease response time. Findings indicate that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 
 
+Regarding the model's weak predictive accuracy, it may be explained by limitations in the data. Many users asking a question incorrectly specified the device name (e.g. ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways that the CQA can be structured to improve analysis and decrease response time. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. For example, instead of allowing users to enter any device name or tag, which leaves room for user error, the CQA can restrict the tags or devices that users can include to a drop down list. The CQA can also include more tips to guide users asking questions. Establishing and implementing a more restrictive CQA structure can help users to ask understandable and clear questions and decrease response time, as well as create a set of consistent questions for better analysis. 
+
+%===================================================================================================
+%===================================================================================================
 
 \section*{6. Conclusion}
 
-This study developed a Cox proportional hazards model to predict the probability that a question posted on iFixit's \textit{Answers} forum receives an answer before a certain time. Predictors found to be signficant in the model included: device category, whether or not the question contained words considered to be ``frequently-used'' among unanswered questions, whether or not the title ends in a questionmark, and whether or not the user updated the question's text after the initial posting. While overall the model was signficant, its predictive performance was considerably low. 
-
-The data analyzed for this model presented limitations, and may explain the model's low predictive accuracy. Many users on the CQA incorrectly specified the device name in their question (e.g. ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!''(tags are generally a couple key words that describe the topic of the question). These inconsistencies in the data presented some difficulties in analysis, and may explain the model's low $R^2$ and discrimination indexes. 
-
-Future studies can further investigate if the predictors found to be significant in this study can be generalized to other CQAs. 
-
+This study developed a Cox proportional hazards model to predict the probability that a question posted on iFixit's \textit{Answers} forum receives an answer before a certain time. Predictors found to be signficant in the model included: device category, if the question was posted on a weekend or a weekday, whether or not the question's text contained at least one word considered frequently-used among unanswered questions, and whether or not the question's title ends in a questionmark. While overall the model was signficant, its predictive performance was considerably low. 
 
 %===================================================================================================
 %===================================================================================================
-
 
 \section*{7. Acknowledgement}
 
-This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. Special thanks also goes to iFixit for providing access to the CQA data and for the help and assistance in its analysis. 
-
+This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. Special thanks goes to iFixit for providing access to the CQA data and for the help and assistance in its analysis. 
 
 %===================================================================================================
 %===================================================================================================
 
 \section*{8. Appendix} 
 
-% -----------------------------------------------------------
+% --------------------------------------------------------------------------------------------------
 \subsection*{8.1 Posted questions}
 
 % answered question id = 397414
@@ -375,9 +370,9 @@ This research was supported by the Bill and Linda Frost fund of the California P
 \label{table:questions}
 \end{table}
 
-Table \ref{table:questions} provides an example of an answered and unanswered question. All fields in the table are shown as the user entered it. 
+Table \ref{table:questions} provides an example of an answered and unanswered question. All fields in the table are shown as the users entered it. 
 
-% -----------------------------------------------------------
+% ------------------------------------------------------------------------------------------------
 
 \subsection*{8.2 Variable Derivation}
 
@@ -385,7 +380,15 @@ Table \ref{table:questions} provides an example of an answered and unanswered qu
 
 Original device categories, defined by iFixit, included: Apparel, Appliance, Camera, Car and Truck, Computer Hardware, Electronics, Game Console, Household, Mac, Media Player, PC, Phone, Skills, Tablet, Vehicle. Device titles were parsed and certain categories were combined or separated to create a new device categorization variable to use in the Cox model. Categories created included: Android/Other Phone, Apple Product, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle. Under the original device categorization, 1,954 questions (25.2\% of 7,760) were not categorized correctly and indicated an NA for its category. Missing values were a result of users creating questions for devices not already in the iFixit's database, or from the user incorrectly defining the device name. For questions with missing categories, key words were searched for in device titles to recategorize accordingly. All other questions with ambiguous device titles were categorized as Other. 
 
-\subsubsection*{8.2.2 Whether or not the question's title contains terms considered to by frequently-used among answered/unanswered questions}
+% ------------------------------------------------------------------------
+
+\subsubsection*{8.2.2 Whether or not the question's text contained at least one end punctuation mark}
+
+This variable was created to investigate if run-on sentences, sentences with no end punctuation, take longer to receive an answer.
+
+% ------------------------------------------------------------------------
+
+\subsubsection*{8.2.3 Whether or not the question's title contains terms considered to by frequently-used among answered/unanswered questions}
 
 These variables were created based on the hypothesis that certain question topics are more popular among the answering community, and that questions concerning these topics might receive an answer faster than questions that do not. Similarly, certain topics might be unpopular, and questions pertaining to those topics might receive answers slower than those that do not (cite).
 
@@ -405,34 +408,43 @@ To create the variables, the data was separated between answered and unanswered 
 \label{table:frequent_terms}
 \end{table}
 
-\subsubsection*{8.2.3 Whether or not the question's title ended in a question mark}
+% ------------------------------------------------------------------------
+
+\subsubsection*{8.2.4 Whether or not the question's title ended in a question mark}
 
 This variable was created based on the hypothesis that questions with titles in the form of questions receive answers faster than those that do not.
 
-\subsubsection*{8.2.4 Whether or not the question's text contained at least one end punctuation mark}
-
-This variable was created to investigate if run-on sentences, sentences with no end punctuation, take longer to receive an answer.
+% ------------------------------------------------------------------------
 
 \subsubsection*{8.2.5 Whether or not the user made an effort to solve the problem on their own, prior to asking the question}
 
 Logical variable indicating true if the asker included words in the question's text that indicate prior effort or research was done before asking the question (e.g. ``tried'', ``attempted'', ``tested''). This variable was created based off of findings from \cite{Bhat2014}. 
 
+% ------------------------------------------------------------------------
+
 \subsubsection*{8.2.6 Average frequency ``score'' of a question's tags}
 
 This variable was created to investigate the idea that some tags are more ``popular'', or widely used than other tags, and that including such tags might increase the likelihood of that question receiving an answer faster. This variable is the average frequency, or proportion of times a question's tags appear in all of the data set. If a question has a higher average, than at least one of it's tags are frequently used. This variable was created based off of findings from \cite{Bhat2014}. 
 
-\subsubsection*{8.2.7 Number of characters in the user-defined device title}
+% ------------------------------------------------------------------------
+
+\subsubsection*{8.2.7 Average number of characters in a question's tags}
+
+This variable, similar to the device-length variable, was created to capture when a user correctly or incorrectly used the tagging system. For example, question 390989 included the tag tag: “i need to repair the headset because i can not find the bluetoot”, which is 64 characters. Question 410254 includes tags "sound", "sound driver" and "speaker" and has an average of 8 characters per tag. It is hypothesized that users who correctly define tags, as with the latter user, receive answers quicker than the former. 
+
+% ------------------------------------------------------------------------
+
+\subsubsection*{8.2.8 Number of characters in the user-defined device title}
 
 This variable was included to capture when a user incorrectly defines the device name. For example, the device variable for question 390271 is, “Turtle Beach Ear Force Xmy grandson chewed through the wire while we was playing it's brand-new is there anyway I can have it fixedO One”, and is 136 characters long. 11 questions in the data also did not include any device title. This variable was created based on the intuition that users who incorrectly define their devices, or do not include any device title, make it difficult for the answering community to discern the question's topic, and thus have longer answer times or remain unanswered.
 
-\subsubsection*{8.2.8 Average number of characters in a question's tags}
-
-This variable, similar to the device-length variable, was created to capture when a user correctly or incorrectly used the tagging system. For example, question 390989 included the tag tag: “i need to repair the headset because i can not find the bluetoot”, which is 64 characters. Question 410254 includes tags "sound", "sound driver" and "speaker" and has an average of 8 characters per tag. It is hypothesized that users who correctly define tags, as with the latter user, receive answers quicker than the former. 
+% ------------------------------------------------------------------------
 
 \subsubsection*{8.2.9 Ratio of the number of line breaks to the number of characters in a question's text}
 
 This variable was based on the hypothesis that question's that include line breaks in the text are generally easier to read than questions that don't include any, and thus have faster answer times. 
 
+% ------------------------------------------------------------------------
 
 
 
