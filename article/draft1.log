@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  8 JAN 2018 12:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  9 JAN 2018 11:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -294,7 +294,11 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 18.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 18.
- [1
+
+
+LaTeX Warning: Citation `Rechavi2011' on page 1 undefined on input line 29.
+
+[1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
@@ -328,9 +332,6 @@ LaTeX Warning: Citation `Ponzanelli2014a' on page 2 undefined on input line 40.
 
 
 LaTeX Warning: Citation `Ravi2014' on page 2 undefined on input line 40.
-
-
-LaTeX Warning: Citation `Anderson' on page 2 undefined on input line 40.
 
 [2] [3]
 
@@ -392,11 +393,8 @@ l.120 ...l data). Of those questions, 4,951 (63.8}
 You've closed more groups than you opened.
 Such booboos are generally harmless, so keep going.
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Overfull \hbox (3.07423pt too wide) in paragraph at lines 162--163
+[5] [6 <./times_dist.pdf> <./kmcurve.pdf>]
+Overfull \hbox (3.07423pt too wide) in paragraph at lines 170--171
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
@@ -415,14 +413,9 @@ Overfull \hbox (3.07423pt too wide) in paragraph at lines 181--181
 []\T1/aer/m/n/10 0.000000e+00| 
  []
 
-[5] [6 <./times_dist.pdf> <./kmcurve.pdf>]
-Overfull \hbox (67.59767pt too wide) in paragraph at lines 238--247
+
+Overfull \hbox (72.59767pt too wide) in paragraph at lines 238--247
  [][] 
- []
-
-
-Overfull \hbox (80.35992pt too wide) in paragraph at lines 290--290
-[][]| 
  []
 
 
@@ -431,7 +424,7 @@ Overfull \hbox (105.93428pt too wide) in paragraph at lines 256--293
  []
 
 
-LaTeX Warning: Float too large for page by 28.67978pt on input line 295.
+LaTeX Warning: Float too large for page by 16.67978pt on input line 295.
 
 LaTeX Font Info:    Try loading font information for TS1+aer on input line 316.
 
@@ -453,7 +446,7 @@ LaTeX Warning: Citation `Correa2013' on page 13 undefined on input line 395.
 
 LaTeX Warning: Citation `Ravi2014' on page 13 undefined on input line 395.
 
-[13]
+
 Underfull \hbox (badness 10000) in paragraph at lines 406--406
 \T1/aer/bx/n/10 among unan-swered
  []
@@ -463,14 +456,9 @@ Overfull \hbox (20.43306pt too wide) in paragraph at lines 402--409
  [][] 
  []
 
-! Undefined control sequence.
-l.417 ...wers faster than those that do not \citep
-                                                  {Bhat2014}.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+[13]
+
+LaTeX Warning: Citation `Bhat2014' on page 14 undefined on input line 417.
 
 
 LaTeX Warning: Citation `Bhat2014' on page 14 undefined on input line 423.
@@ -488,12 +476,12 @@ LaTeX Warning: There were undefined references.
  ) 
 Here is how much of TeX's memory you used:
  3019 strings out of 492995
- 43273 string characters out of 6132704
- 137860 words of memory out of 5000000
+ 43276 string characters out of 6132704
+ 136860 words of memory out of 5000000
  6498 multiletter control sequences out of 15000+600000
  26105 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,11n,25p,2006b,309s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,11n,25p,2008b,309s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
@@ -505,7 +493,7 @@ sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
 /local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/lo
 cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/loc
 al/texlive/2017/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on draft1.pdf (15 pages, 218500 bytes).
+Output written on draft1.pdf (15 pages, 216784 bytes).
 PDF statistics:
  110 PDF objects out of 1000 (max. 8388607)
  77 compressed objects within 1 object stream
