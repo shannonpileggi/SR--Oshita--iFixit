@@ -60,19 +60,6 @@ ggsurvplot(KM, data = x,
 ggsave("kmcurve.pdf", width = 8, height = 5)
 ```
 
-### Table of percentiles
-
-```{r}
-# 64% is largest available survival probability
-quantiles <- quantile(KM, c(0.25, 0.50, 0.55, 0.58, 0.60, 0.64))$quantile 
-quantilesdf <- data.frame(Percent = names(quantiles), 
-                          Time = round(quantiles, 2))
-colnames(quantilesdf) <- c(paste("Percent", "\n", "Answered", sep = ""), "Time (hours)")
-rownames(quantilesdf) <- NULL
-
-xtable::xtable(quantilesdf, label = "table:quantile")
-```
-
 ### Model on full data 
 
 ```{r}
@@ -149,11 +136,8 @@ tagscore_pvalue <- purrr::map_dfr(tag_score, ~get_pvalue(.))
 
 univ_results <- rbind(txt_pvalue, dev_pvalue, newline_pvalue, taglength_pvalue, tagscore_pvalue)
 
+options(scipen = 99999)
 univ_results <- univ_results %>% arrange(pvalue)
-
-xtable::xtable(x = univ_results, 
-               caption = "Univariate analysis results", 
-               label = "table:qresults")
 
 # ---------------------------------------------------------------------------------------
 # choosing number of knots for splines
