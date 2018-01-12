@@ -224,7 +224,6 @@ pvalues <- get_pvalue("new_user")
 pvalues <- get_pvalue("title_questionmark")
 pvalues <- get_pvalue("text_contain_punct")
 pvalues <- get_pvalue("weekday")
-pvalues <- get_pvalue("title_length")
 pvalues <- get_pvalue("text_length")
 pvalues <- get_pvalue("device_length")
 pvalues <- get_pvalue("text_all_lower")
@@ -238,6 +237,7 @@ pvalues <- get_pvalue("contain_answered")
 
 options(scipen=999)
 pvalues <- pvalues %>% arrange(pvalue)
+pvalues
 
 rms::cph(Surv(time_until_answer, answered) ~ avg_tag_score, data = x)
 rms::cph(Surv(time_until_answer, answered) ~ sqrt(avg_tag_score), data = x)
