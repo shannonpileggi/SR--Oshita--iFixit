@@ -1,6 +1,10 @@
 \documentclass{article}
 \usepackage{multirow}
 \usepackage{color,soul}
+
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 
@@ -11,6 +15,8 @@
   \boldmath % <-- added
 }
 \makeatother
+
+
 
 
 << echo = FALSE >>=
@@ -294,31 +300,17 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 \label{table:coefficients}
 \end{table}
 
-% Final model statistics
-\begin{table}[!htbp]
-\centering
-\begin{tabular}{| r | r |}
-  \hline
-  \textbf{LR} & 1265.291 \\ \hline
-  \textbf{p-value} & 0 \\ \hline
-  \textbf{$R^2$} & 0.150 \\ \hline
-  \textbf{\textit{Dxy}} & 0.267 \\ \hline
-\end{tabular}
-\caption{Final model statistics} 
-\label{table:final model}
-\end{table}
-
 Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. 
 
-Interpretations of the coefficients highlighted in Table \ref{table:coefficients}:
+The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value = 0). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
+
+The following are interpretations of select hazard coefficients in Table \ref{table:coefficients}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not received an answer by that time. 
 
 \begin{itemize}
   \item The estimated hazard of receiving an answer is 154.1\% (95\% CI (131.5\%, 180.0\%)) higher for questions pertaining to Apple products than the hazard for questions about Android and Other phones, controlling for all other predictors.
   \item The estimated hazard of receiving an answer for questions posted on a weekend is 12.5\% (95\% CI (6.7\%, 18.0\%)) lower than the hazard for questions posted on a weekday, controlling for all other predictors.
   \item The estimated hazard of receiving an answer is 24.5\% (95\% CI (19.3\%, 29.4\%)) lower for questions with titles that contain at least one word considered to be frequently-used among unanswered questions, than the hazard for questions with titles that do not, controlling for all other predictors. 
 \end{itemize}
-
-See Table \ref{table:coefficients} for the full list of model coefficients. Table \ref{table:final model} displays statistics for the final model. 
 
 Results and coefficients of the final model reveal how users can ask questions in order to decrease response time. Findings suggest that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 
 
@@ -336,7 +328,7 @@ This study developed a Cox proportional hazards model to predict the probability
 
 \section*{7. Acknowledgement}
 
-This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. Special thanks goes to iFixit for providing access to the CQA data and for the help and assistance in its analysis. 
+This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. We also thank iFixit for providing access to the CQA data and for analysis assistance.
 
 %===================================================================================================
 %===================================================================================================
@@ -348,27 +340,52 @@ This research was supported by the Bill and Linda Frost fund of the California P
 
 % answered question id = 397414
 % unanswered question id = 399971
-% Table to display questions
+
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{| l | l | p{6cm} | l |}
-  \hline
- \textbf{Answered} & \textbf{Device} & \textbf{Title} & \textbf{Date Posted} \\
-  \hline
-  Yes & iPhone 6 & iPhone water damage, touch screen issue &  2017-05-10 21:50:48 GMT \\ \cline{2 - 4}
-  & \textbf{New User} & \textbf{Text} & \textbf{Date of First Answer} \\ \cline{2 - 4}
-  & Yes & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? & 2017-05-10 23:12:27 GMT \\ \cline{4 - 4}
-  & & & \textbf{Response Time (hr)} \\ \cline{4 - 4}
-  & & & 1.361 \\ \cline{4-4} \hline \hline
-  \textbf{Answered} & \textbf{Device} & \textbf{Title} & \textbf{Date Posted} \\ \cline{1 - 4}
-  No & android tablet & ccccaaaan you help me fix my touch screen & 2017-05-23 07:35:12 GMT \\ \cline{2 - 4}
-  & \textbf{New User} & \textbf{Text} & \textbf{Date of First Answer} \\ \cline{2 - 4}
-  & No & touch screen not worki & NA \\ \cline{4 - 4}
-  & & & \textbf{Response Time (hr)} \\ \cline{4 - 4}
-  & & & NA \\ 
-   \hline
+\begin{tabular}{|L{7cm}|L{7cm}|}
+\hline
+\textbf{Device} & iPhone 6 \\ \hline
+\textbf{Title} & iPhone water damage, touch screen issue \\ \hline
+\textbf{Text} & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? \\ \hline
+\textbf{Tags} & touchscreen, water damage \\ \hline
+\textbf{Response Time (hrs)} & 1.361 \\ \hline 
+\textbf{Device Category} & Apple Product \\ \hline
+\textbf{Day Posted} & Weekday \\ \hline
+\textbf{Text length (characters)} & 241 \\ \hline
+\textbf{Device name length (characters)} & 8 \\ \hline
+\textbf{Average tag length (characters)} & 11.5 \\ \hline
+\textbf{Title end in a question mark?} & False \\ \hline
+\textbf{Text in all lower case?} & False \\ \hline
+\textbf{Text contain end punctuation?} & True \\ \hline
+\textbf{User update question after posting?} & False \\ \hline
+\textbf{User indicate prior effort?} & False \\ \hline
+\textbf{Line break to text length ratio} & 0 \\ \hline
+\textbf{Average tag frequency} & 0.0097 \\ \hline
+\textbf{Frequently-used answered words?} & True \\ \hline
+\textbf{Frequently-used unanswered words?} & False \\ \hline \hline
+% next question
+\textbf{Device} & android tablet \\ \hline
+\textbf{Title} & ccccaaaan you help me fix my touch screen \\ \hline
+\textbf{Text} & touch screen not worki \\ \hline
+\textbf{Tags} & NA \\ \hline
+\textbf{Response Time (hrs)} & NA \\ \hline 
+\textbf{Device Category} & Tablet \\ \hline
+\textbf{Day Posted} & Weekday \\ \hline
+\textbf{Text length (characters)} & 81 \\ \hline
+\textbf{Device name length (characters)} & 18 \\ \hline
+\textbf{Average tag length (characters)} & 47 \\ \hline
+\textbf{Title end in a question mark?} & False \\ \hline
+\textbf{Text in all lower case?} & True \\ \hline
+\textbf{Text contain end punctuation?} & False \\ \hline
+\textbf{User update question after posting?} & False \\ \hline
+\textbf{User indicate prior effort?} & False \\ \hline
+\textbf{Line break to text length ratio} & 0 \\ \hline
+\textbf{Average tag frequency} & 0 \\ \hline
+\textbf{Frequently-used answered words?} & True \\ \hline
+\textbf{Frequently-used unanswered words?} & True \\ \hline \hline
 \end{tabular}
-\caption{Answered and unanswered questions}
+\caption{Answered and Unanswered questions}
 \label{table:questions}
 \end{table}
 
@@ -399,7 +416,7 @@ To create the variables, the data was separated between answered and unanswered 
 % Table with list of frequently used words
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{|p{4cm}|p{8cm}|}
+\begin{tabular}{|L{4cm}|p{8cm}|}
   \hline
  \textbf{Frequently-used terms among answered questions} & screen, turn, working, replacement, power, work, replace, charging, charge, button, touch, black, turning, broken, start, stuck, new, lcd, upgrade, problem, change, port, replaced, card, open, boot, replacing, remove, reset, back, drive, error, cable, ssd, cracked, hard, one, dropped, logic, lines, white, keeps, pro, dead, now, front, damage, switch, parts, glass, still, charger, issue, sim, turns, digitizer, just, mode, model, backlight, usb, stopped, logo, starting, know, unresponsive, password, factory, call, use, damaged, find, sensor, possible, fixed, side, galaxy, data, ipod, problems, issue, slow, system, connector, without, overheating, code, ram, air, microphone, please, red, much, plugged, getting, booting, left, way, buy, plus, time, loose, lock, coming, got, shuts, says, install, key, door, top \\
   \hline
