@@ -245,17 +245,17 @@ modelstats <- data.frame(statistic = names(model$stats),
 modelstats
 
 # ------------------------------------------
-# data frame with coefficients, HR and confidence intervals
+# df with coefficients, HR and confidence intervals
 # SE of all coefficients 
 se <- c(0.0476, 0.0904, 0.0784, 0.0830, 0.0697, 0.0555, 0.0597, 0.0815, 0.0695, 0.0364, 0.0340, 0.0422, 0.0332, 0.0499, 0.0645, 0.0857, 0.0362, 0.0331, 0.7204, 0.1856, 0.8452, 4.1705, 6.8973, 0.1062, 0.6381, 2.5243, 0.2496, 2.5575, 7.4036, 10.2644, 0.4776, 0.7266)
 
 coefficientsdf <- data.frame(coefficients = names(model$coefficients), 
                              beta = as.numeric(unname(model$coefficients)),
-                             SE = se,
-                             HR = exp(coefficientsdf$beta),
-                             upper = exp(coefficientsdf$beta + (1.96*coefficientsdf$SE)),
-                             lower = exp(coefficientsdf$beta - (1.96*coefficientsdf$SE))
+                             SE = se
                              )
+coefficientsdf$HR <- exp(coefficientsdf$beta)
+coefficientsdf$upper <- exp(coefficientsdf$beta + (1.96 * coefficientsdf$SE))
+coefficientsdf$lower <- exp(coefficientsdf$beta - (1.96*coefficientsdf$SE))
 
 # putting CI in percentage form 
 options(scipen = 99999)
@@ -281,7 +281,6 @@ final_metrics <- data.frame(HR = exp(metric$coefficients),
                               Dxy = metric$stats[9], 
                               Concordance = survConcordance(Surv(time_until_answer, answered) ~ predictions, data = x)$concordance)
 final_metrics
-xtable::xtable(final_metrics, caption = "Performance metrics for model fit to the full data", label = "table:finalmetrics", digits = 4)
 
 # ------------------------------------------
 # proportional hazards assumptions
@@ -290,8 +289,4 @@ ph_test <- data.frame(predictors = rownames(ph$table), ph$table)
 rownames(ph_test) = NULL
 ph_test <- ph_test %>% arrange(p) 
 ph_test
-
 ```
-
-
-
