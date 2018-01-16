@@ -18,9 +18,6 @@
 \makeatother
 
 
-
-
-
 \section*{Abstract}  
 
 Community-driven online question and answer forums (CQA), platforms that allow users to ask and answer questions, contain an extensive amount of crowd-sourced information. One such example of a CQA is iFixit's \textit{Answers} forum. This forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users. An important aspect of these CQAs, for both users and the forum, is question response time. This paper presents a survival analysis of the time until a question receives it's first response. A Cox proportional hazards model was developed to predict the survival probability of a question, or the probability that a question receives an answer before a certain time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = 0.15$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = 2.54, 95\% CI = (2.32, 2.79)), factors related to the question's title (e.g., if it was phrased as a question (HR = 1.29, 95\% CI = (1.21, 1.38))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = 0.87, 95\% CI = (0.82, 0.93))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs. 
@@ -201,7 +198,6 @@ Average performance metrics for test and training sets are in Table \ref{table:c
                   & PC & 0.2818 (0.0597) &  \\ 
                   & Tablet & -0.1566 (0.0815)  & \\ 
                   & Vehicle & 0.4056 (0.0695)  & \\ \hline
-  \multicolumn{2}{|l|}{Weekend or weekday} & -0.1334 (0.0331)  & <0.0001 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{If the question's text contains end punctuation marks} & 0.0247 (0.0499) & 0.6127 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{If the question's text is in all lower case} & -0.1770 (0.0645) &  0.0060 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{If the question's title contains terms considered frequently-used among answered questions} & 0.0475 (0.0422) &  0.2596 \\ \hline
@@ -210,6 +206,7 @@ Average performance metrics for test and training sets are in Table \ref{table:c
   \multicolumn{2}{|L{7.5cm}|}{If the user edited or added to the question's text after posting it} & 0.2983 (0.0857)  & 0.0005 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{If the user had been a member for less than one day before posting the question} & -0.1069 (0.0364)  & 0.0031 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{If the user made an effort to solve the problem prior to asking the question} & -0.0724 (0.0362)  & 0.0448 \\ \hline
+  \multicolumn{2}{|l|}{Weekend or weekday} & -0.1334 (0.0331)  & <0.0001 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{Square root of the average tag frequency} & 2.2609 (0.7196)  & 0.0020 \\ \hline
 \end{tabular} 
 \caption{Coefficients for predictors in the final model. Continuous predictors fit with restricted cubic splines are not shown.} 
@@ -259,47 +256,27 @@ This research was supported by the Bill and Linda Frost fund of the California P
 
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{|L{7cm}|L{7cm}|}
+\begin{tabular}{|L{4cm}|L{5cm}|L{5cm}|}
 \hline
-\textbf{Device} & iPhone 6 \\ \hline
-\textbf{Title} & iPhone water damage, touch screen issue \\ \hline
-\textbf{Text} & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? \\ \hline
-\textbf{Tags} & touchscreen, water damage \\ \hline
-\textbf{Response Time (hrs)} & 1.361 \\ \hline 
-\textbf{Device Category} & Apple Product \\ \hline
-\textbf{Day Posted} & Weekday \\ \hline
-\textbf{Text length (characters)} & 241 \\ \hline
-\textbf{Device name length (characters)} & 8 \\ \hline
-\textbf{Average tag length (characters)} & 11.5 \\ \hline
-\textbf{Title end in a question mark?} & False \\ \hline
-\textbf{Text in all lower case?} & False \\ \hline
-\textbf{Text contain end punctuation?} & True \\ \hline
-\textbf{User update question after posting?} & False \\ \hline
-\textbf{User indicate prior effort?} & False \\ \hline
-\textbf{Line break to text length ratio} & 0 \\ \hline
-\textbf{Average tag frequency} & 0.0097 \\ \hline
-\textbf{Frequently-used answered words?} & True \\ \hline
-\textbf{Frequently-used unanswered words?} & False \\ \hline \hline
-% next question
-\textbf{Device} & android tablet \\ \hline
-\textbf{Title} & ccccaaaan you help me fix my touch screen \\ \hline
-\textbf{Text} & touch screen not worki \\ \hline
-\textbf{Tags} & NA \\ \hline
-\textbf{Response Time (hrs)} & NA \\ \hline 
-\textbf{Device Category} & Tablet \\ \hline
-\textbf{Day Posted} & Weekday \\ \hline
-\textbf{Text length (characters)} & 81 \\ \hline
-\textbf{Device name length (characters)} & 18 \\ \hline
-\textbf{Average tag length (characters)} & 47 \\ \hline
-\textbf{Title end in a question mark?} & False \\ \hline
-\textbf{Text in all lower case?} & True \\ \hline
-\textbf{Text contain end punctuation?} & False \\ \hline
-\textbf{User update question after posting?} & False \\ \hline
-\textbf{User indicate prior effort?} & False \\ \hline
-\textbf{Line break to text length ratio} & 0 \\ \hline
-\textbf{Average tag frequency} & 0 \\ \hline
-\textbf{Frequently-used answered words?} & True \\ \hline
-\textbf{Frequently-used unanswered words?} & True \\ \hline
+\textbf{Device} & iPhone 6 & android tablet \\ \hline
+\textbf{Title} & iPhone water damage, touch screen issue & ccccaaaan you help me fix my touch screen \\ \hline
+\textbf{Text} & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? & touch screen not worki\\ \hline
+\textbf{Tags} & touchscreen, water damage & NA\\ \hline
+\textbf{Response Time (hrs)} & 1.361 & NA \\ \hline 
+\textbf{Device Category} & Apple Product & Tablet \\ \hline
+\textbf{Day Posted} & Weekday & Weekday \\ \hline
+\textbf{Text length (characters)} & 241 & 81 \\ \hline
+\textbf{Device name length (characters)} & 8 & 18\\ \hline
+\textbf{Average tag length (characters)} & 11.5 & 47 \\ \hline
+\textbf{Average tag frequency} & 0.0097 & 0 \\ \hline
+\textbf{Text contain end punctuation?} & True & False \\ \hline
+\textbf{Text in all lower case?} & False & True \\ \hline
+\textbf{Title end in a question mark?} & False & False \\ \hline
+\textbf{Line break to text length ratio} & 0 & 0 \\ \hline
+\textbf{User indicate prior effort?} & False & False \\ \hline
+\textbf{User update question after posting?} & False & False \\ \hline
+\textbf{Frequently-used answered words?} & True & True \\ \hline
+\textbf{Frequently-used unanswered words?} & False & False \\ \hline
 \end{tabular}
 \caption{Answered and unanswered questions}
 \label{table:questions}
