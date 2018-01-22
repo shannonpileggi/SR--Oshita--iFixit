@@ -113,11 +113,7 @@ To compute predicted survival probabilities using the model, the \textit{predict
 
   Of 8,025 questions in the full data, 7,760 were in English (97\% of the full data). Of those questions, 4,951 (63.8}\%) received an answer by the download date. The shortest response time was 0.5 hours. The longest was 2,159.02 hours (89.96 days). Figure ~\ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
 
-
-
   Figure ~\ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer within the first 100 hours after it has been posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was 775.75 hours, or 32.32 days. The median survival time, the time at which 50\% of the questions in the data received an answer, was 9.16 hours.
-
-
 
 Each training set contained 6,208 questions. Each test set contained 1,552 questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in univariate p-values of less than 0.001. Applying either square root or log transformations resulted in univariate p-values of less than 0.001. For those that contained zeros, one was added to each observation before applying the log transformation. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus 1 transformation of average tag length, log plus 1 transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length. All categorical predictors and all continuous predictors with necessary transformations were retained for the full model. 
 
