@@ -122,7 +122,7 @@ All computation was executed under \texttt{R} version 3.4.3.  \hl{Package for KM
 
 
 
-Each training set contained 6,208 questions. Each test set contained 1,552 questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in univariate p-values of less than 0.001. Applying either square root or log transformations resulted in univariate p-values of less than 0.001. For those that contained zeros, one was added to each observation before applying the log transformation. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus 1 transformation of average tag length, log plus 1 transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length. All categorical predictors and all continuous predictors with necessary transformations were retained for the full model. 
+Each training set contained 6,208 questions; each test set contained 1,552 questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in univariate p-values of less than 0.001. Applying either square root or log transformations resulted in univariate p-values of less than 0.001. For variables that contained zeros, one was added to each observation before applying the log transformation. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus one transformation of average tag length, log plus one transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length. All categorical predictors and all continuous predictors with necessary transformations were retained for the full model. 
 
 % Splines
 \begin{table}[!htbp]
@@ -162,7 +162,7 @@ Each training set contained 6,208 questions. Each test set contained 1,552 quest
   & 3 & 65862.08 \\ 
   \hline
 \end{tabular}
-\caption{Determining the optimal k number of splines for each continuous predictor} 
+\caption{The model with the lowest AIC was used to determine the optimal k number of splines for each continuous predictor.} 
 \label{table:splines}
 \end{table}
 
@@ -175,12 +175,12 @@ Table \ref{table:splines} shows the results of determining the optimal number of
   \hline
  & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
   \hline
-  \textbf{Training Sets} & 2.03 & 937.39 & 0 & 0.14 & 0.27 & 0.63 \\ 
-  \textbf{Test Sets} & 1.99 & 220.83 & 0 & 0.14 & 0.26 & 0.63 \\
-  \textbf{Full Data} & 2.03 & 1165.03 & 0 & 0.14 & 0.28 & 0.63 \\ 
+  \textbf{Training Sets} & 2.03 & 937.39  & \hl{0} & 0.14 & 0.27 & 0.63 \\ 
+  \textbf{Test Sets}     & 1.99 & 220.83  & \hl{0} & 0.14 & 0.26 & 0.63 \\
+  \textbf{Full Data}     & 2.03 & 1165.03 & \hl{0} & 0.14 & 0.28 & 0.63 \\ 
    \hline
 \end{tabular}
-\caption{Performance Metrics. \\ HR: Hazard Ratio, LR: Partial Likelihood Ratio} 
+\caption{Performance metrics \hl{of final model?}. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)} 
 \label{table:cv}
 \end{table}
 
@@ -218,7 +218,7 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 
 Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. 
 
-The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value = 0). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
+The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value \hl{= 0}). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
 
 The following are interpretations of select hazard coefficients in Table \ref{table:coefficients}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
 
@@ -230,7 +230,7 @@ The following are interpretations of select hazard coefficients in Table \ref{ta
 
 Results and coefficients of the final model reveal how users can ask questions in order to decrease response time. Findings suggest that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 
 
-The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. A user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways that the CQA can be structured to improve analysis and decrease response time. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more restrictive framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
+The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways that the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
 
 %===================================================================================================
 %===================================================================================================
@@ -259,53 +259,32 @@ This research was supported by the Bill and Linda Frost fund of the California P
 
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{|L{7cm}|L{7cm}|}
+\begin{tabular}{|L{4cm}|L{5cm}|L{5cm}|}
 \hline
-\textbf{Device} & iPhone 6 \\ \hline
-\textbf{Title} & iPhone water damage, touch screen issue \\ \hline
-\textbf{Text} & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? \\ \hline
-\textbf{Tags} & touchscreen, water damage \\ \hline
-\textbf{Response Time (hrs)} & 1.361 \\ \hline 
-\textbf{Device Category} & Apple Product \\ \hline
-\textbf{Day Posted} & Weekday \\ \hline
-\textbf{Text length (characters)} & 241 \\ \hline
-\textbf{Device name length (characters)} & 8 \\ \hline
-\textbf{Average tag length (characters)} & 11.5 \\ \hline
-\textbf{Title end in a question mark?} & False \\ \hline
-\textbf{Text in all lower case?} & False \\ \hline
-\textbf{Text contain end punctuation?} & True \\ \hline
-\textbf{User update question after posting?} & False \\ \hline
-\textbf{User indicate prior effort?} & False \\ \hline
-\textbf{Line break to text length ratio} & 0 \\ \hline
-\textbf{Average tag frequency} & 0.0097 \\ \hline
-\textbf{Frequently-used answered words?} & True \\ \hline
-\textbf{Frequently-used unanswered words?} & False \\ \hline \hline
-% next question
-\textbf{Device} & android tablet \\ \hline
-\textbf{Title} & ccccaaaan you help me fix my touch screen \\ \hline
-\textbf{Text} & touch screen not worki \\ \hline
-\textbf{Tags} & NA \\ \hline
-\textbf{Response Time (hrs)} & NA \\ \hline 
-\textbf{Device Category} & Tablet \\ \hline
-\textbf{Day Posted} & Weekday \\ \hline
-\textbf{Text length (characters)} & 81 \\ \hline
-\textbf{Device name length (characters)} & 18 \\ \hline
-\textbf{Average tag length (characters)} & 47 \\ \hline
-\textbf{Title end in a question mark?} & False \\ \hline
-\textbf{Text in all lower case?} & True \\ \hline
-\textbf{Text contain end punctuation?} & False \\ \hline
-\textbf{User update question after posting?} & False \\ \hline
-\textbf{User indicate prior effort?} & False \\ \hline
-\textbf{Line break to text length ratio} & 0 \\ \hline
-\textbf{Average tag frequency} & 0 \\ \hline
-\textbf{Frequently-used answered words?} & True \\ \hline
-\textbf{Frequently-used unanswered words?} & True \\ \hline
+\textbf{Device} & iPhone 6 & android tablet \\ \hline
+\textbf{Title} & iPhone water damage, touch screen issue & ccccaaaan you help me fix my touch screen \\ \hline
+\textbf{Text} & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? & touch screen not worki\\ \hline
+\textbf{Tags} & touchscreen, water damage & NA\\ \hline
+\textbf{Response Time (hrs)} & 1.361 & NA \\ \hline 
+\textbf{Device Category} & Apple Product & Tablet \\ \hline
+\textbf{Day Posted} & Weekday & Weekday \\ \hline
+\textbf{Text length (characters)} & 241 & 81 \\ \hline
+\textbf{Device name length (characters)} & 8 & 18\\ \hline
+\textbf{Average tag length (characters)} & 11.5 & 47 \\ \hline
+\textbf{Average tag frequency} & 0.0097 & 0 \\ \hline
+\textbf{Text contain end punctuation?} & True & False \\ \hline
+\textbf{Text in all lower case?} & False & True \\ \hline
+\textbf{Title end in a question mark?} & False & False \\ \hline
+\textbf{Line break to text length ratio} & 0 & 0 \\ \hline
+\textbf{User indicate prior effort?} & False & False \\ \hline
+\textbf{User update question after posting?} & False & False \\ \hline
+\textbf{Frequently-used answered words?} & True & True \\ \hline
+\textbf{Frequently-used unanswered words?} & False & False \\ \hline
 \end{tabular}
 \caption{Answered and unanswered questions}
 \label{table:questions}
 \end{table}
-
-Table \ref{table:questions} provides an example of an answered and unanswered question. All fields in the table are shown as the users entered it. 
+Table \ref{table:questions} provides observed and derived variable values from an example of an answered question (regarding the iPhone 6) and unanswered question (regarding android tablet). All fields in device, title, text, and tags are shown as the users entered it. 
 
 % ------------------------------------------------------------------------------------------------
 
@@ -323,7 +302,7 @@ This variable was created to investigate if questions with correctly defined tag
 
 % ------------------------------------------------------------------------
 
-\subsubsection*{8.2.3 Device Categorization}
+\subsubsection*{8.2.3 Device categorization}
 
 Original device categories defined by iFixit included: Apparel, Appliance, Camera, Car and Truck, Computer Hardware, Electronics, Game Console, Household, Mac, Media Player, PC, Phone, Skills, Tablet, Vehicle. Device titles were parsed and certain categories were combined or separated to create a new device categorization variable to use in the Cox model. Final categories created included: Android/Other Phone, Apple Product, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle. Under the original device categorization, 1,954 questions (25.2\% of 7,760) were categorized incorrectly and indicated an NA for its category. Missing values were a result of users creating questions for devices not already in the iFixit's database, or from the user incorrectly defining the device name. For questions with missing categories, key words were searched for in device titles to re-categorize accordingly. All other questions with ambiguous device titles were categorized as Other. 
 
@@ -331,13 +310,13 @@ Original device categories defined by iFixit included: Apparel, Appliance, Camer
 
 \subsubsection*{8.2.4 Device name length}
 
-This variable was created to investigate if questions with correctly defined device names have faster response times than questions that do not include a name or are incorrectly defined. Similar to the average tag length variable, it is hypothesized that questions with incorrectly defined device names make it difficult for the answering community to discern the question's topic, and thus have slower response times. 
+This variable was created to investigate if questions with correctly defined device names have faster response times than questions that do not include a name or are incorrectly defined. Similar to the average tag length variable, it is hypothesized that questions with incorrectly defined device names (often lengthy) make it difficult for the answering community to discern the question's topic, and thus have slower response times. 
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.6 If the question's text contains end punctuation marks}
 
-This variable was created to investigate if run-on sentences, sentences with no end punctuation, take longer to receive an answer.
+This variable was created to investigate if sentences with no end punctuation take longer to receive an answer.
 
 % ------------------------------------------------------------------------
 
@@ -345,8 +324,7 @@ This variable was created to investigate if run-on sentences, sentences with no 
 
 These variables were created to investigate if questions pertaining to popular topics receive answers faster than questions that do not. Similarly, another variable was created to investigate if questions pertaining to unpopular topics receive answers slower than questions that do not. This variable was created based off of methods from \cite{Correa2013} and \cite{Ravi2014}.
 
-To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the proportion of times those words occurred among all answered questions' titles, defined as the frequency. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in 1\% or more of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies was assessed. The ratio was calculated as the proportion of times a word occurred among answered questions, to the proportion of times a word occurred in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and levels of the device categorization variable, every word that matched a device name was removed from the lists. The resulting list for answered questions contained 111 words. The list for unanswered questions contained 32 words. Lists can be found in Table \ref{table:frequent_terms}
-
+To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the proportion of times those words occurred among all answered questions' titles, defined as the frequency. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in 1\% or more of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies was assessed. The ratio was calculated as the proportion of times a word occurred among answered questions, to the proportion of times a word occurred in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and levels of the device categorization variable, every word that matched a device name was removed from the lists. Table \ref{table:frequentterms} contains the resulting terms for answered questions (111 words) and for unanswered questions (32 words). 
 % Table with list of frequently-used words
 \begin{table}[!htbp]
 \centering
@@ -358,26 +336,26 @@ To create the variables, the data was separated between answered and unanswered 
    \hline
 \end{tabular}
 \caption{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
-\label{table:frequent_terms}
+\label{table:frequentterms}
 \end{table}
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.8 If the question's title ends in a question mark}
 
-This variable was created to investigate if questions with titles in the form of questions receive answers faster than those that do not \cite{Bhat2014}. 
+This variable was created to investigate if questions with titles in the form of questions receive answers faster than those otherwise phrased \cite{Bhat2014}. 
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.9 If the user made an effort to solve the problem prior to asking the question}
 
-Logical variable indicating true if the asker included words in the question's text that indicate that prior effort was made to find the solution to the question before posting. Words searched for include: tried, searched, researched, tested, replaced, used, checked, investigated, considered, measured, attempted, inspected, fitted. This variable was created based off of findings and methods from \cite{Bhat2014} \cite{Harper2008}. 
+This variable indicates true if the asker included words in the question's text that indicate that prior effort was made to find the solution to the question before posting. Words searched for include: tried, searched, researched, tested, replaced, used, checked, investigated, considered, measured, attempted, inspected, fitted. This variable was created based off of findings and methods from \citep{Bhat2014} and \citep{Harper2008}. 
 
 % ------------------------------------------------------------------------
 
 \subsubsection*{8.2.5 Line break to text length ratio}
 
-This variable was created to investigate if questions that include line breaks in the text are easier to read than questions that don't include any, and thus have shorter response times. 
+This variable was created to investigate if questions that include line breaks in the text are easier to read than questions that don't include any, and thus have shorter response times. \hl{What is an optimal/desirable/good ratio versus bad?}
 
 % ------------------------------------------------------------------------
 

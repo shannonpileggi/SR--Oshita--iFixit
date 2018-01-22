@@ -1,14 +1,12 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  15 JAN 2018 16:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2017.12.14)  22 JAN 2018 13:29
 entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
-**draft1.tex
-(./draft1.tex
+**./draft1.tex
+(draft1.tex
 LaTeX2e <2017-04-15>
-Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
+Babel <3.15> and hyphenation patterns for 75 language(s) loaded.
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/size10.clo
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
 File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -23,33 +21,25 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/multirow/multirow.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\multirow\multirow.sty"
 Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
 \multirow@colwidth=\skip43
 \multirow@cntb=\count87
 \multirow@dima=\skip44
 \bigstrutjot=\dimen103
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/color.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\color.sty"
 Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/color.cfg
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg"
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 147.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2017/01/12 v0.06k Graphics/color for pdfTeX
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
-)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
-)
-\Gread@gobject=\count88
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-def\pdftex.def"
+File: pdftex.def 2017/06/24 v1.0g Graphics/color driver for pdftex
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/soul/soul.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\soul\soul.sty"
 Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
 \SOUL@word=\toks14
 \SOUL@lasttoken=\toks15
@@ -61,7 +51,7 @@ Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
 \SOUL@uldp=\dimen105
 \SOUL@ulht=\dimen106
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/array.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\array.sty"
 Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
 \col@sep=\dimen107
 \extrarowheight=\dimen108
@@ -69,14 +59,14 @@ Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
 \extratabsurround=\skip46
 \backup@length=\skip47
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption.sty"
 Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption3.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption3.sty"
 Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 67.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks20
 )
@@ -88,24 +78,24 @@ Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \caption@parindent=\dimen114
 \caption@hangindent=\dimen115
 )
-\c@ContinuedFloat=\count89
+\c@ContinuedFloat=\count88
 )
-(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Sweave.sty
+(C:/PROGRA~1/R/R-34~1.3/share/texmf/tex/latex\Sweave.sty
 Package: Sweave 
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\graphics.cfg"
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
@@ -113,19 +103,18 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 \Gin@req@height=\dimen116
 \Gin@req@width=\dimen117
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty"
 Package: fancyvrb 2008/02/07
 
 Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
 <2008/02/07> (tvz)
-\FV@CodeLineNo=\count90
+\FV@CodeLineNo=\count89
 \FV@InFile=\read1
 \FV@TabBox=\box26
-\c@FancyVerbLine=\count91
-\FV@StepNumber=\count92
+\c@FancyVerbLine=\count90
+\FV@StepNumber=\count91
 \FV@OutFile=\write3
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/textcomp.sty
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\base\textcomp.sty"
 Package: textcomp 2017/04/05 v2.0i Standard LaTeX package
 Package textcomp Info: Sub-encoding information:
 (textcomp)               5 = only ISO-Adobe without \textcurrency
@@ -140,7 +129,7 @@ Package textcomp Info: Sub-encoding information:
 (textcomp)             See the documentation for details.
 Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 79.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1enc.def
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ts1enc.def"
 File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
 )
 LaTeX Info: Redefining \oldstylenums on input line 334.
@@ -207,28 +196,29 @@ Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
 Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
 Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/fontenc.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\fontenc.sty"
 Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/t1enc.def
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\t1enc.def"
 File: t1enc.def 2017/04/05 v2.0i Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ae/ae.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\ae\ae.sty"
 Package: ae 2001/02/12 1.3 Almost European Computer Modern
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/fontenc.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\fontenc.sty"
 Package: fontenc 2017/04/05 v2.0i Standard LaTeX package
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/t1enc.def
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\t1enc.def"
 File: t1enc.def 2017/04/05 v2.0i Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 48.
 )
 LaTeX Font Info:    Try loading font information for T1+aer on input line 105.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ae/t1aer.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\ae\t1aer.fd"
 File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
-)))) (./draft1.aux)
+))))
+No file draft1.aux.
 \openout1 = `draft1.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
@@ -245,34 +235,62 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 9.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 9.
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1cmr.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ts1cmr.fd"
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 9.
 
-(/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count93
+\scratchcounter=\count92
 \scratchdimen=\dimen118
 \scratchbox=\box27
-\nofMPsegments=\count94
-\nofMParguments=\count95
+\nofMPsegments=\count93
+\nofMParguments=\count94
 \everyMPshowfont=\toks21
-\MPscratchCnt=\count96
+\MPscratchCnt=\count95
 \MPscratchDim=\dimen119
-\MPnumerator=\count97
-\makeMPintoPDFobject=\count98
+\MPnumerator=\count96
+\makeMPintoPDFobject=\count97
 \everyMPtoPDFconversion=\toks22
-) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
-)
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-base.sty"
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\grfext.sty"
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvdefinekeys.sty"
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvsetkeys.sty"
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\etexcmds.sty"
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty"
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
 Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
 )
 Package pdftexcmds Info: LuaTeX not detected.
@@ -280,222 +298,257 @@ Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-)))
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 38.
 Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
+)
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
-(./draft1-concordance.tex)
+(draft1-concordance.tex)
 LaTeX Info: Redefining \bfseries on input line 13.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 21.
+(Font)              <7> on input line 24.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 21.
+(Font)              <5> on input line 24.
 
 
-LaTeX Warning: Citation `Rechavi2011' on page 1 undefined on input line 32.
+LaTeX Warning: Citation `Rechavi2011' on page 1 undefined on input line 35.
 
 [1
 
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+{C:/Users/spileggi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 
-LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 41.
-
-
-LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 41.
+LaTeX Warning: Citation `Bhat2014' on page 2 undefined on input line 44.
 
 
-LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 41.
+LaTeX Warning: Citation `Mahmud2013' on page 2 undefined on input line 44.
 
 
-
-LaTeX Warning: Citation `Weimer2007' on page 2 undefined on input line 43.
-
-
-LaTeX Warning: Citation `Blumenstock' on page 2 undefined on input line 43.
-
-
-LaTeX Warning: Citation `H.fu' on page 2 undefined on input line 43.
-
-
-LaTeX Warning: Citation `Yao2015' on page 2 undefined on input line 43.
-
-
-LaTeX Warning: Citation `Toba2014' on page 2 undefined on input line 43.
-
-
-LaTeX Warning: Citation `Ponzanelli2014a' on page 2 undefined on input line 43.
+LaTeX Warning: Citation `Asaduzzaman2013' on page 2 undefined on input line 44.
 
 
 
-LaTeX Warning: Citation `Ravi2014' on page 2 undefined on input line 43.
+LaTeX Warning: Citation `Weimer2007' on page 2 undefined on input line 46.
 
 
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 53--70
+LaTeX Warning: Citation `Blumenstock' on page 2 undefined on input line 46.
+
+
+LaTeX Warning: Citation `H.fu' on page 2 undefined on input line 46.
+
+
+LaTeX Warning: Citation `Yao2015' on page 2 undefined on input line 46.
+
+
+LaTeX Warning: Citation `Toba2014' on page 2 undefined on input line 46.
+
+
+LaTeX Warning: Citation `Ponzanelli2014a' on page 2 undefined on input line 46.
+
+
+
+LaTeX Warning: Citation `Ravi2014' on page 2 undefined on input line 46.
+
+
+Overfull \hbox (21.63304pt too wide) in paragraph at lines 56--73
  [][] 
  []
 
+
+LaTeX Warning: Reference `table:variables' on page 2 undefined on input line 78
+.
+
+
+LaTeX Warning: Reference `table:questions' on page 2 undefined on input line 78
+.
+
+
+LaTeX Warning: Citation `Kleinbaum2011' on page 2 undefined on input line 85.
+
 [2] [3]
 
-LaTeX Warning: Citation `Kleinbaum2011' on page 4 undefined on input line 82.
+LaTeX Warning: Citation `Bland1998' on page 4 undefined on input line 87.
 
 
-LaTeX Warning: Citation `Bland1998' on page 4 undefined on input line 84.
+LaTeX Warning: Citation `Moore2010' on page 4 undefined on input line 89.
 
 
-LaTeX Warning: Citation `Moore2010' on page 4 undefined on input line 86.
-
-
-LaTeX Warning: Citation `Rodriguez2010' on page 4 undefined on input line 86.
+LaTeX Warning: Citation `Rodriguez2010' on page 4 undefined on input line 89.
 
 
 LaTeX Warning: Citation `Hammermeister1979' on page 4 undefined on input line 8
-6.
+9.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 86.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 89.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 86.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 89.
 
 
-Overfull \hbox (9.51704pt too wide) in paragraph at lines 86--87
+Overfull \hbox (9.51704pt too wide) in paragraph at lines 89--90
 []\T1/aer/m/n/10 As the prob-a-bil-ity dis-tri-bu-tion for re-sponse times is u
 n-known, a non-parametric
  []
 
 
-LaTeX Warning: Citation `Chen' on page 4 undefined on input line 88.
+LaTeX Warning: Citation `Chen' on page 4 undefined on input line 91.
 
 
-LaTeX Warning: Citation `Oakes1981' on page 4 undefined on input line 88.
+LaTeX Warning: Citation `Oakes1981' on page 4 undefined on input line 91.
 
 
-LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 88.
+LaTeX Warning: Citation `Harrell2015' on page 4 undefined on input line 91.
 
 [4]
 
-LaTeX Warning: Citation `Grambsch1994' on page 5 undefined on input line 90.
+LaTeX Warning: Citation `Grambsch1994' on page 5 undefined on input line 93.
 
-<times_dist.pdf, id=22, 578.16pt x 361.35pt>
+LaTeX Font Info:    Try loading font information for T1+aett on input line 95.
+("C:\Program Files\MiKTeX 2.9\tex\latex\ae\t1aett.fd"
+File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
+)
+<times_dist.pdf, id=21, pagebox=cropbox, 578.16pt x 361.35pt>
 File: times_dist.pdf Graphic file (type pdf)
- <use times_dist.pdf>
-Package pdftex.def Info: times_dist.pdf used on input line 102.
-(pdftex.def)             Requested size: 578.15858pt x 361.34912pt.
-
-<kmcurve.pdf, id=23, 578.16pt x 361.35pt>
+<use times_dist.pdf>
+Package pdftex.def Info: times_dist.pdf  used on input line 105. on input line 
+105.
+Package pdftex.def Info: Requested size: 578.15858pt x 361.34912pt on input lin
+e 105.
+<kmcurve.pdf, id=22, pagebox=cropbox, 578.16pt x 361.35pt>
 File: kmcurve.pdf Graphic file (type pdf)
- <use kmcurve.pdf>
-Package pdftex.def Info: kmcurve.pdf used on input line 109.
-(pdftex.def)             Requested size: 578.15858pt x 361.34912pt.
- [5 <./times_dist.pdf>]
+<use kmcurve.pdf>
+Package pdftex.def Info: kmcurve.pdf  used on input line 112. on input line 112
+.
+Package pdftex.def Info: Requested size: 578.15858pt x 361.34912pt on input lin
+e 112.
+
 ! Too many }'s.
-l.114 ...l data). Of those questions, 4,951 (63.8}
+l.117 ...l data). Of those questions, 4,951 (63.8}
                                                   \%) received an answer by ...
 You've closed more groups than you opened.
 Such booboos are generally harmless, so keep going.
 
+
+LaTeX Warning: Reference `fig:answertimes' on page 5 undefined on input line 11
+7.
+
+[5 <./times_dist.pdf>]
+
+LaTeX Warning: Reference `fig:kmcurve' on page 6 undefined on input line 121.
+
+
+LaTeX Warning: Reference `table:splines' on page 6 undefined on input line 169.
+
+
 [6 <./kmcurve.pdf>] [7]
-Overfull \hbox (22.07425pt too wide) in paragraph at lines 189--212
+
+LaTeX Warning: Reference `table:cv' on page 8 undefined on input line 187.
+
+
+LaTeX Warning: Reference `table:cv' on page 8 undefined on input line 187.
+
+
+Overfull \hbox (22.07425pt too wide) in paragraph at lines 192--215
  [][] 
  []
 
-[8]
-LaTeX Font Info:    Try loading font information for TS1+aer on input line 223.
 
- (/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/ts1aer.fd
+LaTeX Warning: Reference `table:coefficients' on page 8 undefined on input line
+ 223.
+
+LaTeX Font Info:    Try loading font information for TS1+aer on input line 226.
+
+(C:/PROGRA~1/R/R-34~1.3/share/texmf/tex/latex\ts1aer.fd
 File: ts1aer.fd 
 )
 LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10> not available
-(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 223.
-[9]
-Overfull \hbox (90.93855pt too wide) in paragraph at lines 259--281
+(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 226.
+ [8] [9]
+Overfull \hbox (90.93855pt too wide) in paragraph at lines 262--284
  [][] 
  []
 
+[10]
 
-LaTeX Warning: Citation `Bhat2014' on page 10 undefined on input line 293.
+LaTeX Warning: Reference `table:questions' on page 11 undefined on input line 2
+87.
 
-[10] [11]
+[11]
 
-LaTeX Warning: Citation `Correa2013' on page 12 undefined on input line 323.
-
-
-LaTeX Warning: Citation `Ravi2014' on page 12 undefined on input line 323.
+LaTeX Warning: Citation `Bhat2014' on page 12 undefined on input line 295.
 
 [12]
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 330--337
+
+LaTeX Warning: Citation `Correa2013' on page 13 undefined on input line 325.
+
+
+LaTeX Warning: Citation `Ravi2014' on page 13 undefined on input line 325.
+
+
+LaTeX Warning: Reference `table:frequentterms' on page 13 undefined on input li
+ne 327.
+
+
+Overfull \hbox (21.63304pt too wide) in paragraph at lines 331--338
  [][] 
  []
 
 
-LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 345.
+LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 346.
 
+! Undefined control sequence.
+l.352 ...d off of findings and methods from \citep
+                                                  {Bhat2014} and \citep{Harp...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-LaTeX Warning: Citation `Bhat2014' on page 13 undefined on input line 351.
+! Undefined control sequence.
+l.352 ... methods from \citep{Bhat2014} and \citep
+                                                  {Harper2008}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-
-LaTeX Warning: Citation `Harper2008' on page 13 undefined on input line 351.
-
-[13] (./draft1.bbl) [14] (./draft1.aux)
+[13] [14] (draft1.bbl) [15] (draft1.aux)
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 4129 strings out of 492995
- 63170 string characters out of 6132704
- 129539 words of memory out of 5000000
- 7599 multiletter control sequences out of 15000+600000
- 26105 words of font info for 51 fonts, out of 8000000 for 9000
+ 4095 strings out of 493312
+ 62257 string characters out of 3138889
+ 126456 words of memory out of 3000000
+ 7559 multiletter control sequences out of 15000+200000
+ 26594 words of font info for 53 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,13n,39p,2004b,288s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
-}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/lo
-cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/loc
-al/texlive/2017/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on draft1.pdf (14 pages, 212609 bytes).
+ 41i,13n,39p,2007b,402s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\spileggi\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi6
+00\tcrm1000.pk><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx
+10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
+C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx7.pfb><C:/Progra
+m Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmmib10.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
+sfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmtt10.pfb>
+Output written on draft1.pdf (15 pages, 229467 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
- 75 compressed objects within 1 object stream
+ 112 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  15 words of extra memory for PDF output out of 10000 (max. 10000000)
 
