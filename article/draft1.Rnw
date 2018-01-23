@@ -106,7 +106,11 @@ In each iteration of cross-validation, the full model was built on the training 
 
 Correlations between scaled Schoenfeld residuals, differences between observed and expected predictor values for questions that received answers, and a function of time, were examined to assess the proportional hazards assumption that the effect of predictors on hazard does not depend on time \cite{Grambsch1994}. Significant correlations would indicate a predictor has violated this assumption.
 
+<<<<<<< HEAD
 All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estimates of survival probability were computed with the \texttt{Surv} and \texttt{survfit} functions of the \texttt{Survival} package in R. To compute predicted survival probabilities using the final model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package. This function uses the Cox model and a vector of times to compute predicted survival probabilities. Data used for this analysis can be found in the \texttt{oshitar} package. The function \texttt{variable\_setup} of the \texttt{oshitar} package was used to set up all necessary variables in the data.
+=======
+All computation was executed under \texttt{R} version 3.4.3.  \hl{Package for KM curve?} To compute predicted survival probabilities using the model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package in R. This function uses the Cox model and a vector of times to compute predicted survival probabilities. \hl{Include reference for data and functions in oshitaR pacakge?}
+>>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
 
 %===================================================================================================
 %===================================================================================================
@@ -213,12 +217,21 @@ Table \ref{table:splines} shows the results of determining the optimal number of
   \hline
  & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
   \hline
+<<<<<<< HEAD
   \textbf{Training Sets} & 2.03 & 937.39  & <0.0001 & 0.14 & 0.27 & 0.63 \\ 
   \textbf{Test Sets}     & 1.99 & 220.83  & <0.0001 & 0.14 & 0.26 & 0.63 \\
   \textbf{Full Data}     & 2.03 & 1165.03 & <0.0001 & 0.14 & 0.28 & 0.63 \\ 
    \hline
 \end{tabular}
 \caption{Performance metrics of final model (HR: Hazard Ratio, LR: Partial Likelihood Ratio)} 
+=======
+  \textbf{Training Sets} & 2.03 & 937.39  & \hl{0} & 0.14 & 0.27 & 0.63 \\ 
+  \textbf{Test Sets}     & 1.99 & 220.83  & \hl{0} & 0.14 & 0.26 & 0.63 \\
+  \textbf{Full Data}     & 2.03 & 1165.03 & \hl{0} & 0.14 & 0.28 & 0.63 \\ 
+   \hline
+\end{tabular}
+\caption{Performance metrics \hl{of final model?}. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)} 
+>>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
 \label{table:cv}
 \end{table}
 
@@ -256,7 +269,11 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 
 Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. 
 
+<<<<<<< HEAD
 The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value <0.0001). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
+=======
+The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value \hl{= 0}). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
+>>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
 
 The following are interpretations of select hazard coefficients in Table \ref{table:coefficients}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
 
@@ -268,7 +285,11 @@ The following are interpretations of select hazard coefficients in Table \ref{ta
 
 Results and coefficients of the final model reveal how users can ask questions in order to decrease response time. Findings suggest that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 
 
+<<<<<<< HEAD
 The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways that the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include additional tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
+=======
+The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways that the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
+>>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
 
 %===================================================================================================
 %===================================================================================================
@@ -393,7 +414,11 @@ This variable indicates true if the asker included words in the question's text 
 
 \subsubsection*{8.2.5 Line break to text length ratio}
 
+<<<<<<< HEAD
 This variable was created to investigate if questions that include line breaks in the text are easier to read than questions that do not include any, and thus have shorter response times. Questions with a ratio of 0 tend to include either short, ambiguous texts (e.g. "Start button not working.") or long and lengthy texts, and tend to remain unanswered or have slower response times. Questions with a ratio of greater than 0 tend to have faster response times. 
+=======
+This variable was created to investigate if questions that include line breaks in the text are easier to read than questions that don't include any, and thus have shorter response times. \hl{What is an optimal/desirable/good ratio versus bad?}
+>>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
 
 % ------------------------------------------------------------------------
 
