@@ -23,14 +23,14 @@
 
 \section*{Abstract}  
 
-Community-driven online question and answer forums (CQA), platforms that allow users to ask and answer questions, contain an extensive amount of crowd-sourced information. One such example of a CQA is iFixit's \textit{Answers} forum. This forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users. An important aspect of these CQAs, for both users and the forum, is question response time. This paper presents a survival analysis of the time until a question receives it's first response. A Cox proportional hazards model was developed to identify variables associated with response time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = 0.15$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = 2.54, 95\% CI = (2.32, 2.79)), factors related to the question's title (e.g., if it was phrased as a question (HR = 1.29, 95\% CI = (1.21, 1.38))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = 0.87, 95\% CI = (0.82, 0.93))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs. 
+Community-driven online question and answer forums (CQA), platforms that allow users to ask and answer questions, contain an extensive amount of crowd-sourced information. One such example of a CQA is iFixit's \textit{Answers} forum. This forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users. An important aspect of these CQAs, for both users and the forum, is question response time. This paper presents a survival analysis of the time until a question posted on iFixit's \textit{Answers} forum receives it's first response. A Cox proportional hazards model was developed to identify variables associated with response time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = 0.15$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = 2.54, 95\% CI = (2.32, 2.79)), factors related to the question's title (e.g., if it was phrased as a question (HR = 1.29, 95\% CI = (1.21, 1.38))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = 0.87, 95\% CI = (0.82, 0.93))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs.
 
 %===================================================================================================
 %===================================================================================================
 
 \section*{1. Introduction}
 
-Community-driven online question and answer forums have become widely-used sources of information. These online platforms feature thousands of user-posted questions and answers and receive millions of visits every month. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit's mission is to equip users with the knowledge and tools necessary to repair their broken devices, as part of an effort to save money and reduce electronic waste. This company provides over 30,000 free online repair guides and sells specialized tools and parts needed for such repairs.
+Community-driven online question and answer forums have become widely-used sources of information. These online platforms feature thousands of user-posted questions and answers and receive millions of visits every month. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit provides over 30,000 free online repair guides and sells the specialized tools and parts needed for such repairs. This company's mission is to equip users with the knowledge and tools necessary to repair their broken devices, as part of an effort to help them save money and reduce electronic waste. 
     
 As not all possible repairs are covered in the published guides and users may have additional questions related to existing guides, iFixit's \textit{Answers} forum is an important resource for users. This platform features questions pertaining to over 9,000 devices, ranging from jammed zippers to shattered phone screens and faulty air conditioners, with over 100,000 user-posted solutions. As thousands of users rely on this forum for information, it is important that users receive timely answers. Fast response times have been shown to be associated with positive user satisfaction and, in turn, increase web traffic, which is valuable to the reputation and longevity of the CQA \cite{Rechavi2011}. Analysis of response times can reveal factors that affect how quickly questions receive answers, which can lead to suggestions for how users can ask better questions to minimize response times and for how the forum design can be improved.
 
@@ -41,7 +41,7 @@ However, analysis and prediction of response times on CQAs have not been thoroug
 
 \section*{2. Related Work}
   
-With the recent increase in the popularity and use of CQAs, these data-rich platforms have been the subject of a multitude of studies. Regarding analysis of response times, \cite{Bhat2014} developed a classification model using both textual and non-textual features to estimate response times for questions posted on \textit{Stack Overflow}. \cite{Mahmud2013} used parametric methods and proposed models to predict response times based on exponential distributions. \cite{Asaduzzaman2013} instead focused exclusively on unanswered questions and developed a taxonomy for classifying such questions and created a model to predict how long a question would remain unanswered. However, all research mentioned restricted analysis to either questions for which response times were observed or to questions that remained unanswered. The research presented in this paper uses survival analysis, a method not yet applied to CQAs, to allow for analysis of both answered and unanswered questions in a unified framework. 
+With the recent increase in the popularity and use of CQAs, these data-rich platforms have been the subject of a multitude of studies. Regarding analysis of response times, \cite{Bhat2014} developed a classification model using both textual and non-textual features to estimate response times for questions posted on \textit{Stack Overflow}. \cite{Mahmud2013} used parametric methods and proposed models to predict response times based on exponential distributions. \cite{Asaduzzaman2013} instead focused exclusively on unanswered questions and created a model to predict how long a question would remain unanswered. However, all research mentioned restricted analysis to either questions for which response times were observed or to questions that remained unanswered. The research presented in this paper uses survival analysis, a method not yet applied to CQAs, to allow for analysis of both answered and unanswered questions in a unified framework. 
 
 The majority of existing research has been focused on predicting question and answer quality. \cite{Weimer2007} developed a classification algorithm to assess the quality of posts on \textit{Nabble.com} using primarily textual features of questions. \cite{Blumenstock} also determined that textual features (e.g. word count) was the most accurate predictor of Wikipedia article quality (Wikipedia articles can represent the same kind of user-generated content featured on CQAs). \cite{H.fu} instead found that non-textual features, like revision and comment count or the number of points a user has, were the most useful indicators of quality. A number of other studies have also developed classification algorithms using textual and non-textual features with the similar goal of predicting question or answer quality \cite{Yao2015, Toba2014, Ponzanelli2014a, Ravi2014}. The present analysis seeks to utilize both textual and non-textual features of questions on iFixit's \textit{Answers} forum to investigate if factors that indicate that a question is of high quality also lead to faster response times.
 
@@ -67,13 +67,12 @@ The majority of existing research has been focused on predicting question and an
   \multirow{5}{2cm}{\textbf{Continuous Variables}} & Average number of characters in each question's tags (average tag length)\\ \cline{2-2}
   & Average frequency for all of a question's tags (average tag frequency) \\ \cline{2-2}
   & Number of characters in the question's text (text length) \\ \cline{2-2}
-  & Number of characters in the user-defined device name dDevice name length) \\ \cline{2-2}
+  & Number of characters in the user-defined device name (device name length) \\ \cline{2-2}
   & Ratio of the number of line breaks to the number of characters in the question's text (line break to text length ratio) \\ \hline
 \end{tabular}
 \caption{Categorical and continuous variables derived}
 \label{table:variables}
 \end{table}
-
 
 The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7, 2017 (date of data download). Variables in the data included: device name, device category, question title, text, tags, new user status, date and time the question was posted, and date and time the first answer was received. Variables derived can be found in Table \ref{table:variables}. The Appendix contains details on variable derivation, as well as an example of an answered and unanswered question in Table \ref{table:questions}. 
 
@@ -92,11 +91,8 @@ In each iteration of cross-validation, the full model was built on the training 
 
 Correlations between scaled Schoenfeld residuals, differences between observed and expected predictor values for questions that received answers, and a function of time, were examined to assess the proportional hazards assumption that the effect of predictors on hazard does not depend on time \cite{Grambsch1994}. Significant correlations would indicate a predictor has violated this assumption.
 
-<<<<<<< HEAD
-All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estimates of survival probability were computed with the \texttt{Surv} and \texttt{survfit} functions of the \texttt{Survival} package in R. To compute predicted survival probabilities using the final model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package. This function uses the Cox model and a vector of times to compute predicted survival probabilities. Data used for this analysis can be found in the \texttt{oshitar} package. The function \texttt{variable\_setup} of the \texttt{oshitar} package was used to set up all necessary variables in the data.
-=======
-All computation was executed under \texttt{R} version 3.4.3.  \hl{Package for KM curve?} To compute predicted survival probabilities using the model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package in R. This function uses the Cox model and a vector of times to compute predicted survival probabilities. \hl{Include reference for data and functions in oshitaR pacakge?}
->>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
+All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estimates of survival probability were computed with the \texttt{Surv} and \texttt{survfit} functions of the \texttt{Survival} package in R. To compute predicted survival probabilities using the final model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package. This function uses the Cox model and a vector of times to compute predictions. Data used for this analysis can be found in the \texttt{oshitar} package. The function \texttt{variable\_setup} of the \texttt{oshitar} package was used to set up all necessary variables in the data.
+
 
 %===================================================================================================
 %===================================================================================================
@@ -122,11 +118,11 @@ All computation was executed under \texttt{R} version 3.4.3.  \hl{Package for KM
 
 
 
-  Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer within the first 100 hours after it has been posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was 775.75 hours, or 32.32 days. The median survival time, the time at which 50\% of the questions in the data received an answer, was 9.16 hours.
+Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer within the first 100 hours after it has been posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was 775.75 hours, or 32.32 days. The median survival time, the time at which 50\% of the questions in the data received an answer, was 9.16 hours.
 
 
 
-Each training set contained 6,208 questions; each test set contained 1,552 questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in univariate p-values of less than 0.001. Applying either square root or log transformations resulted in univariate p-values of less than 0.001. For variables that contained zeros, one was added to each observation before applying the log transformation. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus one transformation of average tag length, log plus one transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length. All categorical predictors and all continuous predictors with necessary transformations were retained for the full model. 
+Each training set contained 6,208 questions; each test set contained 1,552 questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in univariate p-values of less than 0.001. Applying either square root or log transformations to all continuous predictors resulted in univariate p-values of less than 0.001. For variables that contained zeros, one was added to each observation before applying the log transformation. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus one transformation of average tag length, log plus one transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length. All categorical predictors and all continuous predictors with necessary transformations were retained for the full model. 
 
 % Splines
 \begin{table}[!htbp]
@@ -179,21 +175,12 @@ Table \ref{table:splines} shows the results of determining the optimal number of
   \hline
  & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
   \hline
-<<<<<<< HEAD
   \textbf{Training Sets} & 2.03 & 937.39  & <0.0001 & 0.14 & 0.27 & 0.63 \\ 
   \textbf{Test Sets}     & 1.99 & 220.83  & <0.0001 & 0.14 & 0.26 & 0.63 \\
   \textbf{Full Data}     & 2.03 & 1165.03 & <0.0001 & 0.14 & 0.28 & 0.63 \\ 
    \hline
 \end{tabular}
-\caption{Performance metrics of final model (HR: Hazard Ratio, LR: Partial Likelihood Ratio)} 
-=======
-  \textbf{Training Sets} & 2.03 & 937.39  & \hl{0} & 0.14 & 0.27 & 0.63 \\ 
-  \textbf{Test Sets}     & 1.99 & 220.83  & \hl{0} & 0.14 & 0.26 & 0.63 \\
-  \textbf{Full Data}     & 2.03 & 1165.03 & \hl{0} & 0.14 & 0.28 & 0.63 \\ 
-   \hline
-\end{tabular}
-\caption{Performance metrics \hl{of final model?}. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)} 
->>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
+\caption{Performance metrics of final model. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)} 
 \label{table:cv}
 \end{table}
 
@@ -214,7 +201,6 @@ Average performance metrics for test and training sets are in Table \ref{table:c
                   & PC & 0.2818 (0.0597) &  \\ 
                   & Tablet & -0.1566 (0.0815)  & \\ 
                   & Vehicle & 0.4056 (0.0695)  & \\ \hline
-<<<<<<< HEAD
   \multicolumn{2}{|l|}{Weekend} & -0.1334 (0.0331)  & <0.0001 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{Text contains end punctuation} & 0.0247 (0.0499) & 0.6127 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{Text is in all lower case} & -0.1770 (0.0645) &  0.0060 \\ \hline
@@ -224,17 +210,6 @@ Average performance metrics for test and training sets are in Table \ref{table:c
   \multicolumn{2}{|L{7.5cm}|}{User edited or added to the question's text after posting it} & 0.2983 (0.0857)  & 0.0005 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{User was a member for less than one day before posting} & -0.1069 (0.0364)  & 0.0031 \\ \hline
   \multicolumn{2}{|L{7.5cm}|}{User made an effort to solve the problem prior to asking the question} & -0.0724 (0.0362)  & 0.0448 \\ \hline
-=======
-  \multicolumn{2}{|l|}{Weekend or weekday} & -0.1334 (0.0331)  & <0.0001 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{If the question's text contains end punctuation marks} & 0.0247 (0.0499) & 0.6127 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{If the question's text is in all lower case} & -0.1770 (0.0645) &  0.0060 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{If the question's title contains terms considered frequently-used among answered questions} & 0.0475 (0.0422) &  0.2596 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{If the question's title contains terms considered frequently-used among unanswered questions} & -0.2808 (0.0340)  & <0.0001 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{If the question's title ends in a question mark} & 0.2571 (0.0332) &  <0.0001 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{If the user edited or added to the question's text after posting it} & 0.2983 (0.0857)  & 0.0005 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{If the user had been a member for less than one day before posting the question} & -0.1069 (0.0364)  & 0.0031 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{If the user made an effort to solve the problem prior to asking the question} & -0.0724 (0.0362)  & 0.0448 \\ \hline
->>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
   \multicolumn{2}{|L{7.5cm}|}{Square root of the average tag frequency} & 2.2609 (0.7196)  & 0.0020 \\ \hline
 \end{tabular} 
 \caption{Coefficients for predictors in the final model (Continuous predictors fit with restricted cubic splines are not shown)} 
@@ -243,11 +218,7 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 
 Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. 
 
-<<<<<<< HEAD
 The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value <0.0001). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
-=======
-The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value \hl{= 0}). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
->>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
 
 The following are interpretations of select hazard coefficients in Table \ref{table:coefficients}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
 
@@ -259,11 +230,7 @@ The following are interpretations of select hazard coefficients in Table \ref{ta
 
 Results and coefficients of the final model reveal how users can ask questions in order to decrease response time. Findings suggest that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 
 
-<<<<<<< HEAD
-The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways that the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include additional tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
-=======
-The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name at all. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways that the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
->>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
+The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
 
 %===================================================================================================
 %===================================================================================================
@@ -317,6 +284,7 @@ This research was supported by the Bill and Linda Frost fund of the California P
 \caption{Answered and unanswered questions}
 \label{table:questions}
 \end{table}
+
 Table \ref{table:questions} provides observed and derived variable values from an example of an answered question (regarding the iPhone 6) and unanswered question (regarding android tablet). All fields in device, title, text, and tags are shown as the users entered it. 
 
 % ------------------------------------------------------------------------------------------------
@@ -358,6 +326,7 @@ This variable was created to investigate if sentences with no end punctuation ta
 These variables were created to investigate if questions pertaining to popular topics receive answers faster than questions that do not. Similarly, another variable was created to investigate if questions pertaining to unpopular topics receive answers slower than questions that do not. This variable was created based off of methods from \cite{Correa2013} and \cite{Ravi2014}.
 
 To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the proportion of times those words occurred among all answered questions' titles, defined as the frequency. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in 1\% or more of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies was assessed. The ratio was calculated as the proportion of times a word occurred among answered questions, to the proportion of times a word occurred in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and levels of the device categorization variable, every word that matched a device name was removed from the lists. Table \ref{table:frequentterms} contains the resulting terms for answered questions (111 words) and for unanswered questions (32 words). 
+
 % Table with list of frequently-used words
 \begin{table}[!htbp]
 \centering
@@ -388,11 +357,7 @@ This variable indicates true if the asker included words in the question's text 
 
 \subsubsection*{8.2.5 Line break to text length ratio}
 
-<<<<<<< HEAD
 This variable was created to investigate if questions that include line breaks in the text are easier to read than questions that do not include any, and thus have shorter response times. Questions with a ratio of 0 tend to include either short, ambiguous texts (e.g. "Start button not working.") or long and lengthy texts, and tend to remain unanswered or have slower response times. Questions with a ratio of greater than 0 tend to have faster response times. 
-=======
-This variable was created to investigate if questions that include line breaks in the text are easier to read than questions that don't include any, and thus have shorter response times. \hl{What is an optimal/desirable/good ratio versus bad?}
->>>>>>> f6d89be14b864acd62232980944a23f9e3aa540d
 
 % ------------------------------------------------------------------------
 
