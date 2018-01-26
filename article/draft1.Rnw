@@ -227,7 +227,7 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 % Final model on full data
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{|l L{4cm}| c | c |}
+\begin{tabular}{|l L{5.5cm}| c | c |}
   \hline
  \textbf{Variable} & & \textbf{Coefficient (SE)} & \textbf{p-value} \\ \hline
   Device Category & Apple Product & 0.9346 (0.0476) & <0.0001 \\ 
@@ -238,17 +238,18 @@ Average performance metrics for test and training sets are in Table \ref{table:c
                   & Other & -0.1304 (0.0555)  & \\ 
                   & PC & 0.2818 (0.0597) &  \\ 
                   & Tablet & -0.1566 (0.0815)  & \\ 
-                  & Vehicle & 0.4056 (0.0695)  & \\ \hline
+                  & Vehicle & 0.4056 (0.0695)  & \\
+                  & Android/Other Phone (reference) & --- & \\ \hline
   \multicolumn{2}{|l|}{Weekend} & -0.1334 (0.0331)  & <0.0001 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{Text contains end punctuation} & 0.0247 (0.0499) & 0.6127 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{Text is in all lower case} & -0.1770 (0.0645) &  0.0060 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{Title contains terms considered frequently-used among answered questions} & 0.0475 (0.0422) &  0.2596 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{Title contains terms considered frequently-used among unanswered questions} & -0.2808 (0.0340)  & <0.0001 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{Title ends in a question mark} & 0.2571 (0.0332) &  <0.0001 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{User edited or added to the question's text after posting it} & 0.2983 (0.0857)  & 0.0005 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{User was a member for less than one day before posting} & -0.1069 (0.0364)  & 0.0031 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{User made an effort to solve the problem prior to asking the question} & -0.0724 (0.0362)  & 0.0448 \\ \hline
-  \multicolumn{2}{|L{7.5cm}|}{Square root of the average tag frequency} & 2.2609 (0.7196)  & 0.0020 \\ \hline
+  \multicolumn{2}{|l|}{Text contains end punctuation} & 0.0247 (0.0499) & 0.6127 \\ \hline
+  \multicolumn{2}{|l|}{Text is in all lower case} & -0.1770 (0.0645) &  0.0060 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among answered questions} & 0.0475 (0.0422) &  0.2596 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among unanswered questions} & -0.2808 (0.0340)  & <0.0001 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title ends in a question mark} & 0.2571 (0.0332) &  <0.0001 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User edited or added to the question's text after posting it} & 0.2983 (0.0857)  & 0.0005 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User was a member for less than one day before posting} & -0.1069 (0.0364)  & 0.0031 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User made an effort to solve the problem prior to asking the question} & -0.0724 (0.0362)  & 0.0448 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Square root of the average tag frequency} & 2.2609 (0.7196)  & 0.0020 \\ \hline
 \end{tabular} 
 \caption{Coefficients for predictors in the final model (Continuous predictors fit with restricted cubic splines are not shown)} 
 \label{table:coefficients}
