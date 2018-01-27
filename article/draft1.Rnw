@@ -6,7 +6,7 @@
 \usepackage{caption}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 
 \makeatletter
 \DeclareRobustCommand\bfseries{%
@@ -15,8 +15,6 @@
   \boldmath % <-- added
 }
 \makeatother
-
-
 
 
 << echo = FALSE >>=
@@ -67,7 +65,7 @@ The majority of existing research has been focused on predicting question and an
 % Table of derived predictors
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{| L{2cm} | L{10cm} |}
+\begin{tabular}{|L{2cm}|L{10cm}|}
   \hline
   \multirow{9}{2cm}{\textbf{Categorical Variables}} & Device category the question pertains to. Categories include: Android/Other Phone, Apple Products, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle \\ \cline{2-2}
   & If the question was posted on a weekend or on a weekday \\ \cline{2-2}
@@ -124,19 +122,19 @@ longest_d <- round(longest / 24, 2)
 
 % Distribution of answer times
 \begin{figure}[!htbp]
-  \includegraphics[scale=1]{times_dist.pdf}
+  \includegraphics[scale=0.5]{times_dist.pdf}
   \caption{Distribution of response times}
   \label{fig:answertimes}
 \end{figure}
 
 % Kaplan-Meier curve
 \begin{figure}[!htbp]
-  \includegraphics[scale=1]{kmcurve.pdf}
+  \includegraphics[scale=0.5]{kmcurve.pdf}
   \caption{Kaplan-Meier curve for all questions}
   \label{fig:kmcurve}
 \end{figure}
 
-  Of 8,025 questions in the full data, \Sexpr{format(nrow(x), big.mark = ",")} were in English (97\% of the full data). Of those questions, \Sexpr{format(answered, big.mark = ",")} (\Sexpr{percentans}}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{format(longest, big.mark = ",")} hours (\Sexpr{longest_d} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
+  Of 8,025 questions in the full data, 7,760 were in English (97\% of the full data). Of those questions, \Sexpr{format(answered, big.mark = ",")} (\Sexpr{percentans}}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{format(longest, big.mark = ",")} hours (\Sexpr{longest_d} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
 
 
 << echo = FALSE >>=
@@ -209,7 +207,7 @@ Table \ref{table:splines} shows the results of determining the optimal number of
 % Cross-validation metrics
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{| r | r | r | r | r  | r | r | r |}
+\begin{tabular}{|r|r|r|r|r|r|r|r|}
   \hline
  & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
   \hline
@@ -227,7 +225,7 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 % Final model on full data
 \begin{table}[!htbp]
 \centering
-\begin{tabular}{|l L{5.5cm}| c | c |}
+\begin{tabular}{|l L{5.5cm}|c|c|}
   \hline
  \textbf{Variable} & & \textbf{Coefficient (SE)} & \textbf{p-value} \\ \hline
   Device Category & Apple Product & 0.9346 (0.0476) & <0.0001 \\ 
@@ -251,7 +249,7 @@ Average performance metrics for test and training sets are in Table \ref{table:c
   \multicolumn{2}{|L{9cm}|}{User made an effort to solve the problem prior to asking the question} & -0.0724 (0.0362)  & 0.0448 \\ \hline
   \multicolumn{2}{|L{9cm}|}{Square root of the average tag frequency} & 2.2609 (0.7196)  & 0.0020 \\ \hline
 \end{tabular} 
-\caption{Coefficients for predictors in the final model (Continuous predictors fit with restricted cubic splines are not shown)} 
+\caption{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
 \label{table:coefficients}
 \end{table}
 
