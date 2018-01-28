@@ -146,14 +146,14 @@ longest_d <- round(longest / 24, 2)
 % Distribution of answer times
 \begin{figure}[!htbp]
   \includegraphics[scale=0.5]{times_dist.pdf}
-  \caption{Distribution of response times}
+  % \caption{Distribution of response times}
   \label{fig:answertimes}
 \end{figure}
 
 % Kaplan-Meier curve
 \begin{figure}[!htbp]
   \includegraphics[scale=0.5]{kmcurve.pdf}
-  \caption{Kaplan-Meier curve for all questions}
+  % \caption{Kaplan-Meier curve for all questions}
   \label{fig:kmcurve}
 \end{figure}
 

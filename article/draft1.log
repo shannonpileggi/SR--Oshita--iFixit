@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  27 JAN 2018 19:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  27 JAN 2018 19:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -401,7 +401,23 @@ File: kmcurve.pdf Graphic file (type pdf)
  <use kmcurve.pdf>
 Package pdftex.def Info: kmcurve.pdf used on input line 184.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
- [5] [6 <./times_dist.pdf> <./kmcurve.pdf>]
+
+
+Package caption Warning: \label without proper reference on input line 179.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:answertimes' on page 5 undefined on input line 18
+9.
+
+
+Package caption Warning: \label without proper reference on input line 186.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:kmcurve' on page 5 undefined on input line 194.
+
+[5] [6 <./times_dist.pdf> <./kmcurve.pdf>]
 LaTeX Font Info:    Try loading font information for OML+cmr on input line 252.
 
 
@@ -502,13 +518,17 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 446.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 446.
 Package rerunfilecheck Info: File `draft1.out' has not changed.
 (rerunfilecheck)             Checksum: 9EB65B2C59E953E247C0FF2958C74C2B;1430.
+
+
+LaTeX Warning: There were undefined references.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 446.
  ) 
 Here is how much of TeX's memory you used:
- 7516 strings out of 492995
- 113332 string characters out of 6132704
- 216185 words of memory out of 5000000
- 10902 multiletter control sequences out of 15000+600000
+ 7515 strings out of 492995
+ 113326 string characters out of 6132704
+ 216231 words of memory out of 5000000
+ 10901 multiletter control sequences out of 15000+600000
  11263 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  36i,13n,39p,2006b,476s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -529,7 +549,7 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on draft1.pdf (16 pages, 304979 bytes).
+Output written on draft1.pdf (16 pages, 304470 bytes).
 PDF statistics:
  406 PDF objects out of 1000 (max. 8388607)
  363 compressed objects within 4 object streams
