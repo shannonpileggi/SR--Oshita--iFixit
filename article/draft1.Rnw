@@ -1,4 +1,4 @@
-\documentclass[preprint, authoryear]{elsarticle}
+\documentclass[preprint]{elsarticle}
 
 \usepackage{lineno,hyperref}
 \modulolinenumbers[5]
@@ -424,9 +424,10 @@ This variable was created to investigate if questions that include line breaks i
 
 \section*{References}
 
-\bibliographystyle{plainnat}
+\bibliographystyle{elsarticle-num-names}
+% \bibliographystyle{plainnat}
 % \bibliogrpahystyle{elsarticle-harv}
-% \bibliographystyle{model2-names.bst}\biboptions{authoryear}
+
 \bibliography{questions}
 
 
