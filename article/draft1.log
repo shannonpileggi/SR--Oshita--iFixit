@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  27 JAN 2018 19:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  27 JAN 2018 20:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -390,20 +390,20 @@ Overfull \hbox (9.88954pt too wide) in paragraph at lines 159--160
 un-known, a non-parametric
  []
 
-[4] <times_dist.pdf, id=156, 578.16pt x 361.35pt>
+[4] <times_dist.pdf, id=178, 578.16pt x 361.35pt>
 File: times_dist.pdf Graphic file (type pdf)
  <use times_dist.pdf>
 Package pdftex.def Info: times_dist.pdf used on input line 177.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
 
-<kmcurve.pdf, id=157, 578.16pt x 361.35pt>
+<kmcurve.pdf, id=179, 578.16pt x 361.35pt>
 File: kmcurve.pdf Graphic file (type pdf)
  <use kmcurve.pdf>
 Package pdftex.def Info: kmcurve.pdf used on input line 184.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
 
 
-Package caption Warning: \label without proper reference on input line 179.
+Package caption Warning: \label without proper reference on input line 178.
 See the caption package documentation for explanation.
 
 
@@ -411,7 +411,7 @@ LaTeX Warning: Reference `fig:answertimes' on page 5 undefined on input line 18
 9.
 
 
-Package caption Warning: \label without proper reference on input line 186.
+Package caption Warning: \label without proper reference on input line 185.
 See the caption package documentation for explanation.
 
 
@@ -426,12 +426,12 @@ File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 252.
-
+ [7]
 Overfull \hbox (64.84082pt too wide) in paragraph at lines 266--290
  [][] 
  []
 
-[7] [8]
+[8]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 301.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
@@ -455,83 +455,65 @@ Overfull \hbox (21.63304pt too wide) in paragraph at lines 408--415
  [][] 
  []
 
-[13] (./draft1.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 23--29
-\OT1/cmr/m/n/10 URL []$\OT1/cmtt/m/n/10 http : / / www . aaai . org / ocs / ind
-ex . php / ICWSM / ICWSM13 / paper /
+[13] (./draft1.bbl [14]
+Underfull \hbox (badness 2285) in paragraph at lines 101--108
+\OT1/cmr/m/n/10 978-1-4419-2918-1.  doi: $10 . 1007 / 978-[]1-[]4757-[]3462-[]1
+$.  URL []$\OT1/cmtt/m/n/10 papers :
  []
 
 
-Underfull \hbox (badness 1127) in paragraph at lines 31--39
-\OT1/cmr/m/n/10 Work-ing Con-fer-ence on Min-ing Soft-ware Repos-i-to-ries (MSR
-) (2013)
+Underfull \hbox (badness 10000) in paragraph at lines 101--108
+\OT1/cmtt/m/n/10 / / 55069ee6-[]504c-[]4f60-[]bfa9-[]053c4dcabb39 / Paper / p39
+8{%}5Cnhttp :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31--39
-\OT1/cmr/m/n/10 URL []$\OT1/cmtt/m/n/10 http : / / ieeexplore . ieee . org / lp
-docs / epic03 / wrapper . htm ?
+Underfull \hbox (badness 10000) in paragraph at lines 101--108
+\OT1/cmtt/m/n/10 / / link . springer . com / 10 . 1007 / 978-[]3-[]319-[]19425-
+[]7{%}5Cnhttp :
  []
 
 
-Underfull \hbox (badness 3601) in paragraph at lines 41--48
-\OT1/cmr/m/n/10 URL []$\OT1/cmtt/m/n/10 http : / / atlas . tk . informatik . tu
--[]darmstadt . de / Publications /
- []
-
-[14] [15]
-Underfull \hbox (badness 7099) in paragraph at lines 139--145
-[]\OT1/cmr/m/n/10 F. E. Har-rell, []Re-gres-sion Mod-el-ing Strate-gies[], Vol.
- 64, 2015.
+Underfull \hbox (badness 10000) in paragraph at lines 101--108
+\OT1/cmtt/m/n/10 / / www . ncbi . nlm . nih . gov / pubmed / 21531065{%}5Cnhttp
+ : / / linkinghub .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--145
-\OT1/cmr/m/n/10 URL []$\OT1/cmtt/m/n/10 papers : / / 55069ee6-[]504c-[]4f60-[]b
-fa9-[]053c4dcabb39 /
+Underfull \hbox (badness 10000) in paragraph at lines 101--108
+\OT1/cmtt/m/n/10 elsevier . com / retrieve / pii / S0300893211003502{%}5Cnhttp 
+: / / link .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--145
-\OT1/cmtt/m/n/10 Paper / p398{%}5Cnhttp : / / link . springer . com / 10 . 1007
- /
+Underfull \hbox (badness 1072) in paragraph at lines 120--126
+[]\OT1/cmr/m/n/10 Jalal Mah-mud, Jilin Chen, and Jef-frey Nichols.  When Will Y
+ou An-
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 139--145
-\OT1/cmtt/m/n/10 978-[]3-[]319-[]19425-[]7{%}5Cnhttp : / / www . ncbi . nlm . n
-ih . gov / pubmed /
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 139--145
-\OT1/cmtt/m/n/10 21531065{%}5Cnhttp : / / linkinghub . elsevier . com / retriev
-e / pii /
- []
-
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 446.
+[15])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 448.
  [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 446.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 448.
  (./draft1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 446.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 446.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 448.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 448.
 Package rerunfilecheck Info: File `draft1.out' has not changed.
 (rerunfilecheck)             Checksum: 9EB65B2C59E953E247C0FF2958C74C2B;1430.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 446.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 448.
  ) 
 Here is how much of TeX's memory you used:
- 7515 strings out of 492995
- 113326 string characters out of 6132704
- 216231 words of memory out of 5000000
- 10901 multiletter control sequences out of 15000+600000
+ 7517 strings out of 492995
+ 113365 string characters out of 6132704
+ 214089 words of memory out of 5000000
+ 10903 multiletter control sequences out of 15000+600000
  11263 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,13n,39p,2006b,476s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,13n,39p,2009b,445s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb><
 /usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb>
@@ -549,10 +531,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on draft1.pdf (16 pages, 304470 bytes).
+Output written on draft1.pdf (16 pages, 307746 bytes).
 PDF statistics:
- 406 PDF objects out of 1000 (max. 8388607)
- 363 compressed objects within 4 object streams
+ 382 PDF objects out of 1000 (max. 8388607)
+ 339 compressed objects within 4 object streams
  70 named destinations out of 1000 (max. 500000)
  163 words of extra memory for PDF output out of 10000 (max. 10000000)
 

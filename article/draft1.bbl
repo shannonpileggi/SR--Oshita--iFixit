@@ -1,190 +1,207 @@
-\begin{thebibliography}{10}
-\expandafter\ifx\csname url\endcsname\relax
-  \def\url#1{\texttt{#1}}\fi
-\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
-\expandafter\ifx\csname href\endcsname\relax
-  \def\href#1#2{#2} \def\path#1{#1}\fi
+\begin{thebibliography}{22}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem{Rechavi2011}
-A.~Rechavi, S.~Rafaeli, {Not all is gold that glitters response time {\&}
-  satisfaction rates in Yahoo! answers}, Proceedings - 2011 IEEE International
-  Conference on Privacy, Security, Risk and Trust and IEEE International
-  Conference on Social Computing, PASSAT/SocialCom 2011 (2011) 904--909\href
-  {http://dx.doi.org/10.1109/PASSAT/SocialCom.2011.67}
-  {\path{doi:10.1109/PASSAT/SocialCom.2011.67}}.
+\bibitem[Asaduzzaman et~al.(2013)Asaduzzaman, Mashiyat, Roy, and
+  Schneider]{Asaduzzaman2013}
+Muhammad Asaduzzaman, Ahmed~Shah Mashiyat, Chanchal~K. Roy, and Kevin~A.
+  Schneider.
+\newblock {Answering questions about unanswered questions of Stack Overflow}.
+\newblock \emph{2013 10th Working Conference on Mining Software Repositories
+  (MSR)}, pages 97--100, 2013.
+\newblock ISSN 2160-1852.
+\newblock \doi{10.1109/MSR.2013.6624015}.
+\newblock URL
+  \url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6624015}.
 
-\bibitem{Bhat2014}
-V.~Bhat, A.~Gokhale, R.~Jadhav, R.~Pudipeddi, L.~Akoglu, {Min ( e ) d Your Tags
-  : Analysis of Question Response Time in StackOverflow}, IEEE/ACM
-  International Conference on Advances in Social Networks Analysis and
-  Mining~(Asonam) (2014) 328--335.
+\bibitem[Bhat et~al.(2014)Bhat, Gokhale, Jadhav, Pudipeddi, and
+  Akoglu]{Bhat2014}
+Vasudev Bhat, Adheesh Gokhale, Ravi Jadhav, Ravi Pudipeddi, and Leman Akoglu.
+\newblock {Min ( e ) d Your Tags : Analysis of Question Response Time in
+  StackOverflow}.
+\newblock \emph{IEEE/ACM International Conference on Advances in Social
+  Networks Analysis and Mining}, \penalty0 (Asonam):\penalty0 328--335, 2014.
 
-\bibitem{Mahmud2013}
-J.~Mahmud, J.~Chen, J.~Nichols,
-  \href{http://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewPDFInterstitial/6072/6328}{{When
-  Will You Answer This? Estimating Response Time in Twitter}}, in: Seventh
-  International AAAI Conference on Weblogs and Social Media, 2013, pp.
-  697--700.
-\newline\urlprefix\url{http://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewPDFInterstitial/6072/6328}
+\bibitem[Bland and Altman(1998)]{Bland1998}
+J~M. Bland and D.~G Altman.
+\newblock {Statistics Notes: Survival probabilities (the Kaplan-Meier method)}.
+\newblock \emph{Bmj}, 317\penalty0 (7172):\penalty0 1572--1580, 1998.
+\newblock ISSN 0959-8138.
+\newblock \doi{10.1136/bmj.317.7172.1572}.
+\newblock URL \url{http://www.bmj.com/cgi/doi/10.1136/bmj.317.7172.1572}.
 
-\bibitem{Asaduzzaman2013}
-M.~Asaduzzaman, A.~S. Mashiyat, C.~K. Roy, K.~A. Schneider,
-  \href{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6624015}{{Answering
-  questions about unanswered questions of Stack Overflow}}, 2013 10th Working
-  Conference on Mining Software Repositories (MSR) (2013) 97--100\href
-  {http://arxiv.org/abs/1306.6078} {\path{arXiv:1306.6078}}, \href
-  {http://dx.doi.org/10.1109/MSR.2013.6624015}
-  {\path{doi:10.1109/MSR.2013.6624015}}.
-\newline\urlprefix\url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6624015}
+\bibitem[Blumenstock(2008)]{Blumenstock2008}
+Joshua~E Blumenstock.
+\newblock {Size matters: word count as a measure of quality on wikipedia}.
+\newblock In \emph{Proceedings of the 17th International Conference on World
+  Wide Web}, pages 1095--1096. ACM, 2008.
+\newblock ISBN 9781605580852.
+\newblock \doi{10.1145/1367497.1367673}.
+\newblock URL \url{http://portal.acm.org/citation.cfm?id=1367673}.
 
-\bibitem{Weimer2007}
-M.~Weimer, I.~Gurevych, M.~M{\"{u}}hlh{\"{a}}user,
-  \href{http://atlas.tk.informatik.tu-darmstadt.de/Publications/2007/acl2007.pdf}{{Automatically
-  assessing the post quality in online discussions on software}}, Proceedings
-  of the ACL~(June) (2007) 125--128.
-\newblock \href {http://dx.doi.org/10.3115/1557769.1557806}
-  {\path{doi:10.3115/1557769.1557806}}.
-\newline\urlprefix\url{http://atlas.tk.informatik.tu-darmstadt.de/Publications/2007/acl2007.pdf}
+\bibitem[Chen et~al.(2012)Chen, Kodell, Cheng, and Chen]{Chen}
+Hung-Chia Chen, Ralph~L Kodell, Kuang~Fu Cheng, and James~J Chen.
+\newblock {Assessment of performance of survival prediction models for cancer
+  prognosis}.
+\newblock \emph{BMC Medical Research Methodology}, 12\penalty0 (1):\penalty0
+  102, 2012.
+\newblock \doi{10.1186/1471-2288-12-102}.
+\newblock URL \url{https://doi.org/10.1186/1471-2288-12-102}.
 
-\bibitem{Blumenstock2008}
-J.~E. Blumenstock, \href{http://portal.acm.org/citation.cfm?id=1367673}{{Size
-  matters: word count as a measure of quality on wikipedia}}, in: Proceedings
-  of the 17th International Conference on World Wide Web, ACM, 2008, pp.
-  1095--1096.
-\newblock \href {http://dx.doi.org/10.1145/1367497.1367673}
-  {\path{doi:10.1145/1367497.1367673}}.
-\newline\urlprefix\url{http://portal.acm.org/citation.cfm?id=1367673}
+\bibitem[Correa and Sureka(2013)]{Correa2013}
+Denzil Correa and Ashish Sureka.
+\newblock {Fit or unfit: Analysis and prediction of 'closed questions' on Stack
+  Overflow}.
+\newblock \emph{Proceedings of the first ACM Conference on Online Social
+  Networks}, pages 201--212, 2013.
+\newblock ISSN 1450320848.
+\newblock \doi{10.1145/2512938.2512954}.
+\newblock URL \url{http://dl.acm.org/citation.cfm?doid=2512938.2512954}.
 
-\bibitem{Fu2015}
-H.~Fu, S.~Wu, S.~Oh, {Evaluating answer quality across knowledge domains: Using
-  textual and non-textual features in social Q{\&}A}, Proceedings of the
-  Association for Information Science and Technology 52~(1) (2015) 1--5.
-\newblock \href {http://dx.doi.org/10.1002/pra2.2015.145052010088}
-  {\path{doi:10.1002/pra2.2015.145052010088}}.
+\bibitem[Fu et~al.(2015)Fu, Wu, and Oh]{Fu2015}
+Hengyi Fu, Shuheng Wu, and Sanghee Oh.
+\newblock {Evaluating answer quality across knowledge domains: Using textual
+  and non-textual features in social Q{\&}A}.
+\newblock \emph{Proceedings of the Association for Information Science and
+  Technology}, 52\penalty0 (1):\penalty0 1--5, 2015.
+\newblock ISSN 23739231.
+\newblock \doi{10.1002/pra2.2015.145052010088}.
 
-\bibitem{Yao2015}
-Y.~Yao, H.~Tong, T.~Xie, L.~Akoglu, F.~Xu, J.~Lu,
-  \href{http://dx.doi.org/10.1016/j.ins.2014.12.038}{{Detecting high-quality
-  posts in community question answering sites}}, INFORMATION SCIENCES 302
-  (2015) 70--82.
-\newblock \href {http://dx.doi.org/10.1016/j.ins.2014.12.038}
-  {\path{doi:10.1016/j.ins.2014.12.038}}.
-\newline\urlprefix\url{http://dx.doi.org/10.1016/j.ins.2014.12.038}
+\bibitem[Grambsch and Therneau(1994)]{Grambsch1994}
+Patricia Grambsch and Terry Therneau.
+\newblock {Proportional hazards tests and diagnostics based on weighted
+  residuals}.
+\newblock \emph{Biometrika}, 81\penalty0 (3):\penalty0 515--526, 1994.
+\newblock URL \url{https://doi.org/10.1093/biomet/81.3.515}.
 
-\bibitem{Toba2014}
-H.~Toba, Z.-y. Ming, M.~Adriani, T.-s. Chua,
-  \href{http://dx.doi.org/10.1016/j.ins.2013.10.030}{{Discovering high quality
-  answers in community question answering archives using a hierarchy of
-  classifiers}}, Information Sciences 261 (2014) 101--115.
-\newblock \href {http://dx.doi.org/10.1016/j.ins.2013.10.030}
-  {\path{doi:10.1016/j.ins.2013.10.030}}.
-\newline\urlprefix\url{http://dx.doi.org/10.1016/j.ins.2013.10.030}
+\bibitem[Hammermeister et~al.(1979)Hammermeister, DeRouen, and
+  Dodge]{Hammermeister1979}
+K~E Hammermeister, T~A DeRouen, and H~T Dodge.
+\newblock {Variables predictive of survival in patients with coronary disease.
+  Selection by univariate and multivariate analyses from the clinical,
+  electrocardiographic, exercise, arteriographic, and quantitative angiographic
+  evaluations.}
+\newblock \emph{American Heart Association, Inc.}, 59\penalty0 (3):\penalty0
+  421--430, 1979.
+\newblock \doi{10.1161/01.CIR.59.3.421}.
+\newblock URL \url{http://dx.doi.org/10.1161/01.CIR.59.3.421}.
 
-\bibitem{Ponzanelli2014a}
-L.~Ponzanelli, A.~Mocci, A.~Bacchelli, M.~Lanza, {Understanding and classifying
-  the quality of technical forum questions}, Proceedings - International
-  Conference on Quality Software (2014) 343--352\href
-  {http://dx.doi.org/10.1109/QSIC.2014.27} {\path{doi:10.1109/QSIC.2014.27}}.
+\bibitem[Harper et~al.(2008)Harper, Raban, Rafaeli, and Konstan]{Harper2008}
+F~Maxwell Harper, Daphne Raban, Sheizaf Rafaeli, and Joseph~A Konstan.
+\newblock {Predictors of Answer Quality in Online Q{\&}A Sites}.
+\newblock \emph{Proceedings of the SIGCHI Conference on Human Factors in
+  Computing Systems}, pages 865--874, 2008.
+\newblock \doi{10.1145/1357054.1357191}.
+\newblock URL \url{http://dl.acm.org/citation.cfm?id=1357054.1357191}.
 
-\bibitem{Ravi2014}
-S.~Ravi, B.~Pang, V.~Rastagori, R.~Kumar, {Great Question ! Question Quality in
-  Community Q {\&} A}, International AAAI Conference on Weblogs and Social
-  Media~(1) (2014) 426--435.
+\bibitem[Harrell(2015)]{Harrell2015}
+Frank~E. Harrell.
+\newblock \emph{{Regression Modeling Strategies}}, volume~64.
+\newblock 2015.
+\newblock ISBN 978-1-4419-2918-1.
+\newblock \doi{10.1007/978-1-4757-3462-1}.
+\newblock URL
+  \url{papers://55069ee6-504c-4f60-bfa9-053c4dcabb39/Paper/p398{\%}5Cnhttp://link.springer.com/10.1007/978-3-319-19425-7{\%}5Cnhttp://www.ncbi.nlm.nih.gov/pubmed/21531065{\%}5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S0300893211003502{\%}5Cnhttp://link.springer.com/10.1}.
 
-\bibitem{Kleinbaum2011}
-D.~Kleinbaum, M.~Klein, {Survival Analysis: A Self-Learning Text, Third Edition
-  (Statistics for Biology and Health)}, in: M.~Gail, K.~Krickeberg, J.~Samet,
-  A.~Tsiatis, W.~Wong (Eds.), Biometrical Journal, 3rd Edition, Springer-Verlag
-  New York, 2011, Ch.~1, p. 715.
-\newblock \href {http://arxiv.org/abs/1002.2080} {\path{arXiv:1002.2080}},
-  \href {http://dx.doi.org/10.1016/B978-0-12-387667-6.00013-0}
-  {\path{doi:10.1016/B978-0-12-387667-6.00013-0}}.
+\bibitem[Kleinbaum and Klein(2011)]{Kleinbaum2011}
+David Kleinbaum and Mitchell Klein.
+\newblock {Survival Analysis: A Self-Learning Text, Third Edition (Statistics
+  for Biology and Health)}.
+\newblock In M~Gail, K~Krickeberg, J.M. Samet, A~Tsiatis, and W~Wong, editors,
+  \emph{Biometrical Journal}, chapter~1, page 715. Springer-Verlag New York,
+  third edition, 2011.
+\newblock ISBN 1441966455.
+\newblock \doi{10.1016/B978-0-12-387667-6.00013-0}.
 
-\bibitem{Bland1998}
-J.~M. Bland, D.~G. Altman,
-  \href{http://www.bmj.com/cgi/doi/10.1136/bmj.317.7172.1572}{{Statistics
-  Notes: Survival probabilities (the Kaplan-Meier method)}}, Bmj 317~(7172)
-  (1998) 1572--1580.
-\newblock \href {http://dx.doi.org/10.1136/bmj.317.7172.1572}
-  {\path{doi:10.1136/bmj.317.7172.1572}}.
-\newline\urlprefix\url{http://www.bmj.com/cgi/doi/10.1136/bmj.317.7172.1572}
+\bibitem[Mahmud et~al.(2013)Mahmud, Chen, and Nichols]{Mahmud2013}
+Jalal Mahmud, Jilin Chen, and Jeffrey Nichols.
+\newblock {When Will You Answer This? Estimating Response Time in Twitter}.
+\newblock In \emph{Seventh International AAAI Conference on Weblogs and Social
+  Media}, pages 697--700, 2013.
+\newblock URL
+  \url{http://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewPDFInterstitial/6072/6328}.
 
-\bibitem{Moore2010}
-D.~Moore, {Applied Survival Analysis Using R}, 1st Edition, no. March, Springer
-  International Publishing, 2010, Ch.~5, p. 226.
-\newblock \href {http://dx.doi.org/10.1007/978-3-319-31245-3}
-  {\path{doi:10.1007/978-3-319-31245-3}}.
+\bibitem[Moore(2010)]{Moore2010}
+Dirk Moore.
+\newblock {Applied Survival Analysis Using R}.
+\newblock Number March, chapter~5, page 226. Springer International Publishing,
+  1 edition, 2010.
+\newblock ISBN 9783319312439.
+\newblock \doi{10.1007/978-3-319-31245-3}.
 
-\bibitem{Rodriguez2010}
-J.~D. Rodr{\'{i}}guez, A.~P{\'{e}}rez, J.~A. Lozano, {Sensitivity analysis of
-  kappa-fold cross validation in prediction error estimation}, IEEE
-  transactions on pattern analysis and machine intelligence 32~(3) (2010)
-  569--575.
-\newblock \href {http://arxiv.org/abs/9605103} {\path{arXiv:9605103}}, \href
-  {http://dx.doi.org/10.1109/TPAMI.2009.187}
-  {\path{doi:10.1109/TPAMI.2009.187}}.
+\bibitem[Oakes(1981)]{Oakes1981}
+David Oakes.
+\newblock {Survival Times: Aspects of Partial Likelihood}.
+\newblock \emph{International Statistical Review / Revue Internationale de
+  Statistique}, 49\penalty0 (3):\penalty0 235--252, 1981.
+\newblock ISSN 0306-7734.
+\newblock \doi{10.2307/1402606}.
+\newblock URL \url{http://www.jstor.org/stable/1402606}.
 
-\bibitem{Hammermeister1979}
-K.~E. Hammermeister, T.~A. DeRouen, H.~T. Dodge,
-  \href{http://dx.doi.org/10.1161/01.CIR.59.3.421}{{Variables predictive of
-  survival in patients with coronary disease. Selection by univariate and
-  multivariate analyses from the clinical, electrocardiographic, exercise,
-  arteriographic, and quantitative angiographic evaluations.}}, American Heart
-  Association, Inc. 59~(3) (1979) 421--430.
-\newblock \href {http://dx.doi.org/10.1161/01.CIR.59.3.421}
-  {\path{doi:10.1161/01.CIR.59.3.421}}.
-\newline\urlprefix\url{http://dx.doi.org/10.1161/01.CIR.59.3.421}
+\bibitem[Ponzanelli et~al.(2014)Ponzanelli, Mocci, Bacchelli, and
+  Lanza]{Ponzanelli2014a}
+Luca Ponzanelli, Andrea Mocci, Alberto Bacchelli, and Michele Lanza.
+\newblock {Understanding and classifying the quality of technical forum
+  questions}.
+\newblock \emph{Proceedings - International Conference on Quality Software},
+  pages 343--352, 2014.
+\newblock ISSN 15506002.
+\newblock \doi{10.1109/QSIC.2014.27}.
 
-\bibitem{Harrell2015}
-F.~E. Harrell,
-  \href{papers://55069ee6-504c-4f60-bfa9-053c4dcabb39/Paper/p398{\%}5Cnhttp://link.springer.com/10.1007/978-3-319-19425-7{\%}5Cnhttp://www.ncbi.nlm.nih.gov/pubmed/21531065{\%}5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S0300893211003502{\%}5Cnhttp://link.springer.com/10.1}{{Regression
-  Modeling Strategies}}, Vol.~64, 2015.
-\newblock \href {http://dx.doi.org/10.1007/978-1-4757-3462-1}
-  {\path{doi:10.1007/978-1-4757-3462-1}}.
-\newline\urlprefix\url{papers://55069ee6-504c-4f60-bfa9-053c4dcabb39/Paper/p398{\%}5Cnhttp://link.springer.com/10.1007/978-3-319-19425-7{\%}5Cnhttp://www.ncbi.nlm.nih.gov/pubmed/21531065{\%}5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S0300893211003502{\%}5Cnhttp://link.springer.com/10.1}
+\bibitem[Ravi et~al.(2014)Ravi, Pang, Rastagori, and Kumar]{Ravi2014}
+Sujith Ravi, Bo~Pang, VIbhor Rastagori, and Ravi Kumar.
+\newblock {Great Question ! Question Quality in Community Q {\&} A}.
+\newblock \emph{International AAAI Conference on Weblogs and Social Media},
+  \penalty0 (1):\penalty0 426--435, 2014.
 
-\bibitem{Chen}
-H.-C. Chen, R.~L. Kodell, K.~F. Cheng, J.~J. Chen,
-  \href{https://doi.org/10.1186/1471-2288-12-102}{{Assessment of performance of
-  survival prediction models for cancer prognosis}}, BMC Medical Research
-  Methodology 12~(1) (2012) 102.
-\newblock \href {http://dx.doi.org/10.1186/1471-2288-12-102}
-  {\path{doi:10.1186/1471-2288-12-102}}.
-\newline\urlprefix\url{https://doi.org/10.1186/1471-2288-12-102}
+\bibitem[Rechavi and Rafaeli(2011)]{Rechavi2011}
+Amit Rechavi and Sheizaf Rafaeli.
+\newblock {Not all is gold that glitters response time {\&} satisfaction rates
+  in Yahoo! answers}.
+\newblock \emph{Proceedings - 2011 IEEE International Conference on Privacy,
+  Security, Risk and Trust and IEEE International Conference on Social
+  Computing, PASSAT/SocialCom 2011}, pages 904--909, 2011.
+\newblock \doi{10.1109/PASSAT/SocialCom.2011.67}.
 
-\bibitem{Oakes1981}
-D.~Oakes, \href{http://www.jstor.org/stable/1402606}{{Survival Times: Aspects
-  of Partial Likelihood}}, International Statistical Review / Revue
-  Internationale de Statistique 49~(3) (1981) 235--252.
-\newblock \href {http://dx.doi.org/10.2307/1402606}
-  {\path{doi:10.2307/1402606}}.
-\newline\urlprefix\url{http://www.jstor.org/stable/1402606}
+\bibitem[Rodr{\'{i}}guez et~al.(2010)Rodr{\'{i}}guez, P{\'{e}}rez, and
+  Lozano]{Rodriguez2010}
+Juan~Diego Rodr{\'{i}}guez, Aritz P{\'{e}}rez, and Jose~Antonio Lozano.
+\newblock {Sensitivity analysis of kappa-fold cross validation in prediction
+  error estimation}.
+\newblock \emph{IEEE transactions on pattern analysis and machine
+  intelligence}, 32\penalty0 (3):\penalty0 569--575, 2010.
+\newblock ISSN 1939-3539.
+\newblock \doi{10.1109/TPAMI.2009.187}.
 
-\bibitem{Grambsch1994}
-P.~Grambsch, T.~Therneau,
-  \href{https://doi.org/10.1093/biomet/81.3.515}{{Proportional hazards tests
-  and diagnostics based on weighted residuals}}, Biometrika 81~(3) (1994)
-  515--526.
-\newline\urlprefix\url{https://doi.org/10.1093/biomet/81.3.515}
+\bibitem[Toba et~al.(2014)Toba, Ming, Adriani, and Chua]{Toba2014}
+Hapnes Toba, Zhao-yan Ming, Mirna Adriani, and Tat-seng Chua.
+\newblock {Discovering high quality answers in community question answering
+  archives using a hierarchy of classifiers}.
+\newblock \emph{Information Sciences}, 261:\penalty0 101--115, 2014.
+\newblock ISSN 0020-0255.
+\newblock \doi{10.1016/j.ins.2013.10.030}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.ins.2013.10.030}.
 
-\bibitem{Correa2013}
-D.~Correa, A.~Sureka,
-  \href{http://dl.acm.org/citation.cfm?doid=2512938.2512954}{{Fit or unfit:
-  Analysis and prediction of 'closed questions' on Stack Overflow}},
-  Proceedings of the first ACM Conference on Online Social Networks (2013)
-  201--212\href {http://arxiv.org/abs/arXiv:1307.7291v1}
-  {\path{arXiv:arXiv:1307.7291v1}}, \href
-  {http://dx.doi.org/10.1145/2512938.2512954}
-  {\path{doi:10.1145/2512938.2512954}}.
-\newline\urlprefix\url{http://dl.acm.org/citation.cfm?doid=2512938.2512954}
+\bibitem[Weimer et~al.(2007)Weimer, Gurevych, and
+  M{\"{u}}hlh{\"{a}}user]{Weimer2007}
+Markus Weimer, Iryna Gurevych, and Max M{\"{u}}hlh{\"{a}}user.
+\newblock {Automatically assessing the post quality in online discussions on
+  software}.
+\newblock \emph{Proceedings of the ACL}, \penalty0 (June):\penalty0 125--128,
+  2007.
+\newblock \doi{10.3115/1557769.1557806}.
+\newblock URL
+  \url{http://atlas.tk.informatik.tu-darmstadt.de/Publications/2007/acl2007.pdf}.
 
-\bibitem{Harper2008}
-F.~M. Harper, D.~Raban, S.~Rafaeli, J.~A. Konstan,
-  \href{http://dl.acm.org/citation.cfm?id=1357054.1357191}{{Predictors of
-  Answer Quality in Online Q{\&}A Sites}}, Proceedings of the SIGCHI Conference
-  on Human Factors in Computing Systems (2008) 865--874\href
-  {http://dx.doi.org/10.1145/1357054.1357191}
-  {\path{doi:10.1145/1357054.1357191}}.
-\newline\urlprefix\url{http://dl.acm.org/citation.cfm?id=1357054.1357191}
+\bibitem[Yao et~al.(2015)Yao, Tong, Xie, Akoglu, Xu, and Lu]{Yao2015}
+Yuan Yao, Hanghang Tong, Tao Xie, Leman Akoglu, Feng Xu, and Jian Lu.
+\newblock {Detecting high-quality posts in community question answering sites}.
+\newblock \emph{INFORMATION SCIENCES}, 302:\penalty0 70--82, 2015.
+\newblock ISSN 0020-0255.
+\newblock \doi{10.1016/j.ins.2014.12.038}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.ins.2014.12.038}.
 
 \end{thebibliography}
