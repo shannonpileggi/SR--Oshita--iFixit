@@ -12,8 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 dir <- file.path(getwd(),"data")
 out <- read.csv(file.path(dir, "answers_data.csv"))
-list <- oshitar::variable_setup(out)
-x <- list[[1]]
+x <- oshitar::variable_setup(out)
 
 library(rms); library(survival); library(ggplot2); library(dplyr)
 ```
