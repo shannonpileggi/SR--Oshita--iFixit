@@ -4,13 +4,14 @@ library(shiny); library(survival); library(rms)
 x <- as.data.frame(read.csv("data/finaldata.csv", head = TRUE)); x <- x[,-1]
 
 model <- cph(Surv(time_until_answer, answered) ~ new_category + new_user + 
-                               contain_unanswered + contain_answered + title_questionmark + 
-                               title_beginwh + text_contain_punct + text_all_lower + update + 
-                               greeting + gratitude + prior_effort + weekday + strat(ampm) + 
-                               sqrt(avg_tag_score) + pol(text_length, 2) + rcs(device_length, 5) + 
-                               rcs(avg_tag_length, 4) + rcs(newline_ratio, 4), 
-                             data = x, x = TRUE, 
-                             y = TRUE, surv = TRUE)
+                    contain_unanswered + contain_answered + title_questionmark + 
+                    text_contain_punct + text_all_lower + update + prior_effort + 
+                    day + sqrt(avg_tag_score) + rcs(log10(text_length), 5) + 
+                    rcs(log10(avg_tag_length + 1), 4) + rcs(log10(device_length + 1), 5) + 
+                    rcs(sqrt(newline_ratio), 3), 
+                  data = x, 
+                  x = TRUE, y = TRUE, 
+                  surv = TRUE)
 
 #-----------------------------------------------------------------------------
 shinyServer(
@@ -19,13 +20,13 @@ shinyServer(
     #-------Renders summary statistics of input data-------------------------- 
     output$sum_stats <- renderTable({
       req(input$file1)
-      df <- as.data.frame(read.csv(input$file1$datapath)) # look into reactive function
+      df <- as.data.frame(read.csv(input$file1$datapath)) 
       data <- oshitar::variable_setup(df)
         
       summarydf <- data.frame(nrow(data), 
-                              round(median(data$time_until_answer),2), 
-                              round(sum(data$answered)/nrow(data),2),
-                              round(mean(data$time_until_answer),2),
+                              round(median(data$time_until_answer), 2), 
+                              round(sum(data$answered)/nrow(data), 2),
+                              round(mean(data$time_until_answer), 2),
                               round(max(data$time_until_answer), 2),
                               round(min(data$time_until_answer), 2)
                               )
@@ -54,7 +55,8 @@ shinyServer(
       data <- oshitar::variable_setup(df)
       
       if(input$km == TRUE) {
-        KM <- summary(survfit(Surv(time_until_answer, answered) ~ 1, data = data, conf.type = "log-log"))
+        surv_object <- Surv(data$time_until_answer, data$answered, type = "right")
+        KM <- survfit(surv_object ~ 1, conf.type = "log-log")
         KMdf <- data.frame(data$id, 1 - KM$surv)
         colnames(KMdf) <- c("Question ID", "Failure Probability")
         return(KMdf)
@@ -83,10 +85,9 @@ shinyServer(
     #-------Renders summary of CR model---------------------------------------
     output$modelvars <- renderTable({
       vars <- data.frame(c("new_category", "new_user", "contain_unanswered", "contain_answered", "title_questionmark",
-                   "title_beginwh", "text_contain_punct", "text_all_lower", "update", "greeting", "gratitude",
-                   "prior_effort", "weekday", "stratified on ampm", "square root of avg_tag_score", 
-                   "quadratic term on text_length", "spline on device_length", "spline on avg_tag_length",
-                   "spline on newline_ratio"))
+                   "text_contain_punct", "text_all_lower", "update", "prior_effort", "day", "square root of avg_tag_score", 
+                   "spline on log transformed text length", "spline on log transformed device_length", "spline on log transformed avg_tag_length",
+                   "spline on square root transformed newline_ratio"))
       colnames(vars) <- "Variables Included"
       return(vars)
     })

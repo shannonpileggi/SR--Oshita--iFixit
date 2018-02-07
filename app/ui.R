@@ -36,7 +36,7 @@ shinyUI(fluidPage(
                    tableOutput("contents"),
                    br(),
                    tableOutput("estimates")
-                     )
+                 )
                  )
                ),
       tabPanel("Calculate Predicted Failure", 
