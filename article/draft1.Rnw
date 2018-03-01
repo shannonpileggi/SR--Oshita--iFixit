@@ -39,6 +39,8 @@ model <- rms::cph(survival::Surv(time_until_answer, answered) ~ new_category + n
 
 \begin{frontmatter}
 \title{Survival Analysis of Questions Posted on iFixit's Answers forum}
+% Survival Analysis of Questions Posted on the iFixit Answers forum
+% --> apostrophy in title looks a little weird to me, but I don't mind either way
 
 \author[cp]{L.K.~Oshita\corref{cor1}}
 \cortext[cor1]{Corresponding author}
@@ -65,9 +67,9 @@ cox regression \sep response time \sep survival analysis \sep survival probabilt
 
 \section{Introduction}
 
-Community-driven online question and answer forums have become widely-used sources of information. These online platforms feature thousands of user-posted questions and answers and receive millions of visits every month. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit provides over 30,000 free online repair guides and sells the specialized tools and parts needed for such repairs. This company's mission is to equip users with the knowledge and tools necessary to repair their broken devices, as part of an effort to help them save money and reduce electronic waste. 
+Community-driven online question and answer forums have become widely-used sources of information. These online platforms feature thousands of user-posted questions and answers and receive millions of visits every month. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit provides over 35,000 free online repair guides and sells the specialized tools and parts needed for such repairs. This company's mission is to equip users with the knowledge and tools necessary to repair their broken devices, as part of an effort to help them save money and reduce electronic waste. 
     
-As not all possible repairs are covered in the published guides and users may have additional questions related to existing guides, iFixit's \textit{Answers} forum is an important resource for users. This platform features questions pertaining to over 9,000 devices, ranging from jammed zippers to shattered phone screens and faulty air conditioners, with over 100,000 user-posted solutions. As thousands of users rely on this forum for information, it is important that users receive timely answers. Fast response times have been shown to be associated with positive user satisfaction and, in turn, increase web traffic, which is valuable to the reputation and longevity of the CQA \citep{Rechavi2011}. Analysis of response times can reveal factors that affect how quickly questions receive answers, which can lead to suggestions for how users can ask better questions to minimize response times and for how the forum design can be improved.
+As not all possible repairs are covered in the published guides and users may have additional questions related to existing guides, iFixit's \textit{Answers} forum is an important resource for users. This platform features questions pertaining to over 10,000 devices, ranging from jammed zippers to shattered phone screens and faulty air conditioners, with over 120,000 user-posted solutions. As thousands of users rely on this forum for information, it is important that users receive timely answers. Fast response times have been shown to be associated with positive user satisfaction and, in turn, increase web traffic, which is valuable to the reputation and longevity of the CQA \citep{Rechavi2011}. Analysis of response times can reveal factors that affect how quickly questions receive answers, which can lead to suggestions for how users can ask better questions to minimize response times and for how the forum design can be improved.
 
 However, analysis and prediction of response times on CQAs have not been thoroughly investigated. There is need for further analysis of forum response times, as the majority of existing research focuses on assessing and predicting question or answer quality. This paper presents a survival analysis on the time until a question receives its first answer on iFixit's \textit{Answers} forum, in order to determine factors significantly related to response time and to predict survival probabilities of questions.
 
@@ -128,6 +130,8 @@ Correlations between scaled Schoenfeld residuals, differences between observed a
 
 All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estimates of survival probability were computed with the \texttt{Surv} and \texttt{survfit} functions of the \texttt{Survival} package in R. To compute predicted survival probabilities using the final model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package. This function uses the Cox model and a vector of times to compute predictions. Data used for this analysis can be found in the \texttt{oshitar} package. The function \texttt{variable\_setup} of the \texttt{oshitar} package was used to set up all necessary variables in the data.
 
+% Unless we are planning to make the oshitar package available on cran, it might be better to setup a GIST with a clean version of the data and the variable_setup() function.  Or we should at least link to the github repo instead: https://github.com/loshita/oshitar
+
 
 %===================================================================================================
 %===================================================================================================
@@ -139,8 +143,8 @@ All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estim
 answered <- sum(x$answered)
 percentans <- round((answered / nrow(x)) * 100, 1) 
 shortest <- round(min(x$time_until_answer) * 60, 2) 
-longest <- round(max(x$time_until_answer), 2)
-longest_d <- round(longest / 24, 2) 
+longest <- round(max(x$time_until_answer))
+longest_d <- round(longest / 24, 1) 
 @
 
 % Distribution of answer times
@@ -157,8 +161,11 @@ longest_d <- round(longest / 24, 2)
 \end{figure}
 % \caption{Kaplan-Meier curve for all questions}
 
-  Of 8,025 questions in the full data, 7,760 were in English (97\% of the full data). Of those questions, \Sexpr{format(answered, big.mark = ",")} (\Sexpr{percentans}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{format(longest, big.mark = ",")} hours (\Sexpr{longest_d} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
+% Heyyy this is a dynamic document, why not make these images in-line? :-()
 
+  Of 8,025 questions in the full data, 7,760 were in English (97\% of the full data). Of those questions, \Sexpr{scales::comma(answered)} (\Sexpr{percentans}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{format(longest, big.mark = ",")} hours (\Sexpr{longest_d} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
+
+% fyi you can use scales::comma(val) to format numbers too
 
 << echo = FALSE >>=
 # Kaplan-Meier survival estimates
@@ -170,7 +177,7 @@ mean <- round(unname(stats[5]), 2)
 median <- round(unname(stats[7]), 2)
 @
 
-Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer within the first 100 hours after it has been posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was 775.75 hours, or 32.32 days. The median survival time, the time at which 50\% of the questions in the data received an answer, was 9.16 hours.
+Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer within the first 100 hours after it has been posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was 776 hours, or 32.3 days. The median survival time, the time at which 50\% of the questions in the data received an answer, was 9.2 hours.
 
 
 << echo = FALSE >>=
@@ -225,6 +232,12 @@ Each training set contained \Sexpr{format(nrow(train1), big.mark = ",")} questio
 \label{table:splines}
 \end{table}
 
+% cool, I like this table!
+% --> can we write the Predictor column more mathematically?
+% --> e.g., $\sqrt{\textnormal{average tag frequency}}$
+% --> e.g., $\log\left({\textnormal{average tag length} + 1}\right)$
+% also, the 'K' column might align better if we put the * to the right
+
 Table \ref{table:splines} shows the results of determining the optimal number of knots for each continuous predictor. Those marked with an asterisk (*) were included in the final model. 
 
 % Cross-validation metrics
@@ -276,6 +289,10 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 \label{table:coefficients}
 \end{table}
 
+% This table looks nice, but the code is brutal and not reproducible.  I feel compelled to point out 'xtable' or 'stargazer' for auto-generated latex tables like this using R.
+
+% I think we should use 2 digits for coefficients and 3 digits for SE/p-value terms
+
 Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. 
 
 The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value \textless0.0001). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
@@ -283,9 +300,9 @@ The final model, as a whole, was significant with a partial likelihood ratio of 
 The following are interpretations of select hazard coefficients in Table \ref{table:coefficients}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
 
 \begin{itemize}
-  \item The estimated hazard of receiving an answer is 154.1\% (95\% CI (131.5\%, 180.0\%)) higher for questions pertaining to Apple products than the hazard for questions about Android and Other phones, controlling for all other predictors.
-  \item The estimated hazard of receiving an answer for questions posted on a weekend is 12.5\% (95\% CI (6.7\%, 18.0\%)) lower than the hazard for questions posted on a weekday, controlling for all other predictors.
-  \item The estimated hazard of receiving an answer is 24.5\% (95\% CI (19.3\%, 29.4\%)) lower for questions with titles that contain at least one word considered to be frequently-used among unanswered questions, than the hazard for questions with titles that do not, controlling for all other predictors. 
+  \item The estimated hazard of receiving an answer is 154.1\% higher (95\% CI (131.5\%, 180.0\%)) for questions pertaining to Apple products than the hazard for questions about Android and Other phones, controlling for all other predictors.
+  \item The estimated hazard of receiving an answer for questions posted on a weekend is 12.5\% lower (95\% CI (6.7\%, 18.0\%)) than the hazard for questions posted on a weekday, controlling for all other predictors.
+  \item The estimated hazard of receiving an answer is 24.5\% lower (95\% CI (19.3\%, 29.4\%)) for questions with titles that contain at least one word considered to be frequently-used among unanswered questions, than the hazard for questions with titles that do not, controlling for all other predictors. 
 \end{itemize}
 
 Results and coefficients of the final model reveal how users can ask questions in order to decrease response time. Findings suggest that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 
@@ -400,6 +417,9 @@ To create the variables, the data was separated between answered and unanswered 
 \caption{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
 \label{table:frequentterms}
 \end{table}
+
+% If there ever was a good time to use a wordlcloud, I think this is it!! Just sayin...
+% library(wordcloud)
 
 % ------------------------------------------------------------------------
 
