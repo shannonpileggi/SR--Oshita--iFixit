@@ -71,7 +71,18 @@ model <- rms::cph(Surv(time_until_answer, answered) ~ new_category + new_user +
                    data = x, 
                    x = TRUE, y = TRUE, 
                    surv = TRUE)
-model
+
+model_coefs <- data.frame(vars = names(model$coefficients), 
+                          beta = unname(model$coefficients)) %>% mutate(HR = exp(beta))
+model_var <- as.data.frame(model$var)
+
+model_coefs$SE <- 0
+for (i in 1:32) {
+  model_coefs$SE[i] <- sqrt(model_var[i, i])
+}
+
+model_coefs$upper <- exp(model_coefs$beta + (1.96 * model_coefs$SE))
+model_coefs$lower <- exp(model_coefs$beta - (1.96 * model_coefs$SE))
 ```
 
 ### Univariate analysis results
