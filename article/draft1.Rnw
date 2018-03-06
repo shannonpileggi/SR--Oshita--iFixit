@@ -21,7 +21,12 @@
 \makeatother
 
 
-<< echo = FALSE >>=
+<< include = FALSE >>=
+# load libraries
+library(magrittr)
+library(dplyr)
+library(rebus)
+
 # importing data 
 dir <- file.path(getwd(),"data")
 x <- read.csv(file.path(dir, "dat.csv"))
@@ -35,12 +40,59 @@ model <- rms::cph(survival::Surv(time_until_answer, answered) ~ new_category + n
                    data = x, 
                    x = TRUE, y = TRUE, 
                    surv = TRUE)
+
+# creating data frame with model coefficients + HR + 95% CI
+model_coefs <- data.frame(vars = names(model$coefficients), 
+                          beta = unname(model$coefficients)) %>% mutate(HR = exp(beta))
+model_var <- as.data.frame(model$var)
+
+# extracting SE from variance matrix
+model_coefs$SE <- 0
+for (i in 1:32) {
+  model_coefs$SE[i] <- sqrt(model_var[i, i])
+}
+
+# 95% CI
+model_coefs$upper <- exp(model_coefs$beta + (1.96 * model_coefs$SE))
+model_coefs$lower <- exp(model_coefs$beta - (1.96 * model_coefs$SE))
+
+# rounding 
+model_coefs$beta <- round(model_coefs$beta, 2)
+model_coefs$HR <- round(model_coefs$HR, 2)
+model_coefs$SE <- round(model_coefs$SE, 3)
+model_coefs$upper <- round(model_coefs$upper, 2)
+model_coefs$lower <- round(model_coefs$lower, 2)
+
+# removing continuous predictors with splines 
+model_coefs <- model_coefs[-which(stringr::str_detect(model_coefs$vars, 
+                                                      pattern = rebus::or(START %R% "text_length",
+                                                                          START %R% "avg_tag_length",
+                                                                          START %R% "device_length",
+                                                                          START %R% "newline_ratio"))), ]
+
+# to include in abstract
+# HR and confidence intervals
+a <- which(stringr::str_detect(model_coefs$vars, pattern = "Apple Product"))
+appleHR <- model_coefs$HR[a]
+appleUpper <- model_coefs$upper[a]
+appleLower <- model_coefs$lower[a]
+
+t <- which(stringr::str_detect(model_coefs$vars, pattern = "questionmark"))
+titleHR <- model_coefs$HR[t]
+titleUpper <- model_coefs$upper[t]
+titleLower <- model_coefs$lower[t]
+
+w <- which(stringr::str_detect(model_coefs$vars, pattern = "Weekend"))
+dayHR <- model_coefs$HR[w]
+dayUpper <- model_coefs$upper[w]
+dayLower <- model_coefs$lower[w]
+
+# model R2
+r2 <- round(model$stats[which(names(model$stats) == "R2")], 2)
 @
 
 \begin{frontmatter}
-\title{Survival Analysis of Questions Posted on iFixit's Answers forum}
-% Survival Analysis of Questions Posted on the iFixit Answers forum
-% --> apostrophy in title looks a little weird to me, but I don't mind either way
+\title{Survival Analysis of Questions Posted on the iFixit Answers forum}
 
 \author[cp]{L.K.~Oshita\corref{cor1}}
 \cortext[cor1]{Corresponding author}
@@ -53,7 +105,7 @@ model <- rms::cph(survival::Surv(time_until_answer, answered) ~ new_category + n
 \address[ifixit]{iFixit, 1330 Monterey St, San Luis Obispo, CA 93401, United States}
 
 \begin{abstract} 
-Community-driven online question and answer forums (CQA), platforms that allow users to ask and answer questions, contain an extensive amount of crowd-sourced information. One such example of a CQA is iFixit's \textit{Answers} forum. This forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users. An important aspect of these CQAs, for both users and the forum, is question response time. This paper presents a survival analysis of the time until a question posted on iFixit's \textit{Answers} forum receives it's first response. A Cox proportional hazards model was developed to identify variables associated with response time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = 0.15$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = 2.54, 95\% CI = (2.32, 2.79)), factors related to the question's title (e.g., if it was phrased as a question (HR = 1.29, 95\% CI = (1.21, 1.38))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = 0.87, 95\% CI = (0.82, 0.93))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs.
+Community-driven online question and answer forums (CQA), platforms that allow users to ask and answer questions, contain an extensive amount of crowd-sourced information. One such example of a CQA is iFixit's \textit{Answers} forum. This forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users. An important aspect of these CQAs, for both users and the forum, is question response time. This paper presents a survival analysis of the time until a question posted on iFixit's \textit{Answers} forum receives it's first response. A Cox proportional hazards model was developed to identify variables associated with response time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = \Sexpr{r2}$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = \Sexpr{appleHR}, 95\% CI = (\Sexpr{appleLower}, \Sexpr{appleUpper})), factors related to the question's title (e.g., if it was phrased as a question (HR = \Sexpr{titleHR}, 95\% CI = (\Sexpr{titleLower}, \Sexpr{titleUpper}))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = \Sexpr{dayHR}, 95\% CI = (\Sexpr{dayLower}, \Sexpr{dayUpper}))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs.
 \end{abstract}
 
 \begin{keyword}
@@ -68,7 +120,7 @@ cox regression \sep response time \sep survival analysis \sep survival probabilt
 \section{Introduction}
 
 Community-driven online question and answer forums have become widely-used sources of information. These online platforms feature thousands of user-posted questions and answers and receive millions of visits every month. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit provides over 35,000 free online repair guides and sells the specialized tools and parts needed for such repairs. This company's mission is to equip users with the knowledge and tools necessary to repair their broken devices, as part of an effort to help them save money and reduce electronic waste. 
-    
+
 As not all possible repairs are covered in the published guides and users may have additional questions related to existing guides, iFixit's \textit{Answers} forum is an important resource for users. This platform features questions pertaining to over 10,000 devices, ranging from jammed zippers to shattered phone screens and faulty air conditioners, with over 120,000 user-posted solutions. As thousands of users rely on this forum for information, it is important that users receive timely answers. Fast response times have been shown to be associated with positive user satisfaction and, in turn, increase web traffic, which is valuable to the reputation and longevity of the CQA \citep{Rechavi2011}. Analysis of response times can reveal factors that affect how quickly questions receive answers, which can lead to suggestions for how users can ask better questions to minimize response times and for how the forum design can be improved.
 
 However, analysis and prediction of response times on CQAs have not been thoroughly investigated. There is need for further analysis of forum response times, as the majority of existing research focuses on assessing and predicting question or answer quality. This paper presents a survival analysis on the time until a question receives its first answer on iFixit's \textit{Answers} forum, in order to determine factors significantly related to response time and to predict survival probabilities of questions.
@@ -163,7 +215,7 @@ longest_d <- round(longest / 24, 1)
 
 % Heyyy this is a dynamic document, why not make these images in-line? :-()
 
-  Of 8,025 questions in the full data, 7,760 were in English (97\% of the full data). Of those questions, \Sexpr{scales::comma(answered)} (\Sexpr{percentans}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{format(longest, big.mark = ",")} hours (\Sexpr{longest_d} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
+  Of 8,025 questions in the full data, \Sexpr{scales::comma(nrow(x))} were in English (97\% of the full data). Of those questions, \Sexpr{scales::comma(answered)} (\Sexpr{percentans}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{scales::comma(longest)} hours (\Sexpr{scales::comma(longest_d)} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
 
 % fyi you can use scales::comma(val) to format numbers too
 
@@ -173,11 +225,12 @@ surv_object <- survival::Surv(x$time_until_answer, x$answered, type = "right")
 KM <- survival::survfit(surv_object ~ 1, conf.type = "log-log")
 
 stats <- summary(KM)$table
-mean <- round(unname(stats[5]), 2) 
-median <- round(unname(stats[7]), 2)
+mean <- round(unname(stats[5])) 
+mean_d <- round(mean/24, 1)
+med <- round(unname(stats[7]), 1)
 @
 
-Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer within the first 100 hours after it has been posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was 776 hours, or 32.3 days. The median survival time, the time at which 50\% of the questions in the data received an answer, was 9.2 hours.
+Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer within the first 100 hours after it has been posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was \Sexpr{mean} hours, or \Sexpr{mean_d} days. The median survival time, the time at which 50\% of the questions in the data received an answer, was \Sexpr{med} hours.
 
 
 << echo = FALSE >>=
@@ -188,42 +241,42 @@ train1 <- x[splitPlan[[1]]$train, ]
 test1 <- x[splitPlan[[1]]$app, ]
 @
 
-Each training set contained \Sexpr{format(nrow(train1), big.mark = ",")} questions; each test set contained \Sexpr{format(nrow(test1), big.mark = ",")} questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in univariate p-values of less than 0.001. Applying either square root or log transformations to all continuous predictors resulted in univariate p-values of less than 0.001. For variables that contained zeros, one was added to each observation before applying the log transformation. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus one transformation of average tag length, log plus one transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length. All categorical predictors and all continuous predictors with necessary transformations were retained for the full model. 
+Each training set contained \Sexpr{scales::comma(nrow(train1))} questions; each test set contained \Sexpr{scales::comma(nrow(test1))} questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in univariate p-values of less than 0.001. Applying either square root or log transformations to all continuous predictors resulted in univariate p-values of less than 0.001. For variables that contained zeros, one was added to each observation before applying the log transformation. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus one transformation of average tag length, log plus one transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length. All categorical predictors and all continuous predictors with necessary transformations were retained for the full model. 
 
-% Splines
+% Splines Square root transformation of the average tag frequency
 \begin{table}[!htbp]
 \centering
 \begin{tabular}{| L{5cm} | l | l |}
   \hline
   \textbf{Predictor} & \textbf{K} & \textbf{AIC} \\ 
   \hline
-  \multirow{4}{5 cm}{Square root transformation of the average tag frequency} 
-  & \textbf{*}0 & 65890.75 \\ 
+  \multirow{4}{5 cm}{$\sqrt{\textnormal{average tag frequency}}$} 
+  & 0\textbf{*} & 65890.75 \\ 
   & 5 & 65891.69 \\ 
   & 4 & 65891.75 \\ 
   & 3 & 65892.35 \\ 
   \hline
-  \multirow{4}{5 cm}{Log transformation of average tag length + 1}
+  \multirow{4}{5 cm}{$\log\left({\textnormal{average tag length} + 1}\right)$}
   & 0 & 65920.24 \\ 
   & 5 & 65911.20 \\ 
-  & \textbf{*}4 & 65910.81 \\ 
+  & 4\textbf{*} & 65910.81 \\ 
   & 3 & 65914.98 \\ 
   \hline
-  \multirow{4}{5 cm}{Log transformation of device name length + 1}
+  \multirow{4}{5 cm}{$\log\left({\textnormal{device length} + 1}\right)$}
   & 0 & 65918.06 \\ 
-  & \textbf{*}5 & 65847.34 \\ 
+  & 5\textbf{*} & 65847.34 \\ 
   & 4 & 65880.89 \\ 
   & 3 & 65898.00 \\ 
   \hline
-  \multirow{4}{5 cm}{Square root transformation of line breaks to text length ratio}
+  \multirow{4}{5 cm}{$\sqrt{\textnormal{line breaks : text length}}$}
   & 0 & 65890.28 \\ 
   & 5 & 65884.70 \\ 
   & 4 & 65882.98 \\ 
-  & \textbf{*}3 & 65881.93 \\ 
+  & 3\textbf{*} & 65881.93 \\ 
   \hline
-  \multirow{4}{5cm}{Log transformation of text length} 
+  \multirow{4}{5cm}{$\log\left({\textnormal{text length}}\right)$} 
   & 0 & 65862.83 \\ 
-  & \textbf{*}5 & 65862.02 \\ 
+  & 5\textbf{*} & 65862.02 \\ 
   & 4 & 65863.35 \\ 
   & 3 & 65862.08 \\ 
   \hline
@@ -235,7 +288,7 @@ Each training set contained \Sexpr{format(nrow(train1), big.mark = ",")} questio
 % cool, I like this table!
 % --> can we write the Predictor column more mathematically?
 % --> e.g., $\sqrt{\textnormal{average tag frequency}}$
-% --> e.g., $\log\left({\textnormal{average tag length} + 1}\right)$
+% --> e.g., $\log\left({\textnormal{device length} + 1}\right)$
 % also, the 'K' column might align better if we put the * to the right
 
 Table \ref{table:splines} shows the results of determining the optimal number of knots for each continuous predictor. Those marked with an asterisk (*) were included in the final model. 
@@ -264,26 +317,26 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 \begin{tabular}{|l L{5.5cm}|c|c|}
   \hline
  \textbf{Variable} & & \textbf{Coefficient (SE)} & \textbf{p-value} \\ \hline
-  Device Category & Apple Product & 0.9346 (0.0476) & \textless0.0001 \\ 
-                  & Camera & -0.3199 (0.0476) & \\ 
-                  & Electronics & -0.0138 (0.0904)  & \\ 
-                  & Game Console & 0.2458 (0.0784)  & \\ 
-                  & Home & 0.3368 (0.0697) &  \\ 
-                  & Other & -0.1304 (0.0555)  & \\ 
-                  & PC & 0.2818 (0.0597) &  \\ 
-                  & Tablet & -0.1566 (0.0815)  & \\ 
-                  & Vehicle & 0.4056 (0.0695)  & \\
+  Device Category & Apple Product & 0.93 (0.048) & \textless0.0001 \\ 
+                  & Camera & -0.32 (0.090) & \\ 
+                  & Electronics & -0.01 (0.078)  & \\ 
+                  & Game Console & 0.24 (0.083)  & \\ 
+                  & Home & 0.34 (0.070) &  \\ 
+                  & Other & -0.13 (0.056)  & \\ 
+                  & PC & 0.28 (0.060) &  \\ 
+                  & Tablet & -0.16 (0.081)  & \\ 
+                  & Vehicle & 0.40 (0.069)  & \\
                   & Android/Other Phone (reference) & --- & \\ \hline
-  \multicolumn{2}{|l|}{Weekend} & -0.1334 (0.0331)  & \textless0.0001 \\ \hline
-  \multicolumn{2}{|l|}{Text contains end punctuation} & 0.0247 (0.0499) & 0.6127 \\ \hline
-  \multicolumn{2}{|l|}{Text is in all lower case} & -0.1770 (0.0645) &  0.0060 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among answered questions} & 0.0475 (0.0422) &  0.2596 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among unanswered questions} & -0.2808 (0.0340)  & \textless0.0001 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{Title ends in a question mark} & 0.2571 (0.0332) &  \textless0.0001 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{User edited or added to the question's text after posting it} & 0.2983 (0.0857)  & 0.0005 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{User was a member for less than one day before posting} & -0.1069 (0.0364)  & 0.0031 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{User made an effort to solve the problem prior to asking the question} & -0.0724 (0.0362)  & 0.0448 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{Square root of the average tag frequency} & 2.2609 (0.7196)  & 0.0020 \\ \hline
+  \multicolumn{2}{|l|}{Weekend} & -0.13 (0.033)  & \textless0.0001 \\ \hline
+  \multicolumn{2}{|l|}{Text contains end punctuation} & 0.03 (0.050) & 0.613 \\ \hline
+  \multicolumn{2}{|l|}{Text is in all lower case} & -0.18 (0.064) &  0.006 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among answered questions} & 0.05 (0.042) &  0.260 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among unanswered questions} & -0.28 (0.034)  & \textless0.0001 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title ends in a question mark} & 0.26 (0.033) &  \textless0.0001 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User edited or added to the question's text after posting it} & 0.30 (0.086)  & 0.001 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User was a member for less than one day before posting} & -0.11 (0.036)  & 0.003 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User made an effort to solve the problem prior to asking the question} & -0.07 (0.036)  & 0.045 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Square root of the average tag frequency} & 2.23 (0.720)  & 0.002 \\ \hline
 \end{tabular} 
 \caption{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
 \label{table:coefficients}
@@ -293,16 +346,37 @@ Average performance metrics for test and training sets are in Table \ref{table:c
 
 % I think we should use 2 digits for coefficients and 3 digits for SE/p-value terms
 
+<< echo = FALSE >>=
+LR <- unname(round(model$stats[which(names(model$stats) == "Model L.R.")], 2))
+dxy <- unname(round(model$stats[which(names(model$stats) == "Dxy")], 2))
+@
+
 Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. 
 
-The final model, as a whole, was significant with a partial likelihood ratio of 1265.29 (p-value \textless0.0001). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.267. 
+As a whole, the final model was significant with a partial likelihood ratio of \Sexpr{LR} (p-value \textless0.0001). Its $R^2$ statistic was \Sexpr{r2}, and Somers' \textit{Dxy} was \Sexpr{dxy}. 
 
 The following are interpretations of select hazard coefficients in Table \ref{table:coefficients}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
 
+<< echo = FALSE >>=
+apple_p <- (appleHR - 1) * 100
+apple_p_l <- (appleLower - 1) * 100
+apple_p_u <- (appleUpper - 1) * 100
+
+day_p <- (1 - dayHR) * 100
+day_p_u <- (1 - dayLower) * 100
+day_p_l <- (1 - dayUpper) * 100
+
+u <- which(stringr::str_detect(model_coefs$vars, pattern = "contain_unanswered"))
+unansw_p <- (1 - model_coefs$HR[u]) * 100
+unansw_p_l <- (1 - model_coefs$upper[u]) * 100
+unansw_p_u <- (1 - model_coefs$lower[u]) * 100
+@
+
+
 \begin{itemize}
-  \item The estimated hazard of receiving an answer is 154.1\% higher (95\% CI (131.5\%, 180.0\%)) for questions pertaining to Apple products than the hazard for questions about Android and Other phones, controlling for all other predictors.
-  \item The estimated hazard of receiving an answer for questions posted on a weekend is 12.5\% lower (95\% CI (6.7\%, 18.0\%)) than the hazard for questions posted on a weekday, controlling for all other predictors.
-  \item The estimated hazard of receiving an answer is 24.5\% lower (95\% CI (19.3\%, 29.4\%)) for questions with titles that contain at least one word considered to be frequently-used among unanswered questions, than the hazard for questions with titles that do not, controlling for all other predictors. 
+  \item The estimated hazard of receiving an answer is \Sexpr{apple_p}\% higher (95\% CI (\Sexpr{apple_p_l}\%, \Sexpr{apple_p_u}\%)) for questions pertaining to Apple products than the hazard for questions about Android and Other phones, controlling for all other predictors.
+  \item The estimated hazard of receiving an answer is \Sexpr{unansw_p}\% lower (95\% CI (\Sexpr{unansw_p_l}\%, \Sexpr{unansw_p_u}\%)) for questions with titles that contain at least one word considered to be frequently-used among unanswered questions, than the hazard for questions with titles that do not, controlling for all other predictors. 
+  \item The estimated hazard of receiving an answer for questions posted on a weekend is \Sexpr{day_p}\% lower (95\% CI (\Sexpr{day_p_l}\%, \Sexpr{day_p_u}\%)) than the hazard for questions posted on a weekday, controlling for all other predictors.
 \end{itemize}
 
 Results and coefficients of the final model reveal how users can ask questions in order to decrease response time. Findings suggest that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  27 JAN 2018 21:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  5 MAR 2018 20:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -393,65 +393,65 @@ un-known, a non-parametric
 [4] <times_dist.pdf, id=156, 578.16pt x 361.35pt>
 File: times_dist.pdf Graphic file (type pdf)
  <use times_dist.pdf>
-Package pdftex.def Info: times_dist.pdf used on input line 177.
+Package pdftex.def Info: times_dist.pdf used on input line 179.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
 
 <kmcurve.pdf, id=157, 578.16pt x 361.35pt>
 File: kmcurve.pdf Graphic file (type pdf)
  <use kmcurve.pdf>
-Package pdftex.def Info: kmcurve.pdf used on input line 184.
+Package pdftex.def Info: kmcurve.pdf used on input line 186.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
 
 
-Package caption Warning: \label without proper reference on input line 178.
+Package caption Warning: \label without proper reference on input line 180.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:answertimes' on page 5 undefined on input line 18
-9.
+LaTeX Warning: Reference `fig:answertimes' on page 5 undefined on input line 19
+3.
 
 
-Package caption Warning: \label without proper reference on input line 185.
+Package caption Warning: \label without proper reference on input line 187.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:kmcurve' on page 5 undefined on input line 194.
+LaTeX Warning: Reference `fig:kmcurve' on page 5 undefined on input line 199.
 
 [5] [6 <./times_dist.pdf> <./kmcurve.pdf>]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 252.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 263.
 
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 252.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 263.
 
-Overfull \hbox (64.84082pt too wide) in paragraph at lines 266--290
+Overfull \hbox (64.84082pt too wide) in paragraph at lines 277--301
  [][] 
  []
 
 [7] [8]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 301.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 321.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 301.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 321.
  [9]
-Overfull \hbox (90.93855pt too wide) in paragraph at lines 337--359
+Overfull \hbox (90.93855pt too wide) in paragraph at lines 357--379
  [][] 
  []
 
 
-Overfull \hbox (5.01445pt too wide) in paragraph at lines 383--384
+Overfull \hbox (5.01445pt too wide) in paragraph at lines 403--404
 \OT1/cmr/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Gam
 e Con-sole, House-
  []
 
 [10] [11] [12]
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 408--415
+Overfull \hbox (21.63304pt too wide) in paragraph at lines 428--435
  [][] 
  []
 
@@ -518,7 +518,6 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-[14]
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1002/pra2.2015.145052010088
@@ -541,6 +540,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
+[14]
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1016/j.ins.2013.10.030
@@ -618,7 +618,6 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-[15]
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1007/978-1-4757-3462-1
@@ -661,6 +660,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 164--170
 e / pii /
  []
 
+[15]
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1186/1471-2288-12-102
@@ -730,19 +730,19 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 449.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 472.
  [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 449.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 472.
  (./draft1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 449.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 449.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 472.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 472.
 Package rerunfilecheck Info: File `draft1.out' has not changed.
 (rerunfilecheck)             Checksum: 9EB65B2C59E953E247C0FF2958C74C2B;1430.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 449.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 472.
  ) 
 Here is how much of TeX's memory you used:
  7530 strings out of 492995
@@ -751,7 +751,7 @@ Here is how much of TeX's memory you used:
  10916 multiletter control sequences out of 15000+600000
  11263 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,13n,39p,2009b,458s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,18n,39p,2009b,460s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb><
 /usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb>
@@ -769,7 +769,7 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on draft1.pdf (16 pages, 303693 bytes).
+Output written on draft1.pdf (16 pages, 303902 bytes).
 PDF statistics:
  380 PDF objects out of 1000 (max. 8388607)
  337 compressed objects within 4 object streams
