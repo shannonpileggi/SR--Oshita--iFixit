@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  9 MAR 2018 16:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  9 MAR 2018 16:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -390,27 +390,27 @@ Overfull \hbox (9.88954pt too wide) in paragraph at lines 159--160
 un-known, a non-parametric
  []
 
-[4] <times_dist.pdf, id=156, 578.16pt x 361.35pt>
-File: times_dist.pdf Graphic file (type pdf)
- <use times_dist.pdf>
-Package pdftex.def Info: times_dist.pdf used on input line 177.
+[4] <FIG1.pdf, id=156, 578.16pt x 361.35pt>
+File: FIG1.pdf Graphic file (type pdf)
+ <use FIG1.pdf>
+Package pdftex.def Info: FIG1.pdf used on input line 177.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
-Package epstopdf Info: Source file: <kmcurve.eps>
-(epstopdf)                    date: 2018-03-09 16:11:32
-(epstopdf)                    size: 249701 bytes
-(epstopdf)             Output file: <kmcurve-eps-converted-to.pdf>
-(epstopdf)                    date: 2018-03-09 16:12:39
-(epstopdf)                    size: 66425 bytes
-(epstopdf)             Command: <repstopdf --outfile=kmcurve-eps-converted-to.p
-df kmcurve.eps>
+Package epstopdf Info: Source file: <FIG2.eps>
+(epstopdf)                    date: 2018-03-09 16:26:55
+(epstopdf)                    size: 250106 bytes
+(epstopdf)             Output file: <FIG2-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-03-09 16:41:26
+(epstopdf)                    size: 67591 bytes
+(epstopdf)             Command: <repstopdf --outfile=FIG2-eps-converted-to.pdf 
+FIG2.eps>
 (epstopdf)             \includegraphics on input line 185.
 Package epstopdf Info: Output file is already uptodate.
 
-<kmcurve-eps-converted-to.pdf, id=157, 578.16pt x 361.35pt>
-File: kmcurve-eps-converted-to.pdf Graphic file (type pdf)
+<FIG2-eps-converted-to.pdf, id=157, 578.16pt x 361.35pt>
+File: FIG2-eps-converted-to.pdf Graphic file (type pdf)
 
-<use kmcurve-eps-converted-to.pdf>
-Package pdftex.def Info: kmcurve-eps-converted-to.pdf used on input line 185.
+<use FIG2-eps-converted-to.pdf>
+Package pdftex.def Info: FIG2-eps-converted-to.pdf used on input line 185.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
 
 
@@ -428,7 +428,7 @@ See the caption package documentation for explanation.
 
 LaTeX Warning: Reference `fig:kmcurve' on page 5 undefined on input line 196.
 
-[5] [6 <./times_dist.pdf> <./kmcurve-eps-converted-to.pdf>]
+[5] [6 <./FIG1.pdf> <./FIG2-eps-converted-to.pdf>]
 LaTeX Font Info:    Try loading font information for OML+cmr on input line 254.
 
 
@@ -741,23 +741,23 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 463.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 460.
  [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 463.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 460.
  (./draft1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 463.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 463.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 460.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 460.
 Package rerunfilecheck Info: File `draft1.out' has not changed.
 (rerunfilecheck)             Checksum: 9EB65B2C59E953E247C0FF2958C74C2B;1430.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 463.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 460.
  ) 
 Here is how much of TeX's memory you used:
  7530 strings out of 492995
- 113604 string characters out of 6132704
+ 113513 string characters out of 6132704
  217093 words of memory out of 5000000
  10915 multiletter control sequences out of 15000+600000
  11263 words of font info for 39 fonts, out of 8000000 for 9000
@@ -780,7 +780,7 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on draft1.pdf (16 pages, 314758 bytes).
+Output written on draft1.pdf (16 pages, 315915 bytes).
 PDF statistics:
  382 PDF objects out of 1000 (max. 8388607)
  338 compressed objects within 4 object streams

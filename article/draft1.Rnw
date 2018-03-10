@@ -160,10 +160,10 @@ The majority of existing research has been focused on predicting question and an
   & Ratio of the number of line breaks to the number of characters in the question's text (line break to text length ratio) \\ \hline
 \end{tabular}
 \caption{Categorical and continuous variables derived}
-\label{table:variables}
+\label{table:1}
 \end{table}
 
-The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7, 2017 (date of data download). Variables in the data included: device name, device category, question title, text, tags, new user status, date and time the question was posted, and date and time the first answer was received. Variables derived can be found in Table \ref{table:variables}. The Appendix contains details on variable derivation, as well as an example of an answered and unanswered question in Table \ref{table:questions}. 
+The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7, 2017 (date of data download). Variables in the data included: device name, device category, question title, text, tags, new user status, date and time the question was posted, and date and time the first answer was received. Variables derived can be found in Table \ref{table:1}. The Appendix contains details on variable derivation, as well as an example of an answered and unanswered question in Table \ref{table:5}. 
 
 %===================================================================================================
 %===================================================================================================
@@ -199,7 +199,7 @@ longest_d <- round(longest / 24, 1)
 
 % Distribution of answer times
 \begin{figure}[!htbp]
-  \includegraphics[scale=0.5]{times_dist.pdf}
+  \includegraphics[scale=0.5]{FIG1.pdf}
   \label{fig:answertimes}
 % \caption{Distribution of response times}
 \end{figure}
@@ -207,7 +207,7 @@ longest_d <- round(longest / 24, 1)
 
 % Kaplan-Meier curve
 \begin{figure}[!htbp]
-  \includegraphics[scale=0.5]{kmcurve.eps}
+  \includegraphics[scale=0.5]{FIG2.eps}
   \label{fig:kmcurve}
 % \caption{Kaplan-Meier curve for all questions}
 \end{figure}
@@ -279,10 +279,10 @@ Each training set contained \Sexpr{scales::comma(nrow(train1))} questions; each 
   \hline
 \end{tabular}
 \caption{The model with the lowest AIC was used to determine the optimal k number of splines for each continuous predictor.} 
-\label{table:splines}
+\label{table:2}
 \end{table}
 
-Table \ref{table:splines} shows the results of determining the optimal number of knots for each continuous predictor. Those marked with an asterisk (*) were included in the final model. 
+Table \ref{table:2} shows the results of determining the optimal number of knots for each continuous predictor. Those marked with an asterisk (*) were included in the final model. 
 
 % Cross-validation metrics
 \begin{table}[!htbp]
@@ -297,10 +297,10 @@ Table \ref{table:splines} shows the results of determining the optimal number of
    \hline
 \end{tabular}
 \caption{Performance metrics of final model. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)} 
-\label{table:cv}
+\label{table:3}
 \end{table}
 
-Average performance metrics for test and training sets are in Table \ref{table:cv}. Partial likelihood ratios and p-values indicate that the model as a whole is significantly associated with response time. However, $R^2$ statistics and discrimination indexes are considerably low. Metrics for the final model's performance on the full data, also found in Table \ref{table:cv}, are consistent with metrics found in cross-validation and indicate low predictive accuracy. Results for training, test, and the full data did not change significantly, indicating that the model was not over fit. 
+Average performance metrics for test and training sets are in Table \ref{table:3}. Partial likelihood ratios and p-values indicate that the model as a whole is significantly associated with response time. However, $R^2$ statistics and discrimination indexes are considerably low. Metrics for the final model's performance on the full data, also found in Table \ref{table:3}, are consistent with metrics found in cross-validation and indicate low predictive accuracy. Results for training, test, and the full data did not change significantly, indicating that the model was not over fit. 
 
 % Final model on full data
 \begin{table}[!htbp]
@@ -330,7 +330,7 @@ Average performance metrics for test and training sets are in Table \ref{table:c
   \multicolumn{2}{|L{9cm}|}{Square root of the average tag frequency} & 2.23 (0.720)  & 0.002 \\ \hline
 \end{tabular} 
 \caption{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
-\label{table:coefficients}
+\label{table:4}
 \end{table}
 
 % This table looks nice, but the code is brutal and not reproducible.  I feel compelled to point out 'xtable' or 'stargazer' for auto-generated latex tables like this using R.
@@ -346,7 +346,7 @@ Assessing the proportional hazards assumption indicated that several levels of t
 
 As a whole, the final model was significant with a partial likelihood ratio of \Sexpr{LR} (p-value \textless0.0001). Its $R^2$ statistic was \Sexpr{r2}, and Somers' \textit{Dxy} was \Sexpr{dxy}. 
 
-The following are interpretations of select hazard coefficients in Table \ref{table:coefficients}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
+The following are interpretations of select hazard coefficients in Table \ref{table:4}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
 
 << echo = FALSE >>=
 apple_p <- (appleHR - 1) * 100
@@ -424,10 +424,10 @@ This research was supported by the Bill and Linda Frost fund of the California P
 \textbf{Frequently-used unanswered words?} & False & False \\ \hline
 \end{tabular}
 \caption{Examples of an answered question (left) and an unanswered question (right)}
-\label{table:questions}
+\label{table:5}
 \end{table}
 
-Table \ref{table:questions} provides observed and derived variable values from an example of an answered question (regarding the iPhone 6) and unanswered question (regarding android tablet). All fields in device, title, text, and tags are shown as the users entered it. 
+Table \ref{table:5} provides observed and derived variable values from an example of an answered question (regarding the iPhone 6) and unanswered question (regarding android tablet). All fields in device, title, text, and tags are shown as the users entered it. 
 
 % ------------------------------------------------------------------------------------------------
 
@@ -467,7 +467,7 @@ This variable was created to investigate if sentences with no end punctuation ta
 
 These variables were created to investigate if questions pertaining to popular topics receive answers faster than questions that do not. Similarly, another variable was created to investigate if questions pertaining to unpopular topics receive answers slower than questions that do not. This variable was created based off of methods from \citet{Correa2013} and \citet{Ravi2014}.
 
-To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the proportion of times those words occurred among all answered questions' titles, defined as the frequency. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in 1\% or more of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies was assessed. The ratio was calculated as the proportion of times a word occurred among answered questions, to the proportion of times a word occurred in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and levels of the device categorization variable, every word that matched a device name was removed from the lists. Table \ref{table:frequentterms} contains the resulting terms for answered questions (111 words) and for unanswered questions (32 words). 
+To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the proportion of times those words occurred among all answered questions' titles, defined as the frequency. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in 1\% or more of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies was assessed. The ratio was calculated as the proportion of times a word occurred among answered questions, to the proportion of times a word occurred in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and levels of the device categorization variable, every word that matched a device name was removed from the lists. Table \ref{table:6} contains the resulting terms for answered questions (111 words) and for unanswered questions (32 words). 
 
 % Table with list of frequently-used words
 \begin{table}[!htbp]
@@ -480,11 +480,8 @@ To create the variables, the data was separated between answered and unanswered 
    \hline
 \end{tabular}
 \caption{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
-\label{table:frequentterms}
+\label{table:6}
 \end{table}
-
-% If there ever was a good time to use a wordlcloud, I think this is it!! Just sayin...
-% library(wordcloud)
 
 % ------------------------------------------------------------------------
 
