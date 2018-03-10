@@ -20,9 +20,9 @@ library(rms); library(survival); library(ggplot2); library(dplyr)
 ### Distribution of answer times
 
 ```{r}
-# x$Answered <- NA
-# x$Answered[x$answered == 1] <- "Answered"
-# x$Answered[x$answered == 0] <- "Unanswered"
+x$Answered <- NA
+x$Answered[x$answered == 1] <- "Answered"
+x$Answered[x$answered == 0] <- "Unanswered"
 
 ggplot(x, aes(x = time_until_answer, fill = Answered)) +
   geom_histogram(bins = 15, alpha = 0.5, position = "identity") + 
@@ -32,7 +32,7 @@ ggplot(x, aes(x = time_until_answer, fill = Answered)) +
   theme(text = element_text(size = 25),
         axis.text = element_text(size = 15))
 
-ggsave("times_dist.pdf", width = 8, height = 5)
+ggsave("times_dist.pdf", width = 8, height = 5) # eps files don't work with transparency, submit as pdf instead
 ```
 
 ### KM Curve
@@ -56,7 +56,7 @@ ggsurvplot(KM, data = x,
            legend = "none",
            font.x = 25, font.y = 25, font.tickslab = 15)
 
-ggsave("kmcurve.pdf", width = 8, height = 5)
+ggsave("kmcurve.eps", width = 8, height = 5)
 ```
 
 ### Model on full data 
