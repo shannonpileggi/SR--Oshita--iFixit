@@ -29,10 +29,10 @@ ggplot(x, aes(x = time_until_answer, fill = Answered)) +
   guides(fill = guide_legend(title = NULL)) + 
   scale_x_continuous("Time (hrs)") + 
   scale_y_continuous("Number of Questions") + 
-  theme(text = element_text(size = 25),
-        axis.text = element_text(size = 15))
+  theme(text = element_text(size = 10),
+        axis.text = element_text(size = 10))
 
-ggsave("times_dist.pdf", width = 8, height = 5) # eps files don't work with transparency, submit as pdf instead
+ggsave("FIG1.pdf", width = 8, height = 5) # eps files don't work with transparency, submit as pdf instead
 ```
 
 ### KM Curve
@@ -54,9 +54,9 @@ ggsurvplot(KM, data = x,
            surv.plot.height = 1, ggtheme = theme_bw(), 
            tables.height = 0.15, tables.theme = theme_cleantable(), fontsize = 2, na.rm = TRUE,
            legend = "none",
-           font.x = 25, font.y = 25, font.tickslab = 15)
+           font.x = 10, font.y = 10, font.tickslab = 10)
 
-ggsave("kmcurve.eps", width = 8, height = 5)
+ggsave("FIG2.eps", width = 8, height = 5)
 ```
 
 ### Model on full data 
