@@ -180,9 +180,7 @@ In each iteration of cross-validation, the full model was built on the training 
 
 Correlations between scaled Schoenfeld residuals, differences between observed and expected predictor values for questions that received answers, and a function of time, were examined to assess the proportional hazards assumption that the effect of predictors on hazard does not depend on time \citep{Grambsch1994}. Significant correlations would indicate a predictor has violated this assumption.
 
-All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estimates of survival probability were computed with the \texttt{Surv} and \texttt{survfit} functions of the \texttt{Survival} package in R. To compute predicted survival probabilities using the final model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package. This function uses the Cox model and a vector of times to compute predictions. Data used for this analysis can be found in the \texttt{oshitar} package. The function \texttt{variable\_setup} of the \texttt{oshitar} package was used to set up all necessary variables in the data.
-
-% Unless we are planning to make the oshitar package available on cran, it might be better to setup a GIST with a clean version of the data and the variable_setup() function.  Or we should at least link to the github repo instead: https://github.com/loshita/oshitar
+All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estimates of survival probability were computed with the \texttt{Surv} and \texttt{survfit} functions of the \texttt{Survival} package in R. To compute predicted survival probabilities using the final model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package. This function uses the Cox model and a vector of times to compute predictions. Data used for this analysis can be found here(Mendeley citation). Cited data includes all variables used in the model. Code for variable setup and analysis is available upon request. 
 
 
 %===================================================================================================
@@ -203,17 +201,16 @@ longest_d <- round(longest / 24, 1)
 \begin{figure}[!htbp]
   \includegraphics[scale=0.5]{times_dist.pdf}
   \label{fig:answertimes}
-\end{figure}
 % \caption{Distribution of response times}
+\end{figure}
+
 
 % Kaplan-Meier curve
 \begin{figure}[!htbp]
-  \includegraphics[scale=0.5]{kmcurve.pdf}
+  \includegraphics[scale=0.5]{kmcurve.eps}
   \label{fig:kmcurve}
-\end{figure}
 % \caption{Kaplan-Meier curve for all questions}
-
-% Heyyy this is a dynamic document, why not make these images in-line? :-()
+\end{figure}
 
   Of 8,025 questions in the full data, \Sexpr{scales::comma(nrow(x))} were in English (97\% of the full data). Of those questions, \Sexpr{scales::comma(answered)} (\Sexpr{percentans}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{scales::comma(longest)} hours (\Sexpr{scales::comma(longest_d)} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
 
@@ -230,7 +227,7 @@ mean_d <- round(mean/24, 1)
 med <- round(unname(stats[7]), 1)
 @
 
-Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer within the first 100 hours after it has been posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was \Sexpr{mean} hours, or \Sexpr{mean_d} days. The median survival time, the time at which 50\% of the questions in the data received an answer, was \Sexpr{med} hours.
+Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer soon after it is posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was \Sexpr{mean} hours, or \Sexpr{mean_d} days. The median survival time, the time at which 50\% of the questions in the data received an answer, was \Sexpr{med} hours.
 
 
 << echo = FALSE >>=
@@ -284,12 +281,6 @@ Each training set contained \Sexpr{scales::comma(nrow(train1))} questions; each 
 \caption{The model with the lowest AIC was used to determine the optimal k number of splines for each continuous predictor.} 
 \label{table:splines}
 \end{table}
-
-% cool, I like this table!
-% --> can we write the Predictor column more mathematically?
-% --> e.g., $\sqrt{\textnormal{average tag frequency}}$
-% --> e.g., $\log\left({\textnormal{device length} + 1}\right)$
-% also, the 'K' column might align better if we put the * to the right
 
 Table \ref{table:splines} shows the results of determining the optimal number of knots for each continuous predictor. Those marked with an asterisk (*) were included in the final model. 
 
@@ -388,7 +379,7 @@ The model's weak predictive accuracy, which may be explained by limitations in t
 
 \section{Conclusion}
 
-This study developed a Cox proportional hazards model to predict the probability that a question posted on iFixit's \textit{Answers} forum receives an answer before a certain time. Predictors found to be significant included: device category, if the question was posted on a weekend or a weekday, whether or not the question's text contained at least one word considered frequently-used among unanswered questions, and whether or not the question's title ends in a question mark. While overall the model was significant, its predictive performance was considerably low. 
+This study developed a Cox proportional hazards model to predict the probability that a question posted on iFixit's \textit{Answers} forum receives an answer before a certain time. Predictors found to be significant included: device category, if the question was posted on a weekend or a weekday, whether or not the question's title contained at least one word considered frequently-used among unanswered questions, and whether or not the question's title ends in a question mark. While overall the model was significant, its predictive performance was considerably low. 
 
 %===================================================================================================
 %===================================================================================================
@@ -432,7 +423,7 @@ This research was supported by the Bill and Linda Frost fund of the California P
 \textbf{Frequently-used answered words?} & True & True \\ \hline
 \textbf{Frequently-used unanswered words?} & False & False \\ \hline
 \end{tabular}
-\caption{Answered and unanswered questions}
+\caption{Examples of an answered question (left) and an unanswered question (right)}
 \label{table:questions}
 \end{table}
 
