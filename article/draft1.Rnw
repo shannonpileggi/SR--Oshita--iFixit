@@ -201,20 +201,15 @@ longest_d <- round(longest / 24, 1)
 \begin{figure}[!htbp]
   \includegraphics[scale=0.5]{FIG1.pdf}
   \label{fig:answertimes}
-% \caption{Distribution of response times}
 \end{figure}
-
 
 % Kaplan-Meier curve
 \begin{figure}[!htbp]
   \includegraphics[scale=0.5]{FIG2.eps}
   \label{fig:kmcurve}
-% \caption{Kaplan-Meier curve for all questions}
 \end{figure}
 
   Of 8,025 questions in the full data, \Sexpr{scales::comma(nrow(x))} were in English (97\% of the full data). Of those questions, \Sexpr{scales::comma(answered)} (\Sexpr{percentans}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{scales::comma(longest)} hours (\Sexpr{scales::comma(longest_d)} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
-
-% fyi you can use scales::comma(val) to format numbers too
 
 << echo = FALSE >>=
 # Kaplan-Meier survival estimates
@@ -333,10 +328,6 @@ Average performance metrics for test and training sets are in Table \ref{table:3
 \label{table:4}
 \end{table}
 
-% This table looks nice, but the code is brutal and not reproducible.  I feel compelled to point out 'xtable' or 'stargazer' for auto-generated latex tables like this using R.
-
-% I think we should use 2 digits for coefficients and 3 digits for SE/p-value terms
-
 << echo = FALSE >>=
 LR <- unname(round(model$stats[which(names(model$stats) == "Model L.R.")], 2))
 dxy <- unname(round(model$stats[which(names(model$stats) == "Dxy")], 2))
@@ -384,9 +375,18 @@ This study developed a Cox proportional hazards model to predict the probability
 %===================================================================================================
 %===================================================================================================
 
+\section{Vitae}
+
+Lisa Oshita is a senior undergraduate student at the California Polytechnic State University in San Luis Obispo, majoring in statistics...
+
+\section{Author Contributions}
+
+All authors contributed to the analysis featured in this paper and have edited and approved of the final article. 
+
 \section{Acknowledgements}
 
-This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. We also thank iFixit for providing access to the CQA data and for analysis assistance.
+This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. This sponsor was not involved in any aspect of this paper's analysis. We also thank iFixit for providing access to the CQA data.
+
 
 %===================================================================================================
 %===================================================================================================
@@ -507,9 +507,6 @@ This variable was created to investigate if questions that include line breaks i
 \section*{References}
 
 \bibliographystyle{elsarticle-num-names}
-% \bibliographystyle{plainnat}
-% \bibliogrpahystyle{elsarticle-harv}
-
 \bibliography{questions}
 
 

@@ -176,20 +176,15 @@ All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estim
 \begin{figure}[!htbp]
   \includegraphics[scale=0.5]{FIG1.pdf}
   \label{fig:answertimes}
-% \caption{Distribution of response times}
 \end{figure}
-
 
 % Kaplan-Meier curve
 \begin{figure}[!htbp]
   \includegraphics[scale=0.5]{FIG2.eps}
   \label{fig:kmcurve}
-% \caption{Kaplan-Meier curve for all questions}
 \end{figure}
 
   Of 8,025 questions in the full data, 7,760 were in English (97\% of the full data). Of those questions, 4,951 (63.8\%) received an answer by the download date. The shortest response time was 0.5 hours. The longest was 2,159 hours (90 days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
-
-% fyi you can use scales::comma(val) to format numbers too
 
 
 
@@ -293,10 +288,6 @@ Average performance metrics for test and training sets are in Table \ref{table:3
 \label{table:4}
 \end{table}
 
-% This table looks nice, but the code is brutal and not reproducible.  I feel compelled to point out 'xtable' or 'stargazer' for auto-generated latex tables like this using R.
-
-% I think we should use 2 digits for coefficients and 3 digits for SE/p-value terms
-
 
 
 Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. 
@@ -328,9 +319,18 @@ This study developed a Cox proportional hazards model to predict the probability
 %===================================================================================================
 %===================================================================================================
 
+\section{Vitae}
+
+Lisa Oshita is a senior undergraduate student at the California Polytechnic State University in San Luis Obispo, majoring in statistics...
+
+\section{Author Contributions}
+
+All authors contributed to the analysis featured in this paper and have edited and approved of the final article. 
+
 \section{Acknowledgements}
 
-This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. We also thank iFixit for providing access to the CQA data and for analysis assistance.
+This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. This sponsor was not involved in any aspect of this paper's analysis. We also thank iFixit for providing access to the CQA data.
+
 
 %===================================================================================================
 %===================================================================================================
@@ -451,9 +451,6 @@ This variable was created to investigate if questions that include line breaks i
 \section*{References}
 
 \bibliographystyle{elsarticle-num-names}
-% \bibliographystyle{plainnat}
-% \bibliogrpahystyle{elsarticle-harv}
-
 \bibliography{questions}
 
 
