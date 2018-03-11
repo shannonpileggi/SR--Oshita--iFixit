@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  11 MAR 2018 14:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  11 MAR 2018 15:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -294,6 +294,11 @@ Package caption3 Info: TeX engine: e-TeX on input line 67.
 \c@ContinuedFloat=\count113
 Package caption Info: hyperref package is loaded.
 )
+(/usr/local/texlive/2017/texmf-dist/tex/latex/hyphenat/hyphenat.sty
+Package: hyphenat 2009/09/02 v2.3c hyphenation utilities
+\langwohyphens=\language84
+LaTeX Info: Redefining \_ on input line 43.
+)
 (/usr/local/texlive/2017/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
@@ -301,20 +306,20 @@ tim
 (./draft1.aux)
 \openout1 = `draft1.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 62.
-LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -347,7 +352,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box32
-Package hyperref Info: Link coloring OFF on input line 62.
+Package hyperref Info: Link coloring OFF on input line 64.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -357,9 +362,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count120
 )
-LaTeX Info: Redefining \ref on input line 62.
-LaTeX Info: Redefining \pageref on input line 62.
-LaTeX Info: Redefining \nameref on input line 62.
+LaTeX Info: Redefining \ref on input line 64.
+LaTeX Info: Redefining \pageref on input line 64.
+LaTeX Info: Redefining \nameref on input line 64.
 
 (./draft1.out) (./draft1.out)
 \@outlinefile=\write4
@@ -367,33 +372,81 @@ LaTeX Info: Redefining \nameref on input line 62.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Info: Redefining \bfseries on input line 66.
+LaTeX Info: Redefining \bfseries on input line 68.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 89.
+(Font)              <7> on input line 91.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 89.
+(Font)              <5> on input line 91.
+
+Overfull \hbox (23.83391pt too wide) in paragraph at lines 91--93
+\OT1/cmr/m/n/10 al-low users to ask and an-swer ques-tions, con-tain an ex-ten-
+sive amount of crowd-sourced
+ []
+
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 97.
+(Font)              <8> on input line 99.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 97.
- [1
+(Font)              <6> on input line 99.
+
+Overfull \hbox (11.1395pt too wide) in paragraph at lines 106--107
+[]\OT1/cmr/m/n/10 Community-driven on-line ques-tion and an-swer fo-rums have b
+e-come widely-used
+ []
+
+[1
 
 
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 127--144
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (10.71364pt too wide) in paragraph at lines 117--118
+\OT1/cmr/m/n/10 mod-els to pre-dict re-sponse times based on ex-po-nen-tial dis
+-tri-bu-tions. Asaduz-za-man
+ []
+
+
+Overfull \hbox (0.60138pt too wide) in paragraph at lines 119--120
+\OT1/cmr/m/n/10 in-di-ca-tors of qual-ity. A num-ber of other stud-ies have als
+o de-vel-oped clas-si-fi-ca-tion
+ []
+
+
+Overfull \hbox (12.55629pt too wide) in paragraph at lines 119--120
+\OT1/cmr/m/n/10 al-go-rithms us-ing tex-tual and non-textual fea-tures with the
+ sim-i-lar goal of pre-dict-ing
+ []
+
+[2]
+Overfull \hbox (21.63304pt too wide) in paragraph at lines 129--146
  [][] 
  []
 
 [3]
-Overfull \hbox (9.88954pt too wide) in paragraph at lines 159--160
+Overfull \hbox (7.04683pt too wide) in paragraph at lines 159--160
+\OT1/cmr/m/n/10 unan-swered ques-tions [[]]. From these es-ti-mates, sur-vival 
+curves were con-structed
+ []
+
+
+Overfull \hbox (9.88954pt too wide) in paragraph at lines 161--162
 []\OT1/cmr/m/n/10 As the prob-a-bil-ity dis-tri-bu-tion for re-sponse times is 
 un-known, a non-parametric
  []
 
-[4] <FIG1.pdf, id=164, 578.16pt x 361.35pt>
+
+Overfull \hbox (2.55626pt too wide) in paragraph at lines 161--162
+\OT1/cmr/m/n/10 Cox pro-por-tional haz-ards model was de-vel-oped to pre-dict t
+he sur-vival prob-a-bil-ity
+ []
+
+[4]
+Overfull \hbox (6.25047pt too wide) in paragraph at lines 165--166
+[]\OT1/cmr/m/n/10 Correlations be-tween scaled Schoen-feld resid-u-als, dif-fer
+-ences be-tween ob-served
+ []
+
+<FIG1.pdf, id=164, 578.16pt x 361.35pt>
 File: FIG1.pdf Graphic file (type pdf)
  <use FIG1.pdf>
-Package pdftex.def Info: FIG1.pdf used on input line 177.
+Package pdftex.def Info: FIG1.pdf used on input line 179.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
 Package epstopdf Info: Source file: <FIG2.eps>
 (epstopdf)                    date: 2018-03-09 16:26:55
@@ -403,70 +456,136 @@ Package epstopdf Info: Source file: <FIG2.eps>
 (epstopdf)                    size: 67591 bytes
 (epstopdf)             Command: <repstopdf --outfile=FIG2-eps-converted-to.pdf 
 FIG2.eps>
-(epstopdf)             \includegraphics on input line 183.
+(epstopdf)             \includegraphics on input line 185.
 Package epstopdf Info: Output file is already uptodate.
 
 <FIG2-eps-converted-to.pdf, id=165, 578.16pt x 361.35pt>
 File: FIG2-eps-converted-to.pdf Graphic file (type pdf)
 
 <use FIG2-eps-converted-to.pdf>
-Package pdftex.def Info: FIG2-eps-converted-to.pdf used on input line 183.
+Package pdftex.def Info: FIG2-eps-converted-to.pdf used on input line 185.
 (pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
 
 
-Package caption Warning: \label without proper reference on input line 178.
+Package caption Warning: \label without proper reference on input line 180.
 See the caption package documentation for explanation.
 
 
 LaTeX Warning: Reference `fig:answertimes' on page 5 undefined on input line 18
-7.
+9.
 
 
-Package caption Warning: \label without proper reference on input line 184.
+Package caption Warning: \label without proper reference on input line 186.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `fig:kmcurve' on page 5 undefined on input line 191.
+LaTeX Warning: Reference `fig:kmcurve' on page 5 undefined on input line 193.
 
 [5] [6 <./FIG1.pdf> <./FIG2-eps-converted-to.pdf>]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 249.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 251.
 
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 249.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 251.
 
-Overfull \hbox (64.84082pt too wide) in paragraph at lines 263--287
+Overfull \hbox (0.92535pt too wide) in paragraph at lines 260--261
+\OT1/cmr/m/n/10 as-so-ci-ated with re-sponse time. How-ever, $\OML/cmm/m/it/10 
+R[]$ \OT1/cmr/m/n/10 statis-tics and dis-crim-i-na-tion in-dexes
+ []
+
+
+Overfull \hbox (64.84082pt too wide) in paragraph at lines 265--289
  [][] 
  []
 
-[7] [8]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 303.
+[7]
+Overfull \hbox (0.75073pt too wide) in paragraph at lines 299--300
+\OT1/cmr/m/n/10 Haz-ard is ap-prox-i-mately equiv-a-lent to the con-di-tional p
+rob-a-bil-ity that a ques-tion
+ []
+
+[8]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 305.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 303.
- [9]
-Overfull \hbox (90.93855pt too wide) in paragraph at lines 348--370
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 305.
+
+Overfull \hbox (5.62912pt too wide) in paragraph at lines 312--313
+\OT1/cmr/m/n/10 in the data, lead to sug-ges-tions for changes in CQA de-sign. 
+Many users in-cor-rectly
+ []
+
+[9]
+Overfull \hbox (0.74141pt too wide) in paragraph at lines 326--327
+\OT1/cmr/m/n/10 Poly-tech-nic State Uni-ver-sity in San Luis Obispo. Shan-non P
+i-leggi is an As-sis-tant
+ []
+
+
+Overfull \hbox (1.66728pt too wide) in paragraph at lines 326--327
+\OT1/cmr/m/n/10 Pro-fes-sor in the Statis-tics De-part-ment at Cal-i-for-nia Po
+ly-tech-nic State Uni-ver-sity,
+ []
+
+
+Overfull \hbox (1.66725pt too wide) in paragraph at lines 334--335
+[]\OT1/cmr/m/n/10 This re-search was sup-ported by the Bill and Linda Frost fun
+d of the Cal-i-for-nia
+ []
+
+
+Overfull \hbox (90.93855pt too wide) in paragraph at lines 350--372
  [][] 
  []
 
 [10] [11]
-Overfull \hbox (5.01445pt too wide) in paragraph at lines 394--395
+Overfull \hbox (23.34785pt too wide) in paragraph at lines 396--397
 \OT1/cmr/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Gam
-e Con-sole, House-
+e Con-sole, House-hold,
+ []
+
+
+Overfull \hbox (19.15805pt too wide) in paragraph at lines 396--397
+\OT1/cmr/m/n/10 Con-sole, Home, Other, PC, Tablet, Ve-hi-cle. Un-der the orig-i
+-nal de-vice cat-e-go-riza-tion,
+ []
+
+
+Overfull \hbox (20.0838pt too wide) in paragraph at lines 416--417
+[]\OT1/cmr/m/n/10 To cre-ate the vari-ables, the data was sep-a-rated be-tween 
+an-swered and unan-swered
+ []
+
+
+Overfull \hbox (0.945pt too wide) in paragraph at lines 416--417
+\OT1/cmr/m/n/10 unan-swered ques-tions, it would be con-sid-ered ``frequently-u
+sed'' among an-swered
+ []
+
+
+Overfull \hbox (7.25052pt too wide) in paragraph at lines 416--417
+\OT1/cmr/m/n/10 be-tween ``frequently-used'' words in each list and lev-els of 
+the de-vice cat-e-go-riza-tion
  []
 
 [12]
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 419--426
+Overfull \hbox (21.63304pt too wide) in paragraph at lines 421--428
  [][] 
  []
 
-[13] (./draft1.bbl
+[13]
+Overfull \hbox (8.02838pt too wide) in paragraph at lines 442--443
+\OT1/cmr/m/n/10 re-placed, used, checked, in-ves-ti-gated, con-sid-ered, mea-su
+red, at-tempted, in-spected,
+ []
+
+(./draft1.bbl
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1109/PASSAT/SocialCom.2011.67
@@ -477,6 +596,25 @@ of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 1005) in paragraph at lines 12--19
+[]\OT1/cmr/m/n/10 A. Rechavi, S. Rafaeli, Not all is gold that glit-ters re-spo
+nse time
+ []
+
+
+Underfull \hbox (badness 1472) in paragraph at lines 12--19
+\OT1/cmr/m/n/10 In-ter-na-tional Con-fer-ence on Pri-vacy, Se-cu-rity, Risk and
+ Trust and
+ []
+
+
+Underfull \hbox (badness 2582) in paragraph at lines 12--19
+\OT1/cmr/m/n/10 2011 (2011) 904--909doi:[]$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/10 le
+t \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 @tempa \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 
+bibinfo @ X @ doi10 . 1109 / PASSAT /
+ []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 31--38
@@ -494,6 +632,18 @@ of your error message was never \def'ed. If you have
 misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 2027) in paragraph at lines 41--48
+[]\OT1/cmr/m/n/10 M. Asaduz-za-man, A. S. Mashiyat, C. K. Roy, K. A. Schnei-der
+,
+ []
+
+
+Underfull \hbox (badness 5490) in paragraph at lines 41--48
+\OT1/cmr/m/n/10 2013 10th Work-ing Con-fer-ence on Min-ing Soft-ware Repos-i-to
+-ries
+ []
 
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
@@ -574,6 +724,18 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
+
+Underfull \hbox (badness 2626) in paragraph at lines 99--105
+[]\OT1/cmr/m/n/10 L. Pon-zanelli, A. Mocci, A. Bac-chelli, M. Lanza, Un-der-sta
+nd-ing
+ []
+
+
+Underfull \hbox (badness 1253) in paragraph at lines 99--105
+\OT1/cmr/m/n/10 - In-ter-na-tional Con-fer-ence on Qual-ity Soft-ware (2014) 34
+3--352ISSN
+ []
+
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1016/B978-0-12-387667-6.00013-0
@@ -643,33 +805,45 @@ and I'll forget about whatever was undefined.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmr/m/n/10 2918-1, doi:[]$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/10 let \OMS/cmsy/
-m/n/10 n \OT1/cmr/m/n/10 @tempa \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 bibinfo @ X 
-@ doi10 . 1007 / 978-[]1-[]4757-[]3462-[]1$[],
+[]\OT1/cmr/m/n/10 F. E. Har-rell, Re-gres-sion Mod-el-ing Strate-gies, vol. 64,
+
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmr/m/n/10 URL []$\OT1/cmtt/m/n/10 papers : / / 55069ee6-[]504c-[]4f60-[]b
-fa9-[]053c4dcabb39 /
+\OT1/cmr/m/n/10 ISBN 978-1-4419-2918-1, doi:[]$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/1
+0 let \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 @tempa \OMS/cmsy/m/n/10 n \OT1/cmr/m/n
+/10 bibinfo @
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmtt/m/n/10 Paper / p398{%}5Cnhttp : / / link . springer . com / 10 . 1007
- /
+\OT1/cmr/m/n/10 X @ doi10 . 1007 / 978-[]1-[]4757-[]3462-[]1$[], URL []$\OT1/cm
+tt/m/n/10 papers : / /
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmtt/m/n/10 978-[]3-[]319-[]19425-[]7{%}5Cnhttp : / / www . ncbi . nlm . n
-ih . gov / pubmed /
+\OT1/cmtt/m/n/10 55069ee6-[]504c-[]4f60-[]bfa9-[]053c4dcabb39 / Paper / p398{%}
+5Cnhttp :
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmtt/m/n/10 21531065{%}5Cnhttp : / / linkinghub . elsevier . com / retriev
-e / pii /
+\OT1/cmtt/m/n/10 / / link . springer . com / 10 . 1007 / 978-[]3-[]319-[]19425-
+[]7{%}5Cnhttp : / /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 164--170
+\OT1/cmtt/m/n/10 www . ncbi . nlm . nih . gov / pubmed / 21531065{%}5Cnhttp : /
+ / linkinghub .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 164--170
+\OT1/cmtt/m/n/10 elsevier . com / retrieve / pii / S0300893211003502{%}5Cnhttp 
+:
  []
 
 ! Undefined control sequence.
@@ -718,6 +892,19 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
+
+Underfull \hbox (badness 5050) in paragraph at lines 181--187
+\OT1/cmr/m/n/10 Sta-tis-ti-cal Re-view / Re-vue In-ter-na-tionale de Statis-tiq
+ue 49 (3)
+ []
+
+
+Underfull \hbox (badness 2057) in paragraph at lines 181--187
+\OT1/cmr/m/n/10 (1981) 235--252, ISSN 0306-7734, doi:[]$\OMS/cmsy/m/n/10 n\OT1/
+cmr/m/n/10 let \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 @tempa \OMS/cmsy/m/n/10 n \OT
+1/cmr/m/n/10 bibinfo @ X @ doi10 .
+ []
+
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1145/2512938.2512954
@@ -740,26 +927,32 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
+
+Underfull \hbox (badness 2495) in paragraph at lines 205--212
+\OT1/cmr/m/n/10 on Hu-man Fac-tors in Com-put-ing Sys-tems (2008) 865--874doi:[
+]$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/10 let \OMS/cmsy/m/n/10 n
+ []
+
 [16])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 457.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 459.
  [17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 457.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 459.
  (./draft1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 457.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 457.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 459.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 459.
 Package rerunfilecheck Info: File `draft1.out' has not changed.
 (rerunfilecheck)             Checksum: AEB5266AD2CEFA82D9AFF6B69A6A30A2;1550.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 457.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 459.
  ) 
 Here is how much of TeX's memory you used:
- 7535 strings out of 492995
- 113584 string characters out of 6132704
- 217093 words of memory out of 5000000
- 10917 multiletter control sequences out of 15000+600000
+ 7569 strings out of 492995
+ 114093 string characters out of 6132704
+ 217836 words of memory out of 5000000
+ 10947 multiletter control sequences out of 15000+600000
  11263 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  36i,18n,39p,2009b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -780,10 +973,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on draft1.pdf (17 pages, 317387 bytes).
+Output written on draft1.pdf (17 pages, 317356 bytes).
 PDF statistics:
- 396 PDF objects out of 1000 (max. 8388607)
- 351 compressed objects within 4 object streams
+ 402 PDF objects out of 1000 (max. 8388607)
+ 357 compressed objects within 4 object streams
  73 named destinations out of 1000 (max. 500000)
  179 words of extra memory for PDF output out of 10000 (max. 10000000)
 
