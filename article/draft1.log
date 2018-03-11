@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  9 MAR 2018 17:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  11 MAR 2018 14:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -399,7 +399,7 @@ Package epstopdf Info: Source file: <FIG2.eps>
 (epstopdf)                    date: 2018-03-09 16:26:55
 (epstopdf)                    size: 250106 bytes
 (epstopdf)             Output file: <FIG2-eps-converted-to.pdf>
-(epstopdf)                    date: 2018-03-09 16:58:00
+(epstopdf)                    date: 2018-03-11 14:41:52
 (epstopdf)                    size: 67591 bytes
 (epstopdf)             Command: <repstopdf --outfile=FIG2-eps-converted-to.pdf 
 FIG2.eps>
@@ -455,13 +455,13 @@ Overfull \hbox (90.93855pt too wide) in paragraph at lines 348--370
  [][] 
  []
 
-
+[10] [11]
 Overfull \hbox (5.01445pt too wide) in paragraph at lines 394--395
 \OT1/cmr/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Gam
 e Con-sole, House-
  []
 
-[10] [11] [12]
+[12]
 Overfull \hbox (21.63304pt too wide) in paragraph at lines 419--426
  [][] 
  []
@@ -780,7 +780,7 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on draft1.pdf (17 pages, 317249 bytes).
+Output written on draft1.pdf (17 pages, 317387 bytes).
 PDF statistics:
  396 PDF objects out of 1000 (max. 8388607)
  351 compressed objects within 4 object streams
