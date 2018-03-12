@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  11 MAR 2018 16:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  11 MAR 2018 16:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -443,49 +443,16 @@ Overfull \hbox (6.25047pt too wide) in paragraph at lines 165--166
 -ences be-tween ob-served
  []
 
-<FIG1.pdf, id=164, 578.16pt x 361.35pt>
-File: FIG1.pdf Graphic file (type pdf)
- <use FIG1.pdf>
-Package pdftex.def Info: FIG1.pdf used on input line 179.
-(pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
-Package epstopdf Info: Source file: <FIG2.eps>
-(epstopdf)                    date: 2018-03-09 16:26:55
-(epstopdf)                    size: 250106 bytes
-(epstopdf)             Output file: <FIG2-eps-converted-to.pdf>
-(epstopdf)                    date: 2018-03-11 14:41:52
-(epstopdf)                    size: 67591 bytes
-(epstopdf)             Command: <repstopdf --outfile=FIG2-eps-converted-to.pdf 
-FIG2.eps>
-(epstopdf)             \includegraphics on input line 185.
-Package epstopdf Info: Output file is already uptodate.
 
-<FIG2-eps-converted-to.pdf, id=165, 578.16pt x 361.35pt>
-File: FIG2-eps-converted-to.pdf Graphic file (type pdf)
-
-<use FIG2-eps-converted-to.pdf>
-Package pdftex.def Info: FIG2-eps-converted-to.pdf used on input line 185.
-(pdftex.def)             Requested size: 289.07928pt x 180.67456pt.
+LaTeX Warning: Reference `fig:1' on page 5 undefined on input line 189.
 
 
-Package caption Warning: \label without proper reference on input line 180.
-See the caption package documentation for explanation.
+LaTeX Warning: Reference `fig:2' on page 5 undefined on input line 193.
 
-
-LaTeX Warning: Reference `fig:answertimes' on page 5 undefined on input line 18
-9.
-
-
-Package caption Warning: \label without proper reference on input line 186.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig:kmcurve' on page 5 undefined on input line 193.
-
-[5] [6 <./FIG1.pdf> <./FIG2-eps-converted-to.pdf>]
+[5]
 LaTeX Font Info:    Try loading font information for OML+cmr on input line 251.
 
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
@@ -501,13 +468,13 @@ Overfull \hbox (64.84082pt too wide) in paragraph at lines 265--289
  [][] 
  []
 
-[7]
+[6]
 Overfull \hbox (0.75073pt too wide) in paragraph at lines 299--300
 \OT1/cmr/m/n/10 Haz-ard is ap-prox-i-mately equiv-a-lent to the con-di-tional p
 rob-a-bil-ity that a ques-tion
  []
 
-[8]
+[7]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 305.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
@@ -521,7 +488,7 @@ Overfull \hbox (5.62912pt too wide) in paragraph at lines 312--313
 Many users in-cor-rectly
  []
 
-[9]
+[8]
 Overfull \hbox (0.74141pt too wide) in paragraph at lines 326--327
 \OT1/cmr/m/n/10 Poly-tech-nic State Uni-ver-sity in San Luis Obispo. Shan-non P
 i-leggi is an As-sis-tant
@@ -544,7 +511,7 @@ Overfull \hbox (90.93855pt too wide) in paragraph at lines 350--372
  [][] 
  []
 
-[10] [11]
+[9] [10]
 Overfull \hbox (23.34785pt too wide) in paragraph at lines 396--397
 \OT1/cmr/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Gam
 e Con-sole, House-hold,
@@ -574,12 +541,12 @@ Overfull \hbox (7.25052pt too wide) in paragraph at lines 416--417
 the de-vice cat-e-go-riza-tion
  []
 
-[12]
+[11]
 Overfull \hbox (21.63304pt too wide) in paragraph at lines 421--428
  [][] 
  []
 
-[13]
+[12]
 Overfull \hbox (8.02838pt too wide) in paragraph at lines 442--443
 \OT1/cmr/m/n/10 re-placed, used, checked, in-ves-ti-gated, con-sid-ered, mea-su
 red, at-tempted, in-spected,
@@ -668,7 +635,7 @@ Underfull \hbox (badness 2261) in paragraph at lines 51--58
 . tk . informatik . tu-[]darmstadt .
  []
 
-[14]
+[13]
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1145/1367497.1367673
@@ -769,7 +736,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-[15]
+[14]
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1109/TPAMI.2009.187
@@ -933,9 +900,9 @@ Underfull \hbox (badness 2495) in paragraph at lines 205--212
 ]$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/10 let \OMS/cmsy/m/n/10 n
  []
 
-[16])
+[15])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 459.
- [17]
+ [16]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 459.
  (./draft1.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 459.
@@ -949,10 +916,10 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 459.
  ) 
 Here is how much of TeX's memory you used:
- 7569 strings out of 492995
- 114093 string characters out of 6132704
- 217836 words of memory out of 5000000
- 10947 multiletter control sequences out of 15000+600000
+ 7554 strings out of 492995
+ 113830 string characters out of 6132704
+ 217662 words of memory out of 5000000
+ 10938 multiletter control sequences out of 15000+600000
  11263 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  36i,18n,39p,2009b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -973,10 +940,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/20
 17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on draft1.pdf (17 pages, 317534 bytes).
+Output written on draft1.pdf (16 pages, 247474 bytes).
 PDF statistics:
- 402 PDF objects out of 1000 (max. 8388607)
- 357 compressed objects within 4 object streams
- 73 named destinations out of 1000 (max. 500000)
- 179 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 375 PDF objects out of 1000 (max. 8388607)
+ 336 compressed objects within 4 object streams
+ 70 named destinations out of 1000 (max. 500000)
+ 169 words of extra memory for PDF output out of 10000 (max. 10000000)
 

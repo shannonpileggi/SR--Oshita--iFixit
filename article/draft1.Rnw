@@ -200,18 +200,18 @@ longest_d <- round(longest / 24, 1)
 @
 
 % Distribution of answer times
-\begin{figure}[!htbp]
-  \includegraphics[scale=0.5]{FIG1.pdf}
-  \label{fig:answertimes}
-\end{figure}
+% \begin{figure}[!htbp]
+%   \includegraphics[scale=0.5]{FIG1.pdf}
+%   \label{fig:1}
+% \end{figure}
+% 
+% % Kaplan-Meier curve
+% \begin{figure}[!htbp]
+%   \includegraphics[scale=0.5]{FIG2.eps}
+%   \label{fig:2}
+% \end{figure}
 
-% Kaplan-Meier curve
-\begin{figure}[!htbp]
-  \includegraphics[scale=0.5]{FIG2.eps}
-  \label{fig:kmcurve}
-\end{figure}
-
-  Of 8,025 questions in the full data, \Sexpr{scales::comma(nrow(x))} were in English (97\% of the full data). Of those questions, \Sexpr{scales::comma(answered)} (\Sexpr{percentans}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{scales::comma(longest)} hours (\Sexpr{scales::comma(longest_d)} days). Figure \ref{fig:answertimes} shows the distribution of response times for all questions analyzed. 
+  Of 8,025 questions in the full data, \Sexpr{scales::comma(nrow(x))} were in English (97\% of the full data). Of those questions, \Sexpr{scales::comma(answered)} (\Sexpr{percentans}\%) received an answer by the download date. The shortest response time was \Sexpr{shortest} hours. The longest was \Sexpr{scales::comma(longest)} hours (\Sexpr{scales::comma(longest_d)} days). Figure \ref{fig:1} shows the distribution of response times for all questions analyzed. 
 
 << echo = FALSE >>=
 # Kaplan-Meier survival estimates
@@ -224,7 +224,7 @@ mean_d <- round(mean/24, 1)
 med <- round(unname(stats[7]), 1)
 @
 
-Figure \ref{fig:kmcurve} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer soon after it is posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was \Sexpr{mean} hours, or \Sexpr{mean_d} days. The median survival time, the time at which 50\% of the questions in the data received an answer, was \Sexpr{med} hours.
+Figure \ref{fig:2} shows the Kaplan-Meier estimated survival probability curve for all questions in the data. The curve indicates that if a question does not receive an answer soon after it is posted, the likelihood of it receiving an answer in the future is low. The Kaplan-Meier estimated mean survival time, or the average time until a question received its first answer was \Sexpr{mean} hours, or \Sexpr{mean_d} days. The median survival time, the time at which 50\% of the questions in the data received an answer, was \Sexpr{med} hours.
 
 
 << echo = FALSE >>=
