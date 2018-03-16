@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  11 MAR 2018 16:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  16 MAR 2018 10:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**draft1.tex
-(./draft1.tex
+**manuscript.tex
+(./manuscript.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/elsarticle/elsarticle.cls
@@ -87,7 +87,8 @@ File: upsy.fd 2001/06/04 font definitions for U/psy.
 \@enLab=\toks16
 \@sep=\skip43
 \@@sep=\skip44
- (./draft1.spl)
+
+(./manuscript.spl)
 (/usr/local/texlive/2017/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip45
@@ -96,7 +97,7 @@ LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count94
 )
 \splwrite=\write3
-\openout3 = `draft1.spl'.
+\openout3 = `manuscript.spl'.
 
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/color.sty
@@ -303,8 +304,8 @@ LaTeX Info: Redefining \_ on input line 43.
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 )
-(./draft1.aux)
-\openout1 = `draft1.aux'.
+(./manuscript.aux)
+\openout1 = `manuscript.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
 LaTeX Font Info:    ... okay on input line 64.
@@ -366,9 +367,9 @@ LaTeX Info: Redefining \ref on input line 64.
 LaTeX Info: Redefining \pageref on input line 64.
 LaTeX Info: Redefining \nameref on input line 64.
 
-(./draft1.out) (./draft1.out)
+(./manuscript.out) (./manuscript.out)
 \@outlinefile=\write4
-\openout4 = `draft1.out'.
+\openout4 = `manuscript.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
@@ -388,7 +389,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 99.
 
-Overfull \hbox (11.1395pt too wide) in paragraph at lines 106--107
+Overfull \hbox (11.1395pt too wide) in paragraph at lines 104--105
 []\OT1/cmr/m/n/10 Community-driven on-line ques-tion and an-swer fo-rums have b
 e-come widely-used
  []
@@ -397,162 +398,156 @@ e-come widely-used
 
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (10.71364pt too wide) in paragraph at lines 117--118
+Overfull \hbox (10.71364pt too wide) in paragraph at lines 113--114
 \OT1/cmr/m/n/10 mod-els to pre-dict re-sponse times based on ex-po-nen-tial dis
 -tri-bu-tions. Asaduz-za-man
  []
 
 
-Overfull \hbox (0.60138pt too wide) in paragraph at lines 119--120
+Overfull \hbox (0.60138pt too wide) in paragraph at lines 115--116
 \OT1/cmr/m/n/10 in-di-ca-tors of qual-ity. A num-ber of other stud-ies have als
 o de-vel-oped clas-si-fi-ca-tion
  []
 
 
-Overfull \hbox (12.55629pt too wide) in paragraph at lines 119--120
+Overfull \hbox (12.55629pt too wide) in paragraph at lines 115--116
 \OT1/cmr/m/n/10 al-go-rithms us-ing tex-tual and non-textual fea-tures with the
  sim-i-lar goal of pre-dict-ing
  []
 
 [2]
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 129--146
+Overfull \hbox (21.63304pt too wide) in paragraph at lines 123--140
  [][] 
  []
 
 [3]
-Overfull \hbox (7.04683pt too wide) in paragraph at lines 159--160
+Overfull \hbox (7.04683pt too wide) in paragraph at lines 151--152
 \OT1/cmr/m/n/10 unan-swered ques-tions [[]]. From these es-ti-mates, sur-vival 
 curves were con-structed
  []
 
 
-Overfull \hbox (9.88954pt too wide) in paragraph at lines 161--162
+Overfull \hbox (9.88954pt too wide) in paragraph at lines 153--154
 []\OT1/cmr/m/n/10 As the prob-a-bil-ity dis-tri-bu-tion for re-sponse times is 
 un-known, a non-parametric
  []
 
 
-Overfull \hbox (2.55626pt too wide) in paragraph at lines 161--162
+Overfull \hbox (2.55626pt too wide) in paragraph at lines 153--154
 \OT1/cmr/m/n/10 Cox pro-por-tional haz-ards model was de-vel-oped to pre-dict t
 he sur-vival prob-a-bil-ity
  []
 
 [4]
-Overfull \hbox (6.25047pt too wide) in paragraph at lines 165--166
+Overfull \hbox (6.25047pt too wide) in paragraph at lines 157--158
 []\OT1/cmr/m/n/10 Correlations be-tween scaled Schoen-feld resid-u-als, dif-fer
 -ences be-tween ob-served
  []
 
-
-LaTeX Warning: Reference `fig:1' on page 5 undefined on input line 189.
-
-
-LaTeX Warning: Reference `fig:2' on page 5 undefined on input line 193.
-
 [5]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 251.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 240.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 251.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 240.
 
-Overfull \hbox (0.92535pt too wide) in paragraph at lines 260--261
+Overfull \hbox (0.92535pt too wide) in paragraph at lines 249--250
 \OT1/cmr/m/n/10 as-so-ci-ated with re-sponse time. How-ever, $\OML/cmm/m/it/10 
 R[]$ \OT1/cmr/m/n/10 statis-tics and dis-crim-i-na-tion in-dexes
  []
 
 
-Overfull \hbox (64.84082pt too wide) in paragraph at lines 265--289
+Overfull \hbox (64.84082pt too wide) in paragraph at lines 254--278
  [][] 
  []
 
 [6]
-Overfull \hbox (0.75073pt too wide) in paragraph at lines 299--300
+Overfull \hbox (0.75073pt too wide) in paragraph at lines 288--289
 \OT1/cmr/m/n/10 Haz-ard is ap-prox-i-mately equiv-a-lent to the con-di-tional p
 rob-a-bil-ity that a ques-tion
  []
 
 [7]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 305.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 294.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 305.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 294.
 
-Overfull \hbox (5.62912pt too wide) in paragraph at lines 312--313
+Overfull \hbox (5.62912pt too wide) in paragraph at lines 301--302
 \OT1/cmr/m/n/10 in the data, lead to sug-ges-tions for changes in CQA de-sign. 
 Many users in-cor-rectly
  []
 
 [8]
-Overfull \hbox (0.74141pt too wide) in paragraph at lines 326--327
+Overfull \hbox (0.74141pt too wide) in paragraph at lines 311--312
 \OT1/cmr/m/n/10 Poly-tech-nic State Uni-ver-sity in San Luis Obispo. Shan-non P
 i-leggi is an As-sis-tant
  []
 
 
-Overfull \hbox (1.66728pt too wide) in paragraph at lines 326--327
+Overfull \hbox (1.66728pt too wide) in paragraph at lines 311--312
 \OT1/cmr/m/n/10 Pro-fes-sor in the Statis-tics De-part-ment at Cal-i-for-nia Po
 ly-tech-nic State Uni-ver-sity,
  []
 
 
-Overfull \hbox (1.66725pt too wide) in paragraph at lines 334--335
+Overfull \hbox (1.66725pt too wide) in paragraph at lines 319--320
 []\OT1/cmr/m/n/10 This re-search was sup-ported by the Bill and Linda Frost fun
 d of the Cal-i-for-nia
  []
 
 
-Overfull \hbox (90.93855pt too wide) in paragraph at lines 350--372
+Overfull \hbox (90.93855pt too wide) in paragraph at lines 328--350
  [][] 
  []
 
 [9] [10]
-Overfull \hbox (23.34785pt too wide) in paragraph at lines 396--397
+Overfull \hbox (23.34785pt too wide) in paragraph at lines 371--372
 \OT1/cmr/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Gam
 e Con-sole, House-hold,
  []
 
 
-Overfull \hbox (19.15805pt too wide) in paragraph at lines 396--397
+Overfull \hbox (19.15805pt too wide) in paragraph at lines 371--372
 \OT1/cmr/m/n/10 Con-sole, Home, Other, PC, Tablet, Ve-hi-cle. Un-der the orig-i
 -nal de-vice cat-e-go-riza-tion,
  []
 
 
-Overfull \hbox (20.0838pt too wide) in paragraph at lines 416--417
+Overfull \hbox (20.0838pt too wide) in paragraph at lines 388--389
 []\OT1/cmr/m/n/10 To cre-ate the vari-ables, the data was sep-a-rated be-tween 
 an-swered and unan-swered
  []
 
 
-Overfull \hbox (0.945pt too wide) in paragraph at lines 416--417
+Overfull \hbox (0.945pt too wide) in paragraph at lines 388--389
 \OT1/cmr/m/n/10 unan-swered ques-tions, it would be con-sid-ered ``frequently-u
 sed'' among an-swered
  []
 
 
-Overfull \hbox (7.25052pt too wide) in paragraph at lines 416--417
+Overfull \hbox (7.25052pt too wide) in paragraph at lines 388--389
 \OT1/cmr/m/n/10 be-tween ``frequently-used'' words in each list and lev-els of 
 the de-vice cat-e-go-riza-tion
  []
 
 [11]
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 421--428
+Overfull \hbox (21.63304pt too wide) in paragraph at lines 393--400
  [][] 
  []
 
 [12]
-Overfull \hbox (8.02838pt too wide) in paragraph at lines 442--443
+Overfull \hbox (8.02838pt too wide) in paragraph at lines 412--413
 \OT1/cmr/m/n/10 re-placed, used, checked, in-ves-ti-gated, con-sid-ered, mea-su
 red, at-tempted, in-spected,
  []
 
-(./draft1.bbl
+(./manuscript.bbl
 ! Undefined control sequence.
 <argument> \let \@tempa \bibinfo@X@doi 
                                        10.1109/PASSAT/SocialCom.2011.67
@@ -901,49 +896,46 @@ Underfull \hbox (badness 2495) in paragraph at lines 205--212
  []
 
 [15])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 459.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 427.
  [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 459.
- (./draft1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 459.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 459.
-Package rerunfilecheck Info: File `draft1.out' has not changed.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 427.
+ (./manuscript.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 427.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 427.
+Package rerunfilecheck Info: File `manuscript.out' has not changed.
 (rerunfilecheck)             Checksum: AEB5266AD2CEFA82D9AFF6B69A6A30A2;1550.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 459.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 427.
  ) 
 Here is how much of TeX's memory you used:
- 7554 strings out of 492995
- 113830 string characters out of 6132704
- 217662 words of memory out of 5000000
- 10938 multiletter control sequences out of 15000+600000
+ 7552 strings out of 492995
+ 113884 string characters out of 6132704
+ 217666 words of memory out of 5000000
+ 10936 multiletter control sequences out of 15000+600000
  11263 words of font info for 39 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,18n,39p,2009b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,18n,39p,2013b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb><
 /usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/lo
-cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local
-/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
-texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/te
-xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texl
-ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texli
-ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive
-/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2
-017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/20
-17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on draft1.pdf (16 pages, 247474 bytes).
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
+local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/loc
+al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
+texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
+exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texli
+ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
+e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive/
+2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/20
+17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/201
+7/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
+Output written on manuscript.pdf (16 pages, 254652 bytes).
 PDF statistics:
- 375 PDF objects out of 1000 (max. 8388607)
- 336 compressed objects within 4 object streams
+ 379 PDF objects out of 1000 (max. 8388607)
+ 339 compressed objects within 4 object streams
  70 named destinations out of 1000 (max. 500000)
  169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
