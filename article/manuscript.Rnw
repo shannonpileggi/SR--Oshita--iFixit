@@ -174,7 +174,7 @@ In each iteration of cross-validation, the full model was built on the training 
 
 Correlations between scaled Schoenfeld residuals, differences between observed and expected predictor values for questions that received answers, and a function of time, were examined to assess the proportional hazards assumption that the effect of predictors on hazard does not depend on time \citep{Grambsch1994}. Significant correlations would indicate a predictor has violated this assumption.
 
-All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estimates of survival probability were computed with the \texttt{Surv} and \texttt{survfit} functions of the \texttt{Survival} package in R. To compute predicted survival probabilities using the final model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package. This function uses the Cox model and a vector of times to compute predictions. Data used for this analysis can be found here(Mendeley citation). Cited data includes all variables used in the model. Code for variable setup and analysis is available upon request. 
+All computation was executed under \texttt{R} version 3.4.3.  Kaplan-Meier estimates of survival probability were computed with the \texttt{Surv} and \texttt{survfit} functions of the \texttt{Survival} package in R. To compute predicted survival probabilities using the final model, the \texttt{predictSurvProb} function was used from the \texttt{pec} package. This function uses the Cox model and a vector of times to compute predictions. Data used for this analysis was published on Mendeley Data (DOI: 10.17632/shfkj785yb.1). Code for variable setup and analysis is available upon request. 
 
 
 \section{Results and Discussion}
