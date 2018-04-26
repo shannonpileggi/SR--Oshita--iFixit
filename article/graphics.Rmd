@@ -29,8 +29,8 @@ ggplot(x, aes(x = time_until_answer, fill = Answered)) +
   guides(fill = guide_legend(title = NULL)) + 
   scale_x_continuous("Time (hrs)") + 
   scale_y_continuous("Number of Questions") + 
-  theme(text = element_text(size = 10),
-        axis.text = element_text(size = 10))
+  theme(text = element_text(size = 20),
+        axis.text = element_text(size = 20))
 
 ggsave("FIG1.pdf", width = 8, height = 5) # eps files don't work with transparency, submit as pdf instead
 ```
@@ -50,11 +50,11 @@ ggsurvplot(KM, data = x,
            surv.median.line = "hv", 
            xlab = "Time (hours)", 
            xlim = c(0, 200), break.x.by = 20,
-           ylim = c(0, 1), break.y.by = 0.1,
+           ylim = c(0, 1), break.y.by = 0.2,
            surv.plot.height = 1, ggtheme = theme_bw(), 
            tables.height = 0.15, tables.theme = theme_cleantable(), fontsize = 2, na.rm = TRUE,
            legend = "none",
-           font.x = 10, font.y = 10, font.tickslab = 10)
+           font.x = 20, font.y = 20, font.tickslab = 20)
 
 ggsave("FIG2.eps", width = 8, height = 5)
 ```
