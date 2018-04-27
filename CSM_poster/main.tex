@@ -24,7 +24,18 @@
 
 \documentclass[final]{beamer}
 
+\setbeamertemplate{caption}[numbered]{}
+
 \usepackage{pifont} % for dings
+
+% puts R2 in bold in table 3
+\makeatletter
+\DeclareRobustCommand\bfseries{%
+  \not@math@alphabet\bfseries\mathbf
+  \fontseries\bfdefault\selectfont
+  \boldmath % <-- added
+}
+\makeatother
 
 \usepackage[scale=1.24]{beamerposter} % Use the beamerposter package for laying out the poster
 
@@ -97,7 +108,7 @@
 
 \textcolor{dblue!70}{\ding{228}} iFixit's online question and answer forum, \textit{Answers}, features over 120,000 user-asked questions related specifically to device repair. Analysis of question response times can reveal factors that affect how quickly questions receive answers, which can lead to suggestions for how users can ask better questions to minimize response times and for how forum design can be improved. 
 
-\textcolor{dblue!70}{\ding{228}} \underline{Objective} Develop a Cox proportional hazards model to predict the survival probability, defined as the probability that a question remains unanswered beyond a certain time \textit{t}, of questions on the forum, with the goal of identifying variables signficantly associated with response time.
+\textcolor{dblue!70}{\ding{228}} \underline{Objective} Develop a Cox proportional hazards model to predict the survival probability (probability that a question remains unanswered beyond a certain time \textit{t}), of questions on the forum, with the goal of identifying variables significantly associated with response time.
 
 \end{alertblock}
 
@@ -105,40 +116,11 @@
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Materials}
+\begin{block}{Data}
 
-The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7, 2017 (date of data download). Variables in the data included: device name, device category, question title, text, tags, new user status, date and time the question was posted, and date and time the first answer was received. Fourteen variables, capturing textual and user information of each question, were derived from the data.
+Data analyzed contained 7,760 questions posted from April 2017 to July 2017. 63.8\% received an answer. Shortest response time was 0.5 hours; longest was 2,159 hours (90 days). Figure 1 shows the distribution of response times for questions analyzed. 
 
-
-% \textcolor{dblue!70}{\ding{228}} Device category the question pertains to
-% 
-% \textcolor{dblue!70}{\ding{228}} If the question was posted on a weekend or on a weekday
-% 
-% \textcolor{dblue!70}{\ding{228}} If the question's text contains end punctuation marks (. ? !)
-% 
-% \textcolor{dblue!70}{\ding{228}} If the question's text is in all lower case
-% 
-% \textcolor{dblue!70}{\ding{228}} If the question's title contains at least one word considered to be ``frequently-used'' among answered questions
-% 
-% \textcolor{dblue!70}{\ding{228}} If the question's title contains at least one word considered to be ``frequently-used'' among unanswered question
-% 
-% \textcolor{dblue!70}{\ding{228}} If the question's title ends in a question mark
-% 
-% \textcolor{dblue!70}{\ding{228}} If the user edited or added information to the question's text after posting it
-% 
-% \textcolor{dblue!70}{\ding{228}} If the suer made an effort to solve the problem prior to asking the question
-% 
-% \textcolor{dblue!70}{\ding{228}} Average tag length
-% 
-% \textcolor{dblue!70}{\ding{228}} Average tag frequency
-% 
-% \textcolor{dblue!70}{\ding{228}} Text length
-% 
-% \textcolor{dblue!70}{\ding{228}} Title length
-% 
-% \textcolor{dblue!70}{\ding{228}} Number of line breaks to text length ratio
-
-
+Original variables in the data include: device name and category, question title, text, tags, new user status, post date and answer date. Fourteen variables, capturing textual and user information, were derived from the data.
 
 \end{block}
 
@@ -165,33 +147,46 @@ The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7,
 %----------------------------------------------------------------------------------------
 %	METHODS
 %----------------------------------------------------------------------------------------
-\begin{block}{Model Building}
 
-\textcolor{dblue!70}{\ding{228}} Univariate analysis was used to identify which variables, as well as the optimal form of continuous variables (if transformations and splines should be used), to include in the final Cox model for five fold cross-validation. 
+\begin{block}{Methods}
 
-\textcolor{dblue!70}{\ding{228}} In each iteration of cross-validation, the model was built on the training set and used to generate predicted hazard ratios on the corresponding test set. To assess performance, predicted hazard ratios were entered into separate Cox models as the single quantitative predictor with response times as the survival time. The resulting Nagelkerke's $R^2$ statistic, concordance statistic, Somers' \textit{Dxy}, partial likelihood ratio and p-value, were averaged over each iteration and assessed as indicators of the model's performance.  
+\textcolor{dblue!70}{\ding{228}} \underline{Univariate Analysis} Used to identify which variables, as well as the optimal form of continuous variables (if transformations and restricted cubic splines should be applied), to include in the model.
 
-\textcolor{dblue!70}{\ding{228}} The final model was fit to the full data and the proportional hazards assumption was assessed. 
+\textcolor{dblue!70}{\ding{228}} \underline{Five Fold Cross-Validation} In each iteration, the model was built on the training set and used to predict hazard ratios on the test set. 
+
+\textcolor{dblue!70}{\ding{228}} \underline{Assessing Performance} Predicted hazard ratios were entered into separate Cox models as the single quantitative predictor with response times as the survival time. Resulting Nagelkerke's $R^2$ statistic, concordance statistic, Somers' \textit{Dxy}, partial likelihood ratio and p-value, were averaged over each iteration and assessed as performance indicators.  
+
+\textcolor{dblue!70}{\ding{228}} \underline{Final Model} The model was fit to the full data and proportional hazards assumption was assessed.
+
 \end{block}
 
+%----------------------------------------------------------------------------------------
+%	MODEL BUILDING RESULTS
+%----------------------------------------------------------------------------------------
 
-\begin{block}{Results}
+\begin{block}{Model Building Results}
 
-Of 7,760 questions in English, 4,951 (63.8\%) received an answer by the download date. The shortest response time was 0.5 hours. The longest was 2,159 hours (90 days). Figure 1 shows the distribution of response times for all questions analyzed. 
+Univariate analysis determined that all categorical predictors should be retained. Table \ref{table:continuous} shows the form of continuous predictors included in the final model. 
 
-Univariate analysis determined that all categorical predictors were signficantly associated with response time. The following transformations were made to continous variables: 
+\renewcommand{\arraystretch}{1.2} % to increase the spacing between table rows
+\begin{table}[!htbp]
+\vspace{2ex}
+\begin{tabular}{| l | c |}
+    \hline
+    \textbf{Predictor} & \textbf{Knots} \\
+    \hline
+    $\sqrt{\textnormal{average tag frequency}}$ & 0 \\
+    $\log\left({\textnormal{average tag length} + 1}\right)$ & 4 \\
+    $\sqrt{\textnormal{line breaks / text length}}$ & 5 \\
+    $\sqrt{\textnormal{line breaks / text length}}$ & 3 \\
+    $\log\left({\textnormal{text length}}\right)$ & 5 \\
+    \hline
+\end{tabular}
+\caption{Form of continuous predictors included in the final model (knots indicates the number of knots included in restricted cubic splines}
+\label{table:continuous}
+\end{table}
 
-\textcolor{dblue!70}{\ding{228}} $\sqrt{\textnormal{average tag frequency}}$
-
-\textcolor{dblue!70}{\ding{228}} $\log\left({\textnormal{average tag length} + 1}\right)$, spline of 4 knots
-
-\textcolor{dblue!70}{\ding{228}} $\log\left({\textnormal{device length} + 1}\right)$, spline of 5 knots
-
-\textcolor{dblue!70}{\ding{228}} $\sqrt{\textnormal{line breaks / text length}}$, spline of 3 knots
-
-\textcolor{dblue!70}{\ding{228}} $\log\left({\textnormal{text length}}\right)$, spline of 5 knots
-
-Average performance metrics for test sets, training sets, as well as the full model are in Table \ref{table:1}. Partial likelihood ratios and p-values indicate that the model as a whole is significantly associated with response time. However, $R^2$ statistics and discrimination indexes are considerably low.
+Table \ref{table:1} displays the average performance metrics for models fit to test and training sets in cross-validation, as well as metrics for the model fit to the full data. Results for training, test, and the full data did not change significantly, indicating that the model was not over fit. 
 
 \end{block}
 
@@ -203,77 +198,59 @@ Average performance metrics for test sets, training sets, as well as the full mo
 \begin{column}{\onecolwid}\vspace{-.6in} % The second column within column 2 (column 2.2)
 
 %----------------------------------------------------------------------------------------
-%	Results
+%	FINAL MODEL RESULTS
 %----------------------------------------------------------------------------------------
 
+\begin{block}{Final Model Results}
 
+As a whole, the final model was significant with a partial likelihood ratio of 1265.29 (p-value \textless0.0001). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.27. 
 
-% \begin{figure}
-% \includegraphics[width=0.99\linewidth]{FIG2.eps}
-% \caption{Kaplan-Meier estimated survival probability curve. Median survival time indicated by the dotted line. }
-% \end{figure}
-
-\begin{block}
-
-Results for training, test, and the full data did not change significantly, indicating that the model was not over fit. 
-
-\end{block}
-
+Predictors found to be significant in the final model include: device category, if the question was posted on a weekend or a weekday, whether or not the question's title contained at least one word considered frequently-used among unanswered questions, and whether or not the question's title ends in a question mark.
 
 \begin{table}[!htbp]
-\centering
-\begin{tabular}{|r|r|r|r|r|r|r|r|}
+\vspace{3ex}
+\begin{tabular}{|r|r|r|r|r|r|r|r|} % FIX THE R2 HERE 
   \hline
- & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{C} \\ 
+  & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{C} \\ 
   \hline
   \textbf{Training} & 2.03 & 937.39  & \textless0.0001 & 0.14 & 0.27 & 0.63 \\ 
   \textbf{Test}     & 1.99 & 220.83  & \textless0.0001 & 0.14 & 0.26 & 0.63 \\
   \textbf{Full}     & 2.03 & 1165.03 & \textless0.0001 & 0.14 & 0.28 & 0.63 \\ 
-   \hline
+  \hline
 \end{tabular}
-\caption{Performance metrics. (HR: Hazard Ratio, LR: Partial Likelihood Ratio, C: Concordance)} 
+\caption{Performance metrics (HR: Hazard Ratio, LR: Partial Likelihood Ratio, C: Concordance)} 
 \label{table:1}
 \end{table}
 
-\begin{block}
-
-Table 2 displays the coefficients for predictors in the final model fit to the full data. As a whole, the final model was significant with a partial likelihood ratio of 1265.29 (p-value \textless0.0001). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.27. 
-
-Assessing the proportional hazards assumption indicated that several levels of the device categorization variable, specifically Apple Product, Camera, Game Console, and Other, violated the assumption. 
-
-The following are interpretations of select hazard coefficients in Table 2. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
-
-\textcolor{dblue!70}{\ding{228}} The estimated hazard of receiving an answer is 154\% higher (95\% CI (132\%, 179\%)) for questions pertaining to Apple products than the hazard for questions about Android and Other phones, controlling for all other predictors.
-
-\textcolor{dblue!70}{\ding{228}} The estimated hazard of receiving an answer is 25\% lower (95\% CI (19\%, 29\%)) for questions with titles that contain at least one word considered to be frequently-used among unanswered questions, than the hazard for questions with titles that do not, controlling for all other predictors. 
-
+Assessing the proportional hazards assumption indicated that several levels of the device categorization variable violated the assumption. 
 
 \end{block}
 
+%----------------------------------------------------------------------------------------
+%	INTERPRETING HAZARD
+%----------------------------------------------------------------------------------------
 
+\begin{block}{Interpreting Hazard}
 
+Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. Table \ref{table:hr} contains interpretations of select hazard coefficients of the final model.
 
+\end{block}
 
+%----------------------------------------------------------------------------------------
+%	SUGGESTIONS
+%----------------------------------------------------------------------------------------
 
+\begin{block}{Suggestions}
 
+Results from this analysis lead to suggestions for changes in CQA design. Many users incorrectly specified device names and tags (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One'').
+
+\end{block}
 
 %----------------------------------------------------------------------------------------
 
 \end{column} % End of column 2.2
 
 \end{columns} % End of the split of column 2 - any content after this will now take up 2 columns width
-
-%----------------------------------------------------------------------------------------
-%	IMPORTANT RESULT
-%----------------------------------------------------------------------------------------
-
-% \begin{alertblock}{Important Result}
-% 
-% Lorem ipsum dolor \textbf{sit amet}, consectetur adipiscing elit. Sed commodo molestie porta. Sed ultrices scelerisque sapien ac commodo. Donec ut volutpat elit.
-% 
-% \end{alertblock} 
-
-%----------------------------------------------------------------------------------------
 
 \begin{columns}[t,totalwidth=\twocolwid] % Split up the two columns wide column again
 
@@ -283,34 +260,6 @@ The following are interpretations of select hazard coefficients in Table 2. Haza
 \end{column} % End of column 2.1
 
 \begin{column}{\onecolwid} % The second column within column 2 (column 2.2)
-
-%----------------------------------------------------------------------------------------
-%	RESULTS
-%----------------------------------------------------------------------------------------
-
-% \begin{block}{Results}
-% 
-% 
-% 
-% Nunc tempus venenatis facilisis. Curabitur suscipit consequat eros non porttitor. Sed a massa dolor, id ornare enim:
-% 
-% \begin{table}
-% \vspace{2ex}
-% \begin{tabular}{l l l}
-% \toprule
-% \textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-% \midrule
-% Treatment 1 & 0.0003262 & 0.562 \\
-% Treatment 2 & 0.0015681 & 0.910 \\
-% Treatment 3 & 0.0009271 & 0.296 \\
-% \bottomrule
-% \end{tabular}
-% \caption{Table caption}
-% \end{table}
-% 
-% \end{block}
-
-%----------------------------------------------------------------------------------------
 
 \end{column} % End of column 2.2
 
@@ -323,49 +272,27 @@ The following are interpretations of select hazard coefficients in Table 2. Haza
 \begin{column}{\onecolwid} % The third column
 
 %----------------------------------------------------------------------------------------
-%	CONCLUSION
+%	HAZARD INTERPRETATIONS + SUGGESTIONS 
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Discussion}
+\begin{block}
 
-The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device names and tags. It is likely that these inconsistencies contributed to the final model's low predictive power. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions by restricting the tags or devices that users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
+\renewcommand{\arraystretch}{1.15} % to increase the spacing between table rows
+\begin{table}[!htbp]
+\begin{tabular}{|p{26cm}|} 
+  \hline
+  The estimated hazard of receiving an answer is 154\% higher (95\% CI (132\%, 179\%)) for questions pertaining to Apple products than the hazard for questions about Android and Other phones, controlling for all other predictors. \\ \hline
+  The estimated hazard of receiving an answer is 25\% lower (95\% CI (19\%, 29\%)) for questions with titles that contain at least one word considered to be frequently-used among unanswered questions, than the hazard for questions with titles that do not, controlling for all other predictors. \\ \hline
+  The estimated hazard of receiving an answer for questions posted on a weekend is 13\% lower (95\% CI (7\%, 18\%)) than the hazard for questions posted on a weekday, controlling for all other predictors. \\ \hline
+  \hline
+\end{tabular}
+\caption{Hazard coefficient interpretations} 
+\label{table:hr}
+\end{table}
+
+It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some ways the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions by restricting tags or devices users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
 
 \end{block}
-
-
-\begin{block}{Conclusion}
-
-Predictors found to be significant in the final Cox regression model included: device category, if the question was posted on a weekend or a weekday, whether or not the question's title contained at least one word considered frequently-used among unanswered questions, and whether or not the question's title ends in a question mark. While overall the model was significant, its predictive performance was considerably low. 
-
-
-\end{block}
-
-%----------------------------------------------------------------------------------------
-%	ADDITIONAL INFORMATION
-%----------------------------------------------------------------------------------------
-
-% \begin{block}{Additional Information}
-% 
-% Maecenas ultricies feugiat velit non mattis. Fusce tempus arcu id ligula varius dictum. 
-% \begin{itemize}
-% \item Curabitur pellentesque dignissim
-% \item Eu facilisis est tempus quis
-% \item Duis porta consequat lorem
-% \end{itemize}
-% 
-% \end{block}
-
-%----------------------------------------------------------------------------------------
-%	REFERENCES
-%----------------------------------------------------------------------------------------
-
-% \begin{block}{References}
-% 
-% \nocite{*} % Insert publications even if they are not cited in the poster
-% \small{\bibliographystyle{unsrt}
-% \bibliography{sample}\vspace{0.75in}}
-% 
-% \end{block}
 
 %----------------------------------------------------------------------------------------
 %	ACKNOWLEDGEMENTS
