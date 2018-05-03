@@ -28,6 +28,8 @@
 
 \usepackage{pifont} % for dings
 
+\usepackage{caption}
+
 % puts R2 in bold in table 3
 \makeatletter
 \DeclareRobustCommand\bfseries{%
@@ -91,10 +93,10 @@
 
 \begin{document}
 
-\addtobeamertemplate{block end}{}{\vspace*{0.5ex}} % White space under blocks
+\addtobeamertemplate{block end}{}{\vspace*{0ex}} % White space under blocks
 \addtobeamertemplate{block alerted end}{}{\vspace*{2ex}} % White space under highlighted (alert) blocks
 
-\setlength{\belowcaptionskip}{2ex} % White space under figures
+\setlength{\belowcaptionskip}{0ex} % White space under figures
 \setlength\belowdisplayshortskip{2ex} % White space under equations
 
 \begin{frame}[t] % The whole poster is enclosed in one beamer frame
@@ -143,16 +145,20 @@ iFixit's online question and answer forum, \textit{Answers}, features over 120,0
 
 \textcolor{dblue!70}{\ding{228}} Longest response time: 2,159 hours (90 days)
 
+\vspace{0.5ex}
+
+\textcolor{dblue!70}{\ding{228}} Median response time: 8.79 hours
+
+\end{block}
+
+
 \begin{figure}
-\vspace{2ex}
+\captionsetup{skip=40pt}
+\vspace{4ex}
 \includegraphics[width=1\linewidth]{FIG1.pdf}
 \caption{Distribution of response times}
 \label{fig1}
 \end{figure}
-
-Original variables include: device, question title, text, tags, new user status, post date and answer date. Fourteen variables, capturing textual and user information, were derived.
-
-\end{block}
 
 %----------------------------------------------------------------------------------------
 
@@ -166,13 +172,22 @@ Original variables include: device, question title, text, tags, new user status,
 %	METHODS
 %----------------------------------------------------------------------------------------
 
+\begin{figure}
+\captionsetup{skip=30pt}
+\includegraphics[width=1\linewidth]{question}
+\caption{Example of a question posted on the forum}
+\label{fig1}
+\end{figure}
+
+\vspace{2ex}
+
 \begin{block}{Methods}
 
 \textcolor{dblue!70}{\ding{228}} \textcolor{dblue!70}{\textbf{Univariate Analysis}} 
 
 \vspace{0.5ex}
 
-Used to identify which variables, as well as the optimal form of continuous variables (if transformations and restricted cubic splines should be applied), to include in the model.
+Used to identify which variables to include
 
 \vspace{1ex}
 
@@ -180,15 +195,18 @@ Used to identify which variables, as well as the optimal form of continuous vari
 
 \vspace{0.5ex}
 
-In each iteration, the model was built on the training set and used to predict hazard ratios on the test set. 
-
-\vspace{1ex}
-
-\textcolor{dblue!70}{\ding{228}} \textcolor{dblue!70}{\textbf{Assess Performance}} 
+Model was built on the training set and used to predict hazard ratios on the test set
 
 \vspace{0.5ex}
 
-Predicted hazard ratios were entered into separate Cox models as the single predictor. Resulting $R^2$, concordance, Somers' \textit{Dxy}, partial likelihood ratio (PLR) and p-value, were averaged over each iteration and assessed.  
+Predicted hazard ratios were entered into separate Cox models; resulting statistics were averaged over each iteration and assessed
+
+
+% \vspace{1ex}
+% 
+% \textcolor{dblue!70}{\ding{228}} \textcolor{dblue!70}{\textbf{Assess Performance}} 
+% 
+% \vspace{0.5ex}
 
 \vspace{1ex}
 
@@ -196,7 +214,7 @@ Predicted hazard ratios were entered into separate Cox models as the single pred
 
 \vspace{0.5ex}
 
-The model was fit to the full data and proportional hazards assumption was assessed.
+Model was fit to the full data and proportional hazards assumption was assessed
 
 \vspace{1.5ex}
 
@@ -206,11 +224,12 @@ The model was fit to the full data and proportional hazards assumption was asses
 %	RESULTS
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Cross-Validation Results}
-
-Table \ref{table:1} displays average performance metrics achieved in cross-validation, as well as for the model fit to the full data. 
+% \begin{block}{Cross-Validation Results}
+% 
+% \end{block}
 
 \begin{table}[!htbp]
+\captionsetup{skip=40pt}
 \vspace{3ex}
 \begin{tabular}{|r|r|r|r|r|r|r|r|}
   \hline
@@ -221,14 +240,16 @@ Table \ref{table:1} displays average performance metrics achieved in cross-valid
   \textbf{Full}     & 2.03 & 1165.03 & \textless0.0001 & 0.14 & 0.28 & 0.63 \\
   \hline
 \end{tabular}
-\caption{Performance metrics (HR: Hazard Ratio, LR: Partial Likelihood Ratio, C: Concordance)}
+\caption{Performance metrics achieved in cross-validation and for the model fit to the full data (HR: Hazard Ratio, LR: Partial Likelihood Ratio, C: Concordance)}
 \label{table:1}
 \end{table}
-\end{block}
+
+\vspace{2ex}
+
 
 \begin{block}{Final Model Statistics}
 
-\textcolor{dblue!70}{\ding{228}} PLR $=$ 1265.29 (p-value \textless0.0001)
+\textcolor{dblue!70}{\ding{228}} LR $=$ 1265.29 (p-value \textless0.0001)
 
 \vspace{0.5ex}
 
@@ -262,21 +283,6 @@ Table \ref{table:1} displays average performance metrics achieved in cross-valid
 %	INTERPRETING HAZARD
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Interpreting Hazard}
-
-Controlling for all other predictors, the estimated hazard of receiving an answer is:
-
-\vspace{1ex}
-
-\textcolor{dblue!70}{\ding{228}} 154\% higher (95\% CI (132\%, 179\%)) for Apple products vs. Android/other phones
-
-\vspace{0.75ex}
-
-\textcolor{dblue!70}{\ding{228}} 13\% lower (95\% CI (7\%, 18\%)) for questions posted on the weekend vs. weekday
-
-\vspace{1ex}
-
-\end{block}
 
 
 %----------------------------------------------------------------------------------------
@@ -287,16 +293,6 @@ Controlling for all other predictors, the estimated hazard of receiving an answe
 
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Forum Design Suggestions}
-
-\textcolor{dblue!70}{\ding{228}} Rather than allowing users to enter any tag or device name, restrict options to a drop-down list
-
-\vspace{0.5ex}
-
-\textcolor{dblue!70}{\ding{228}} Include more tips to guide users when asking questions 
-
-\end{block}
-
 %----------------------------------------------------------------------------------------
 
 \end{column} % End of column 2.2
@@ -304,10 +300,11 @@ Controlling for all other predictors, the estimated hazard of receiving an answe
 \end{columns} % End of the split of column 2 - any content after this will now take up 2 columns width
 
 %----------------------------------------------------------------------------------------
-\begin{block}{Final Model Coefficients}
+
 
 \begin{table}[!htbp]
-% \centering
+\captionsetup{width=0.85\textwidth, skip=50pt}
+\centering
 \begin{tabular}{|L{10cm} L{17.5cm}|c|c|}
   \hline
  \textbf{Variable} & & \textbf{Coefficient (SE)} & \textbf{p-value} \\ \hline
@@ -332,17 +329,10 @@ Controlling for all other predictors, the estimated hazard of receiving an answe
   \multicolumn{2}{|L{30cm}|}{User made an effort to solve the problem prior to asking the question} & -0.07 (0.036)  & 0.045 \\ \hline
   \multicolumn{2}{|L{30cm}|}{Square root of the average tag frequency} & 2.23 (0.720)  & 0.002 \\ \hline
 \end{tabular} 
-\caption{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
+\caption{Coefficients for predictors in the final model (Continuous predictors fit with restricted cubic splines (text length, average tag length, device name length, ratio of number of newlines to text length) are not shown)} 
 \label{table:4}
 \end{table}
 
-\end{block}
-
-\begin{block}{Acknowledgements}
-
-\small{\rmfamily{This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. We also thank iFixit for providing access to the CQA data.}} \\
-
-\end{block}
 
 %----------------------------------------------------------------------------------------
 
@@ -351,17 +341,47 @@ Controlling for all other predictors, the estimated hazard of receiving an answe
 \begin{column}{\onecolwid} % The first column within column 2 (column 2.1)
 
 
+\begin{block}{Select Interpretations}
+
+Controlling for all other predictors, the estimated hazard of receiving an answer is:
+
+\vspace{1ex}
+
+\textcolor{dblue!70}{\ding{228}} 154\% higher (95\% CI (132\%, 179\%)) for Apple products vs. Android/other phones
+
+\vspace{1ex}
+
+\textcolor{dblue!70}{\ding{228}} 13\% lower (95\% CI (7\%, 18\%)) for questions posted on the weekend vs. weekday
+
+\vspace{1ex}
+
+\textcolor{dblue!70}{\ding{228}} 25\% lower (95\% CI (19\%, 29\%)) for questions with titles containing at least one frequently-used word among unanswered question titles vs otherwise
+
+\end{block}
+
 %----------------------------------------------------------------------------------------
 
 \end{column} % End of column 2.1
 
 \begin{column}{\onecolwid} % The second column within column 2 (column 2.2)
 
-% \begin{block}{Acknowledgements}
-% 
-% \small{\rmfamily{This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. We also thank iFixit for providing access to the CQA data.}} \\
-% 
-% \end{block}
+\begin{block}{Forum Design Suggestions}
+
+\textcolor{dblue!70}{\ding{228}} Rather than allowing users to enter any tag or device name, restrict options to a drop-down list
+
+\vspace{0.5ex}
+
+\textcolor{dblue!70}{\ding{228}} Include more tips to guide users when asking questions 
+
+\end{block}
+
+\vspace{1ex}
+
+\begin{block}{Acknowledgements}
+
+This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. We also thank iFixit for providing access to the \textit{Answers} data.
+
+\end{block}
 
 %----------------------------------------------------------------------------------------
 

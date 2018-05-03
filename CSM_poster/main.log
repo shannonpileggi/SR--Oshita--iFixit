@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  2 MAY 2018 23:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 MAY 2018 14:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -670,14 +670,34 @@ LaTeX Font Info:    Try loading font information for U+psy on input line 64.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/upsy.fd
 File: upsy.fd 2001/06/04 font definitions for U/psy.
 ))
-LaTeX Info: Redefining \bfseries on input line 33.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen188
+\captionmargin@=\dimen189
+\captionwidth=\dimen190
+\caption@tempdima=\dimen191
+\caption@indent=\dimen192
+\caption@parindent=\dimen193
+\caption@hangindent=\dimen194
+)
+\c@ContinuedFloat=\count154
+Package caption Info: beamer document class.
+Package caption Info: hyperref package is loaded.
+Package caption Info: Hyperref support is turned off
+(caption)             because hyperref has stopped early.
+)
+LaTeX Info: Redefining \bfseries on input line 35.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
 \multirow@colwidth=\skip57
-\multirow@cntb=\count154
+\multirow@cntb=\count155
 \multirow@dima=\skip58
-\bigstrutjot=\dimen188
+\bigstrutjot=\dimen195
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/soul/soul.sty
 Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
@@ -687,14 +707,14 @@ Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
 \SOUL@buffer=\toks46
 \SOUL@token=\toks47
 \SOUL@spaceskip=\skip59
-\SOUL@ttwidth=\dimen189
-\SOUL@uldp=\dimen190
-\SOUL@ulht=\dimen191
+\SOUL@ttwidth=\dimen196
+\SOUL@uldp=\dimen197
+\SOUL@ulht=\dimen198
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/tools/array.sty
 Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
-\col@sep=\dimen192
-\extrarowheight=\dimen193
+\col@sep=\dimen199
+\extrarowheight=\dimen256
 \NC@list=\toks48
 \extratabsurround=\skip60
 \backup@length=\skip61
@@ -711,7 +731,7 @@ Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
 \XKV@toks=\toks49
 \XKV@tempa@toks=\toks50
 )
-\XKV@depth=\count155
+\XKV@depth=\count156
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 (/usr/local/texlive/2017/texmf-dist/tex/latex/type1cm/type1cm.sty
@@ -729,19 +749,19 @@ Package: fp 1995/04/02
 `Fixed Point Package', Version 0.8, April 2, 1995 (C) Michael Mehlich
 (/usr/local/texlive/2017/texmf-dist/tex/latex/fp/defpattern.sty
 Package: defpattern 1994/10/12
-\actioncount=\count156
+\actioncount=\count157
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/fp/fp-basic.sty
 Package: fp-basic 1996/05/13
-\FP@xs=\count157
-\FP@xia=\count158
-\FP@xib=\count159
-\FP@xfa=\count160
-\FP@xfb=\count161
-\FP@rega=\count162
-\FP@regb=\count163
-\FP@regs=\count164
-\FP@times=\count165
+\FP@xs=\count158
+\FP@xia=\count159
+\FP@xib=\count160
+\FP@xfa=\count161
+\FP@xfb=\count162
+\FP@rega=\count163
+\FP@regb=\count164
+\FP@regs=\count165
+\FP@times=\count166
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/fp/fp-addons.sty
 Package: fp-addons 1995/03/15
@@ -760,7 +780,7 @@ Package: fp-pas 1994/08/29
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/fp/fp-random.sty
 Package: fp-random 1995/02/23
-\FPseed=\count166
+\FPseed=\count167
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/fp/fp-eqn.sty
 Package: fp-eqn 1995/04/03
@@ -800,8 +820,8 @@ File: pgfmoduleplot.code.tex 2015/08/03  (rcs-revision 1.13)
 (/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
 -0-65.sty
 Package: pgfcomp-version-0-65 2007/07/03 v3.0.1a (rcs-revision 1.7)
-\pgf@nodesepstart=\dimen194
-\pgf@nodesepend=\dimen195
+\pgf@nodesepstart=\dimen257
+\pgf@nodesepend=\dimen258
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
 -1-18.sty
@@ -816,8 +836,8 @@ Package: pgfcomp-version-1-18 2007/07/23 v3.0.1a (rcs-revision 1.1)
 Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
 
 (/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
-\pgffor@iter=\dimen196
-\pgffor@skip=\dimen197
+\pgffor@iter=\dimen259
+\pgffor@skip=\dimen260
 \pgffor@stack=\toks51
 \pgffor@toks=\toks52
 ))
@@ -828,32 +848,32 @@ Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
 (/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
 dlers.code.tex
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
-\pgf@plot@mark@count=\count167
-\pgfplotmarksize=\dimen198
+\pgf@plot@mark@count=\count168
+\pgfplotmarksize=\dimen261
 )
-\tikz@lastx=\dimen199
-\tikz@lasty=\dimen256
-\tikz@lastxsaved=\dimen257
-\tikz@lastysaved=\dimen258
-\tikzleveldistance=\dimen259
-\tikzsiblingdistance=\dimen260
+\tikz@lastx=\dimen262
+\tikz@lasty=\dimen263
+\tikz@lastxsaved=\dimen264
+\tikz@lastysaved=\dimen265
+\tikzleveldistance=\dimen266
+\tikzsiblingdistance=\dimen267
 \tikz@figbox=\box54
 \tikz@figbox@bg=\box55
 \tikz@tempbox=\box56
 \tikz@tempbox@bg=\box57
-\tikztreelevel=\count168
-\tikznumberofchildren=\count169
-\tikznumberofcurrentchild=\count170
-\tikz@fig@count=\count171
+\tikztreelevel=\count169
+\tikznumberofchildren=\count170
+\tikznumberofcurrentchild=\count171
+\tikz@fig@count=\count172
 
 (/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
 e.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
-\pgfmatrixcurrentrow=\count172
-\pgfmatrixcurrentcolumn=\count173
-\pgf@matrix@numberofcolumns=\count174
+\pgfmatrixcurrentrow=\count173
+\pgfmatrixcurrentcolumn=\count174
+\pgf@matrix@numberofcolumns=\count175
 )
-\tikz@expandcount=\count175
+\tikz@expandcount=\count176
 
 (/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarytopaths.code.tex
@@ -866,7 +886,7 @@ File: tikzlibraryarrows.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
 (/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
 code.tex
 File: pgflibraryarrows.code.tex 2013/09/23 v3.0.1a (rcs-revision 1.16)
-\arrowsize=\dimen261
+\arrowsize=\dimen268
 ))
 (/usr/local/texlive/2017/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
 s/tikzlibrarybackgrounds.code.tex
@@ -923,7 +943,7 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> OMX/cmex/m/n on input line 57.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> OMX/cmex/m/n on input line 57.
-\big@size=\dimen262
+\big@size=\dimen269
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2017/04/05 v2.0i Standard LaTeX package
@@ -1041,76 +1061,80 @@ Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2016/04/27 v1.618033 publication quality tables
-\heavyrulewidth=\dimen263
-\lightrulewidth=\dimen264
-\cmidrulewidth=\dimen265
-\belowrulesep=\dimen266
-\belowbottomsep=\dimen267
-\aboverulesep=\dimen268
-\abovetopsep=\dimen269
-\cmidrulesep=\dimen270
-\cmidrulekern=\dimen271
-\defaultaddspace=\dimen272
-\@cmidla=\count176
-\@cmidlb=\count177
-\@aboverulesep=\dimen273
-\@belowrulesep=\dimen274
-\@thisruleclass=\count178
-\@lastruleclass=\count179
-\@thisrulewidth=\dimen275
+\heavyrulewidth=\dimen270
+\lightrulewidth=\dimen271
+\cmidrulewidth=\dimen272
+\belowrulesep=\dimen273
+\belowbottomsep=\dimen274
+\aboverulesep=\dimen275
+\abovetopsep=\dimen276
+\cmidrulesep=\dimen277
+\cmidrulekern=\dimen278
+\defaultaddspace=\dimen279
+\@cmidla=\count177
+\@cmidlb=\count178
+\@aboverulesep=\dimen280
+\@belowrulesep=\dimen281
+\@thisruleclass=\count179
+\@lastruleclass=\count180
+\@thisrulewidth=\dimen282
 )
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\long' on input line 86.
+(hyperref)                removing `\long' on input line 88.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\<def>-command' on input line 86.
+(hyperref)                removing `\<def>-command' on input line 88.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@todo' on input line 86.
+(hyperref)                removing `\beamer@todo' on input line 88.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\<def>-command' on input line 86.
+(hyperref)                removing `\<def>-command' on input line 88.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@ospec' on input line 86.
+(hyperref)                removing `\beamer@ospec' on input line 88.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@argscount' on input line 86.
+(hyperref)                removing `\beamer@argscount' on input line 88.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 86.
+(hyperref)                removing `\@ifnextchar' on input line 88.
 
-(./main.aux)
+(./main.aux
+
+LaTeX Warning: Label `fig1' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 92.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 92.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 94.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 94.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 94.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Try loading font information for T1+lmss on input line 92.
+LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    Try loading font information for T1+lmss on input line 94.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -1151,16 +1175,16 @@ File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count180
-\scratchdimen=\dimen276
+\scratchcounter=\count181
+\scratchdimen=\dimen283
 \scratchbox=\box60
-\nofMPsegments=\count181
-\nofMParguments=\count182
+\nofMPsegments=\count182
+\nofMParguments=\count183
 \everyMPshowfont=\toks53
-\MPscratchCnt=\count183
-\MPscratchDim=\dimen277
-\MPnumerator=\count184
-\makeMPintoPDFobject=\count185
+\MPscratchCnt=\count184
+\MPscratchDim=\dimen284
+\MPnumerator=\count185
+\makeMPintoPDFobject=\count186
 \everyMPtoPDFconversion=\toks54
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -1181,7 +1205,7 @@ e
 ))
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box61
-Package hyperref Info: Link coloring OFF on input line 92.
+Package hyperref Info: Link coloring OFF on input line 94.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -1189,11 +1213,11 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count186
+\c@section@level=\count187
 )
-LaTeX Info: Redefining \ref on input line 92.
-LaTeX Info: Redefining \pageref on input line 92.
-LaTeX Info: Redefining \nameref on input line 92.
+LaTeX Info: Redefining \ref on input line 94.
+LaTeX Info: Redefining \pageref on input line 94.
+LaTeX Info: Redefining \nameref on input line 94.
 
 (./main.out) (./main.out)
 \@outlinefile=\write5
@@ -1224,23 +1248,25 @@ Dictionary: translator-numbers-dictionary, Language: English
 r-theorem-dictionary/translator-theorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-LaTeX Info: Redefining \includegraphics on input line 92.
+LaTeX Info: Redefining \includegraphics on input line 94.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 
 ABD: EverySelectfont initializing macros
-LaTeX Info: Redefining \selectfont on input line 92.
+LaTeX Info: Redefining \selectfont on input line 94.
  (./main.nav)
-LaTeX Font Info:    Calculating math sizes for size <92.13> on input line 92.
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 92.
+LaTeX Font Info:    Calculating math sizes for size <92.13> on input line 94.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 94.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 92.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 94.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 92.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 94.
 
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/lm/omslmsy.fd
@@ -1248,85 +1274,89 @@ File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <92.13> not available
-(Font)              size <24.88> substituted on input line 92.
+(Font)              size <24.88> substituted on input line 94.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <64.4907> not available
-(Font)              size <24.88> substituted on input line 92.
+(Font)              size <24.88> substituted on input line 94.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <46.065> not available
-(Font)              size <24.88> substituted on input line 92.
+(Font)              size <24.88> substituted on input line 94.
 
-LaTeX Font Info:    Calculating math sizes for size <53.32> on input line 92.
+LaTeX Font Info:    Calculating math sizes for size <53.32> on input line 94.
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <53.32> not available
-(Font)              size <24.88> substituted on input line 92.
+(Font)              size <24.88> substituted on input line 94.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <37.32384> not available
-(Font)              size <24.88> substituted on input line 92.
+(Font)              size <24.88> substituted on input line 94.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <26.66> not available
-(Font)              size <24.88> substituted on input line 92.
+(Font)              size <24.88> substituted on input line 94.
 
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <37.32384> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 92.
-LaTeX Font Info:    Calculating math sizes for size <25.72> on input line 92.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 94.
+LaTeX Font Info:    Calculating math sizes for size <25.72> on input line 94.
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <25.72> not available
-(Font)              size <24.88> substituted on input line 92.
+(Font)              size <24.88> substituted on input line 94.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <18.00392> not available
-(Font)              size <17.28> substituted on input line 92.
+(Font)              size <17.28> substituted on input line 94.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <12.86> not available
-(Font)              size <12> substituted on input line 92.
+(Font)              size <12> substituted on input line 94.
 
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <18.00392> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 92.
-LaTeX Font Info:    Calculating math sizes for size <17.86> on input line 92.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 94.
+LaTeX Font Info:    Calculating math sizes for size <17.86> on input line 94.
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <17.86> not available
-(Font)              size <17.28> substituted on input line 92.
+(Font)              size <17.28> substituted on input line 94.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <12.50194> not available
-(Font)              size <12> substituted on input line 92.
+(Font)              size <12> substituted on input line 94.
 
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 396.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 416.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Calculating math sizes for size <37.03> on input line 396.
+LaTeX Font Info:    Calculating math sizes for size <37.03> on input line 416.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <37.03> not available
-(Font)              size <24.88> substituted on input line 396.
+(Font)              size <24.88> substituted on input line 416.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <25.92088> not available
-(Font)              size <24.88> substituted on input line 396.
+(Font)              size <24.88> substituted on input line 416.
 
 
 LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <18.515> not available
-(Font)              size <17.28> substituted on input line 396.
+(Font)              size <17.28> substituted on input line 416.
 
 <FIG1.pdf, id=15, 578.16pt x 361.35pt>
 File: FIG1.pdf Graphic file (type pdf)
  <use FIG1.pdf>
-Package pdftex.def Info: FIG1.pdf used on input line 396.
+Package pdftex.def Info: FIG1.pdf used on input line 416.
 (pdftex.def)             Requested size: 763.17543pt x 477.01105pt.
 
-Underfull \hbox (badness 3058) in paragraph at lines 396--396
-[]\T1/lmr/m/n/37.03 Table []1[][] dis-plays av-er-age per-for-mance met-rics
- []
+<question.png, id=16, 810.02625pt x 371.3875pt>
+File: question.png Graphic file (type png)
+ <use question.png>
+Package pdftex.def Info: question.png used on input line 416.
+(pdftex.def)             Requested size: 763.17543pt x 349.91466pt.
+LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <37.03> not available
+(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 416.
 
 
-Overfull \hbox (4.99402pt too wide) detected at line 396
+Overfull \hbox (4.99402pt too wide) detected at line 416
 [][][] [][][][][][][][][] [][][][][][][][][] [][][][][][][][][] [][][][][][][][
 ][] [][][][][][][][][] [][][][][][][] 
  []
@@ -1338,7 +1368,13 @@ Overfull \hbox (88.20334pt too wide) has occurred while \output is active
 
 [1{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
- <./FIG1.pdf>]
+pdfTeX warning (ext4): destination with the same identifier (name{fig1}) has be
+en already used, duplicate ignored
+
+\@EveryShipout@Output ...@Org@Shipout \box \@cclv 
+                                                  
+l.416 \end{frame}
+                  % End of the enclosing frame <./FIG1.pdf> <./question.png>]
 \tf@nav=\write6
 \openout6 = `main.nav'.
 
@@ -1348,11 +1384,12 @@ Overfull \hbox (88.20334pt too wide) has occurred while \output is active
 \tf@snm=\write8
 \openout8 = `main.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 398.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 398.
- (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 398.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 398.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 418.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 418.
+
+(./main.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 418.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 418.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
@@ -1360,31 +1397,34 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 67.25pt have occurred.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 22771 strings out of 492995
- 442445 string characters out of 6132704
- 606149 words of memory out of 5000000
- 25743 multiletter control sequences out of 15000+600000
- 135591 words of font info for 128 fonts, out of 8000000 for 9000
+ 23810 strings out of 492995
+ 461512 string characters out of 6132704
+ 611443 words of memory out of 5000000
+ 26774 multiletter control sequences out of 15000+600000
+ 136664 words of font info for 129 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,22n,71p,770b,1435s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/
-texlive/2017/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2017/t
-exmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}</usr/local/texlive/2017/texmf-dist/
+ 60i,22n,79p,770b,1435s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/lo
+cal/texlive/2017/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/20
+17/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2017/texmf-dist/
 fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type
-1/public/lm/lmbxi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/
-lm/lmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/lm/lmmib10
-.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/
-local/texlive/2017/texmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/local/texl
-ive/2017/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/local/texlive/2017/t
-exmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2017/texmf-dis
-t/fonts/type1/public/lm/lmsso17.pfb></usr/local/texlive/2017/texmf-dist/fonts/t
-ype1/urw/zapfding/uzdr.pfb>
-Output written on main.pdf (1 page, 160966 bytes).
+1/public/lm/lmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/l
+m/lmmib10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/lm/lmr17.p
+fb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/lm/lmri12.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/lm/lmss17.pfb></usr/local/texli
+ve/2017/texmf-dist/fonts/type1/public/lm/lmssbo10.pfb></usr/local/texlive/2017/
+texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/texlive/2017/texmf-di
+st/fonts/type1/public/lm/lmsso17.pfb></usr/local/texlive/2017/texmf-dist/fonts/
+type1/urw/zapfding/uzdr.pfb>
+Output written on main.pdf (1 page, 430994 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
+ 87 PDF objects out of 1000 (max. 8388607)
  62 compressed objects within 1 object stream
  6 named destinations out of 1000 (max. 500000)
- 54 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 59 words of extra memory for PDF output out of 10000 (max. 10000000)
 
