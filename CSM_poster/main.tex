@@ -143,14 +143,13 @@ iFixit's online Q\&A forum, \textit{Answers}, features over 120,000 questions re
 
 \vspace{0.5ex}
 
-\textcolor{dblue!70}{\ding{228}} Longest response time: 2,159 hours (90 days)
+\textcolor{dblue!70}{\ding{228}} Median response time: 8.79 hours
 
 \vspace{0.5ex}
 
-\textcolor{dblue!70}{\ding{228}} Median response time: 8.79 hours
+\textcolor{dblue!70}{\ding{228}} Longest response time: 2,159 hours (90 days)
 
 \end{block}
-
 
 \begin{figure}
 \captionsetup{skip=40pt}
@@ -159,6 +158,9 @@ iFixit's online Q\&A forum, \textit{Answers}, features over 120,000 questions re
 \caption{Distribution of response times}
 \label{fig1}
 \end{figure}
+
+
+
 
 %----------------------------------------------------------------------------------------
 
@@ -173,8 +175,8 @@ iFixit's online Q\&A forum, \textit{Answers}, features over 120,000 questions re
 %----------------------------------------------------------------------------------------
 
 \begin{figure}
-\captionsetup{skip=30pt}
-\includegraphics[width=1\linewidth]{question}
+\captionsetup{skip=25pt}
+\includegraphics[width=1.08\linewidth]{question}
 \caption{Example of a question posted on the forum}
 \label{fig1}
 \end{figure}
@@ -195,11 +197,11 @@ Used to identify which variables to include
 
 \vspace{0.5ex}
 
-Model was built on the training set and used to predict hazard ratios on the test set
+Model was built on training sets and used to predict hazard ratios on test sets
 
 \vspace{0.5ex}
 
-Predicted hazard ratios were entered into separate Cox models; resulting statistics were averaged over each iteration and assessed
+Predicted hazard ratios were entered into separate Cox models; resulting metrics were averaged over each iteration and assessed
 
 
 % \vspace{1ex}
@@ -214,7 +216,7 @@ Predicted hazard ratios were entered into separate Cox models; resulting statist
 
 \vspace{0.5ex}
 
-Model was fit to the full data and proportional hazards assumption was assessed
+Model was fit to the full data and proportional hazards (PH) assumption was assessed
 
 \vspace{1.5ex}
 
@@ -230,7 +232,7 @@ Model was fit to the full data and proportional hazards assumption was assessed
 
 \begin{table}[!htbp]
 \captionsetup{skip=40pt}
-\vspace{3ex}
+\vspace{2ex}
 \begin{tabular}{|r|r|r|r|r|r|r|r|}
   \hline
   & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{C} \\
@@ -261,7 +263,7 @@ Model was fit to the full data and proportional hazards assumption was assessed
 
 \vspace{0.5ex}
 
-\textcolor{dblue!70}{\ding{228}} Several levels of the device categorization variable violated the proportional hazards assumption
+\textcolor{dblue!70}{\ding{228}} Device category violated the PH assumption
 
 \end{block}
 
@@ -273,37 +275,14 @@ Model was fit to the full data and proportional hazards assumption was assessed
 
 \begin{column}{\twocolwid} % Begin a column which is two columns wide (column 2)
 
-\begin{columns}[t,totalwidth=\twocolwid] % Split up the two columns wide column
-
-\begin{column}{\onecolwid}\vspace{-.6in} % The first column within column 2 (column 2.1)
 
 %----------------------------------------------------------------------------------------
 
-%----------------------------------------------------------------------------------------
-%	INTERPRETING HAZARD
-%----------------------------------------------------------------------------------------
-
-
-
-%----------------------------------------------------------------------------------------
-
-\end{column} % End of column 2.1
-
-\begin{column}{\onecolwid}\vspace{-.6in} % The second column within column 2 (column 2.2)
-
-%----------------------------------------------------------------------------------------
-
-%----------------------------------------------------------------------------------------
-
-\end{column} % End of column 2.2
-
-\end{columns} % End of the split of column 2 - any content after this will now take up 2 columns width
-
-%----------------------------------------------------------------------------------------
-
+\begin{block}{Final Model Coefficients}
+\end{block}
 
 \begin{table}[!htbp]
-\captionsetup{width=0.85\textwidth, skip=50pt}
+\captionsetup{width=0.85\textwidth, skip=40pt}
 \centering
 \begin{tabular}{|L{10cm} L{17.5cm}|c|c|}
   \hline
@@ -329,11 +308,12 @@ Model was fit to the full data and proportional hazards assumption was assessed
   \multicolumn{2}{|L{30cm}|}{User made an effort to solve the problem prior to asking the question} & -0.07 (0.036)  & 0.045 \\ \hline
   \multicolumn{2}{|L{30cm}|}{Square root of the average tag frequency} & 2.23 (0.720)  & 0.002 \\ \hline
 \end{tabular} 
-\caption{Coefficients for predictors in the final model (Continuous predictors fit with restricted cubic splines (text length, average tag length, device name length, ratio of number of newlines to text length) are not shown)} 
+\caption{Not shown: continuous predictors fit with restricted cubic splines (text length, average tag length, device name length, ratio of number of newlines to text length)} 
 \end{table}
 
 
 %----------------------------------------------------------------------------------------
+
 
 \begin{columns}[t,totalwidth=\twocolwid] % Split up the two columns wide column again
 
@@ -368,9 +348,9 @@ Controlling for all other predictors, the estimated hazard of receiving an answe
 
 \textcolor{dblue!70}{\ding{228}} Rather than allowing users to enter any tag or device name, restrict options to a drop-down list
 
-\vspace{0.5ex}
+\vspace{0.75ex}
 
-\textcolor{dblue!70}{\ding{228}} Include more tips to guide users when asking questions 
+\textcolor{dblue!70}{\ding{228}} Include tips to guide users asking questions 
 
 \end{block}
 
@@ -378,7 +358,7 @@ Controlling for all other predictors, the estimated hazard of receiving an answe
 
 \begin{block}{Acknowledgements}
 
-This research was supported by the Bill and Linda Frost fund of the California Polytechnic State University of San Luis Obispo. We also thank iFixit for providing access to the \textit{Answers} data.
+\textcolor{dblue!70}{\ding{228}} Research was supported by the Bill and Linda Frost fund of California Polytechnic State University, San Luis Obispo. We also thank iFixit for providing access to the \textit{Answers} data.
 
 \end{block}
 
