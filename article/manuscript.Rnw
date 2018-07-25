@@ -1,13 +1,13 @@
-\documentclass[preprint]{elsarticle}
+\documentclass[]{interact}
 
-\usepackage{lineno,hyperref}
-\modulolinenumbers[5]
+% \usepackage{lineno,hyperref}
+% \modulolinenumbers[5]
 
 \usepackage{multirow}
 \usepackage{color,soul}
 \usepackage{array}
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\usepackage{caption}
+% \usepackage{caption}
 
 \usepackage[none]{hyphenat} % to cancel auto-hyphenation
 
@@ -93,37 +93,43 @@ dayLower <- model_coefs$lower[w]
 r2 <- round(model$stats[which(names(model$stats) == "R2")], 2)
 @
 
-\begin{frontmatter}
 \title{Survival Analysis of Questions Posted on the iFixit Answers Forum}
 
-\author[cp]{L.K.~Oshita\corref{cor1}}
-\cortext[cor1]{Corresponding author}
-\ead{l.oshita@yahoo.com}
+\author{
+\name{L.K.Oshita\textsuperscript{a}\thanks{CONTACT L.K.Oshita. Email: l.oshita@yahoo.com}, A.Pileggi\textsuperscript{b}}
+\affil{\textsuperscript{a}iFixit; )
+}
 
-\author[ifixit]{A.~Pileggi}
-\author[cp]{S.~Pileggi}
+\maketitle
 
-\address[cp]{Department of Statistics, California Polytechnic State University, San Luis Obispo, CA 93407, United States}
-\address[ifixit]{iFixit, 1330 Monterey St, San Luis Obispo, CA 93401, United States}
+% \author[cp]{L.K.~Oshita\corref{cor1}}
+% \cortext[cor1]{Corresponding author}
+% \ead{l.oshita@yahoo.com}
+
+% \author[ifixit]{A.~Pileggi}
+% \author[cp]{S.~Pileggi}
+
+% \address[cp]{Department of Statistics, California Polytechnic State University, San Luis Obispo, CA 93407, United States}
+% \address[ifixit]{iFixit, 1330 Monterey St, San Luis Obispo, CA 93401, United States}
 
 \begin{abstract} 
-Community-driven online question and answer forums (CQA), platforms that allow users to ask and answer questions, contain an extensive amount of crowd-sourced information. One such example of a CQA is iFixit's \textit{Answers} forum. This forum features user-asked questions related specifically to device repair, which are answered by both repair experts and everyday users. An important aspect of these CQAs, for both users and the forum, is question response time. This paper presents a survival analysis of the time until a question posted on iFixit's \textit{Answers} forum receives it's first response. A Cox proportional hazards model was developed to identify variables associated with response time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = \Sexpr{r2}$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = \Sexpr{appleHR}, 95\% CI = (\Sexpr{appleLower}, \Sexpr{appleUpper})), factors related to the question's title (e.g., if it was phrased as a question (HR = \Sexpr{titleHR}, 95\% CI = (\Sexpr{titleLower}, \Sexpr{titleUpper}))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = \Sexpr{dayHR}, 95\% CI = (\Sexpr{dayLower}, \Sexpr{dayUpper}))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs.
+iFixit's community driven online question and answer forum (CQA), \textif{Answers}, contains an extensive amount of crowd-sourced information related specifically to device repair. This platform allows users to ask questions regarding repairs, and for both repair experts and everyday users to provide answers and feedback. This paper presents a survival analysis of the time until a question posted on iFixit's \textit{Answers} forum receives it's first response. A Cox proportional hazards model was developed to identify variables associated with response time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = \Sexpr{r2}$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = \Sexpr{appleHR}, 95\% CI = (\Sexpr{appleLower}, \Sexpr{appleUpper})), factors related to the question's title (e.g., if it was phrased as a question (HR = \Sexpr{titleHR}, 95\% CI = (\Sexpr{titleLower}, \Sexpr{titleUpper}))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = \Sexpr{dayHR}, 95\% CI = (\Sexpr{dayLower}, \Sexpr{dayUpper}))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs.
 \end{abstract}
 
-\begin{keyword}
+\begin{keywords}
 Cox regression \sep CQA forum \sep response time \sep survival analysis \sep survival probabilty 
-\end{keyword}
+\end{keywords}
 
-\end{frontmatter}
+
 
 
 \section{Introduction}
 
-Community-driven online question and answer forums have become widely-used sources of information. These online platforms feature thousands of user-posted questions and answers and receive millions of visits every month. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit provides over 35,000 free online repair guides and sells the specialized tools and parts needed for such repairs. This company's mission is to equip users with the knowledge and tools necessary to repair their broken devices, as part of an effort to help them save money and reduce electronic waste. 
+Community-driven online question and answer forums feature thousands of user-posted questions and answers and receive millions of visits every month. As such, they have become widely-used sources of information. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit equips users with the knowledge and tools necessary to both repair their broken devices and reduce electronic waste, by providing over 35,000 free online repair guides. 
 
 As not all possible repairs are covered in the published guides and users may have additional questions related to existing guides, iFixit's \textit{Answers} forum is an important resource for users. This platform features questions pertaining to over 10,000 devices, ranging from jammed zippers to shattered phone screens and faulty air conditioners, with over 120,000 user-posted solutions. As thousands of users rely on this forum for information, it is important that users receive timely answers. Fast response times have been shown to be associated with positive user satisfaction and, in turn, increase web traffic, which is valuable to the reputation and longevity of the CQA \citep{Rechavi2011}. Analysis of response times can reveal factors that affect how quickly questions receive answers, which can lead to suggestions for how users can ask better questions to minimize response times and for how the forum design can be improved.
 
-However, analysis and prediction of response times on CQAs have not been thoroughly investigated. There is need for further analysis of forum response times, as the majority of existing research focuses on assessing and predicting question or answer quality. This paper presents a survival analysis on the time until a question receives its first answer on iFixit's \textit{Answers} forum, in order to determine factors significantly related to response time and to predict survival probabilities of questions.
+However, analysis and prediction of response times on CQAs have not been thoroughly investigated. There is need for further analysis in this area, as the majority of existing research focuses on assessing and predicting question or answer quality. This paper presents a survival analysis on the time until a question receives its first answer on iFixit's \textit{Answers} forum, in order to determine factors significantly related to response time and to predict survival probabilities of questions.
 
 
 \section{Related Work}
@@ -136,9 +142,10 @@ The majority of existing research has been focused on predicting question and an
 \section{Materials}
 
 % Table of derived predictors
-\begin{table}[!htbp]
-\centering
-\begin{tabular}{|L{2cm}|L{10cm}|}
+\begin{table}%[!htbp]
+\tbl{Categorical and continuous variables derived}
+% \centering
+{\begin{tabular}{|L{2cm}|L{10cm}|}
   \hline
   \multirow{9}{2cm}{\textbf{Categorical Variables}} & Device category the question pertains to. Categories include: Android/Other Phone, Apple Products, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle \\ \cline{2-2}
   & If the question was posted on a weekend or on a weekday \\ \cline{2-2}
@@ -154,8 +161,8 @@ The majority of existing research has been focused on predicting question and an
   & Number of characters in the question's text (text length) \\ \cline{2-2}
   & Number of characters in the user-defined device name (device name length) \\ \cline{2-2}
   & Ratio of the number of line breaks to the number of characters in the question's text (line break to text length ratio) \\ \hline
-\end{tabular}
-\caption{Categorical and continuous variables derived}
+\end{tabular}}
+% \caption{Categorical and continuous variables derived}
 \label{table:1}
 \end{table}
 
@@ -227,9 +234,10 @@ test1 <- x[splitPlan[[1]]$app, ]
 Each training set contained \Sexpr{scales::comma(nrow(train1))} questions; each test set contained \Sexpr{scales::comma(nrow(test1))} questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in univariate p-values of less than 0.001. Applying either square root or log transformations to all continuous predictors resulted in univariate p-values of less than 0.001. For variables that contained zeros, one was added to each observation before applying the log transformation. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus one transformation of average tag length, log plus one transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length. All categorical predictors and all continuous predictors with necessary transformations were retained for the full model. 
 
 % Splines Square root transformation of the average tag frequency
-\begin{table}[!htbp]
-\centering
-\begin{tabular}{| L{5cm} | l | l |}
+\begin{table}% [!htbp]
+% \centering
+\tbl{The model with the lowest AIC was used to determine the optimal k number of splines for each continuous predictor.} 
+{\begin{tabular}{| L{5cm} | l | l |}
   \hline
   \textbf{Predictor} & \textbf{K} & \textbf{AIC} \\ 
   \hline
@@ -263,8 +271,7 @@ Each training set contained \Sexpr{scales::comma(nrow(train1))} questions; each 
   & 4 & 65863.35 \\ 
   & 3 & 65862.08 \\ 
   \hline
-\end{tabular}
-\caption{The model with the lowest AIC was used to determine the optimal k number of splines for each continuous predictor.} 
+\end{tabular}}
 \label{table:2}
 \end{table}
 
@@ -272,8 +279,9 @@ Table \ref{table:2} shows the results of determining the optimal number of knots
 
 % Cross-validation metrics
 \begin{table}[!htbp]
-\centering
-\begin{tabular}{|r|r|r|r|r|r|r|r|}
+% \centering
+\tbl{Performance metrics of final model. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)}
+{\begin{tabular}{|r|r|r|r|r|r|r|r|}
   \hline
  & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
   \hline
@@ -281,8 +289,7 @@ Table \ref{table:2} shows the results of determining the optimal number of knots
   \textbf{Test Sets}     & 1.99 & 220.83  & \textless0.0001 & 0.14 & 0.26 & 0.63 \\
   \textbf{Full Data}     & 2.03 & 1165.03 & \textless0.0001 & 0.14 & 0.28 & 0.63 \\ 
    \hline
-\end{tabular}
-\caption{Performance metrics of final model. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)} 
+\end{tabular}}
 \label{table:3}
 \end{table}
 
@@ -290,8 +297,9 @@ Average performance metrics for test and training sets are in Table \ref{table:3
 
 % Final model on full data
 \begin{table}[!htbp]
-\centering
-\begin{tabular}{|l L{5.5cm}|c|c|}
+% \centering
+\tbl{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
+{\begin{tabular}{|l L{5.5cm}|c|c|}
   \hline
  \textbf{Variable} & & \textbf{Coefficient (SE)} & \textbf{p-value} \\ \hline
   Device Category & Apple Product & 0.93 (0.048) & \textless0.0001 \\ 
@@ -314,8 +322,7 @@ Average performance metrics for test and training sets are in Table \ref{table:3
   \multicolumn{2}{|L{9cm}|}{User was a member for less than one day before posting} & -0.11 (0.036)  & 0.003 \\ \hline
   \multicolumn{2}{|L{9cm}|}{User made an effort to solve the problem prior to asking the question} & -0.07 (0.036)  & 0.045 \\ \hline
   \multicolumn{2}{|L{9cm}|}{Square root of the average tag frequency} & 2.23 (0.720)  & 0.002 \\ \hline
-\end{tabular} 
-\caption{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
+\end{tabular}}
 \label{table:4}
 \end{table}
 
@@ -380,8 +387,9 @@ This research was supported by the Bill and Linda Frost fund of the California P
 \subsection{Posted questions}
 
 \begin{table}[!htbp]
-\centering
-\begin{tabular}{|L{4cm}|L{5cm}|L{5cm}|}
+% \centering
+\tbl{Examples of an answered question (left) and an unanswered question (right)}
+{\begin{tabular}{|L{4cm}|L{5cm}|L{5cm}|}
 \hline
 \textbf{Device} & iPhone 6 & android tablet \\ \hline
 \textbf{Title} & iPhone water damage, touch screen issue & ccccaaaan you help me fix my touch screen \\ \hline
@@ -402,8 +410,7 @@ This research was supported by the Bill and Linda Frost fund of the California P
 \textbf{User update question after posting?} & False & False \\ \hline
 \textbf{Frequently-used answered words?} & True & True \\ \hline
 \textbf{Frequently-used unanswered words?} & False & False \\ \hline
-\end{tabular}
-\caption{Examples of an answered question (left) and an unanswered question (right)}
+\end{tabular}}
 \label{table:5}
 \end{table}
 
@@ -445,15 +452,15 @@ To create the variables, the data was separated between answered and unanswered 
 
 % Table with list of frequently-used words
 \begin{table}[!htbp]
-\centering
-\begin{tabular}{|L{4cm}|L{8cm}|}
+% \centering
+\tbl{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
+{\begin{tabular}{|L{4cm}|L{8cm}|}
   \hline
  \textbf{Frequently-used terms among answered questions} & screen, turn, working, replacement, power, work, replace, charging, charge, button, touch, black, turning, broken, start, stuck, new, LCD, upgrade, problem, change, port, replaced, card, open, boot, replacing, remove, reset, back, drive, error, cable, ssd, cracked, hard, one, dropped, logic, lines, white, keeps, pro, dead, now, front, damage, switch, parts, glass, still, charger, issue, sim, turns, digitizer, just, mode, model, backlight, usb, stopped, logo, starting, know, unresponsive, password, factory, call, use, damaged, find, sensor, possible, fixed, side, galaxy, data, ipod, problems, issue, slow, system, connector, without, overheating, code, ram, air, microphone, please, red, much, plugged, getting, booting, left, way, buy, plus, time, loose, lock, coming, got, shuts, says, install, key, door, top \\
   \hline
   \textbf{Frequently-used terms among unanswered questions} & sound, light, wifi, speaker, connect, picture, stay, noise, bluetooth, isnt, apps, going, rear, question, play, stop, service, take, hear, lights, showing, network, volume, come, keep, connection, flashing, shut, print, blue, buttons, edit \\ 
    \hline
-\end{tabular}
-\caption{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
+\end{tabular}}
 \label{table:6}
 \end{table}
 

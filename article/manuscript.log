@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 APR 2018 10:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  23 JUL 2018 21:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6,13 +6,12 @@ entering extended mode
 (./manuscript.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
-(/usr/local/texlive/2017/texmf-dist/tex/latex/elsarticle/elsarticle.cls
-Document Class: elsarticle 2009/09/17, 1.2.0: Elsevier Ltd
-\@bls=\dimen102
+(./interact.cls
+Document Class: interact 2017/07/31 v1.05 Interact LaTeX document class
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -24,14 +23,117 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \c@table=\count86
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
-\bibindent=\dimen103
+\bibindent=\dimen102
 )
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2016/11/05 v2.16a AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks14
+\ex@=\dimen103
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen104
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count87
+LaTeX Info: Redefining \frac on input line 213.
+\uproot@=\count88
+\leftroot@=\count89
+LaTeX Info: Redefining \overline on input line 375.
+\classnum@=\count90
+\DOTSCASE@=\count91
+LaTeX Info: Redefining \ldots on input line 472.
+LaTeX Info: Redefining \dots on input line 475.
+LaTeX Info: Redefining \cdots on input line 596.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen105
+LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
+\macc@depth=\count92
+\c@MaxMatrixCols=\count93
+\dotsspace@=\muskip10
+\c@parentequation=\count94
+\dspbrk@lvl=\count95
+\tag@help=\toks15
+\row@=\count96
+\column@=\count97
+\maxfields@=\count98
+\andhelp@=\toks16
+\eqnshift@=\dimen106
+\alignsep@=\dimen107
+\tagshift@=\dimen108
+\tagwidth@=\dimen109
+\totwidth@=\dimen110
+\lineht@=\dimen111
+\@envbody=\toks17
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks18
+LaTeX Info: Redefining \[ on input line 2817.
+LaTeX Info: Redefining \] on input line 2818.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2015/03/04 v2.20.2
+\thm@style=\toks19
+\thm@bodyfont=\toks20
+\thm@headfont=\toks21
+\thm@notefont=\toks22
+\thm@headpunct=\toks23
+\thm@preskip=\skip46
+\thm@postskip=\skip47
+\thm@headsep=\skip48
+\dth@everypar=\toks24
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2016/04/27 v1.618033 publication quality tables
+\heavyrulewidth=\dimen112
+\lightrulewidth=\dimen113
+\cmidrulewidth=\dimen114
+\belowrulesep=\dimen115
+\belowbottomsep=\dimen116
+\aboverulesep=\dimen117
+\abovetopsep=\dimen118
+\cmidrulesep=\dimen119
+\cmidrulekern=\dimen120
+\defaultaddspace=\dimen121
+\@cmidla=\count99
+\@cmidlb=\count100
+\@aboverulesep=\dimen122
+\@belowrulesep=\dimen123
+\@thisruleclass=\count101
+\@lastruleclass=\count102
+\@thisrulewidth=\dimen124
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks14
+\KV@toks@=\toks25
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
@@ -53,52 +155,63 @@ Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 )
-\Gread@gobject=\count87
+\Gread@gobject=\count103
 ))
-\Gin@req@height=\dimen104
-\Gin@req@width=\dimen105
+\Gin@req@height=\dimen125
+\Gin@req@width=\dimen126
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/pifont.sty
-Package: pifont 2005/04/12 PSNFSS-v9.2a Pi font support (SPQR) 
-LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/upzd.fd
-File: upzd.fd 2001/06/04 font definitions for U/pzd.
+\epsfxsize=\dimen127
+\epsfysize=\dimen128
 )
-LaTeX Font Info:    Try loading font information for U+psy on input line 64.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/rotating.sty
+Package: rotating 2016/08/11 v2.16d rotated objects in LaTeX
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/upsy.fd
-File: upsy.fd 2001/06/04 font definitions for U/psy.
-))
-\c@tnote=\count88
-\c@fnote=\count89
-\c@cnote=\count90
-\c@ead=\count91
-\c@author=\count92
-\@eadauthor=\toks15
-\c@affn=\count93
-\absbox=\box26
-\keybox=\box27
-\Columnwidth=\dimen106
-\space@left=\dimen107
-\els@boxa=\box28
-\els@boxb=\box29
-\leftMargin=\dimen108
-\@enLab=\toks16
-\@sep=\skip43
-\@@sep=\skip44
-
-(./manuscript.spl)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/natbib/natbib.sty
-Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip45
-\bibsep=\skip46
-LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count94
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-\splwrite=\write3
-\openout3 = `manuscript.spl'.
+\c@r@tfl@t=\count104
+\rotFPtop=\skip49
+\rotFPbot=\skip50
+\rot@float@box=\box28
+\rot@mess@toks=\toks26
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
 
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count105
+\Gm@cntv=\count106
+\c@Gm@tempcnt=\count107
+\Gm@bindingoffset=\dimen129
+\Gm@wd@mp=\dimen130
+\Gm@odd@mp=\dimen131
+\Gm@even@mp=\dimen132
+\Gm@layoutwidth=\dimen133
+\Gm@layoutheight=\dimen134
+\Gm@layouthoffset=\dimen135
+\Gm@layoutvoffset=\dimen136
+\Gm@dimlist=\toks27
+)
+\c@mv@upright=\count108
+\c@mv@boldupright=\count109
+LaTeX Font Info:    Overwriting symbol font `letters' in version `upright'
+(Font)                  OML/cmm/m/it --> OML/eur/m/n on input line 163.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `boldupright'
+(Font)                  OML/cmm/m/it --> OML/eur/b/n on input line 164.
+\LabelSep=\dimen137
+\TopSep=\skip51
+\figheight=\dimen138
+\figwidth=\dimen139
+\tabledim=\dimen140
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/color.sty
 Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
@@ -110,190 +223,41 @@ Package color Info: Driver file: pdftex.def on input line 147.
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
-\OuterFrameSep=\skip47
-\fb@frw=\dimen109
-\fb@frh=\dimen110
-\FrameRule=\dimen111
-\FrameSep=\dimen112
+\OuterFrameSep=\skip52
+\fb@frw=\dimen141
+\fb@frh=\dimen142
+\FrameRule=\dimen143
+\FrameSep=\dimen144
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/alltt.sty
 Package: alltt 1997/06/16 v2.0g defines alltt environment
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/lineno/lineno.sty
-Package: lineno 2005/11/02 line numbers on paragraphs v4.41
-\linenopenalty=\count95
-\output=\toks17
-\linenoprevgraf=\count96
-\linenumbersep=\dimen113
-\linenumberwidth=\dimen114
-\c@linenumber=\count97
-\c@pagewiselinenumber=\count98
-\c@LN@truepage=\count99
-\c@internallinenumber=\count100
-\c@internallinenumbers=\count101
-\quotelinenumbersep=\dimen115
-\bframerule=\dimen116
-\bframesep=\dimen117
-\bframebox=\box30
-LaTeX Info: Redefining \\ on input line 3056.
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2017/03/14 v6.85a Hypertext links for LaTeX
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
-Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
-
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
-Package: hobsub-generic 2016/05/16 v1.14 Bundle oberdiek, subset generic (HO)
-Package: hobsub 2016/05/16 v1.14 Construct package bundles (HO)
-Package hobsub Info: Skipping package `infwarerr' (already loaded).
-Package hobsub Info: Skipping package `ltxcmds' (already loaded).
-Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
-Package ifvtex Info: VTeX not detected.
-Package: intcalc 2016/05/16 v1.2 Expandable calculations with integers (HO)
-Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
-Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
-Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-Package: pdfescape 2016/05/16 v1.14 Implements pdfTeX's escape features (HO)
-Package: bigintcalc 2016/05/16 v1.4 Expandable calculations on big integers (HO
-)
-Package: bitset 2016/05/16 v1.2 Handle bit-vector datatype (HO)
-Package: uniquecounter 2016/05/16 v1.3 Provide unlimited unique counter (HO)
-)
-Package hobsub Info: Skipping package `hobsub' (already loaded).
-Package: letltxmacro 2016/05/16 v1.5 Let assignment for LaTeX macros (HO)
-Package: hopatch 2016/05/16 v1.3 Wrapper for package hooks (HO)
-Package: xcolor-patch 2016/05/16 xcolor patch
-Package: atveryend 2016/05/16 v1.9 Hooks at the very end of document (HO)
-Package atveryend Info: \enddocument detected (standard20110627).
-Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
-Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
-Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
-)
-(/usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
-Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/auxhook.sty
-Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
-)
-\@linkdim=\dimen118
-\Hy@linkcounter=\count102
-\Hy@pagecounter=\count103
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2017/03/14 v6.85a Hyperref: PDFDocEncoding definition (HO)
-)
-\Hy@SavedSpaceFactor=\count104
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/latexconfig/hyperref.cfg
-File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
-)
-Package hyperref Info: Hyper figures OFF on input line 4498.
-Package hyperref Info: Link nesting OFF on input line 4503.
-Package hyperref Info: Hyper index ON on input line 4506.
-Package hyperref Info: Plain pages OFF on input line 4513.
-Package hyperref Info: Backreferencing OFF on input line 4518.
-Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4751.
-\c@Hy@tempcnt=\count105
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/url/url.sty
-\Urlmuskip=\muskip10
-Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-)
-LaTeX Info: Redefining \url on input line 5104.
-\XeTeXLinkMargin=\dimen119
-\Fld@menulength=\count106
-\Field@Width=\dimen120
-\Fld@charsize=\dimen121
-Package hyperref Info: Hyper figures OFF on input line 6358.
-Package hyperref Info: Link nesting OFF on input line 6363.
-Package hyperref Info: Hyper index ON on input line 6366.
-Package hyperref Info: backreferencing OFF on input line 6373.
-Package hyperref Info: Link coloring OFF on input line 6378.
-Package hyperref Info: Link coloring with OCG OFF on input line 6383.
-Package hyperref Info: PDF/A mode OFF on input line 6388.
-LaTeX Info: Redefining \ref on input line 6428.
-LaTeX Info: Redefining \pageref on input line 6432.
-\Hy@abspage=\count107
-\c@Item=\count108
-\c@Hfootnote=\count109
-)
-
-Package hyperref Message: Driver (autodetected): hpdftex.
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2017/03/14 v6.85a Hyperref driver for pdfTeX
-\Fld@listcount=\count110
-\c@bookmark@seq@number=\count111
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
-Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
-82.
-)
-\Hy@SectionHShift=\skip48
-)
 (/usr/local/texlive/2017/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
-\multirow@colwidth=\skip49
-\multirow@cntb=\count112
-\multirow@dima=\skip50
-\bigstrutjot=\dimen122
+\multirow@colwidth=\skip53
+\multirow@cntb=\count110
+\multirow@dima=\skip54
+\bigstrutjot=\dimen145
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/soul/soul.sty
 Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
-\SOUL@word=\toks18
-\SOUL@lasttoken=\toks19
-\SOUL@cmds=\toks20
-\SOUL@buffer=\toks21
-\SOUL@token=\toks22
-\SOUL@spaceskip=\skip51
-\SOUL@ttwidth=\dimen123
-\SOUL@uldp=\dimen124
-\SOUL@ulht=\dimen125
+\SOUL@word=\toks28
+\SOUL@lasttoken=\toks29
+\SOUL@cmds=\toks30
+\SOUL@buffer=\toks31
+\SOUL@token=\toks32
+\SOUL@spaceskip=\skip55
+\SOUL@ttwidth=\dimen146
+\SOUL@uldp=\dimen147
+\SOUL@ulht=\dimen148
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/tools/array.sty
 Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
-\col@sep=\dimen126
-\extrarowheight=\dimen127
-\NC@list=\toks23
-\extratabsurround=\skip52
-\backup@length=\skip53
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption.sty
-Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption3.sty
-Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 67.
-\captionmargin=\dimen128
-\captionmargin@=\dimen129
-\captionwidth=\dimen130
-\caption@tempdima=\dimen131
-\caption@indent=\dimen132
-\caption@parindent=\dimen133
-\caption@hangindent=\dimen134
-)
-\c@ContinuedFloat=\count113
-Package caption Info: hyperref package is loaded.
+\col@sep=\dimen149
+\extrarowheight=\dimen150
+\NC@list=\toks33
+\extratabsurround=\skip56
+\backup@length=\skip57
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/hyphenat/hyphenat.sty
 Package: hyphenat 2009/09/02 v2.3c hyphenation utilities
@@ -303,7 +267,89 @@ LaTeX Info: Redefining \_ on input line 43.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2017/04/05 v2.0i Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 79.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
 )
+LaTeX Info: Redefining \oldstylenums on input line 334.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 349.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 350.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 351.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 352.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 353.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 354.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 355.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 356.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 357.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 358.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 359.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 360.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 361.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 362.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 363.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 364.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 365.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 366.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 367.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 368.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 369.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 370.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 371.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 372.
+
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 373.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 374.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 375.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 376.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 377.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 378.
+Package textcomp Info: Setting lmr sub-encoding to TS1/0 on input line 379.
+Package textcomp Info: Setting lmdh sub-encoding to TS1/0 on input line 380.
+Package textcomp Info: Setting lmss sub-encoding to TS1/0 on input line 381.
+Package textcomp Info: Setting lmssq sub-encoding to TS1/0 on input line 382.
+Package textcomp Info: Setting lmvtt sub-encoding to TS1/0 on input line 383.
+Package textcomp Info: Setting lmtt sub-encoding to TS1/0 on input line 384.
+Package textcomp Info: Setting qhv sub-encoding to TS1/0 on input line 385.
+Package textcomp Info: Setting qag sub-encoding to TS1/0 on input line 386.
+Package textcomp Info: Setting qbk sub-encoding to TS1/0 on input line 387.
+Package textcomp Info: Setting qcr sub-encoding to TS1/0 on input line 388.
+Package textcomp Info: Setting qcs sub-encoding to TS1/0 on input line 389.
+Package textcomp Info: Setting qpl sub-encoding to TS1/0 on input line 390.
+Package textcomp Info: Setting qtm sub-encoding to TS1/0 on input line 391.
+Package textcomp Info: Setting qzc sub-encoding to TS1/0 on input line 392.
+Package textcomp Info: Setting qhvc sub-encoding to TS1/0 on input line 393.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 394.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 395.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 396.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 397.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 398.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 399.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 400.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 401.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 402.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 403.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 404.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 405.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 406.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
+))
 (./manuscript.aux)
 \openout1 = `manuscript.aux'.
 
@@ -319,28 +365,60 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
 LaTeX Font Info:    ... okay on input line 64.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
 LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 64.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 64.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 64.
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
 LaTeX Font Info:    ... okay on input line 64.
-
-(/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count114
-\scratchdimen=\dimen135
-\scratchbox=\box31
-\nofMPsegments=\count115
-\nofMParguments=\count116
-\everyMPshowfont=\toks24
-\MPscratchCnt=\count117
-\MPscratchDim=\dimen136
-\MPnumerator=\count118
-\makeMPintoPDFobject=\count119
-\everyMPtoPDFconversion=\toks25
-) (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+\scratchcounter=\count111
+\scratchdimen=\dimen151
+\scratchbox=\box29
+\nofMPsegments=\count112
+\nofMParguments=\count113
+\everyMPshowfont=\toks34
+\MPscratchCnt=\count114
+\MPscratchDim=\dimen152
+\MPnumerator=\count115
+\makeMPintoPDFobject=\count116
+\everyMPtoPDFconversion=\toks35
+) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/grfext.sty
 Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
-)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 38.
 Package grfext Info: Graphics extension search list:
@@ -352,590 +430,569 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box32
-Package hyperref Info: Link coloring OFF on input line 64.
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(94.75394pt, 408.0pt, 94.75394pt)
+* v-part:(T,H,B)=(78.01874pt, 650.0pt, 117.0281pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=408.0pt
+* \textheight=650.0pt
+* \oddsidemargin=22.48395pt
+* \evensidemargin=22.48395pt
+* \topmargin=-31.25125pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=50.0pt
+* \marginparsep=10.0pt
+* \columnsep=12.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
-Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
-)
-\c@section@level=\count120
-)
-LaTeX Info: Redefining \ref on input line 64.
-LaTeX Info: Redefining \pageref on input line 64.
-LaTeX Info: Redefining \nameref on input line 64.
-
-(./manuscript.out) (./manuscript.out)
-\@outlinefile=\write4
-\openout4 = `manuscript.out'.
-
-Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: End \AtBeginDocument code.
 LaTeX Info: Redefining \bfseries on input line 68.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 91.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 91.
+Runaway argument?
+{ \name {L.K.Oshita\textsuperscript {a}\thanks {CONTACT L.K.Oshita. E\ETC.
+! Paragraph ended before \author was complete.
+<to be read again> 
+                   \par 
+l.84 
+     
+I suspect you've forgotten a `}', causing me to apply this
+control sequence to too much text. How can we recover?
+My plan is to forget the whole thing and hope for the best.
 
-Overfull \hbox (23.83391pt too wide) in paragraph at lines 91--93
-\OT1/cmr/m/n/10 al-low users to ask and an-swer ques-tions, con-tain an ex-ten-
-sive amount of crowd-sourced
- []
 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 99.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 99.
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <13> not available
+(Font)              size <12> substituted on input line 85.
 
-Overfull \hbox (11.1395pt too wide) in paragraph at lines 104--105
-[]\OT1/cmr/m/n/10 Community-driven on-line ques-tion and an-swer fo-rums have b
-e-come widely-used
- []
+
+LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <13> not available
+(Font)              size <12> substituted on input line 85.
+
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 85.
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <5.5> not available
+(Font)              size <5> substituted on input line 85.
+
+
+LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <5.5> not available
+(Font)              size <5> substituted on input line 85.
+
+
+LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <5.5> not available
+(Font)              size <5> substituted on input line 85.
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 85.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 85.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+
+LaTeX Warning: No \author given.
+
+! Undefined control sequence.
+l.98 ...e question and answer forum (CQA), \textif
+                                                  {Answers}, contains an ext...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.102 Cox regression \sep
+                          CQA forum \sep response time \sep survival analysi...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.102 Cox regression \sep CQA forum \sep
+                                         response time \sep survival analysi...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.102 ...on \sep CQA forum \sep response time \sep
+                                                   survival analysis \sep su...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.102 ...response time \sep survival analysis \sep
+                                                   survival probabilty
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.112 ...eputation and longevity of the CQA \citep
+                                                  {Rechavi2011}. Analysis of...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 [1
 
 
+
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (10.71364pt too wide) in paragraph at lines 113--114
-\OT1/cmr/m/n/10 mod-els to pre-dict re-sponse times based on ex-po-nen-tial dis
--tri-bu-tions. Asaduz-za-man
- []
+! Undefined control sequence.
+l.119 ...arding analysis of response times, \citet
+                                                  {Bhat2014} developed a cla...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
+! Undefined control sequence.
+l.119 ...posted on \textit{Stack Overflow}. \citet
+                                                  {Mahmud2013} used parametr...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-Overfull \hbox (0.60138pt too wide) in paragraph at lines 115--116
-\OT1/cmr/m/n/10 in-di-ca-tors of qual-ity. A num-ber of other stud-ies have als
-o de-vel-oped clas-si-fi-ca-tion
- []
+! Undefined control sequence.
+l.119 ...ased on exponential distributions. \citet
+                                                  {Asaduzzaman2013} instead ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
+! Undefined control sequence.
+l.121 ...cting question and answer quality. \citet
+                                                  {Weimer2007} developed a c...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-Overfull \hbox (12.55629pt too wide) in paragraph at lines 115--116
-\OT1/cmr/m/n/10 al-go-rithms us-ing tex-tual and non-textual fea-tures with the
- sim-i-lar goal of pre-dict-ing
- []
+! Undefined control sequence.
+l.121 ...ily textual features of questions. \citet
+                                                  {Blumenstock2008} also det...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.121 ...nerated content featured on CQAs). \citet
+                                                  {Fu2015} instead found tha...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.121 ...dicting question or answer quality \citep
+                                                  {Yao2015, Toba2014, Ponzan...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.156 ...e answers after the download date) \citep
+                                                  {Kleinbaum2011}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 [2]
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 123--140
- [][] 
- []
+! Undefined control sequence.
+l.158 ...-censored, or unanswered questions \citep
+                                                  {Bland1998}. From these es...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.160 ... survival probability of questions \citep
+                                                  {Moore2010}. To build the ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.160 ...ive-fold cross-validation was used \citep
+                                                  {Rodriguez2010}. Univariat...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.160 ... in the final predictive Cox model \citep
+                                                  {Hammermeister1979}. Each ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.160 ...ell as the optimal number of knots \citep
+                                                  {Harrell2015}. All predict...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.160 ...dictors in univariate analysis, as \citet
+                                                  {Harrell2015} determined t...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.162 ...icators of the model's performance \citep
+                                                  {Chen}. Significant result...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.162 ...ted from the $\chi^2$ distribution \citep
+                                                  {Oakes1981}. Concordance s...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.162 ...to 1 indicates perfect predictions \citep
+                                                  {Harrell2015}. These metri...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 [3]
-Overfull \hbox (7.04683pt too wide) in paragraph at lines 151--152
-\OT1/cmr/m/n/10 unan-swered ques-tions [[]]. From these es-ti-mates, sur-vival 
-curves were con-structed
- []
+! Undefined control sequence.
+l.164 ... on hazard does not depend on time \citep
+                                                  {Grambsch1994}. Significan...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 
-Overfull \hbox (9.88954pt too wide) in paragraph at lines 153--154
-[]\OT1/cmr/m/n/10 As the prob-a-bil-ity dis-tri-bu-tion for re-sponse times is 
-un-known, a non-parametric
- []
-
-
-Overfull \hbox (2.55626pt too wide) in paragraph at lines 153--154
-\OT1/cmr/m/n/10 Cox pro-por-tional haz-ards model was de-vel-oped to pre-dict t
-he sur-vival prob-a-bil-ity
+Underfull \hbox (badness 1033) in paragraph at lines 194--195
+\OT1/cmr/m/n/10.95 in uni-vari-ate p-values of less than 0.001. Ap-ply-ing ei-t
+her square root or log
  []
 
 [4]
-Overfull \hbox (6.25047pt too wide) in paragraph at lines 157--158
-[]\OT1/cmr/m/n/10 Correlations be-tween scaled Schoen-feld resid-u-als, dif-fer
--ences be-tween ob-served
+Underfull \hbox (badness 1168) in paragraph at lines 234--234
+ []\OT1/cmr/bx/n/8 Table 2. \OT1/cmr/m/n/8 The model with the low-est AIC was u
+sed 
  []
 
-[5]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 240.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 252.
 
- (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 240.
-
-Overfull \hbox (0.92535pt too wide) in paragraph at lines 249--250
-\OT1/cmr/m/n/10 as-so-ci-ated with re-sponse time. How-ever, $\OML/cmm/m/it/10 
-R[]$ \OT1/cmr/m/n/10 statis-tics and dis-crim-i-na-tion in-dexes
- []
-
-
-Overfull \hbox (64.84082pt too wide) in paragraph at lines 254--278
- [][] 
- []
-
-[6]
-Overfull \hbox (0.75073pt too wide) in paragraph at lines 288--289
-\OT1/cmr/m/n/10 Haz-ard is ap-prox-i-mately equiv-a-lent to the con-di-tional p
-rob-a-bil-ity that a ques-tion
- []
-
-[7]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 294.
-
- (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 294.
-
-Overfull \hbox (5.62912pt too wide) in paragraph at lines 301--302
-\OT1/cmr/m/n/10 in the data, lead to sug-ges-tions for changes in CQA de-sign. 
-Many users in-cor-rectly
- []
-
+LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <8> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 252.
+LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <11> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 293.
+ [5] [6] [7]
 [8]
-Overfull \hbox (0.74141pt too wide) in paragraph at lines 311--312
-\OT1/cmr/m/n/10 Poly-tech-nic State Uni-ver-sity in San Luis Obispo. Shan-non P
-i-leggi is an As-sis-tant
+! Undefined control sequence.
+l.368 ...created based off of findings from \citet
+                                                  {Bhat2014}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.393 ... created based off of methods from \citet
+                                                  {Correa2013} and \citet{Ra...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.393 ...ethods from \citet{Correa2013} and \citet
+                                                  {Ravi2014}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[9]
+! Undefined control sequence.
+l.414 ...aster than those otherwise phrased \citep
+                                                  {Bhat2014}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.419 ...d off of findings and methods from \citet
+                                                  {Bhat2014} and \citet{Harp...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.419 ... methods from \citet{Bhat2014} and \citet
+                                                  {Harper2008}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[10] (./manuscript.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 22--29
+[]\OT1/cmr/m/n/10.95 V. Bhat,
  []
 
 
-Overfull \hbox (1.66728pt too wide) in paragraph at lines 311--312
-\OT1/cmr/m/n/10 Pro-fes-sor in the Statis-tics De-part-ment at Cal-i-for-nia Po
-ly-tech-nic State Uni-ver-sity,
+Overfull \hbox (94.69112pt too wide) in paragraph at lines 31--38
+\OT1/cmtt/m/n/10.95 http://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewP
+DFInterstitial/6072/6328\OT1/cmr/m/n/10.95 ,
  []
 
 
-Overfull \hbox (1.66725pt too wide) in paragraph at lines 319--320
-[]\OT1/cmr/m/n/10 This re-search was sup-ported by the Bill and Linda Frost fun
-d of the Cal-i-for-nia
+Underfull \hbox (badness 10000) in paragraph at lines 41--48
+[]
  []
 
 
-Overfull \hbox (90.93855pt too wide) in paragraph at lines 328--350
- [][] 
- []
-
-[9] [10]
-Overfull \hbox (23.34785pt too wide) in paragraph at lines 371--372
-\OT1/cmr/m/n/10 Cam-era, Car and Truck, Com-puter Hard-ware, Elec-tron-ics, Gam
-e Con-sole, House-hold,
+Underfull \hbox (badness 10000) in paragraph at lines 41--48
+\OT1/cmr/m/n/10.95 M. Asaduz-za-man, A. S. Mashiyat, C. K. Roy, K. A. Schnei-de
+r,
  []
 
 
-Overfull \hbox (19.15805pt too wide) in paragraph at lines 371--372
-\OT1/cmr/m/n/10 Con-sole, Home, Other, PC, Tablet, Ve-hi-cle. Un-der the orig-i
--nal de-vice cat-e-go-riza-tion,
+Underfull \hbox (badness 10000) in paragraph at lines 41--48
+\OT1/cmr/m/n/10.95 An-swer-ing ques-tions about unan-swered ques-tions of Stack
+
  []
 
 
-Overfull \hbox (20.0838pt too wide) in paragraph at lines 388--389
-[]\OT1/cmr/m/n/10 To cre-ate the vari-ables, the data was sep-a-rated be-tween 
-an-swered and unan-swered
+Underfull \hbox (badness 10000) in paragraph at lines 41--48
+\OT1/cmr/m/n/10.95 Over-flow, 2013 10th Work-ing Con-fer-ence on Min-ing Soft-w
+are
  []
 
 
-Overfull \hbox (0.945pt too wide) in paragraph at lines 388--389
-\OT1/cmr/m/n/10 unan-swered ques-tions, it would be con-sid-ered ``frequently-u
-sed'' among an-swered
+Underfull \hbox (badness 10000) in paragraph at lines 41--48
+\OT1/cmr/m/n/10.95 Repos-i-to-ries (MSR) (2013) 97--100ISSN 2160-1852, , URL
  []
 
 
-Overfull \hbox (7.25052pt too wide) in paragraph at lines 388--389
-\OT1/cmr/m/n/10 be-tween ``frequently-used'' words in each list and lev-els of 
-the de-vice cat-e-go-riza-tion
+Overfull \hbox (14.20949pt too wide) in paragraph at lines 41--48
+\OT1/cmtt/m/n/10.95 http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumb
+er=6624015\OT1/cmr/m/n/10.95 . 
+ []
+
+
+Underfull \hbox (badness 2469) in paragraph at lines 51--58
+\OT1/cmr/m/n/10.95 on soft-ware, Pro-ceed-ings of the ACL  (June) (2007) 125--1
+28, , URL
+ []
+
+
+Overfull \hbox (31.45555pt too wide) in paragraph at lines 51--58
+\OT1/cmtt/m/n/10.95 http://atlas.tk.informatik.tu-darmstadt.de/Publications/200
+7/acl2007.pdf\OT1/cmr/m/n/10.95 . 
  []
 
 [11]
-Overfull \hbox (21.63304pt too wide) in paragraph at lines 393--400
- [][] 
- []
-
-[12]
-Overfull \hbox (8.02838pt too wide) in paragraph at lines 412--413
-\OT1/cmr/m/n/10 re-placed, used, checked, in-ves-ti-gated, con-sid-ered, mea-su
-red, at-tempted, in-spected,
- []
-
-(./manuscript.bbl
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1109/PASSAT/SocialCom.2011.67
-l.18 ...fo{doi}{10.1109/PASSAT/SocialCom.2011.67}}
-                                                  .
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 1005) in paragraph at lines 12--19
-[]\OT1/cmr/m/n/10 A. Rechavi, S. Rafaeli, Not all is gold that glit-ters re-spo
-nse time
+Underfull \hbox (badness 2418) in paragraph at lines 79--86
+[]\OT1/cmr/m/n/10.95 Y. Yao, H. Tong, T. Xie,
  []
 
 
-Underfull \hbox (badness 1472) in paragraph at lines 12--19
-\OT1/cmr/m/n/10 In-ter-na-tional Con-fer-ence on Pri-vacy, Se-cu-rity, Risk and
- Trust and
+Underfull \hbox (badness 10000) in paragraph at lines 99--105
+[]\OT1/cmr/m/n/10.95 L. Pon-zanelli,
  []
 
 
-Underfull \hbox (badness 2582) in paragraph at lines 12--19
-\OT1/cmr/m/n/10 2011 (2011) 904--909doi:[]$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/10 le
-t \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 @tempa \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 
-bibinfo @ X @ doi10 . 1109 / PASSAT /
+Underfull \hbox (badness 6032) in paragraph at lines 114--124
+[]\OT1/cmr/m/n/10.95 D. Klein-baum, M. Klein, Sur-vival Anal-y-sis: A
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31--38
-\OT1/cmtt/m/n/10 index . php / ICWSM / ICWSM13 / paper / viewPDFInterstitial / 
-6072 / 6328$[]\OT1/cmr/m/n/10 ,
+Underfull \hbox (badness 10000) in paragraph at lines 126--133
+[]\OT1/cmr/m/n/10.95 J. M. Bland, D. G. Alt-man, Statis-tics
  []
 
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1109/MSR.2013.6624015
-l.46 ...i{\bibinfo{doi}{10.1109/MSR.2013.6624015}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
 
-
-Underfull \hbox (badness 2027) in paragraph at lines 41--48
-[]\OT1/cmr/m/n/10 M. Asaduz-za-man, A. S. Mashiyat, C. K. Roy, K. A. Schnei-der
+Underfull \hbox (badness 10000) in paragraph at lines 126--133
+\OT1/cmr/m/n/10.95 Notes: Sur-vival prob-a-bil-i-ties (the Kaplan-Meier method)
 ,
  []
 
 
-Underfull \hbox (badness 5490) in paragraph at lines 41--48
-\OT1/cmr/m/n/10 2013 10th Work-ing Con-fer-ence on Min-ing Soft-ware Repos-i-to
--ries
- []
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.3115/1557769.1557806
-l.56 ...oi{\bibinfo{doi}{10.3115/1557769.1557806}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 1776) in paragraph at lines 51--58
-\OT1/cmr/m/n/10 post qual-ity in on-line dis-cus-sions on soft-ware, Pro-ceed-i
-ngs of the
+Underfull \hbox (badness 10000) in paragraph at lines 126--133
+\OT1/cmr/m/n/10.95 Bmj 317 (7172) (1998) 1572--1580, ISSN 0959-8138, , URL
  []
 
 
-Underfull \hbox (badness 2261) in paragraph at lines 51--58
-\OT1/cmr/m/n/10 1557769 . 1557806$[], URL []$\OT1/cmtt/m/n/10 http : / / atlas 
-. tk . informatik . tu-[]darmstadt .
- []
-
-[13]
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1145/1367497.1367673
-l.65 ...oi{\bibinfo{doi}{10.1145/1367497.1367673}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1002/pra2.2015.145052010088
-l.76 ...info{doi}{10.1002/pra2.2015.145052010088}}
-                                                  .
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1016/j.ins.2014.12.038
-l.84 ...{\bibinfo{doi}{10.1016/j.ins.2014.12.038}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1016/j.ins.2013.10.030
-l.94 ...{\bibinfo{doi}{10.1016/j.ins.2013.10.030}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1109/QSIC.2014.27
-l.104 ...\doi{\bibinfo{doi}{10.1109/QSIC.2014.27}}
-                                                  .
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 2626) in paragraph at lines 99--105
-[]\OT1/cmr/m/n/10 L. Pon-zanelli, A. Mocci, A. Bac-chelli, M. Lanza, Un-der-sta
-nd-ing
+Underfull \hbox (badness 1708) in paragraph at lines 143--150
+[]\OT1/cmr/m/n/10.95 J. D. Rodr^^S^^Pguez, A. P^^Serez,
  []
 
 
-Underfull \hbox (badness 1253) in paragraph at lines 99--105
-\OT1/cmr/m/n/10 - In-ter-na-tional Con-fer-ence on Qual-ity Soft-ware (2014) 34
-3--352ISSN
- []
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1016/B978-0-12-387667-6.00013-0
-l.122 ...doi}{10.1016/B978-0-12-387667-6.00013-0}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1136/bmj.317.7172.1572
-l.131 ...\bibinfo{doi}{10.1136/bmj.317.7172.1572}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1007/978-3-319-31245-3
-l.139 ...\bibinfo{doi}{10.1007/978-3-319-31245-3}}
-                                                  , \bibinfo{year}{2010}.
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[14]
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1109/TPAMI.2009.187
-l.149 ...oi{\bibinfo{doi}{10.1109/TPAMI.2009.187}}
-                                                  .
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1161/01.CIR.59.3.421
-l.160 ...i{\bibinfo{doi}{10.1161/01.CIR.59.3.421}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1007/978-1-4757-3462-1
-l.167 ...\bibinfo{doi}{10.1007/978-1-4757-3462-1}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 164--170
-[]\OT1/cmr/m/n/10 F. E. Har-rell, Re-gres-sion Mod-el-ing Strate-gies, vol. 64,
-
+Underfull \hbox (badness 10000) in paragraph at lines 153--162
+[]\OT1/cmr/m/n/10.95 K. E.
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmr/m/n/10 ISBN 978-1-4419-2918-1, doi:[]$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/1
-0 let \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 @tempa \OMS/cmsy/m/n/10 n \OT1/cmr/m/n
-/10 bibinfo @
+[]\OT1/cmr/m/n/10.95 F. E. Har-rell, Re-gres-sion Mod-el-ing
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmr/m/n/10 X @ doi10 . 1007 / 978-[]1-[]4757-[]3462-[]1$[], URL []$\OT1/cm
-tt/m/n/10 papers : / /
+\OT1/cmr/m/n/10.95 Strate-gies, vol. 64, ISBN 978-1-4419-2918-1, , URL
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmtt/m/n/10 55069ee6-[]504c-[]4f60-[]bfa9-[]053c4dcabb39 / Paper / p398{%}
-5Cnhttp :
+Overfull \hbox (1083.46541pt too wide) in paragraph at lines 164--170
+\OT1/cmtt/m/n/10.95 papers://55069ee6-504c-4f60-bfa9-053c4dcabb39/Paper/p398%5C
+nhttp://link.springer.com/10.1007/978-3-319-19425-7%5Cnhttp://www.ncbi.nlm.nih.
+gov/pubmed/21531065%5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S03008932110
+03502%5Cnhttp://link.springer.com/10.1\OT1/cmr/m/n/10.95 ,
+ []
+
+[12]
+Underfull \hbox (badness 2334) in paragraph at lines 197--203
+\OT1/cmr/m/n/10.95 of 'closed ques-tions' on Stack Over-flow, Pro-ceed-ings of 
+the first ACM
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmtt/m/n/10 / / link . springer . com / 10 . 1007 / 978-[]3-[]319-[]19425-
-[]7{%}5Cnhttp : / /
+Underfull \hbox (badness 10000) in paragraph at lines 205--212
+[]\OT1/cmr/m/n/10.95 F. M. Harper,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmtt/m/n/10 www . ncbi . nlm . nih . gov / pubmed / 21531065{%}5Cnhttp : /
- / linkinghub .
+Underfull \hbox (badness 4647) in paragraph at lines 205--212
+\OT1/cmr/m/n/10.95 D. Ra-ban, S. Rafaeli, J. A. Kon-stan, Pre-dic-tors of An-sw
+er Qual-ity
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 164--170
-\OT1/cmtt/m/n/10 elsevier . com / retrieve / pii / S0300893211003502{%}5Cnhttp 
-:
- []
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1186/1471-2288-12-102
-l.177 ...{\bibinfo{doi}{10.1186/1471-2288-12-102}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 1259) in paragraph at lines 172--179
-[]\OT1/cmr/m/n/10 H.-C. Chen, R. L. Kodell, K. F. Cheng, J. J. Chen, As-sess-me
-nt
+Underfull \hbox (badness 10000) in paragraph at lines 205--212
+\OT1/cmr/m/n/10.95 in On-line Q&A Sites, Pro-ceed-ings of the SIGCHI Con-fer-en
+ce
  []
 
 
-Underfull \hbox (badness 2005) in paragraph at lines 172--179
-\OT1/cmr/m/n/10 of per-for-mance of sur-vival pre-dic-tion mod-els for can-cer 
-prog-no-sis,
+Underfull \hbox (badness 10000) in paragraph at lines 205--212
+\OT1/cmr/m/n/10.95 on Hu-man Fac-tors in Com-put-ing Sys-tems (2008) 865--874, 
+URL
  []
 
+) [13] (./manuscript.aux)
 
-Underfull \hbox (badness 2245) in paragraph at lines 172--179
-\OT1/cmr/m/n/10 BMC Med-i-cal Re-search Method-ol-ogy 12 (1) (2012) 102, doi:[]
-$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/10 let \OMS/cmsy/m/n/10 n
- []
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 1.0pt have occurred.
 
-
-Underfull \hbox (badness 1859) in paragraph at lines 172--179
-\OT1/cmr/m/n/10 @tempa \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 bibinfo @ X @ doi10 .
- 1186 / 1471-[]2288-[]12-[]102$[], URL []$\OT1/cmtt/m/n/10 https : / / doi .
- []
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.2307/1402606
-l.185 ...34}, \doi{\bibinfo{doi}{10.2307/1402606}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 5050) in paragraph at lines 181--187
-\OT1/cmr/m/n/10 Sta-tis-ti-cal Re-view / Re-vue In-ter-na-tionale de Statis-tiq
-ue 49 (3)
- []
-
-
-Underfull \hbox (badness 2057) in paragraph at lines 181--187
-\OT1/cmr/m/n/10 (1981) 235--252, ISSN 0306-7734, doi:[]$\OMS/cmsy/m/n/10 n\OT1/
-cmr/m/n/10 let \OMS/cmsy/m/n/10 n \OT1/cmr/m/n/10 @tempa \OMS/cmsy/m/n/10 n \OT
-1/cmr/m/n/10 bibinfo @ X @ doi10 .
- []
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1145/2512938.2512954
-l.201 ...i{\bibinfo{doi}{10.1145/2512938.2512954}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \let \@tempa \bibinfo@X@doi 
-                                       10.1145/1357054.1357191
-l.210 ...i{\bibinfo{doi}{10.1145/1357054.1357191}}
-                                                  ,
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Underfull \hbox (badness 2495) in paragraph at lines 205--212
-\OT1/cmr/m/n/10 on Hu-man Fac-tors in Com-put-ing Sys-tems (2008) 865--874doi:[
-]$\OMS/cmsy/m/n/10 n\OT1/cmr/m/n/10 let \OMS/cmsy/m/n/10 n
- []
-
-[15])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 427.
- [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 427.
- (./manuscript.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 427.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 427.
-Package rerunfilecheck Info: File `manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: AEB5266AD2CEFA82D9AFF6B69A6A30A2;1550.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 427.
  ) 
 Here is how much of TeX's memory you used:
- 7552 strings out of 492995
- 113884 string characters out of 6132704
- 217666 words of memory out of 5000000
- 10936 multiletter control sequences out of 15000+600000
- 11263 words of font info for 39 fonts, out of 8000000 for 9000
+ 4336 strings out of 492995
+ 58709 string characters out of 6132704
+ 139571 words of memory out of 5000000
+ 7768 multiletter control sequences out of 15000+600000
+ 17641 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,18n,39p,2013b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,19n,28p,2012b,284s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
-local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/loc
-al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
-texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
-exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/tex
-live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texli
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/
+local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/lo
+cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local
+/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/te
+xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texli
 ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
-e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive/
-2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/20
-17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/201
-7/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on manuscript.pdf (16 pages, 254438 bytes).
+e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/
+2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on manuscript.pdf (13 pages, 278416 bytes).
 PDF statistics:
- 379 PDF objects out of 1000 (max. 8388607)
- 339 compressed objects within 4 object streams
- 70 named destinations out of 1000 (max. 500000)
- 169 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 127 PDF objects out of 1000 (max. 8388607)
+ 91 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
