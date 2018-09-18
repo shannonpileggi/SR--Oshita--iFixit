@@ -3,6 +3,12 @@
 \providecommand{\url}[1]{\normalfont{#1}}
 \providecommand{\urlprefix}{Available at }
 
+\bibitem{Asaduzzaman2013}
+M. Asaduzzaman, A.S. Mashiyat, C.K. Roy, and K.A. Schneider, \emph{{Answering
+  questions about unanswered questions of Stack Overflow}}, 2013 10th Working
+  Conference on Mining Software Repositories (MSR)  (2013), pp. 97--100.
+  \urlprefix\url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6624015}.
+
 \bibitem{Bhat2014}
 V. Bhat, A. Gokhale, R. Jadhav, R. Pudipeddi, and L. Akoglu, \emph{{Min ( e ) d
   Your Tags : Analysis of Question Response Time in StackOverflow}}, IEEE/ACM
@@ -13,6 +19,12 @@ V. Bhat, A. Gokhale, R. Jadhav, R. Pudipeddi, and L. Akoglu, \emph{{Min ( e ) d
 J.M. Bland and D.G. Altman, \emph{{Statistics Notes: Survival probabilities
   (the Kaplan-Meier method)}}, Bmj 317 (1998), pp. 1572--1580.
   \urlprefix\url{http://www.bmj.com/cgi/doi/10.1136/bmj.317.7172.1572}.
+
+\bibitem{Blumenstock2008}
+J.E. Blumenstock, \emph{{Size matters: word count as a measure of quality on
+  wikipedia}}, in \emph{Proceedings of the 17th International Conference on
+  World Wide Web}. ACM, 2008, pp. 1095--1096.
+  \urlprefix\url{http://portal.acm.org/citation.cfm?id=1367673}.
 
 \bibitem{Chen}
 H.C. Chen, R.L. Kodell, K.F. Cheng, and J.J. Chen, \emph{{Assessment of
@@ -25,6 +37,12 @@ D. Correa and A. Sureka, \emph{{Fit or unfit: Analysis and prediction of
   'closed questions' on Stack Overflow}}, Proceedings of the first ACM
   Conference on Online Social Networks  (2013), pp. 201--212.
   \urlprefix\url{http://dl.acm.org/citation.cfm?doid=2512938.2512954}.
+
+\bibitem{Fu2015}
+H. Fu, S. Wu, and S. Oh, \emph{{Evaluating answer quality across knowledge
+  domains: Using textual and non-textual features in social Q{\&}A}},
+  Proceedings of the Association for Information Science and Technology 52
+  (2015), pp. 1--5.
 
 \bibitem{Grambsch1994}
 P. Grambsch and T. Therneau, \emph{{Proportional hazards tests and diagnostics
@@ -55,6 +73,12 @@ D. Kleinbaum and M. Klein, \emph{{Survival Analysis: A Self-Learning Text,
   Journal}, M. Gail, K. Krickeberg, J. Samet, A. Tsiatis, and W. Wong, eds.,
   3rd ed., chap.~1, Springer-Verlag New York,  2011, p. 715.
 
+\bibitem{Mahmud2013}
+J. Mahmud, J. Chen, and J. Nichols, \emph{{When Will You Answer This?
+  Estimating Response Time in Twitter}}, in \emph{Seventh International AAAI
+  Conference on Weblogs and Social Media}. 2013, pp. 697--700.
+  \urlprefix\url{http://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewPDFInterstitial/6072/6328}.
+
 \bibitem{Moore2010}
 D. Moore, \emph{{Applied Survival Analysis Using R}}, 1st ed., chap.~5, March,
   Springer International Publishing,  2010, p. 226.
@@ -63,6 +87,11 @@ D. Moore, \emph{{Applied Survival Analysis Using R}}, 1st ed., chap.~5, March,
 D. Oakes, \emph{{Survival Times: Aspects of Partial Likelihood}}, International
   Statistical Review / Revue Internationale de Statistique 49 (1981), pp.
   235--252. \urlprefix\url{http://www.jstor.org/stable/1402606}.
+
+\bibitem{Ponzanelli2014a}
+L. Ponzanelli, A. Mocci, A. Bacchelli, and M. Lanza, \emph{{Understanding and
+  classifying the quality of technical forum questions}}, Proceedings -
+  International Conference on Quality Software  (2014), pp. 343--352.
 
 \bibitem{Ravi2014}
 S. Ravi, B. Pang, V. Rastagori, and R. Kumar, \emph{{Great Question ! Question
@@ -81,5 +110,23 @@ J.D. Rodr{\'{i}}guez, A. P{\'{e}}rez, and J.A. Lozano, \emph{{Sensitivity
   analysis of kappa-fold cross validation in prediction error estimation}},
   IEEE transactions on pattern analysis and machine intelligence 32 (2010), pp.
   569--575.
+
+\bibitem{Toba2014}
+H. Toba, Z.y. Ming, M. Adriani, and T.s. Chua, \emph{{Discovering high quality
+  answers in community question answering archives using a hierarchy of
+  classifiers}}, Information Sciences 261 (2014), pp. 101--115.
+  \urlprefix\url{http://dx.doi.org/10.1016/j.ins.2013.10.030}.
+
+\bibitem{Weimer2007}
+M. Weimer, I. Gurevych, and M. M{\"{u}}hlh{\"{a}}user, \emph{{Automatically
+  assessing the post quality in online discussions on software}}, Proceedings
+  of the ACL  (2007), pp. 125--128.
+  \urlprefix\url{http://atlas.tk.informatik.tu-darmstadt.de/Publications/2007/acl2007.pdf}.
+
+\bibitem{Yao2015}
+Y. Yao, H. Tong, T. Xie, L. Akoglu, F. Xu, and J. Lu, \emph{{Detecting
+  high-quality posts in community question answering sites}}, INFORMATION
+  SCIENCES 302 (2015), pp. 70--82.
+  \urlprefix\url{http://dx.doi.org/10.1016/j.ins.2014.12.038}.
 
 \end{thebibliography}
