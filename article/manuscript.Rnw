@@ -26,6 +26,10 @@
 }
 \makeatother
 
+\makeatletter % for spacing figures at the end of the document
+\@fpsep\textheight
+\makeatother
+
 
 << include = FALSE >>=
 # load libraries
@@ -107,7 +111,7 @@ r2 <- round(model$stats[which(names(model$stats) == "R2")], 2)
 \maketitle
 
 \begin{abstract} 
-iFixit's community-driven online question and answer forum (CQA), \textit{Answers}, contains an extensive amount of crowd-sourced information related specifically to device repair. This platform allows users to ask questions regarding repairs, and for both repair experts and everyday users to provide answers and feedback. This paper presents a survival analysis of the time until a question posted on iFixit's \textit{Answers} forum receives it's first response. A Cox proportional hazards model was developed to identify variables associated with response time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = \Sexpr{r2}$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = \Sexpr{appleHR}, 95\% CI = (\Sexpr{appleLower}, \Sexpr{appleUpper})), factors related to the question's title (e.g., if it was phrased as a question (HR = \Sexpr{titleHR}, 95\% CI = (\Sexpr{titleLower}, \Sexpr{titleUpper}))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = \Sexpr{dayHR}, 95\% CI = (\Sexpr{dayLower}, \Sexpr{dayUpper}))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs.
+iFixit's community-driven online question and answer forum (CQA), \textit{Answers}, provides a platform for users to ask questions related specifically to device repair, and for both repair experts and everyday users to provide answers and feedback. This paper presents a survival analysis of the time until a question posted on iFixit's \textit{Answers} forum receives it's first response. A Cox proportional hazards model was developed to identify variables associated with response time. Though several predictors were significant, the model's predictive accuracy was low ($R^2 = \Sexpr{r2}$). Significant predictors included the device category of the question (questions pertaining to Apple products received answers faster than others (HR = \Sexpr{appleHR}, 95\% CI = (\Sexpr{appleLower}, \Sexpr{appleUpper})), factors related to the question's title (e.g., if it was phrased as a question (HR = \Sexpr{titleHR}, 95\% CI = (\Sexpr{titleLower}, \Sexpr{titleUpper}))), and the day of the week the question was posted (questions posted over the weekend received answers slower than those posted on a weekday (HR = \Sexpr{dayHR}, 95\% CI = (\Sexpr{dayLower}, \Sexpr{dayUpper}))). Future studies can investigate whether factors identified as significant in this analysis can be generalized to other CQAs.
 \end{abstract}
 
 \begin{keywords}
@@ -117,9 +121,7 @@ Cox regression; CQA forum; response time; survival analysis; survival probabilty
 
 \section{Introduction}
 
-Community-driven online question and answer forums feature thousands of user-generated questions and answers and receive millions of visits every month. As such, they have become widely-used sources of information. The CQA analyzed in this paper is iFixit's \textit{Answers} forum. Founded in 2003, iFixit equips users with the knowledge and tools necessary to both repair their broken devices and reduce electronic waste, by providing over 35,000 free online repair guides. 
-
-As not all possible repairs are covered in the published guides and users may have additional questions, iFixit's \textit{Answers} forum is an important resource for users. This platform features questions pertaining to over 10,000 devices, ranging from zippers to air conditioners and phone screens, with over 120,000 user-posted solutions. As thousands of users rely on this forum for information, it is important that users receive timely answers. Fast response times have been shown to be associated with positive user satisfaction and, in turn, increase web traffic, which is valuable to the reputation and longevity of the CQA \cite{Rechavi2011}. Analysis of response times can reveal factors that affect how quickly questions receive answers, which can lead to suggestions for how users can ask better questions to minimize response times and for how the forum design can be improved.
+Founded in 2003, iFixit teaches thousands of users across the globe how to fix their own broken devices. This company provides over 40,000 free online repair guides and hosts a CQA, the \textit{Answers} forum, featuring questions pertaining to over 11,000 devices with over 130,000 user-posted solutions. One critical key feature of CQAs like \textit{Answers} is question response times. Fast response times have been shown to be associated with positive user experience and increased web traffic---factors that are extremely valuable to the reputation and longevity of the CQA \cite{Rechavi2011}. Analysis of response times can reveal factors that affect how quickly questions receive answers, which can lead to suggestions for how users can ask questions to minimize response times and for how forum design can be improved.
 
 However, analysis and prediction of response times on CQAs have not been thoroughly investigated. There is need for further analysis in this area, as the majority of existing research focuses on assessing and predicting question or answer quality. This paper presents a survival analysis on the time until a question receives its first answer on iFixit's \textit{Answers} forum, in order to determine factors significantly related to response time and to predict survival probabilities of questions.
 
@@ -138,13 +140,13 @@ The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7,
 
 \section{Methods}
 
-Questions analyzed were restricted to those posted in English. The time until event variable used in survival analysis was defined as the time since posting until a question received its first answer. For questions that did not receive an answer by the download date, time until event values were defined as the time since posting to the time the data was downloaded. Such questions were considered right-censored, meaning that exact answer times for these questions are greater than the observed download time (questions may receive answers after the download date) \cite{Kleinbaum2011}. 
+Questions analyzed were restricted to those posted in English. Time until event was defined as the time since posting until a question received its first answer. For questions that did not receive an answer by the download date, time until event values were defined as the time since posting to the time the data was downloaded. Such questions were considered right-censored, meaning that exact answer times for these questions are greater than the observed download time (questions may receive answers after the download date) \cite{Kleinbaum2011}. 
 
-Survival was defined as the event that a question did not receive an answer beyond a certain time, \textit{t}. Estimates of survival probability were generated with the Kaplan-Meier method, which adjusts to the presence of right-censored, or unanswered questions \cite{Bland1998}. From these estimates, survival curves were constructed to examine the survival experience of questions. Mean and median survival times were also generated. 
+Survival was defined as the event that a question did not receive an answer beyond a certain time, \textit{t}. Estimates of survival probability were generated with the Kaplan-Meier method, which adjusts to the presence of right-censored observations, or unanswered questions \cite{Bland1998}. From these estimates, survival curves were constructed to examine the overall survival experience of questions. Mean and median survival times were also generated. 
 
-As the probability distribution for response times is unknown, a non-parametric Cox proportional hazards model was developed to predict the survival probability of questions \cite{Moore2010}. To build the model, five-fold cross-validation was used \cite{Rodriguez2010}. Univariate analysis, performed on one training set, was used to identify variables to include in the final predictive Cox model \cite{Hammermeister1979}. Each predictor was entered into univariate Cox models and the evidence of association with response times was assessed. Those with partial likelihood ratio p-values of less than 0.001 were included in the final model.  Continuous predictors were entered into univariate Cox models both with and without square root and log transformations to determine the form of the predictor to include in the final model. Univariate analysis was again performed on each continuous predictor to investigate the use of splines. Each predictor, with the transformation found necessary in the previous analysis, was fit to three separate Cox models with restricted cubic splines of three, four, and five knots. AIC statistics were used to determine whether or not to include splines, as well as the optimal number of knots \cite{Harrell2015}. All predictors found to be significant, along with transformations and splines found to be necessary, were included in the model for cross-validation. No variable selection was used after identifying significant predictors in univariate analysis, as \cite{Harrell2015} determined that reducing the number of predictors in the model decreased predictive accuracy more so than retaining all predictors. 
+As the probability distribution for response times is unknown, a non-parametric Cox proportional hazards model was developed to predict question survival probability \cite{Moore2010}. To build the model, the full data was partitioned into five separate sets \cite{Rodriguez2010}. Univariate analysis, performed on one training set, was used to identify variables to include in the final predictive Cox model \cite{Hammermeister1979}. For this process, each predictor was entered into univariate Cox models and evidence of association with response times was assessed. Those with partial likelihood ratio p-values of less than 0.001 were included in the final model.  Continuous predictors were entered into univariate Cox models both with and without square root and log transformations to determine the form of the predictor to include. Univariate analysis was again performed on each continuous predictor---each predictor, with the transformation previously found necessary, was fit to three separate Cox models with restricted cubic splines of three, four, and five knots. AIC statistics were used to determine if splines should be used, as well as the optimal number of knots \cite{Harrell2015}. All significant categorical and continuous predictors, in final form, were included in the model for five-fold cross-validation. % Variable selection was not used after identifying significant predictors in univariate analysis, as \cite{Harrell2015} determined that reducing the number of predictors in the model decreased predictive accuracy more so than retaining all predictors.
 
-In each iteration of cross-validation, the full model was built on the training set and used to generate predicted hazard ratios on the corresponding test set. To assess prediction performance, predicted hazard ratios were entered into separate Cox models as the single quantitative predictor with response times as survival time. The resulting Nagelkerke's $R^2$ statistic, concordance statistic, Somers' \textit{Dxy}, partial likelihood ratio and p-value, were assessed as indicators of the model's performance \cite{Chen}. Significant results from this model would indicate high predictive accuracy. The partial likelihood ratio assessed is a ratio of the log partial likelihood function evaluated at the parameter estimates, equivalent to a goodness of fit measure of the model with predictors, and the log partial likelihood function for the null model without predictors and only the baseline hazard function, equivalent to a goodness of fit measure for the null model. The p-value for this statistic was calculated from the $\chi^2$ distribution \cite{Oakes1981}. Concordance statistics and Somers' \textit{Dxy} are a measure of the model's discriminative ability. Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter response time also has the higher predicted hazard. Concordance statistics close to 1 indicate high discriminative ability, while statistics close to 0.5 indicate discordance, or random predictions. Somers' \textit{Dxy} is the difference between the model's concordance statistic and discordance, 0.5. A Somers' \textit{Dxy} statistic of 0 indicates random predictions, while a statistic equal to 1 indicates perfect predictions \cite{Harrell2015}. These metrics were computed for each iteration on every training and test set. Averages of metrics across training and test sets were evaluated. The final model was then fit to the full data and the same metrics were computed and compared. 
+In each iteration of cross-validation, the full model was built on the training set and used to generate predicted hazard ratios on the corresponding test set. To assess performance, predicted hazard ratios were entered into separate Cox models as the single quantitative predictor with response times as survival time. The resulting Nagelkerke's $R^2$ statistic, concordance statistic, Somers' \textit{Dxy}, partial likelihood ratio and p-value, were assessed as indicators of the model's performance \cite{Chen}. Significant results from this model would indicate high predictive accuracy. The partial likelihood ratio assessed is a ratio of the log partial likelihood function evaluated at the parameter estimates, equivalent to a goodness of fit measure of the model with predictors, and the log partial likelihood function for the null model without predictors and only the baseline hazard function, equivalent to a goodness of fit measure for the null model. The p-value for this statistic was calculated from the $\chi^2$ distribution \cite{Oakes1981}. Concordance statistics and Somers' \textit{Dxy} are a measure of the model's discriminative ability. Concordance is defined as the probability that for any two randomly chosen questions, the question with the shorter response time also has the higher predicted hazard. Concordance statistics close to 1 indicate high discriminative ability, while statistics close to 0.5 indicate discordance, or random predictions. Somers' \textit{Dxy} is the difference between the model's concordance statistic and discordance, 0.5. A Somers' \textit{Dxy} statistic of 0 indicates random predictions, while a statistic equal to 1 indicates perfect predictions \cite{Harrell2015}. These metrics were computed for each iteration on every training and test set. Averages of metrics across training and test sets were evaluated. The final model was then fit to the full data and the same metrics were computed and compared. 
 
 Correlations between scaled Schoenfeld residuals, differences between observed and expected predictor values for questions that received answers, and a function of time, were examined to assess the proportional hazards assumption that the effect of predictors on hazard does not depend on time \cite{Grambsch1994}. Significant correlations would indicate a predictor has violated this assumption.
 
@@ -237,14 +239,14 @@ unansw_p_u <- (1 - model_coefs$lower[u]) * 100
   \item The estimated hazard of receiving an answer for questions posted on a weekend is \Sexpr{day_p}\% lower (95\% CI (\Sexpr{day_p_l}\%, \Sexpr{day_p_u}\%)) than the hazard for questions posted on a weekday, controlling for all other predictors.
 \end{itemize}
 
-Results and coefficients of the final model reveal how users can ask questions in order to decrease response time. Findings suggest that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 
-
-The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response time, as well as create a set of consistent questions for improved analysis. 
-
 
 \section{Discussion}
 
-This study developed a Cox proportional hazards model to predict the probability that a question posted on iFixit's \textit{Answers} forum receives an answer before a certain time. Predictors found to be significant included: device category, if the question was posted on a weekend or a weekday, whether or not the question's title contained at least one word considered frequently-used among unanswered questions, and whether or not the question's title ends in a question mark. While overall the model was significant, its predictive performance was considerably low. 
+Results and coefficients of the final model reveal how users can ask questions in order to decrease response time. Findings suggest that users should phrase the title in the form of a question, use correct grammar (e.g. punctuation and capitalization), include specific and concise tags, and post the question on a weekday. 
+
+% Predictors found to be significant included: device category, if the question was posted on a weekend or a weekday, whether or not the question's title contained at least one word considered frequently-used among unanswered questions, and whether or not the question's title ends in a question mark. 
+
+The model's weak predictive accuracy, which may be explained by limitations in the data, lead to suggestions for changes in CQA design. Many users incorrectly specified the device name (e.g. a user asking a question about a Turtle Beach Ear Force XO ONE headset defined the device name as, ``Turtle Beach Ear Force Xmy grandson chewed through the wire while he was playing it's brand-new is there anyway I can have it fixed0 One''), or did not include a device name. Many users also incorrectly used the tagging system by including ambiguous and lengthy tags like ``someone sat on it :('' or ``help me please!!!!!'' (tags are generally a couple key words that allow the answering community to quickly discern the question's topic). It is likely that these inconsistencies contributed to the final model's low predictive power. This, along with the results of the final model, reveal some of the ways the CQA can be structured to potentially decrease response times. As findings indicate that questions with correctly defined tags and device names may lead to quicker response times, the CQA can provide a stricter framework for asking questions. Allowing users to enter any device name or tag leaves room for user error, shown by the examples described above. Instead, the CQA can restrict the tags or devices that users can include to a drop-down list. The CQA can also include more tips to guide users asking questions. Implementing a more structured framework for asking questions can help users create understandable and clear questions and in turn decrease response times, as well as create a set of consistent questions for improved analysis. 
 
 % \section{Vitae}
 % 
@@ -284,7 +286,7 @@ Table \ref{table:5} provides observed and derived variable values from an exampl
 
 \subsection{Average tag frequency}
 
-This variable was created to investigate if including popular or widely-used tags in a question lead to faster response times. This is computed as the average frequency, or proportion of times, a question's tags appear in all of the data set. Questions without tags were assigned a value of 0.  If a question has a higher average, then at least one of its tags are considered frequently-used. This variable was created based off of findings from \cite{Bhat2014}. 
+This variable was created to investigate if including popular or widely-used tags in a question can lead to faster response times, based off of findings from \cite{Bhat2014}. This was computed as the average frequency, or proportion of times a question's tags appear in all of the data set. Questions without tags were assigned a value of 0.  If a question has a higher average, then at least one of its tags are considered frequently-used.
 
 
 \subsection{Average tag length}
@@ -320,7 +322,7 @@ This variable was created to investigate if questions with titles in the form of
 
 \subsection{If the user made an effort to solve the problem prior to asking the question}
 
-This variable indicates true if the asker included words in the question's text that indicate that prior effort was made to find the solution to the question before posting. Words searched for include: tried, searched, researched, tested, replaced, used, checked, investigated, considered, measured, attempted, inspected, fitted. This variable was created based off of findings and methods from \cite{Bhat2014} and \cite{Harper2008}. 
+This variable indicates true if the asker included words in the question's text that indicate that the user made prior effort to find the solution before posting. Words searched for include: tried, searched, researched, tested, replaced, used, checked, investigated, considered, measured, attempted, inspected, fitted. This variable was created based off of findings and methods from \cite{Bhat2014} and \cite{Harper2008}. 
 
 
 \subsection{Line break to text length ratio}
@@ -328,7 +330,7 @@ This variable indicates true if the asker included words in the question's text 
 This variable was created to investigate if questions that include line breaks in the text are easier to read than questions that do not include any, and thus have shorter response times. Questions with a ratio of 0 tend to include either short, ambiguous texts (e.g. "Start button not working.") or long and lengthy texts, and tend to remain unanswered or have slower response times. Questions with a ratio of greater than 0 tend to have faster response times. 
 
 
-\end{appendix}
+\section{Tables}
 
 % Table of derived predictors
 \begin{table}[p]%[!htbp]
@@ -357,7 +359,7 @@ This variable was created to investigate if questions that include line breaks i
 
 
 % Splines Square root transformation of the average tag frequency
-\begin{table}% [!htbp]
+\begin{table}[p]% [!htbp]
 % \centering
 \tbl{The model with the lowest AIC was used to determine the optimal k number of splines for each continuous predictor.} 
 {\begin{tabular}{| L{5cm} | l | l |}
@@ -399,7 +401,7 @@ This variable was created to investigate if questions that include line breaks i
 \end{table}
 
 % Cross-validation metrics
-\begin{table}%[!htbp]
+\begin{table}[p]%[!htbp]
 % \centering
 \tbl{Performance metrics of final model. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)}
 {\begin{tabular}{|r|r|r|r|r|r|r|r|}
@@ -415,7 +417,7 @@ This variable was created to investigate if questions that include line breaks i
 \end{table}
 
 % Final model on full data
-\begin{table}%[!htbp]
+\begin{table}[p]%[!htbp]
 % \centering
 \tbl{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
 {\begin{tabular}{|l L{5.5cm}|c|c|}
@@ -445,7 +447,7 @@ This variable was created to investigate if questions that include line breaks i
 \label{table:4}
 \end{table}
 
-\begin{table}%[!htbp]
+\begin{table}[p]%[!htbp]
 % \centering
 \tbl{Examples of an answered question (left) and an unanswered question (right)}
 {\begin{tabular}{|L{4cm}|L{5cm}|L{5cm}|}
@@ -474,7 +476,7 @@ This variable was created to investigate if questions that include line breaks i
 \end{table}
 
 % Table with list of frequently-used words
-\begin{table}[!htbp]
+\begin{table}[p]%[!htbp]
 % \centering
 \tbl{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
 {\begin{tabular}{|L{4cm}|L{8cm}|}

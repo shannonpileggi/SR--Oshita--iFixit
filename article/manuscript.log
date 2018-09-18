@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  17 SEP 2018 16:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  17 SEP 2018 22:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -474,59 +474,52 @@ e
 LaTeX Info: Redefining \bfseries on input line 72.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <13> not available
-(Font)              size <12> substituted on input line 89.
+(Font)              size <12> substituted on input line 93.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <13> not available
-(Font)              size <12> substituted on input line 89.
+(Font)              size <12> substituted on input line 93.
 
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 89.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 93.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <5.5> not available
-(Font)              size <5> substituted on input line 89.
+(Font)              size <5> substituted on input line 93.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <5.5> not available
-(Font)              size <5> substituted on input line 89.
+(Font)              size <5> substituted on input line 93.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <5.5> not available
-(Font)              size <5> substituted on input line 89.
+(Font)              size <5> substituted on input line 93.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 89.
+LaTeX Font Info:    Try loading font information for U+msa on input line 93.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 89.
+LaTeX Font Info:    Try loading font information for U+msb on input line 93.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-Underfull \hbox (badness 3428) in paragraph at lines 102--103
-\OT1/cmr/m/n/10.95 Community-driven on-line ques-tion and an-swer fo-rums fea-t
-ure thou-sands of
- []
-
-[1
+) [1
 
 
 
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-[2] [3]
-Underfull \hbox (badness 1033) in paragraph at lines 161--162
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+
+Underfull \hbox (badness 1033) in paragraph at lines 163--164
 \OT1/cmr/m/n/10.95 in uni-vari-ate p-values of less than 0.001. Ap-ply-ing ei-t
 her square root or log
  []
 
-[4]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 171.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 173.
 
- (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <11> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 171.
- [5]
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 173.
+ [4] [5]
 (./manuscript.bbl
 Underfull \hbox (badness 4391) in paragraph at lines 7--11
 []\OT1/cmr/m/n/10 M. Asaduz-za-man, A.S. Mashiyat, C.K. Roy, and K.A. Schnei-de
@@ -551,7 +544,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--22
 --1580. Avail-able at
  []
 
-[6]
+
 Underfull \hbox (badness 10000) in paragraph at lines 48--51
 []\OT1/cmr/m/n/10 P. Gramb-sch and T. Th-erneau, \OT1/cmr/m/it/10 Pro-por-tiona
 l haz-ards tests and di-ag-nos-tics
@@ -595,7 +588,7 @@ pubmed/21531065%5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S030089321100350
 2%5Cnhttp://link.springer.com/10.1. 
  []
 
-
+[6]
 Underfull \hbox (badness 10000) in paragraph at lines 77--81
 []\OT1/cmr/m/n/10 J. Mah-mud, J. Chen, and J. Nichols, \OT1/cmr/m/it/10 When Wi
 ll You An-swer This?
@@ -643,43 +636,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 115--119
 014), pp. 101--115. Avail-able at
  []
 
-[7]) [8] [9]
-
-! LaTeX Error: \begin{document} ended by \end{appendix}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.275 \end{appendix}
-                    
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Extra \endgroup.
-<recently read> \endgroup 
-                          
-l.275 \end{appendix}
-                    
-Things are pretty mixed up, but I think the worst is over.
-
+) [7] [8]
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <8> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 357.
-[10] [11] [12] [13] (./manuscript.aux)
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 359.
+ [9] [10] [11] [12] [13] [14] [15] (./manuscript.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
  ) 
 Here is how much of TeX's memory you used:
- 4717 strings out of 492995
- 63655 string characters out of 6132704
- 160769 words of memory out of 5000000
- 8145 multiletter control sequences out of 15000+600000
+ 4716 strings out of 492995
+ 63644 string characters out of 6132704
+ 163769 words of memory out of 5000000
+ 8144 multiletter control sequences out of 15000+600000
  19041 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,19n,28p,2009b,330s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,19n,28p,1998b,290s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></
@@ -701,10 +674,10 @@ e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/201
 7/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on manuscript.pdf (13 pages, 289065 bytes).
+Output written on manuscript.pdf (15 pages, 288611 bytes).
 PDF statistics:
- 131 PDF objects out of 1000 (max. 8388607)
- 94 compressed objects within 1 object stream
+ 137 PDF objects out of 1000 (max. 8388607)
+ 98 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
