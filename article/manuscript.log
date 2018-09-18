@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  17 SEP 2018 23:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  17 SEP 2018 23:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -519,8 +519,8 @@ File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <11> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 173.
- [4] [5]
-(./manuscript.bbl
+ [4]
+(./manuscript.bbl [5]
 Underfull \hbox (badness 4391) in paragraph at lines 7--11
 []\OT1/cmr/m/n/10 M. Asaduz-za-man, A.S. Mashiyat, C.K. Roy, and K.A. Schnei-de
 r, \OT1/cmr/m/it/10 An-swer-ing
@@ -612,13 +612,13 @@ Overfull \hbox (36.14275pt too wide) in paragraph at lines 77--81
 terstitial/6072/6328. 
  []
 
-[6]
+
 Underfull \hbox (badness 1275) in paragraph at lines 87--90
 []\OT1/cmr/m/n/10 D. Oakes, \OT1/cmr/m/it/10 Sur-vival Times: As-pects of Par-t
 ial Like-li-hood\OT1/cmr/m/n/10 , In-ter-na-tional Sta-tis-ti-cal
  []
 
-
+[6]
 Underfull \hbox (badness 5696) in paragraph at lines 115--119
 []\OT1/cmr/m/n/10 H. Toba, Z.y. Ming, M. Adri-ani, and T.s. Chua, \OT1/cmr/m/it
 /10 Dis-cov-er-ing high qual-ity
@@ -648,11 +648,11 @@ LaTeX Font Warning: Size substitutions with differences
 Here is how much of TeX's memory you used:
  4716 strings out of 492995
  63644 string characters out of 6132704
- 162769 words of memory out of 5000000
+ 161769 words of memory out of 5000000
  8144 multiletter control sequences out of 15000+600000
  19041 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,19n,28p,1911b,298s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,19n,28p,1899b,306s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></
@@ -674,7 +674,7 @@ e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/201
 7/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on manuscript.pdf (15 pages, 288400 bytes).
+Output written on manuscript.pdf (15 pages, 288913 bytes).
 PDF statistics:
  137 PDF objects out of 1000 (max. 8388607)
  98 compressed objects within 1 object stream
