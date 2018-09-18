@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  17 SEP 2018 23:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  18 SEP 2018 10:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -505,83 +505,71 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
-
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
 Underfull \hbox (badness 1033) in paragraph at lines 163--164
 \OT1/cmr/m/n/10.95 in uni-vari-ate p-values of less than 0.001. Ap-ply-ing ei-t
 her square root or log
  []
 
+[3]
 LaTeX Font Info:    Try loading font information for OML+cmr on input line 173.
 
-(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <11> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 173.
  [4]
-(./manuscript.bbl [5]
-Underfull \hbox (badness 4391) in paragraph at lines 7--11
-[]\OT1/cmr/m/n/10 M. Asaduz-za-man, A.S. Mashiyat, C.K. Roy, and K.A. Schnei-de
-r, \OT1/cmr/m/it/10 An-swer-ing
- []
-
-
-Underfull \hbox (badness 5331) in paragraph at lines 7--11
-\OT1/cmr/m/it/10 ques-tions about unan-swered ques-tions of Stack Over-flow\OT1
-/cmr/m/n/10 , 2013 10th Work-ing
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 19--22
+(./manuscript.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 13--16
 []\OT1/cmr/m/n/10 J.M. Bland and D.G. Alt-man, \OT1/cmr/m/it/10 Statis-tics Not
 es: Sur-vival prob-a-bil-i-ties (the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 19--22
+Underfull \hbox (badness 10000) in paragraph at lines 13--16
 \OT1/cmr/m/it/10 Kaplan-Meier method)\OT1/cmr/m/n/10 , Bmj 317 (1998), pp. 1572
 --1580. Avail-able at
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--51
+Underfull \hbox (badness 10000) in paragraph at lines 30--33
 []\OT1/cmr/m/n/10 P. Gramb-sch and T. Th-erneau, \OT1/cmr/m/it/10 Pro-por-tiona
 l haz-ards tests and di-ag-nos-tics
  []
 
 
-Underfull \hbox (badness 3460) in paragraph at lines 48--51
+Underfull \hbox (badness 3460) in paragraph at lines 30--33
 \OT1/cmr/m/it/10 based on weighted resid-u-als\OT1/cmr/m/n/10 , Biometrika 81 (
 1994), pp. 515--526. Avail-able at
  []
 
 
-Underfull \hbox (badness 2600) in paragraph at lines 61--65
+Underfull \hbox (badness 2600) in paragraph at lines 43--47
 []\OT1/cmr/m/n/10 F.M. Harper, D. Ra-ban, S. Rafaeli, and J.A. Kon-stan, \OT1/c
 mr/m/it/10 Pre-dic-tors of An-swer
  []
 
 
-Underfull \hbox (badness 7667) in paragraph at lines 61--65
+Underfull \hbox (badness 7667) in paragraph at lines 43--47
 \OT1/cmr/m/it/10 Qual-ity in On-line Q&A Sites\OT1/cmr/m/n/10 , Pro-ceed-ings o
 f the SIGCHI Con-fer-ence on
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 61--65
+Underfull \hbox (badness 10000) in paragraph at lines 43--47
 \OT1/cmr/m/n/10 Hu-man Fac-tors in Com-put-ing Sys-tems (2008), pp. 865--874. A
 vail-able at
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 67--69
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 []\OT1/cmr/m/n/10 F.E. Har-rell, \OT1/cmr/m/it/10 Re-gres-sion Mod-el-ing Strat
 e-gies\OT1/cmr/m/n/10 , Vol. 64, 2015, Avail-able at
  []
 
 
-Overfull \hbox (833.6448pt too wide) in paragraph at lines 67--69
+Overfull \hbox (833.6448pt too wide) in paragraph at lines 49--51
 \OT1/cmr/m/n/10 papers://55069ee6-504c-4f60-bfa9-053c4dcabb39/Paper/p398%5Cnhtt
 p://link.springer.com/10.1007/978-3-319-19425-7%5Cnhttp://www.ncbi.nlm.nih.gov/
 pubmed/21531065%5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S030089321100350
@@ -589,70 +577,28 @@ pubmed/21531065%5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S030089321100350
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 77--81
-[]\OT1/cmr/m/n/10 J. Mah-mud, J. Chen, and J. Nichols, \OT1/cmr/m/it/10 When Wi
-ll You An-swer This?
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 77--81
-\OT1/cmr/m/it/10 Es-ti-mat-ing Re-sponse Time in Twit-ter\OT1/cmr/m/n/10 , in \
-OT1/cmr/m/it/10 Sev-enth In-ter-na-tional AAAI
- []
-
-
-Underfull \hbox (badness 6412) in paragraph at lines 77--81
-\OT1/cmr/m/it/10 Con-fer-ence on We-blogs and So-cial Me-dia\OT1/cmr/m/n/10 . 2
-013, pp. 697--700. Avail-able at
- []
-
-
-Overfull \hbox (36.14275pt too wide) in paragraph at lines 77--81
-\OT1/cmr/m/n/10 http://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewPDFIn
-terstitial/6072/6328. 
- []
-
-
-Underfull \hbox (badness 1275) in paragraph at lines 87--90
+Underfull \hbox (badness 1275) in paragraph at lines 63--66
 []\OT1/cmr/m/n/10 D. Oakes, \OT1/cmr/m/it/10 Sur-vival Times: As-pects of Par-t
 ial Like-li-hood\OT1/cmr/m/n/10 , In-ter-na-tional Sta-tis-ti-cal
  []
 
-[6]
-Underfull \hbox (badness 5696) in paragraph at lines 115--119
-[]\OT1/cmr/m/n/10 H. Toba, Z.y. Ming, M. Adri-ani, and T.s. Chua, \OT1/cmr/m/it
-/10 Dis-cov-er-ing high qual-ity
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 115--119
-\OT1/cmr/m/it/10 an-swers in com-mu-nity ques-tion an-swer-ing archives us-ing 
-a hi-er-ar-chy of
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 115--119
-\OT1/cmr/m/it/10 clas-si-fiers\OT1/cmr/m/n/10 , In-for-ma-tion Sci-ences 261 (2
-014), pp. 101--115. Avail-able at
- []
-
-) [7] [8]
+) [6] [7]
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <8> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 359.
- [9] [10] [11] [12] [13] [14] [15] (./manuscript.aux)
+ [8] [9] [10] [11] [12] [13] [14] (./manuscript.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
  ) 
 Here is how much of TeX's memory you used:
- 4716 strings out of 492995
- 63644 string characters out of 6132704
- 161769 words of memory out of 5000000
- 8144 multiletter control sequences out of 15000+600000
+ 4690 strings out of 492995
+ 63178 string characters out of 6132704
+ 162640 words of memory out of 5000000
+ 8118 multiletter control sequences out of 15000+600000
  19041 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,19n,28p,1899b,306s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,19n,28p,1899b,284s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></
@@ -674,10 +620,10 @@ e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2
 017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/201
 7/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on manuscript.pdf (15 pages, 288913 bytes).
+Output written on manuscript.pdf (14 pages, 283427 bytes).
 PDF statistics:
- 137 PDF objects out of 1000 (max. 8388607)
- 98 compressed objects within 1 object stream
+ 134 PDF objects out of 1000 (max. 8388607)
+ 96 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
