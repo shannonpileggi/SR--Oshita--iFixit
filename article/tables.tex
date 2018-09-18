@@ -1,0 +1,242 @@
+\documentclass[]{interact}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+% \usepackage{lineno,hyperref}
+% \modulolinenumbers[5]
+
+\usepackage{multirow}
+\usepackage{color,soul}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+% \usepackage{caption}
+
+\usepackage[none]{hyphenat} % to cancel auto-hyphenation
+
+\usepackage[numbers,sort&compress]{natbib} % for reference/citation formating
+\bibpunct[, ]{[}{]}{,}{n}{,}{,}
+\renewcommand\bibfont{\fontsize{10}{12}\selectfont}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+% puts R2 in bold in table 3
+\makeatletter
+\DeclareRobustCommand\bfseries{%
+  \not@math@alphabet\bfseries\mathbf
+  \fontseries\bfdefault\selectfont
+  \boldmath % <-- added
+}
+\makeatother
+
+\makeatletter % for spacing figures at the end of the document
+\@fpsep\textheight
+\makeatother
+
+% Table of derived predictors
+\begin{table}[p]%[!htbp]
+\tbl{Categorical and continuous variables derived}
+% \centering
+{\begin{tabular}{|L{2cm}|L{10cm}|}
+  \hline
+  \multirow{9}{2cm}{\textbf{Categorical Variables}} & Device category the question pertains to. Categories include: Android/Other Phone, Apple Products, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle \\ \cline{2-2}
+  & If the question was posted on a weekend or on a weekday \\ \cline{2-2}
+  & If the question's text contains end punctuation marks (. ? !) \\ \cline{2-2}
+  & If the question's text is in all lower case \\ \cline{2-2}
+  & If the question's title contains at least one word considered to be ``frequently-used'' among answered questions \\ \cline{2-2}
+  & If the question's title contains at least one word considered to be ``frequently-used'' among unanswered question \\ \cline{2-2}
+  & If the question's title ends in a question mark \\ \cline{2-2}
+  & If the user edited or added information to the question's text after posting it \\ \cline{2-2}
+  & If the user made an effort to solve the problem prior to asking the question \\ \hline
+  \multirow{5}{2cm}{\textbf{Continuous Variables}} & Average number of characters in each question's tags (average tag length)\\ \cline{2-2}
+  & Average frequency for all of a question's tags (average tag frequency) \\ \cline{2-2}
+  & Number of characters in the question's text (text length) \\ \cline{2-2}
+  & Number of characters in the user-defined device name (device name length) \\ \cline{2-2}
+  & Ratio of the number of line breaks to the number of characters in the question's text (line break to text length ratio) \\ \hline
+\end{tabular}}
+% \caption{Categorical and continuous variables derived}
+\label{table:1}
+\end{table}
+
+
+% Splines Square root transformation of the average tag frequency
+\begin{table}[p]% [!htbp]
+% \centering
+\tbl{The model with the lowest AIC was used to determine the optimal k number of splines for each continuous predictor.} 
+{\begin{tabular}{| L{5cm} | l | l |}
+  \hline
+  \textbf{Predictor} & \textbf{K} & \textbf{AIC} \\ 
+  \hline
+  \multirow{4}{5 cm}{$\sqrt{\textnormal{average tag frequency}}$} 
+  & 0\textbf{*} & 65890.75 \\ 
+  & 5 & 65891.69 \\ 
+  & 4 & 65891.75 \\ 
+  & 3 & 65892.35 \\ 
+  \hline
+  \multirow{4}{5 cm}{$\log\left({\textnormal{average tag length} + 1}\right)$}
+  & 0 & 65920.24 \\ 
+  & 5 & 65911.20 \\ 
+  & 4\textbf{*} & 65910.81 \\ 
+  & 3 & 65914.98 \\ 
+  \hline
+  \multirow{4}{5 cm}{$\log\left({\textnormal{device length} + 1}\right)$}
+  & 0 & 65918.06 \\ 
+  & 5\textbf{*} & 65847.34 \\ 
+  & 4 & 65880.89 \\ 
+  & 3 & 65898.00 \\ 
+  \hline
+  \multirow{4}{5 cm}{$\sqrt{\textnormal{line breaks / text length}}$}
+  & 0 & 65890.28 \\ 
+  & 5 & 65884.70 \\ 
+  & 4 & 65882.98 \\ 
+  & 3\textbf{*} & 65881.93 \\ 
+  \hline
+  \multirow{4}{5cm}{$\log\left({\textnormal{text length}}\right)$} 
+  & 0 & 65862.83 \\ 
+  & 5\textbf{*} & 65862.02 \\ 
+  & 4 & 65863.35 \\ 
+  & 3 & 65862.08 \\ 
+  \hline
+\end{tabular}}
+\label{table:2}
+\end{table}
+
+% Cross-validation metrics
+\begin{table}[p]%[!htbp]
+% \centering
+\tbl{Performance metrics of final model. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)}
+{\begin{tabular}{|r|r|r|r|r|r|r|r|}
+  \hline
+ & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
+  \hline
+  \textbf{Training Sets} & 2.03 & 937.39  & \textless0.0001 & 0.14 & 0.27 & 0.63 \\ 
+  \textbf{Test Sets}     & 1.99 & 220.83  & \textless0.0001 & 0.14 & 0.26 & 0.63 \\
+  \textbf{Full Data}     & 2.03 & 1165.03 & \textless0.0001 & 0.14 & 0.28 & 0.63 \\ 
+   \hline
+\end{tabular}}
+\label{table:3}
+\end{table}
+
+% Final model on full data
+\begin{table}[p]%[!htbp]
+% \centering
+\tbl{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
+{\begin{tabular}{|l L{5.5cm}|c|c|}
+  \hline
+ \textbf{Variable} & & \textbf{Coefficient (SE)} & \textbf{p-value} \\ \hline
+  Device Category & Apple Product & 0.93 (0.048) & \textless0.0001 \\ 
+                  & Camera & -0.32 (0.090) & \\ 
+                  & Electronics & -0.01 (0.078)  & \\ 
+                  & Game Console & 0.24 (0.083)  & \\ 
+                  & Home & 0.34 (0.070) &  \\ 
+                  & Other & -0.13 (0.056)  & \\ 
+                  & PC & 0.28 (0.060) &  \\ 
+                  & Tablet & -0.16 (0.081)  & \\ 
+                  & Vehicle & 0.40 (0.069)  & \\
+                  & Android/Other Phone (reference) & --- & \\ \hline
+  \multicolumn{2}{|l|}{Weekend} & -0.13 (0.033)  & \textless0.0001 \\ \hline
+  \multicolumn{2}{|l|}{Text contains end punctuation} & 0.03 (0.050) & 0.613 \\ \hline
+  \multicolumn{2}{|l|}{Text is in all lower case} & -0.18 (0.064) &  0.006 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among answered questions} & 0.05 (0.042) &  0.260 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among unanswered questions} & -0.28 (0.034)  & \textless0.0001 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Title ends in a question mark} & 0.26 (0.033) &  \textless0.0001 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User edited or added to the question's text after posting it} & 0.30 (0.086)  & 0.001 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User was a member for less than one day before posting} & -0.11 (0.036)  & 0.003 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{User made an effort to solve the problem prior to asking the question} & -0.07 (0.036)  & 0.045 \\ \hline
+  \multicolumn{2}{|L{9cm}|}{Square root of the average tag frequency} & 2.23 (0.720)  & 0.002 \\ \hline
+\end{tabular}}
+\label{table:4}
+\end{table}
+
+\begin{table}[p]%[!htbp]
+% \centering
+\tbl{Examples of an answered question (left) and an unanswered question (right)}
+{\begin{tabular}{|L{4cm}|L{5cm}|L{5cm}|}
+\hline
+\textbf{Device} & iPhone 6 & android tablet \\ \hline
+\textbf{Title} & iPhone water damage, touch screen issue & ccccaaaan you help me fix my touch screen \\ \hline
+\textbf{Text} & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? & touch screen not worki\\ \hline
+\textbf{Tags} & touchscreen, water damage & NA\\ \hline
+\textbf{Response Time (hrs)} & 1.361 & NA \\ \hline 
+\textbf{Device Category} & Apple Product & Tablet \\ \hline
+\textbf{Day Posted} & Weekday & Weekday \\ \hline
+\textbf{Text length (characters)} & 241 & 81 \\ \hline
+\textbf{Device name length (characters)} & 8 & 18\\ \hline
+\textbf{Average tag length (characters)} & 11.5 & 47 \\ \hline
+\textbf{Average tag frequency} & 0.0097 & 0 \\ \hline
+\textbf{Text contain end punctuation?} & True & False \\ \hline
+\textbf{Text in all lower case?} & False & True \\ \hline
+\textbf{Title end in a question mark?} & False & False \\ \hline
+\textbf{Line break to text length ratio} & 0 & 0 \\ \hline
+\textbf{User indicate prior effort?} & False & False \\ \hline
+\textbf{User update question after posting?} & False & False \\ \hline
+\textbf{Frequently-used answered words?} & True & True \\ \hline
+\textbf{Frequently-used unanswered words?} & False & False \\ \hline
+\end{tabular}}
+\label{table:5}
+\end{table}
+
+% Table with list of frequently-used words
+\begin{table}[p]%[!htbp]
+% \centering
+\tbl{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
+{\begin{tabular}{|L{4cm}|L{8cm}|}
+  \hline
+ \textbf{Frequently-used terms among answered questions} & screen, turn, working, replacement, power, work, replace, charging, charge, button, touch, black, turning, broken, start, stuck, new, LCD, upgrade, problem, change, port, replaced, card, open, boot, replacing, remove, reset, back, drive, error, cable, ssd, cracked, hard, one, dropped, logic, lines, white, keeps, pro, dead, now, front, damage, switch, parts, glass, still, charger, issue, sim, turns, digitizer, just, mode, model, backlight, usb, stopped, logo, starting, know, unresponsive, password, factory, call, use, damaged, find, sensor, possible, fixed, side, galaxy, data, ipod, problems, issue, slow, system, connector, without, overheating, code, ram, air, microphone, please, red, much, plugged, getting, booting, left, way, buy, plus, time, loose, lock, coming, got, shuts, says, install, key, door, top \\
+  \hline
+  \textbf{Frequently-used terms among unanswered questions} & sound, light, wifi, speaker, connect, picture, stay, noise, bluetooth, isnt, apps, going, rear, question, play, stop, service, take, hear, lights, showing, network, volume, come, keep, connection, flashing, shut, print, blue, buttons, edit \\ 
+   \hline
+\end{tabular}}
+\label{table:6}
+\end{table}
+
+
+
+\end{document}
