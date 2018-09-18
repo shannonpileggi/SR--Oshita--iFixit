@@ -53,10 +53,10 @@
 % \usepackage{lineno,hyperref}
 % \modulolinenumbers[5]
 
-\usepackage{multirow}
-\usepackage{color,soul}
-\usepackage{array}
-\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+% \usepackage{multirow}
+% \usepackage{color,soul}
+% \usepackage{array}
+% \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 % \usepackage{caption}
 
 \usepackage[none]{hyphenat} % to cancel auto-hyphenation
@@ -68,17 +68,17 @@
 \begin{document}
 
 % puts R2 in bold in table 3
-\makeatletter
-\DeclareRobustCommand\bfseries{%
-  \not@math@alphabet\bfseries\mathbf
-  \fontseries\bfdefault\selectfont
-  \boldmath % <-- added
-}
-\makeatother
-
-\makeatletter % for spacing figures at the end of the document
-\@fpsep\textheight
-\makeatother
+% \makeatletter
+% \DeclareRobustCommand\bfseries{%
+%   \not@math@alphabet\bfseries\mathbf
+%   \fontseries\bfdefault\selectfont
+%   \boldmath % <-- added
+% }
+% \makeatother
+% 
+% \makeatletter % for spacing figures at the end of the document
+% \@fpsep\textheight
+% \makeatother
 
 
 
@@ -97,7 +97,7 @@ iFixit's community-driven online question and answer forum (CQA), \textit{Answer
 \end{abstract} % 174 words
 
 \begin{keywords}
-Cox regression; CQA forum; Kaplan-Meier method; response time; survival analysis; survival probabilty;  
+Cox regression; CQA forum; Kaplan-Meier method; response time; survival analysis; survival probability;  
 \end{keywords}
 
 
@@ -117,7 +117,7 @@ The majority of existing research has been focused on predicting question and an
 
 \section{Materials}
 
-The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7, 2017 (date of data download). Variables in the data included: device name, device category, question title, text, tags, new user status, date and time the question was posted, and date and time the first answer was received. Variables derived can be found in Table \ref{table:1}. The Appendix contains details on variable derivation, as well as an example of an answered and unanswered question in Table \ref{table:5}. 
+The data analyzed contained 8,025 questions posted from April 8, 2017 to July 7, 2017 (date of data download). Variables in the data included: device name, device category, question title, text, tags, new user status, date and time the question was posted, and date and time the first answer was received. Variables derived can be found in Table 1. The Appendix contains details on variable derivation, as well as an example of an answered and unanswered question in Table 5. 
 
 
 \section{Methods}
@@ -162,9 +162,9 @@ Figure 2 shows the Kaplan-Meier estimated survival probability curve for all que
 
 Each training set contained 6,208 questions; each test set contained 1,552 questions. Univariate analysis performed on one training set indicated that all categorical predictors were significant with partial likelihood ratio p-values of less than 0.001. Continuous predictors, excluding device length and average tag length, also resulted in p-values of less than 0.001. Applying either square root or log transformations to all continuous predictors resulted in p-values of less than 0.001. The following transformations were applied to continuous variables: square root transformation of average tag frequency, log plus one transformation of average tag length, log plus one transformation of device name length, square root transformation of line break to text length ratio, and log transformation of text length.
 
-Table \ref{table:2} shows the results of determining the optimal number of knots for each continuous predictor. Those marked with an asterisk (*) were included in the final model. 
+Table 2 shows the results of determining the optimal number of knots for each continuous predictor. Those marked with an asterisk (*) were included in the final model. 
 
-Average performance metrics for test and training sets are in Table \ref{table:3}. Partial likelihood ratios and p-values indicate that the model as a whole is significantly associated with response time. However, $R^2$ statistics and discrimination indexes are considerably low. Metrics for the final model's performance on the full data, also found in Table \ref{table:3}, are consistent with metrics found in cross-validation and indicate low predictive accuracy. Results for training, test, and the full data did not change significantly, indicating that the model was not overfit. 
+Average performance metrics for test and training sets are in Table 3. Partial likelihood ratios and p-values indicate that the model as a whole is significantly associated with response time. However, $R^2$ statistics and discrimination indexes are considerably low. Metrics for the final model's performance on the full data, also found in Table 3, are consistent with metrics found in cross-validation and indicate low predictive accuracy. Results for training, test, and the full data did not change significantly, indicating that the model was not overfit. 
 
 
 
@@ -172,7 +172,7 @@ Assessing the proportional hazards assumption indicated that several levels of t
 
 The final model trained on the full data set was significant with a partial likelihood ratio of 1265.29 (p-value \textless0.0001). Its $R^2$ statistic was 0.15, and Somers' \textit{Dxy} was 0.27. 
 
-The following are interpretations of select hazard coefficients in Table \ref{table:4}. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
+The following are interpretations of select hazard coefficients in Table 4. Hazard is approximately equivalent to the conditional probability that a question will receive an answer within the next moment in time, given that it has not already received an answer. 
 
 
 
@@ -223,7 +223,7 @@ This research was supported by the Bill and Linda Frost fund of the California P
 
 \section{Posted questions}
 
-Table \ref{table:5} provides observed and derived variable values from an example of an answered question (regarding the iPhone 6) and unanswered question (regarding android tablet). All fields in device, title, text, and tags are shown as the users entered it. 
+Table 5 provides observed and derived variable values from an example of an answered question (regarding the iPhone 6) and unanswered question (regarding android tablet). All fields in device, title, text, and tags are shown as the users entered it. 
 
 
 \section{Variable Derivation}
@@ -257,7 +257,7 @@ This variable was created to investigate if sentences with no end punctuation ta
 
 These variables were created to investigate if questions pertaining to popular topics receive answers faster than questions that do not. Similarly, another variable was created to investigate if questions pertaining to unpopular topics receive answers slower than questions that do not. This variable was created based off of methods from \cite{Correa2013} and \cite{Ravi2014}.
 
-To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the proportion of times those words occurred among all answered questions' titles, defined as the frequency. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in 1\% or more of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies was assessed. The ratio was calculated as the proportion of times a word occurred among answered questions, to the proportion of times a word occurred in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and levels of the device categorization variable, every word that matched a device name was removed from the lists. Table \ref{table:6} contains the resulting terms for answered questions (111 words) and for unanswered questions (32 words).
+To create the variables, the data was separated between answered and unanswered questions. For the data frame containing answered questions, text mining techniques were used to create a list of every word within each questions' titles and the proportion of times those words occurred among all answered questions' titles, defined as the frequency. The same was performed for the data frame containing unanswered questions. ``Frequently-used'' words in answered questions were defined as those that appeared in 1\% or more of all answered questions' titles, and appeared in more answered questions than in unanswered questions. To determine the latter, a ratio of frequencies was assessed. The ratio was calculated as the proportion of times a word occurred among answered questions, to the proportion of times a word occurred in unanswered questions. As an example, if ``cracked'' appeared in 2\% of answered questions and 0.1\% of unanswered questions, it would be considered ``frequently-used'' among answered questions as it occurs in more than 1\% of answered questions' titles and occurs 20 times more in answered question than in unanswered questions (ratio = 0.02/0.001 = 20). Similarly, ``frequently-used'' words in unanswered questions must occur in 1\% or more of all unanswered question's titles and occur in more unanswered questions than answered questions. As there was some overlap between ``frequently-used'' words in each list and levels of the device categorization variable, every word that matched a device name was removed from the lists. Table 6 contains the resulting terms for answered questions (111 words) and for unanswered questions (32 words).
 
 \subsection{If the question's title ends in a question mark}
 
@@ -266,172 +266,11 @@ This variable was created to investigate if questions with titles in the form of
 
 \subsection{If the user made an effort to solve the problem prior to asking the question}
 
-This variable indicates true if the asker included words in the question's text that indicate the user made prior effort to find the solution before posting. Words searched for include: tried, searched, researched, tested, replaced, used, checked, investigated, considered, measured, attempted, inspected, fitted. This variable was created based off of findings and methods from \cite{Bhat2014} and \cite{Harper2008}. 
+This variable indicates true if the user included words in the question's text that indicate the user made prior effort to find the solution before posting. Words searched for include: tried, searched, researched, tested, replaced, used, checked, investigated, considered, measured, attempted, inspected, fitted. This variable was created based off of findings and methods from \cite{Bhat2014} and \cite{Harper2008}. 
 
 
 \subsection{Line break to text length ratio}
 
 This variable was created to investigate if questions that include line breaks in the text are easier to read than questions that do not include any, and thus have shorter response times. Questions with a ratio of 0 tend to include either short, ambiguous texts (e.g. "Start button not working.") or long and lengthy texts, and tend to remain unanswered or have slower response times. Questions with a ratio of greater than 0 tend to have faster response times. 
-
-
-\section{Tables}
-
-% Table of derived predictors
-\begin{table}[p]%[!htbp]
-\tbl{Categorical and continuous variables derived}
-% \centering
-{\begin{tabular}{|L{2cm}|L{10cm}|}
-  \hline
-  \multirow{9}{2cm}{\textbf{Categorical Variables}} & Device category the question pertains to. Categories include: Android/Other Phone, Apple Products, Camera, Electronics, Game Console, Home, Other, PC, Tablet, Vehicle \\ \cline{2-2}
-  & If the question was posted on a weekend or on a weekday \\ \cline{2-2}
-  & If the question's text contains end punctuation marks (. ? !) \\ \cline{2-2}
-  & If the question's text is in all lower case \\ \cline{2-2}
-  & If the question's title contains at least one word considered to be ``frequently-used'' among answered questions \\ \cline{2-2}
-  & If the question's title contains at least one word considered to be ``frequently-used'' among unanswered question \\ \cline{2-2}
-  & If the question's title ends in a question mark \\ \cline{2-2}
-  & If the user edited or added information to the question's text after posting it \\ \cline{2-2}
-  & If the user made an effort to solve the problem prior to asking the question \\ \hline
-  \multirow{5}{2cm}{\textbf{Continuous Variables}} & Average number of characters in each question's tags (average tag length)\\ \cline{2-2}
-  & Average frequency for all of a question's tags (average tag frequency) \\ \cline{2-2}
-  & Number of characters in the question's text (text length) \\ \cline{2-2}
-  & Number of characters in the user-defined device name (device name length) \\ \cline{2-2}
-  & Ratio of the number of line breaks to the number of characters in the question's text (line break to text length ratio) \\ \hline
-\end{tabular}}
-% \caption{Categorical and continuous variables derived}
-\label{table:1}
-\end{table}
-
-
-% Splines Square root transformation of the average tag frequency
-\begin{table}[p]% [!htbp]
-% \centering
-\tbl{The model with the lowest AIC was used to determine the optimal k number of splines for each continuous predictor.} 
-{\begin{tabular}{| L{5cm} | l | l |}
-  \hline
-  \textbf{Predictor} & \textbf{K} & \textbf{AIC} \\ 
-  \hline
-  \multirow{4}{5 cm}{$\sqrt{\textnormal{average tag frequency}}$} 
-  & 0\textbf{*} & 65890.75 \\ 
-  & 5 & 65891.69 \\ 
-  & 4 & 65891.75 \\ 
-  & 3 & 65892.35 \\ 
-  \hline
-  \multirow{4}{5 cm}{$\log\left({\textnormal{average tag length} + 1}\right)$}
-  & 0 & 65920.24 \\ 
-  & 5 & 65911.20 \\ 
-  & 4\textbf{*} & 65910.81 \\ 
-  & 3 & 65914.98 \\ 
-  \hline
-  \multirow{4}{5 cm}{$\log\left({\textnormal{device length} + 1}\right)$}
-  & 0 & 65918.06 \\ 
-  & 5\textbf{*} & 65847.34 \\ 
-  & 4 & 65880.89 \\ 
-  & 3 & 65898.00 \\ 
-  \hline
-  \multirow{4}{5 cm}{$\sqrt{\textnormal{line breaks / text length}}$}
-  & 0 & 65890.28 \\ 
-  & 5 & 65884.70 \\ 
-  & 4 & 65882.98 \\ 
-  & 3\textbf{*} & 65881.93 \\ 
-  \hline
-  \multirow{4}{5cm}{$\log\left({\textnormal{text length}}\right)$} 
-  & 0 & 65862.83 \\ 
-  & 5\textbf{*} & 65862.02 \\ 
-  & 4 & 65863.35 \\ 
-  & 3 & 65862.08 \\ 
-  \hline
-\end{tabular}}
-\label{table:2}
-\end{table}
-
-% Cross-validation metrics
-\begin{table}[p]%[!htbp]
-% \centering
-\tbl{Performance metrics of final model. (HR: Hazard Ratio, LR: Partial Likelihood Ratio)}
-{\begin{tabular}{|r|r|r|r|r|r|r|r|}
-  \hline
- & \textbf{HR} & \textbf{LR} & \textbf{p-value} & \textbf{$R^2$} & \textbf{\textit{Dxy}} & \textbf{Concordance} \\ 
-  \hline
-  \textbf{Training Sets} & 2.03 & 937.39  & \textless0.0001 & 0.14 & 0.27 & 0.63 \\ 
-  \textbf{Test Sets}     & 1.99 & 220.83  & \textless0.0001 & 0.14 & 0.26 & 0.63 \\
-  \textbf{Full Data}     & 2.03 & 1165.03 & \textless0.0001 & 0.14 & 0.28 & 0.63 \\ 
-   \hline
-\end{tabular}}
-\label{table:3}
-\end{table}
-
-% Final model on full data
-\begin{table}[p]%[!htbp]
-% \centering
-\tbl{Coefficients for predictors in the final model. (Continuous predictors fit with restricted cubic splines are not shown)} 
-{\begin{tabular}{|l L{5.5cm}|c|c|}
-  \hline
- \textbf{Variable} & & \textbf{Coefficient (SE)} & \textbf{p-value} \\ \hline
-  Device Category & Apple Product & 0.93 (0.048) & \textless0.0001 \\ 
-                  & Camera & -0.32 (0.090) & \\ 
-                  & Electronics & -0.01 (0.078)  & \\ 
-                  & Game Console & 0.24 (0.083)  & \\ 
-                  & Home & 0.34 (0.070) &  \\ 
-                  & Other & -0.13 (0.056)  & \\ 
-                  & PC & 0.28 (0.060) &  \\ 
-                  & Tablet & -0.16 (0.081)  & \\ 
-                  & Vehicle & 0.40 (0.069)  & \\
-                  & Android/Other Phone (reference) & --- & \\ \hline
-  \multicolumn{2}{|l|}{Weekend} & -0.13 (0.033)  & \textless0.0001 \\ \hline
-  \multicolumn{2}{|l|}{Text contains end punctuation} & 0.03 (0.050) & 0.613 \\ \hline
-  \multicolumn{2}{|l|}{Text is in all lower case} & -0.18 (0.064) &  0.006 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among answered questions} & 0.05 (0.042) &  0.260 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{Title contains terms considered frequently-used among unanswered questions} & -0.28 (0.034)  & \textless0.0001 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{Title ends in a question mark} & 0.26 (0.033) &  \textless0.0001 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{User edited or added to the question's text after posting it} & 0.30 (0.086)  & 0.001 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{User was a member for less than one day before posting} & -0.11 (0.036)  & 0.003 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{User made an effort to solve the problem prior to asking the question} & -0.07 (0.036)  & 0.045 \\ \hline
-  \multicolumn{2}{|L{9cm}|}{Square root of the average tag frequency} & 2.23 (0.720)  & 0.002 \\ \hline
-\end{tabular}}
-\label{table:4}
-\end{table}
-
-\begin{table}[p]%[!htbp]
-% \centering
-\tbl{Examples of an answered question (left) and an unanswered question (right)}
-{\begin{tabular}{|L{4cm}|L{5cm}|L{5cm}|}
-\hline
-\textbf{Device} & iPhone 6 & android tablet \\ \hline
-\textbf{Title} & iPhone water damage, touch screen issue & ccccaaaan you help me fix my touch screen \\ \hline
-\textbf{Text} & So I dropped my iPhone in water 4 days ago. Have done the whole rice thing and seen huge difference in it. However, only one side of my screen works and it is the one side which I need to unlock the phone. What would be the best way forward? & touch screen not worki\\ \hline
-\textbf{Tags} & touchscreen, water damage & NA\\ \hline
-\textbf{Response Time (hrs)} & 1.361 & NA \\ \hline 
-\textbf{Device Category} & Apple Product & Tablet \\ \hline
-\textbf{Day Posted} & Weekday & Weekday \\ \hline
-\textbf{Text length (characters)} & 241 & 81 \\ \hline
-\textbf{Device name length (characters)} & 8 & 18\\ \hline
-\textbf{Average tag length (characters)} & 11.5 & 47 \\ \hline
-\textbf{Average tag frequency} & 0.0097 & 0 \\ \hline
-\textbf{Text contain end punctuation?} & True & False \\ \hline
-\textbf{Text in all lower case?} & False & True \\ \hline
-\textbf{Title end in a question mark?} & False & False \\ \hline
-\textbf{Line break to text length ratio} & 0 & 0 \\ \hline
-\textbf{User indicate prior effort?} & False & False \\ \hline
-\textbf{User update question after posting?} & False & False \\ \hline
-\textbf{Frequently-used answered words?} & True & True \\ \hline
-\textbf{Frequently-used unanswered words?} & False & False \\ \hline
-\end{tabular}}
-\label{table:5}
-\end{table}
-
-% Table with list of frequently-used words
-\begin{table}[p]%[!htbp]
-% \centering
-\tbl{Frequently-used terms among answered and unanswered questions' titles, ordered by decreasing frequency}
-{\begin{tabular}{|L{4cm}|L{8cm}|}
-  \hline
- \textbf{Frequently-used terms among answered questions} & screen, turn, working, replacement, power, work, replace, charging, charge, button, touch, black, turning, broken, start, stuck, new, LCD, upgrade, problem, change, port, replaced, card, open, boot, replacing, remove, reset, back, drive, error, cable, ssd, cracked, hard, one, dropped, logic, lines, white, keeps, pro, dead, now, front, damage, switch, parts, glass, still, charger, issue, sim, turns, digitizer, just, mode, model, backlight, usb, stopped, logo, starting, know, unresponsive, password, factory, call, use, damaged, find, sensor, possible, fixed, side, galaxy, data, ipod, problems, issue, slow, system, connector, without, overheating, code, ram, air, microphone, please, red, much, plugged, getting, booting, left, way, buy, plus, time, loose, lock, coming, got, shuts, says, install, key, door, top \\
-  \hline
-  \textbf{Frequently-used terms among unanswered questions} & sound, light, wifi, speaker, connect, picture, stay, noise, bluetooth, isnt, apps, going, rear, question, play, stop, service, take, hear, lights, showing, network, volume, come, keep, connection, flashing, shut, print, blue, buttons, edit \\ 
-   \hline
-\end{tabular}}
-\label{table:6}
-\end{table}
-
 
 \end{document}

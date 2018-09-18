@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  18 SEP 2018 11:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  18 SEP 2018 12:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -232,33 +232,6 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/alltt.sty
 Package: alltt 1997/06/16 v2.0g defines alltt environment
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/multirow/multirow.sty
-Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
-\multirow@colwidth=\skip53
-\multirow@cntb=\count110
-\multirow@dima=\skip54
-\bigstrutjot=\dimen145
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/soul/soul.sty
-Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
-\SOUL@word=\toks28
-\SOUL@lasttoken=\toks29
-\SOUL@cmds=\toks30
-\SOUL@buffer=\toks31
-\SOUL@token=\toks32
-\SOUL@spaceskip=\skip55
-\SOUL@ttwidth=\dimen146
-\SOUL@uldp=\dimen147
-\SOUL@ulht=\dimen148
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/array.sty
-Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
-\col@sep=\dimen149
-\extrarowheight=\dimen150
-\NC@list=\toks33
-\extratabsurround=\skip56
-\backup@length=\skip57
-)
 (/usr/local/texlive/2017/texmf-dist/tex/latex/hyphenat/hyphenat.sty
 Package: hyphenat 2009/09/02 v2.3c hyphenation utilities
 \langwohyphens=\language84
@@ -266,10 +239,10 @@ LaTeX Info: Redefining \_ on input line 43.
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip58
-\bibsep=\skip59
+\bibhang=\skip53
+\bibsep=\skip54
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count111
+\c@NAT@ctr=\count110
 )
 (/usr/local/texlive/2017/texmf-dist/tex/latex/upquote/upquote.sty
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
@@ -380,17 +353,17 @@ File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    ... okay on input line 68.
  (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count112
-\scratchdimen=\dimen151
+\scratchcounter=\count111
+\scratchdimen=\dimen145
 \scratchbox=\box29
-\nofMPsegments=\count113
-\nofMParguments=\count114
-\everyMPshowfont=\toks34
-\MPscratchCnt=\count115
-\MPscratchDim=\dimen152
-\MPnumerator=\count116
-\makeMPintoPDFobject=\count117
-\everyMPtoPDFconversion=\toks35
+\nofMPsegments=\count112
+\nofMParguments=\count113
+\everyMPshowfont=\toks28
+\MPscratchCnt=\count114
+\MPscratchDim=\dimen146
+\MPnumerator=\count115
+\makeMPintoPDFobject=\count116
+\everyMPtoPDFconversion=\toks29
 ) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -471,7 +444,6 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \bfseries on input line 72.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <13> not available
 (Font)              size <12> substituted on input line 93.
@@ -570,109 +542,62 @@ vail-able at
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 67--69
-[]\OT1/cmr/m/n/10 F.E. Har-rell, \OT1/cmr/m/it/10 Re-gres-sion Mod-el-ing Strat
-e-gies\OT1/cmr/m/n/10 , Vol. 64, 2015, Avail-able at
- []
-
-
-Overfull \hbox (833.6448pt too wide) in paragraph at lines 67--69
-\OT1/cmr/m/n/10 papers://55069ee6-504c-4f60-bfa9-053c4dcabb39/Paper/p398%5Cnhtt
-p://link.springer.com/10.1007/978-3-319-19425-7%5Cnhttp://www.ncbi.nlm.nih.gov/
-pubmed/21531065%5Cnhttp://linkinghub.elsevier.com/retrieve/pii/S030089321100350
-2%5Cnhttp://link.springer.com/10.1. 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 77--81
-[]\OT1/cmr/m/n/10 J. Mah-mud, J. Chen, and J. Nichols, \OT1/cmr/m/it/10 When Wi
-ll You An-swer This?
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 77--81
-\OT1/cmr/m/it/10 Es-ti-mat-ing Re-sponse Time in Twit-ter\OT1/cmr/m/n/10 , in \
-OT1/cmr/m/it/10 Sev-enth In-ter-na-tional AAAI
- []
-
-
-Underfull \hbox (badness 6412) in paragraph at lines 77--81
-\OT1/cmr/m/it/10 Con-fer-ence on We-blogs and So-cial Me-dia\OT1/cmr/m/n/10 . 2
-013, pp. 697--700. Avail-able at
- []
-
-
-Overfull \hbox (36.14275pt too wide) in paragraph at lines 77--81
-\OT1/cmr/m/n/10 http://www.aaai.org/ocs/index.php/ICWSM/ICWSM13/paper/viewPDFIn
-terstitial/6072/6328. 
- []
-
-[6]
-Underfull \hbox (badness 1275) in paragraph at lines 87--90
+Underfull \hbox (badness 1275) in paragraph at lines 85--88
 []\OT1/cmr/m/n/10 D. Oakes, \OT1/cmr/m/it/10 Sur-vival Times: As-pects of Par-t
 ial Like-li-hood\OT1/cmr/m/n/10 , In-ter-na-tional Sta-tis-ti-cal
  []
 
-
-Underfull \hbox (badness 5696) in paragraph at lines 115--119
+[6]
+Underfull \hbox (badness 5696) in paragraph at lines 113--117
 []\OT1/cmr/m/n/10 H. Toba, Z.y. Ming, M. Adri-ani, and T.s. Chua, \OT1/cmr/m/it
 /10 Dis-cov-er-ing high qual-ity
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 115--119
+Underfull \hbox (badness 10000) in paragraph at lines 113--117
 \OT1/cmr/m/it/10 an-swers in com-mu-nity ques-tion an-swer-ing archives us-ing 
 a hi-er-ar-chy of
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 115--119
+Underfull \hbox (badness 10000) in paragraph at lines 113--117
 \OT1/cmr/m/it/10 clas-si-fiers\OT1/cmr/m/n/10 , In-for-ma-tion Sci-ences 261 (2
 014), pp. 101--115. Avail-able at
  []
 
-) [7] [8]
-LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <8> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 359.
- [9] [10] [11] [12] [13] [14] [15] (./manuscript.aux)
+) [7] [8] [9] (./manuscript.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
  ) 
 Here is how much of TeX's memory you used:
- 4716 strings out of 492995
- 63644 string characters out of 6132704
- 162769 words of memory out of 5000000
- 8144 multiletter control sequences out of 15000+600000
- 19041 words of font info for 72 fonts, out of 8000000 for 9000
+ 4422 strings out of 492995
+ 59863 string characters out of 6132704
+ 129998 words of memory out of 5000000
+ 7871 multiletter control sequences out of 15000+600000
+ 15604 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,19n,28p,1851b,298s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,7n,28p,1851b,302s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/
-local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/l
-ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/lo
-cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
-/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
-xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texli
-ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
-e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/
-2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2
-017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/201
-7/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on manuscript.pdf (15 pages, 289179 bytes).
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
+local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/loc
+al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/
+texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texliv
+e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
+/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/
+2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/20
+17/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on manuscript.pdf (9 pages, 216619 bytes).
 PDF statistics:
- 137 PDF objects out of 1000 (max. 8388607)
- 98 compressed objects within 1 object stream
+ 94 PDF objects out of 1000 (max. 8388607)
+ 67 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -24,7 +24,7 @@ x$Answered <- NA
 x$Answered[x$answered == 1] <- "Answered"
 x$Answered[x$answered == 0] <- "Unanswered"
 
-tiff("Figure 1.tiff", res = 300, width = 3000, height = 1500)
+jpeg("Figure 1.jpeg", res = 300, width = 3000, height = 1500)
 ggplot(x, aes(x = time_until_answer, fill = Answered)) +
   geom_histogram(bins = 15, alpha = 0.5, position = "identity") + 
   guides(fill = guide_legend(title = NULL)) + 
@@ -34,7 +34,7 @@ ggplot(x, aes(x = time_until_answer, fill = Answered)) +
         axis.text = element_text(size = 20))
 dev.off()
 
-ggsave("FIG1.pdf", width = 8, height = 5) # eps files don't work with transparency, submit as pdf instead
+# ggsave("FIG1.pdf", width = 8, height = 5) # eps files don't work with transparency, submit as pdf instead
 ```
 
 ### KM Curve
@@ -44,7 +44,7 @@ surv_object <- Surv(x$time_until_answer, x$answered, type = "right")
 KM <- survfit(surv_object ~ 1, conf.type = "log-log")
 library(survminer)
 
-tiff("Figure 2.tiff", res = 300, width = 3000, height = 1500)
+jpeg("Figure 2.jpeg", res = 300, width = 3000, height = 1500)
 # dashed line indicates the median survival time
 ggsurvplot(KM, data = x, 
            risk.table = FALSE, 
