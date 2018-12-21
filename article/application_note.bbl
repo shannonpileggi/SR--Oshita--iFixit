@@ -1,0 +1,84 @@
+\begin{thebibliography}{10}
+\providecommand{\MR}{\relax\unskip\space MR }
+\providecommand{\url}[1]{\normalfont{#1}}
+\providecommand{\urlprefix}{Available at }
+
+\bibitem{Bhat2014}
+V. Bhat, A. Gokhale, R. Jadhav, R. Pudipeddi, and L. Akoglu, \emph{{Min ( e ) d
+  Your Tags : Analysis of Question Response Time in StackOverflow}}, IEEE/ACM
+  International Conference on Advances in Social Networks Analysis and Mining
+  (2014), pp. 328--335.
+
+\bibitem{Bland1998}
+J.M. Bland and D.G. Altman, \emph{{Statistics Notes: Survival probabilities
+  (the Kaplan-Meier method)}}, Bmj 317 (1998), pp. 1572--1580.
+  \urlprefix\url{http://www.bmj.com/cgi/doi/10.1136/bmj.317.7172.1572}.
+
+\bibitem{Chen}
+H.C. Chen, R.L. Kodell, K.F. Cheng, and J.J. Chen, \emph{{Assessment of
+  performance of survival prediction models for cancer prognosis}}, BMC Medical
+  Research Methodology 12 (2012), p. 102.
+  \urlprefix\url{https://doi.org/10.1186/1471-2288-12-102}.
+
+\bibitem{Correa2013}
+D. Correa and A. Sureka, \emph{{Fit or unfit: Analysis and prediction of
+  'closed questions' on Stack Overflow}}, Proceedings of the first ACM
+  Conference on Online Social Networks  (2013), pp. 201--212.
+  \urlprefix\url{http://dl.acm.org/citation.cfm?doid=2512938.2512954}.
+
+\bibitem{Grambsch1994}
+P. Grambsch and T. Therneau, \emph{{Proportional hazards tests and diagnostics
+  based on weighted residuals}}, Biometrika 81 (1994), pp. 515--526.
+  \urlprefix\url{https://doi.org/10.1093/biomet/81.3.515}.
+
+\bibitem{Hammermeister1979}
+K.E. Hammermeister, T.A. DeRouen, and H.T. Dodge, \emph{{Variables predictive
+  of survival in patients with coronary disease. Selection by univariate and
+  multivariate analyses from the clinical, electrocardiographic, exercise,
+  arteriographic, and quantitative angiographic evaluations.}}, American Heart
+  Association, Inc. 59 (1979), pp. 421--430.
+  \urlprefix\url{http://dx.doi.org/10.1161/01.CIR.59.3.421}.
+
+\bibitem{Harper2008}
+F.M. Harper, D. Raban, S. Rafaeli, and J.A. Konstan, \emph{{Predictors of
+  Answer Quality in Online Q{\&}A Sites}}, Proceedings of the SIGCHI Conference
+  on Human Factors in Computing Systems  (2008), pp. 865--874.
+  \urlprefix\url{http://dl.acm.org/citation.cfm?id=1357054.1357191}.
+
+\bibitem{Harrell2015}
+F.E. Harrell, \emph{{Regression Modeling Strategies}}, Vol.~64, 2015.
+
+\bibitem{Kleinbaum2011}
+D. Kleinbaum and M. Klein, \emph{{Survival Analysis: A Self-Learning Text,
+  Third Edition (Statistics for Biology and Health)}}, in \emph{Biometrical
+  Journal}, M. Gail, K. Krickeberg, J. Samet, A. Tsiatis, and W. Wong, eds.,
+  3rd ed., chap.~1, Springer-Verlag New York,  2011, p. 715.
+
+\bibitem{Moore2010}
+D. Moore, \emph{{Applied Survival Analysis Using R}}, 1st ed., chap.~5, March,
+  Springer International Publishing,  2010, p. 226.
+
+\bibitem{Oakes1981}
+D. Oakes, \emph{{Survival Times: Aspects of Partial Likelihood}}, International
+  Statistical Review / Revue Internationale de Statistique 49 (1981), pp.
+  235--252. \urlprefix\url{http://www.jstor.org/stable/1402606}.
+
+\bibitem{Ravi2014}
+S. Ravi, B. Pang, V. Rastagori, and R. Kumar, \emph{{Great Question ! Question
+  Quality in Community Q {\&} A}}, International AAAI Conference on Weblogs and
+  Social Media  (2014), pp. 426--435.
+
+\bibitem{Rechavi2011}
+A. Rechavi and S. Rafaeli, \emph{{Not all is gold that glitters response time
+  {\&} satisfaction rates in Yahoo! answers}}, Proceedings - 2011 IEEE
+  International Conference on Privacy, Security, Risk and Trust and IEEE
+  International Conference on Social Computing, PASSAT/SocialCom 2011  (2011),
+  pp. 904--909.
+
+\bibitem{Rodriguez2010}
+J.D. Rodr{\'{i}}guez, A. P{\'{e}}rez, and J.A. Lozano, \emph{{Sensitivity
+  analysis of kappa-fold cross validation in prediction error estimation}},
+  IEEE transactions on pattern analysis and machine intelligence 32 (2010), pp.
+  569--575.
+
+\end{thebibliography}
